@@ -1,0 +1,60 @@
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { Banner } from '../../assets/data';
+import classes from './MostBooked.module.css'
+import { Typography } from '@mui/material';
+
+export const MostBooked = ()=>{
+
+    const responsive = {
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3,
+          slidesToSlide: 3 // optional, default to 1.
+        },
+        laptop: {
+          breakpoint: { max: 1023, min: 801 },
+          items: 2,
+          slidesToSlide: 2 // optional, default to 1.
+        },
+        tablet: {
+          breakpoint: { max: 800, min: 601 },
+          items: 2,
+          slidesToSlide: 2 // optional, default to 1.
+        },
+        mobile: {
+          breakpoint: { max: 600, min: 0 },
+          items: 1,
+          slidesToSlide: 1 // optional, default to 1.
+        }
+      };
+
+    return(
+    <>
+    <div><Typography variant='h4'>Most Booked Items</Typography></div>
+    <Carousel
+  swipeable={false}
+  draggable={false}
+  responsive={responsive}
+  customTransition="all 2s"
+  ssr={true} // means to render carousel on server-side.
+  infinite={true}
+  keyBoardControl={true}
+  transitionDuration={500}
+  containerClass="carousel-container"
+  itemClass="carousel-item-padding-40-px"
+>
+ {
+    Banner.map((item)=>(
+        <div key={item.id} className={classes['image-container']}>
+            <img src={item.url} alt="Banner" />
+        </div>
+    ))
+
+ }
+</Carousel>
+    </>
+    )
+}
+
+export default MostBooked

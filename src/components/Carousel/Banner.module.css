@@ -1,0 +1,32 @@
+
+/* .image-container{
+   width:29vw;   
+   margin-right:8px ;
+} */
+.image-container>div{
+  display: flex;
+  flex-direction: row;
+   width:27vw;   
+   
+}
+
+.image-container>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media(max-width:600px){
+  .image-container{
+    width:80vw;
+  }
+}
+@media(min-width:600px) and (max-width:999px){
+    .image-container{
+        width:40vw;
+      }
+}
+@media(min-width:1000px) {
+    .image-container{
+        width:27vw;
+      }
+}

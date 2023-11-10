@@ -1,0 +1,405 @@
+.product_page {
+    padding: 10px;
+}
+
+.container {
+    max-width: 1360px;
+    margin: 0px auto;
+    padding: 10px;
+}
+
+
+.heading {
+    font-size: 33px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.booking {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.star_container {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5d17f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking_span {
+    border-bottom: 2px dashed gray;
+}
+
+.wrapper {
+    display: flex;
+}
+
+
+
+.services_border {
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+    padding: 15px 20px 20px;
+    margin-top: 50px;
+    max-width: 350px;
+    position: sticky;
+    top: 30px;
+}
+
+.select_service_p {
+    font-size: 14px;
+    color: gray;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.select_service_p_div {
+    border: 1px solid #dcdcdc;
+    max-width: 200px;
+    width: 100%;
+}
+
+.services_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.service_img {
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+}
+
+.service_p {
+    font-size: 13px;
+    max-width: 100px;
+    text-align: center;
+}
+
+
+
+.selected_service {
+    margin-top: -25px;
+    margin-left: 40px;
+    padding: 30px;
+    border: 1px solid #d5d5d5;
+    max-width: 460px;
+    width: 100%;
+}
+
+.selected_service_h2 {
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 800;
+    margin-bottom: 0px;
+}
+
+.sub_services_container {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sub_service {
+    padding-bottom: 35px;
+    border-bottom: 2px solid #d5d5d5;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #e3ffff;
+    padding: 5px 10px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+}
+
+.badge_span {
+    color: #12acac;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.info_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.info_container_left {
+    position: relative;
+}
+
+.dashed_underline {
+    max-width: 320px;
+    width: 100%;
+    border: 1px dashed #d5d5d5;
+}
+
+.sub_service_h4 {
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+.sub_service_star_container {
+    width: 15px;
+    height: 15px;
+}
+
+.sub_service_booking_span {
+    font-size: 13px;
+}
+
+.price_time_container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 13px;
+}
+
+.price {
+    font-weight: 700;
+}
+
+.dot_time_container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.time {
+    color: gray;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #5d17f4;
+    background-color: #f5f1ff;
+    border: 2px solid #5d17f4;
+    border-radius: 6px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.list_container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list {
+    font-size: 14px;
+    color: rgb(63, 63, 63);
+    margin-left: -22px;
+}
+
+.list_first_span {
+    font-weight: 600;
+}
+
+.list_second_span {
+    color: gray;
+}
+
+.package_button {
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid #d5d5d5;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+
+
+
+.right_section {
+    margin-top: -25px;
+    border-top: 1px solid #d5d5d5;
+    max-width: 350px;
+    width: 100%;
+    height: max-content;
+    padding: 35px 30px;
+    position: sticky;
+    top: 40px;
+}
+
+.cart_detail_box {
+    border: 1px solid #d5d5d5;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.view_cart_button {
+    background-color: #5d17f4;
+    color: white;
+    font-weight: 500;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.right_section_common_button {
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    padding-inline: 0px;
+}
+
+.sm_cart{
+    display: none;
+}
+
+.offer_container {
+    border: 1px solid #d5d5d5;
+    margin-top: 20px;
+    border-radius: 6px;
+    padding: 20px 20px 10px 20px;
+}
+
+.offer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.offer_left_div {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    background-color: #ededed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.offer_img_outer_div {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.offer_left_div_p {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.offer_left_div_first_p {
+    font-weight: 400;
+    margin-top: -6px;
+}
+
+
+
+@media screen and (max-width:1100px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .services_border {
+        max-width: max-content;
+    }
+
+    .services_container {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .selected_service {
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    .right_section {
+        margin-top: 0px;
+    }
+
+    .sm_cart{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+        padding: 10px 20px;
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+
+    .sm_cart_span{
+        color: black;
+    }
+
+    .sm_cart > .button{
+        justify-content: center;
+        padding-block: 13px;
+        max-width: 380px;
+        margin-right: 50px;
+    }
+    
+    .offer {
+        margin-top: 20px;
+        margin-bottom: -30px;
+    }
+    
+    .max_lg_hidden {
+        display: none;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .sm_cart > .button{
+        max-width: 200px;
+    }
+
+}
+
+@media screen and (min-width:1100px) {
+    .min_lg_hidden {
+        display: none;
+    }
+}
+
+@media screen and (max-width:557px) {
+    .services_container {
+        justify-content: center;
+    }
+}
