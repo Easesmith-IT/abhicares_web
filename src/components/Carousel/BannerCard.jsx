@@ -30,8 +30,9 @@ export const BannerCard = ()=>{
     return(
     <>
     <Carousel
-  swipeable={false}
-  draggable={false}
+  removeArrowOnDeviceType={["tablet", "mobile"]}
+  swipeable={true}
+  draggable={true}
   responsive={responsive}
   ssr={true} // means to render carousel on server-side.
   infinite={true}

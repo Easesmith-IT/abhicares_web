@@ -38,8 +38,9 @@ export const SalonForWomen = ()=>{
          <div className={classes['Card']}>
             <div className={classes['heading']}><Typography variant='h4'>Salon For Women</Typography><Button variant='outlined'>See All</Button></div>
             <Carousel
-                swipeable={false}
-                draggable={false}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                swipeable={true}
+                draggable={true}
                 showDots={false}
                 responsive={responsive}
                 ssr={true}

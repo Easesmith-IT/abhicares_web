@@ -6,9 +6,10 @@
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 90vh;
-    margin-top: 2rem;
-    
+    bottom: 0;
+    max-height: 100vh;
+    margin-top: 1rem;
+
 }
    
 .icon{
@@ -67,15 +68,19 @@
     font-size: 25px;
     font-weight: 600;
 }
+@media (max-width:3000px){
+    /* .dialog{
+       border-radius: 10%;
+    } */
+}
 @media(max-width:520px){
     .dialog{
-        position: relative;
-        
+        position: relative; 
         overflow-x: hidden;
         scrollbar-color: black;
           height: 90vh;
           border-radius: 18px;
-          margin:4rem 0.3rem 0.1rem 0.3rem;
+          margin:6rem 0.3rem 0.1rem 0.3rem;
     }
     .container{
         width: 100%;

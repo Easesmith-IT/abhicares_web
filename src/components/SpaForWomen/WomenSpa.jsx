@@ -38,8 +38,9 @@ export const WomenSpa = ()=>{
          <div className={classes['Card']}>
             <div className={classes['heading']}><Typography variant='h4'>Spa For Women</Typography><Typography>Refresh. Rewind .Reuvinate</Typography></div>
             <Carousel
-                swipeable={false}
-                draggable={false}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                swipeable={true}
+                draggable={true}
                 showDots={false}
                 responsive={responsive}
                 ssr={true}

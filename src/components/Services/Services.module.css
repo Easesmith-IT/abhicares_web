@@ -14,9 +14,10 @@
     width: 100%;
 }
 .left{
-   max-width: 40vw;
+   max-width: 35vw;
    display: flex;
    flex-direction: column; 
+   justify-content: space-between;
    border-radius: 8px;
    
 }
@@ -67,8 +68,8 @@
    padding:10px;
 }
 .card{
-  width: 5rem;
-  height: 9rem;
+  max-width: 8rem;
+  max-height: 9rem;
   padding: 0.2rem;
   align-items: center;
 
