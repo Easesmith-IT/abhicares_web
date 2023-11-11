@@ -1,0 +1,29 @@
+export const company = [
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219550654-015675.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219556603-90d1a7.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219551552-9e6ea8.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219543011-f9f13e.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219548563-41d322.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219543760-99d6e7.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219551107-034518.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219542270-0756c8.png"
+    },
+    {
+        src:"https://res.cloudinary.com/urbanclap/image/upload/images/growth/home-screen/1625219549330-1af90c.png"
+    },
+];
