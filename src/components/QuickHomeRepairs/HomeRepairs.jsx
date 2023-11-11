@@ -38,8 +38,9 @@ export const HomeRepairs = ()=>{
          <div className={classes['Card']}>
             <div className={classes['heading']}><Typography variant='h4'>Quick Home Repairs</Typography></div>
             <Carousel
-                swipeable={false}
-                draggable={false}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                swipeable={true}
+                draggable={true}
                 showDots={false}
                 responsive={responsive}
                 ssr={true}
@@ -54,9 +55,11 @@ export const HomeRepairs = ()=>{
                                
                                      <div key={item.id} className={classes['single-card']}>
                                         <div className={classes['cardMedia']}><img src={item.url}/></div>
+                                        <div>
                                         <div className={classes['cardname']}><b>{item.name}</b></div>
                                         <div className={classes['rating']}><StarIcon/>&nbsp;4.86&nbsp;&nbsp;(76.8k)</div>
                                         <div className={classes['price']}>₹109</div>
+                                        </div>
                                     </div>
                           
                              

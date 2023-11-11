@@ -13,7 +13,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 export const Header = ()=>{
   const[innerWidth,setInnerWidth]= useState(window.innerWidth)
   const[toggle,setToggle]= useState(false)
-  
     useEffect(()=>{
         const handleResize=()=>{
             setInnerWidth(window.innerWidth)
