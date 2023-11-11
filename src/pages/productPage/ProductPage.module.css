@@ -12,7 +12,6 @@
 .heading {
     font-size: 33px;
     font-weight: 600;
-    margin-bottom: 2px;
 }
 
 .booking {
@@ -96,7 +95,7 @@
 
 
 .selected_service {
-    margin-top: -25px;
+    /* margin-top: -25px; */
     margin-left: 40px;
     padding: 30px;
     border: 1px solid #d5d5d5;
@@ -108,11 +107,10 @@
     font-size: 24px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 800;
-    margin-bottom: 0px;
 }
 
 .sub_services_container {
-    margin-top: 40px;
+    /* margin-top: 40px; */
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -157,13 +155,13 @@
 }
 
 .sub_service_h4 {
-    margin-top: 4px;
-    margin-bottom: 2px;
+    margin-block: 4px;
 }
 
 .sub_service_star_container {
     width: 15px;
     height: 15px;
+    margin-block: 4px;
 }
 
 .sub_service_booking_span {
@@ -175,6 +173,7 @@
     align-items: center;
     gap: 15px;
     font-size: 13px;
+    margin-block: 6px;
 }
 
 .price {
@@ -214,12 +213,13 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-block: 16px;
+    padding: 20px;
 }
 
 .list {
     font-size: 14px;
     color: rgb(63, 63, 63);
-    margin-left: -22px;
 }
 
 .list_first_span {
@@ -244,9 +244,8 @@
 
 
 .right_section {
-    margin-top: -25px;
     border-top: 1px solid #d5d5d5;
-    max-width: 350px;
+    max-width: 450px;
     width: 100%;
     height: max-content;
     padding: 35px 30px;
@@ -267,6 +266,7 @@
     font-weight: 500;
     width: 100%;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .right_section_common_button {
@@ -320,7 +320,7 @@
 
 .offer_left_div_first_p {
     font-weight: 400;
-    margin-top: -6px;
+    margin-top: 3px;
 }
 
 

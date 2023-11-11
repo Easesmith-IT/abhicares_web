@@ -20,7 +20,6 @@
     padding: 0 15px;
     display: flex;
     align-items: flex-start;
-    /* justify-content: center; */
     gap: 30px;
 }
 
@@ -71,10 +70,11 @@
 }
 
 .cart_items_container {
+    border-bottom: 2px solid #d5d5d5;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border-bottom: 2px solid #d5d5d5;
+    margin-bottom: 20px;
 }
 
 .cart_item {
@@ -87,11 +87,11 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 15px 20px;
 }
 
 .list_item {
     font-size: 12px;
-    margin-left: -20px;
     color: gray;
 }
 
@@ -119,6 +119,11 @@
 
 .quantity {
     font-size: 17px;
+}
+
+
+.frequently_added_heading{
+    margin-bottom: 20px;
 }
 
 .carousel {
@@ -257,7 +262,7 @@
 }
 
 .payment_summary_h4 {
-    margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 .payment_summary_div {
@@ -279,6 +284,7 @@
 
 .payment_summary_p {
     font-size: 14px;
+    margin-block: 4px;
 }
 
 

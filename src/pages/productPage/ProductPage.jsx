@@ -8,6 +8,7 @@ import { AiOutlinePercentage } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 import Modal from "../../components/productInfoModal/Modal";
 import { useState } from "react";
+import CartItem from "../../components/checkout/CartItem";
 
 const ProductPage = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -65,11 +66,7 @@ const ProductPage = () => {
                                     <span>₹669</span>
                                     <span>View Cart</span>
                                 </button>
-                                <ul className={classes.list_container}>
-                                    <li className={classes.list}>Crave beauty hydrating banana facial</li>
-                                    <li className={classes.list}>Crave beauty hydrating</li>
-                                    <li className={classes.list}>Crave beauty</li>
-                                </ul>
+                                <CartItem />
                                 <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button>
                             </div>
                             <div className={classes.offer_container}>

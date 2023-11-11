@@ -36,7 +36,7 @@
 .hero_section_bottom {
     background: #8D65FA;
     border-radius: 8px;
-    padding: 10px;
+    padding: 25px;
 }
 
 .hero_section_bottom_h2 {
@@ -56,7 +56,7 @@
 
 .input{
     width: 280px;
-    height: 25px;
+    height: 45px;
     padding: 10px 20px;
     border-radius: 6px;
     border: 2px solid #fff;
