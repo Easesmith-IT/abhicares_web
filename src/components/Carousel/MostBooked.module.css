@@ -1,5 +1,5 @@
 .image-container{
-    width:27vw;   
+    width:30vw;   
     
  }
  .image-container>img{
@@ -9,16 +9,19 @@
  }
  @media(max-width:600px){
    .image-container{
-     width:80vw;
+     width:88vw;
+   }
+   .heading>h4{
+    font-size: 21px;
    }
  }
  @media(min-width:600px) and (max-width:999px){
      .image-container{
-         width:40vw;
+         width:45vw;
        }
  }
  @media(min-width:1000px) {
      .image-container{
-         width:26vw;
+         width:30vw;
        }
  }

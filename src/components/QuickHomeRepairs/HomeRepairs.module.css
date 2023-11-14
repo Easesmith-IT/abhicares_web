@@ -2,7 +2,8 @@
 .Card{
   width: 100%;
   padding: 1rem;
-  justify-content: space-around;
+  padding: 0.2rem;
+  
 }
 .heading{
   display: flex;
@@ -13,16 +14,15 @@
 .cardMedia{
   max-width: 100%;
   max-height:100%;
-  
 }
 .cardMedia>img{
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 }
-
 .single-card{
-
+display: flex;
+justify-content: space-between;
 text-align:left;
 box-shadow: 1px 1px 4px 1px #B0B0B0;
 display: flex;
@@ -65,9 +65,13 @@ border-radius: 8px;
   height: 14rem;
 }
 }
-
-@media(min-width:375px) and(max-width:500){
+@media(min-width:375px) and(max-width:520px){
   .single-card{
     height: 17rem;
+  }
+}
+@media(min-width:521px) and(max-width:768px){
+  .single-card{
+    height: 22rem;
   }
 }

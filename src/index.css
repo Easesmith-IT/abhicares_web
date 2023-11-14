@@ -19,7 +19,7 @@ code {
   scroll-behavior: smooth;
 }
 .carousel-container{
-  width: 90%;
+  width: 100%;
   margin: 1.5rem auto;
   
 }
@@ -77,22 +77,14 @@ code {
 
 }
 
-.popup-modal{
-      position: absolute;
-      bottom: 0;
-      animation: popup 2s ease forwards;
-}
-
 @keyframes dropdown{
   0% {top:0;max-height:15vh;}
   100% {top:0;max-height:60vh;}
 
   }
-
 @keyframes popup{
   0% {bottom:-90vh;} 
   100% {bottom:0vh;}
-  
   }
 
   @media(max-width:768px){

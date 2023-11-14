@@ -31,10 +31,11 @@ export const MostBooked = ()=>{
 
     return(
     <>
-    <div><Typography variant='h4'>Most Booked Items</Typography></div>
+    <div className={classes['heading']}><Typography variant='h4'>Most Booked Items</Typography></div>
     <Carousel
-  swipeable={false}
-  draggable={false}
+  removeArrowOnDeviceType={["tablet", "mobile"]}
+  swipeable={true}
+  draggable={true}
   responsive={responsive}
   customTransition="all 2s"
   ssr={true} // means to render carousel on server-side.
