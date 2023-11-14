@@ -1,0 +1,66 @@
+.terms_and_conditions {
+    background: #F7F8FA;
+}
+
+
+
+.heading_div {
+    padding: 20px 10px;
+    background: white;
+    /* margin-bottom: 30px; */
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    text-align: center;
+    font-size: 28px;
+}
+
+
+
+.wrapper {
+    padding: 40px 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px 30px;
+}
+
+.h3 {
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.p {
+    font-size: 15px;
+    color: #424242;
+    margin-block: 10px;
+    font-weight: 400;
+}
+
+.p:nth-child(2) {
+    text-align: center;
+}
+
+.list_none {
+    list-style: none;
+}
+
+ol {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #424242;
+    margin-left: 15px;
+}
+
+div ol li {
+    margin-top: 15px;
+}
+
+.bold {
+    font-weight: 600;
+}
