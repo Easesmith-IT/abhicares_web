@@ -51,11 +51,11 @@ const CheckoutPage = () => {
     return (
         <>
             <div>
-                <div className={classes.header}>
+                {/* <div className={classes.header}>
                     <div className={classes.container}>
                         <img src={logo} alt="logo" className={classes.logo_img} />
                     </div>
-                </div>
+                </div> */}
 
                 <div className={`${classes.container} ${classes.checkout_container}`}>
                     <div className={classes.login_button_container}>

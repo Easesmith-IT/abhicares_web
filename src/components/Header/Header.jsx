@@ -9,6 +9,7 @@ import Logo from '../../assets/MainLogo.png'
 import Logo4 from '../../assets/Logo3.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LoginSignupModal from '../loginSignupModal/LoginSignupModal';
+import { useLocation } from 'react-router';
 
 
 export const Header = () => {
@@ -36,6 +37,14 @@ export const Header = () => {
   const handleClose = () => {
     setToggle(false)
   }
+
+   
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
 
   return (
     <>

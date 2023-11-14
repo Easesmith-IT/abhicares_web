@@ -6,6 +6,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Logo from '../../assets/mainLogo2.png'
+import { Link } from 'react-router-dom';
 
 
 export const Footer = ()=>{
@@ -24,7 +25,7 @@ export const Footer = ()=>{
                         {
                     CompanyData.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><a href="#">{item.name}</a></div>
+                            <div><Link to={item.url}>{item.name}</Link></div>
                         </div>
                     ))
                         }
@@ -36,7 +37,7 @@ export const Footer = ()=>{
                         {
                     ForCustomers.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><a href="#">{item.name}</a></div>
+                            <div><Link to={item.url}>{item.name}</Link></div>
                         </div>
                     ))
                         }
@@ -50,7 +51,7 @@ export const Footer = ()=>{
                         {
                     Partner.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><a href="#">{item.name}</a></div>
+                            <div><Link to={item.url}>{item.name}</Link></div>
                         </div>
                     ))
                         }

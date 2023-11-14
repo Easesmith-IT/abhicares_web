@@ -47,7 +47,7 @@
     margin-top: 50px;
     max-width: 350px;
     position: sticky;
-    top: 30px;
+    top: 120px;
 }
 
 .select_service_p {
@@ -250,7 +250,7 @@
     height: max-content;
     padding: 35px 30px;
     position: sticky;
-    top: 40px;
+    top: 130px;
 }
 
 .cart_detail_box {

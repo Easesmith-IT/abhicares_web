@@ -28,7 +28,6 @@ export const Home = ()=>{
 
 return(
 <div className={classes['wrapper']}>
-<Header/>
 <div className={classes['body-wrapper']}>
 <div className={classes['body']}>
 <Services onClick={handleOpen} open={handleOpen}/>
@@ -41,7 +40,6 @@ return(
    <SpaForMen/> 
 </div>
 </div>
-<Footer />
 </div>
 )
 }

@@ -9,12 +9,16 @@ import { FiChevronDown } from "react-icons/fi";
 import Modal from "../../components/productInfoModal/Modal";
 import { useState } from "react";
 import CartItem from "../../components/checkout/CartItem";
+import { useNavigate } from "react-router-dom";
 
 const ProductPage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const handleOnclick = async () => {
         setIsOpen(!isOpen);
     };
+
+    const navigate = useNavigate();
+
     return (
         <>
             <section className={classes.product_page}>
@@ -56,13 +60,13 @@ const ProductPage = () => {
                         </div>
                         <div className={classes.sm_cart}>
                             <span className={classes.sm_cart_span}>₹669</span>
-                            <button className={`${classes.button} ${classes.view_cart_button}`}>
+                            <button onClick={()=> navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                 View Cart
                             </button>
                         </div>
                         <div className={`${classes.right_section} ${classes.max_lg_hidden}`}>
                             <div className={classes.cart_detail_box}>
-                                <button className={`${classes.button} ${classes.view_cart_button}`}>
+                                <button onClick={()=> navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                     <span>₹669</span>
                                     <span>View Cart</span>
                                 </button>

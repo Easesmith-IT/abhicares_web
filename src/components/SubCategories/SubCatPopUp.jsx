@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
 import { Salon } from "../../assets/data";
 import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SubCatPopUp = ({open,onClose})=>{
     const handleClose= ()=>{
@@ -12,6 +13,9 @@ export const SubCatPopUp = ({open,onClose})=>{
     }
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const navigate = useNavigate();
+
     return(
        <div className="poppup popup-modal">
           
@@ -32,7 +36,7 @@ export const SubCatPopUp = ({open,onClose})=>{
                                  {
                                      Salon.map((item)=>(
                                         <Grid item xs={4} sm={3} md={3} lg={3}>
-                                        <div className={classes['category-cards']} key={item.id}>
+                                        <div onClick={()=> navigate("/product")} className={classes['category-cards']} key={item.id}>
                                                 <div className={classes['image-Box']}><img src={item.url} alt="img" /></div>
                                                 <div className={classes['card-name']}><Typography>{item.name}</Typography></div> 
                                         </div>

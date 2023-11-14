@@ -18,7 +18,7 @@
 .link_p {
     font-size: 14px;
     color: #757575;
-    margin-top: -8px;
+    margin-top: 8px;
 }
 
 .link {
@@ -72,5 +72,5 @@
 }
 
 .address_card .link_p{
-    margin-block: -8px 0px;
+    margin-top: 15px;
 }
