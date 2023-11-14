@@ -1,4 +1,5 @@
 import { Button } from '@mui/material'
+import { Link } from 'react-router-dom';
 import classes from './Header.module.css'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SearchIcon from '@mui/icons-material/Search';
@@ -53,7 +54,7 @@ export const Header = () => {
           (<div className={toggle ? 'open mobilenav' : ''}>
             <div>
               <div><MenuIcon className='menu-icon' onClick={handleClose} /></div>
-              <div className={classes['LogoContainer']}><img src={Logo4} alt='logo' /></div>
+              <Link to='/' className={classes['LogoContainer']}><img src={Logo4} alt='logo' /></Link>
             </div>
 
             <div>
@@ -72,12 +73,12 @@ export const Header = () => {
           (
             <div className={classes['container']}>
               <div><MenuIcon onClick={handleOpen} /></div>
-              <div className={classes['LogoContainer']}><img src={Logo4} alt='logo' /></div>
+              <Link to='/' className={classes['LogoContainer']}><img src={Logo4} alt='logo' /></Link>
             </div>
           ))
           :
           <div className={classes['header']}>
-            <div className={classes['LogoContainer']}><img src={Logo} alt='logo' /></div>
+            <Link to='/' className={classes['LogoContainer']}><img src={Logo} alt='logo' /></Link>
             <div className={`${classes.dFlexRow} ${classes.actions}`}>
               <div className={`${classes.dFlexRow} ${classes.location}`}>
                 <div><LocationOnIcon /></div>
