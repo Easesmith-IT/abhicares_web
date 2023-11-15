@@ -15,7 +15,7 @@ export const SubCatPopUp = ({open,onClose})=>{
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return(
-       <div className="poppup popup-modal">
+       <div className="popup popup-modal">
           
           <Dialog 
                  fullWidth

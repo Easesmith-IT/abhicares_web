@@ -47,8 +47,13 @@
    border-radius: 12px;
 
 }
-.heading>p{
-   font-size: 30px;
+.heading>h4{
+   font-weight: 600;
+}
+@media(max-width:768px){
+  .heading>h4{
+    font-size: 20px;
+ }
 }
 .services-name{
 

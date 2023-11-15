@@ -15,11 +15,11 @@ export const WomenSpa = ()=>{
         },
         desktop: {
           breakpoint: { max: 3000, min: 1400 },
-          items: 4
+          items: 6
         },
         laptop:{
           breakpoint: { max: 1399, min: 1024 },
-          items: 4
+          items: 5
         },
         tablet: {
           breakpoint: { max: 768, min: 1023 },

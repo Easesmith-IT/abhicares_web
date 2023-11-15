@@ -63,3 +63,25 @@ margin-bottom: 8px;
   margin-left: 3px;
 }
 }
+@media(min-width:1300px) and (max-width:1800px){
+  .cardname{
+    font-size: 18px;
+  }
+  .heading>h4{
+    font-size:  26px;
+  }
+  .heading>p{
+    font-size: 15px;
+  }
+}
+@media(min-width:1800px) and (max-width:3000px){
+  .cardname{
+    font-size: 22px;
+  }
+  .heading>h4{
+    font-size:  28px;
+  }
+  .heading>p{
+    font-size: 17px;
+  }
+}
