@@ -30,7 +30,7 @@ flex-direction: column;
 justify-content: space-between;
 padding: 0.2rem;
 border:1px solid rgb(237, 237, 237);
-margin-right: 8px;
+margin-right: 10px;
 margin-bottom: 8px;
 margin-top: 4px;
 margin-left: 4px;
@@ -73,5 +73,39 @@ border-radius: 8px;
 @media(min-width:521px) and(max-width:768px){
   .single-card{
     height: 22rem;
+  }
+}
+@media(min-width:1300px) and (max-width:1800px){
+  .cardname{
+    font-size: 18px;
+  }
+  .rating{
+    font-size: 16px;
+  }
+  .price{
+    font-size: 16px;
+  }
+  .heading>h4{
+    font-size:  26px;
+  }
+  .heading>p{
+    font-size: 15px;
+  }
+}
+@media(min-width:1800px) and (max-width:3000px){
+  .cardname{
+    font-size: 22px;
+  }
+  .rating{
+    font-size: 16px;
+  }
+  .price{
+    font-size: 16px;
+  }
+  .heading>h4{
+    font-size:  28px;
+  }
+  .heading>p{
+    font-size: 17px;
   }
 }

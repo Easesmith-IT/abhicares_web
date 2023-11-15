@@ -7,12 +7,12 @@ import { ServicesData } from '../../assets/data'
 
 export const Services = ({open})=>{
 
-
+   const innerWidth= window.innerWidth
     return(
         <div className={classes['wrapper']}>          
            <div className={classes['main']}>
               <div className={classes['left']}>
-                  <div className={classes['heading']}><Typography>Home services at your doorstep</Typography></div>
+                  <div className={classes['heading']}><Typography variant={innerWidth<1000?'h5':"h3"}>Home services at your doorstep</Typography></div>
                   <div className={classes['services-content']}>
                         <div className={classes['services-name']}><Typography variant='h6'>What are you looking for?</Typography></div>
                         <div className={classes['services-card']}>
