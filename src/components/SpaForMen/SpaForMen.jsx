@@ -16,7 +16,7 @@ export const SpaForMen = ()=>{
         },
         desktop: {
           breakpoint: { max: 3000, min: 1400 },
-          items: 6
+          items: 5
         },
         laptop:{
           breakpoint: { max: 1399, min: 1024 },

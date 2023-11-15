@@ -15,7 +15,7 @@ export const HomeRepairs = ()=>{
         },
         desktop: {
           breakpoint: { max: 3000, min: 1400 },
-          items: 6
+          items: 5
         },
         laptop:{
           breakpoint: { max: 1399, min: 1024 },
@@ -49,14 +49,14 @@ export const HomeRepairs = ()=>{
                 customTransition="all 1s"
                 transitionDuration={500}
                 containerClass="carousel-container"
-                itemClass="carousel-item-padding-30-px">
+                itemClass="carousel-item-padding-40-px">
                              {
                                HomeRepairsdata.map((item)=>(
                                
                                      <div key={item.id} className={classes['single-card']}>
                                         <div className={classes['cardMedia']}><img src={item.url}/></div>
-                                        <div>
-                                        <div className={classes['cardname']}><b>{item.name}</b></div>
+                                        <div className={classes['card-content']}>
+                                        <div className={classes['cardname']}>{item.name}</div>
                                         <div className={classes['rating']}><StarIcon/>&nbsp;4.86&nbsp;&nbsp;(76.8k)</div>
                                         <div className={classes['price']}>₹109</div>
                                         </div>

@@ -6,7 +6,7 @@
 .image-container>div{
   display: flex;
   flex-direction: row;
-   width:27vw;   
+  
    
 }
 
@@ -20,7 +20,7 @@
     width:88vw;
   }
 }
-@media(min-width:600px) and (max-width:999px){
+/* @media(min-width:600px) and (max-width:999px){
     .image-container{
         width:30vw;
       }
@@ -29,4 +29,4 @@
     .image-container{
         width:22vw;
       }
-}
+} */
