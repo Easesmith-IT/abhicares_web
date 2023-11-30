@@ -23,7 +23,7 @@ function App() {
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/termsAndConditions" element={<TermsAndConditions />} />
         <Route path="/privacy&policy" element={<PrivacyPolicy />} />
-        <Route path="/product" element={<ProductPage />} />
+        <Route path="/services/:serviceId" element={<ProductPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
       </Routes>

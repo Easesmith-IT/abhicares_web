@@ -4,10 +4,12 @@ import "react-multi-carousel/lib/styles.css";
 import classes from './SpaForMen.module.css'
 import { WomenSalon } from "../../assets/data";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
 
 export const SpaForMen = ()=>{
+  const navigate = useNavigate();
     const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -37,7 +39,7 @@ export const SpaForMen = ()=>{
       };
     return(
          <div className={classes['Card']}>
-            <div className={classes['heading']}><Typography variant='h4'>Salon for Kids & Men</Typography><Button variant='outlined'>See All</Button></div>
+            <div className={classes['heading']}><Typography variant='h4'>Salon for Kids & Men</Typography><Button onClick={()=>navigate("/product")} variant='outlined'>See All</Button></div>
             <Carousel
                 removeArrowOnDeviceType={["tablet", "mobile"]}
                 swipeable={true}

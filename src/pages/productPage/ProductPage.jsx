@@ -1,23 +1,44 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import classes from "./ProductPage.module.css";
+import axios from "axios";
 
 import SubService from "../../components/productPage/SubService";
 import Service from "../../components/productPage/Service";
+import Modal from "../../components/productInfoModal/Modal";
+import CartItem from "../../components/checkout/CartItem";
 
 import { BsStarFill } from "react-icons/bs";
 import { AiOutlinePercentage } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
-import Modal from "../../components/productInfoModal/Modal";
-import { useState } from "react";
-import CartItem from "../../components/checkout/CartItem";
-import { useNavigate } from "react-router-dom";
+
 
 const ProductPage = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [allProducts, setAllProducts] = useState([]);
+
+    const navigate = useNavigate();
+    const params = useParams();
+
     const handleOnclick = async () => {
         setIsOpen(!isOpen);
     };
 
-    const navigate = useNavigate();
+    console.log(params);
+
+    const getAllProducts = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-product/${params.serviceId}`);
+            console.log(data);
+            setAllProducts(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getAllProducts();
+    }, [])
 
     return (
         <>
@@ -60,13 +81,13 @@ const ProductPage = () => {
                         </div>
                         <div className={classes.sm_cart}>
                             <span className={classes.sm_cart_span}>₹669</span>
-                            <button onClick={()=> navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
+                            <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                 View Cart
                             </button>
                         </div>
                         <div className={`${classes.right_section} ${classes.max_lg_hidden}`}>
                             <div className={classes.cart_detail_box}>
-                                <button onClick={()=> navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
+                                <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                     <span>₹669</span>
                                     <span>View Cart</span>
                                 </button>
