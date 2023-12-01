@@ -1,6 +1,7 @@
 import axios from "axios";
 import classes from "./RegisterAsAProfessional.module.css";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const RegisterAsAProfessional = () => {
     const [registrationInfo, setRegistrationInfo] = useState({
@@ -10,7 +11,6 @@ const RegisterAsAProfessional = () => {
         state: ""
 
     });
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -35,7 +35,7 @@ const RegisterAsAProfessional = () => {
                 city: "",
                 state: ""
             })
-            setIsModalOpen(true);
+            toast.success("Registered successfully");
         } catch (error) {
             console.log(error);
         }
@@ -93,12 +93,6 @@ const RegisterAsAProfessional = () => {
                     </div>
                 </div>
             </div>
-            {isModalOpen && <div className={classes.wrapper}>
-                <div className={classes.box}>
-                    <p>Registered successfully</p>
-                    <button onClick={() => setIsModalOpen(false)} className={classes.button}>Ok</button>
-                </div>
-            </div>}
         </>
     );
 };

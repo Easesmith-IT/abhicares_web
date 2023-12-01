@@ -12,8 +12,12 @@ import Carousel from "react-multi-carousel";
 import CartItem from "../../components/checkout/CartItem";
 import FrequentlyAddedItems from "../../components/checkout/FrequentlyAddedItems";
 import LoginSignupModal from "../../components/loginSignupModal/LoginSignupModal";
+import { useSelector } from "react-redux";
+import AddressModal from "../../components/addressModal/AddressModal";
 
 const CheckoutPage = () => {
+    const { isUser } = useSelector(state => state.user);
+
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -43,6 +47,7 @@ const CheckoutPage = () => {
     };
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
     const handleOnclick = () => {
         setIsOpen(!isOpen);
@@ -59,10 +64,18 @@ const CheckoutPage = () => {
 
                 <div className={`${classes.container} ${classes.checkout_container}`}>
                     <div className={classes.login_button_container}>
-                        <p className={classes.heading}>Account</p>
-                        <p className={classes.p}>To book the service, please login or sign up</p>
-                        <button onClick={handleOnclick} className={classes.button}>Login</button>
+                        {!isUser &&
+                            <>
+                                <p className={classes.heading}>Account</p>
+                                <p className={classes.p}>To book the service, please login or sign up</p>
+                                <button onClick={handleOnclick} className={classes.button}>Login</button>
+                            </>
+                        }
+                        {isUser &&
+                            <button onClick={()=> setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
+                        }
                     </div>
+
                     <div className={classes.cart_checkout_container}>
                         <div className={classes.cart}>
                             <div className={classes.cart_items_container}>
@@ -122,6 +135,11 @@ const CheckoutPage = () => {
                 isOpen={isOpen}
                 handleOnclick={handleOnclick}
             />
+            {isAddressModalOpen &&
+                <AddressModal
+                    isOpen={isAddressModalOpen}
+                    setIsAddressModalOpen={setIsAddressModalOpen}
+                />}
         </>
     );
 };
