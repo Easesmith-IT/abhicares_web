@@ -2,7 +2,6 @@ import { Button } from '@mui/material'
 import { Link } from 'react-router-dom';
 import classes from './Header.module.css'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -61,12 +60,6 @@ export const Header = () => {
               <div><LocationOnIcon /></div>
               <div><KeyboardArrowDownIcon /></div>
             </div>
-            <div>
-              <div><SearchIcon /></div>
-              <div><input type="text" placeholder='Search your services' /></div>
-            </div>
-
-
             <div className={classes['button-container']}><Button variant='outlined'>Login</Button></div>
           </div>)
           :
@@ -83,10 +76,6 @@ export const Header = () => {
               <div className={`${classes.dFlexRow} ${classes.location}`}>
                 <div><LocationOnIcon /></div>
                 <div><KeyboardArrowDownIcon /></div>
-              </div>
-              <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
-                <div><SearchIcon /></div>
-                <div><input type="text" placeholder='Search your services' /></div>
               </div>
             </div>
             <div className={classes['button-container']}>
