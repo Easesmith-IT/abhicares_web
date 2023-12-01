@@ -8,6 +8,7 @@ import { Grid, Typography } from '@mui/material';
 import Photo from '../../assets/rightPhoto.png';
 import men from '../../assets/men.png';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,27 +16,55 @@ export const Services = ({ open }) => {
     const [isShow, setIsShow] = useState(true);
     const [searchInput, setSearchInput] = useState("");
     const [allCategories, setAllCategories] = useState([]);
+    const [allServices, setAllServices] = useState([]);
+    const [isMessage, setIsMessage] = useState(false);
+
+    const navigate = useNavigate();
 
     const innerWidth = window.innerWidth
 
-    const handleOnChange = (e) => {
-        setSearchInput(e.target.value);
+    const handleOnChange = async (e) => {
+        const value = e.target.value;
+        setSearchInput(value);
+        if (value === "") {
+            return;
+        }
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/search-service?search=${value}`);
+            if (data.data.length === 0) {
+                setIsMessage(true);
+            }
+            else {
+                setIsMessage(false);
+            }
+            setAllServices(data.data);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    function debounce(fx, time) {
+        let id = null;
+        return function (data) {
+            if (id) {
+                clearTimeout(id);
+            }
+            id = setTimeout(() => {
+                fx(data);
+                // id = null;
+            }, time);
+        };
     }
 
     useEffect(() => {
         if (searchInput === "") {
             setIsShow(true);
+            setAllServices([]);
         }
         else {
             setIsShow(false);
-            // (async () => {
-            //     try {
-            //         const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/search-service`);
-            //         console.log(data);
-            //     } catch (error) {
-            //         console.log(error);
-            //     }
-            // })()
         }
     }, [searchInput])
 
@@ -62,7 +91,7 @@ export const Services = ({ open }) => {
                     <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
                         <div><SearchIcon /></div>
                         <div>
-                            <input onChange={handleOnChange} type="text" placeholder='Search for' name='search' id='search' />
+                            <input onChange={debounce(handleOnChange, 1000)} type="text" placeholder='Search for' name='search' id='search' />
                             {isShow && <label htmlFor='search' className={classes.type_animation}>
                                 <TypeAnimation
                                     sequence={[
@@ -77,6 +106,22 @@ export const Services = ({ open }) => {
                                 />
                             </label>}
                         </div>
+                        {allServices.length !== 0 && <div className={classes.search_result_box}>
+                            {
+                                allServices?.map((service) => (
+                                    <div onClick={() => navigate(`/services/${service?._id}`)} key={service._id} className={classes.search_result_item}>
+                                        <img src={`${process.env.REACT_APP_DOMAIN}/uploads/${service.imageUrl}`} alt="" />
+                                        <p>{service.name}</p>
+                                    </div>
+                                ))
+                            }
+                        </div>}
+
+                        {isMessage &&
+                            <div className={classes.search_result_box}>
+                                <p>no result found</p>
+                            </div>}
+
                     </div>
                     <div className={classes['services-content']}>
                         <div className={classes['services-name']}><Typography variant='h6'>What are you looking for?</Typography></div>

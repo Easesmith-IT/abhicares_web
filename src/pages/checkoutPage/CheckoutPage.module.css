@@ -43,7 +43,7 @@
 }
 
 .button {
-    background-color: #6E42E5;
+    background-color: black;
     width: 100%;
     padding: 10px;
     border: none;
@@ -108,9 +108,9 @@
     align-items: center;
     padding-block: 8px;
     gap: 10px;
-    background: #efedff;
-    border: 1px solid #5d17f4;
-    color: #5d17f4;
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
 }
 
 .price {

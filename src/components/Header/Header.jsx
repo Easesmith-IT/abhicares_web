@@ -3,19 +3,26 @@ import { Link } from 'react-router-dom';
 import classes from './Header.module.css'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Logo from '../../assets/MainLogo.png'
 import Logo4 from '../../assets/Logo3.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LoginSignupModal from '../loginSignupModal/LoginSignupModal';
 import { useLocation } from 'react-router';
+import { FaUser } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth)
   const [toggle, setToggle] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const ref = useRef();
+  const userIconRef = useRef();
+
+  const {isUser} = useSelector(state=> state.user);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
@@ -38,12 +45,25 @@ export const Header = () => {
     setToggle(false)
   }
 
-   
+
   const { pathname } = useLocation()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+
+  useEffect(() => {
+    const closeUserModal = (e) => {
+      if (ref.current && !ref.current.contains(e.target) && !userIconRef.current.contains(e.target)) {
+        setIsUserModalOpen(false)
+      }
+    }
+
+    document.addEventListener("click", closeUserModal);
+
+    return () => document.removeEventListener("click", closeUserModal);
+  }, [])
 
 
   return (
@@ -78,9 +98,20 @@ export const Header = () => {
                 <div><KeyboardArrowDownIcon /></div>
               </div>
             </div>
-            <div className={classes['button-container']}>
+            {!isUser && <div className={classes['button-container']}>
               <Button onClick={handleOnclick} variant='outlined'>Login</Button>
-            </div>
+            </div>}
+            {isUser && <div ref={userIconRef} onClick={() => setIsUserModalOpen(!isUserModalOpen)} className={classes.icon_container}>
+              <FaUser size={20} color='#B0B0B0' />
+            </div>}
+            {
+              isUserModalOpen &&
+              <div ref={ref} className={classes.info}>
+                <p>Help Center</p>
+                <p>My Bookings</p>
+                <p>Log out</p>
+              </div>
+            }
           </div>
 
       }

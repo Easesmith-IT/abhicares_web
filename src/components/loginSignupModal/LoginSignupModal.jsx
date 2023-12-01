@@ -1,7 +1,15 @@
 import { AiOutlineClose } from "react-icons/ai";
 import classes from "./LoginSignupModal.module.css";
+import { useDispatch } from "react-redux";
+import { changeUserStatus } from "../../store/slices/userSlice";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
+    const dispatch = useDispatch();
+
+    const handleLogin = ()=>{
+        dispatch(changeUserStatus());
+        handleOnclick();
+    }
 
     return (
         <div className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close}`}>
@@ -18,7 +26,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                         <input className={classes.checkbox} type="checkbox" name="" id="" />
                         <p className={classes.checkbox_p}>Get order updates on Whatsapp</p>
                     </div>
-                    <button className={classes.button}>Proceed</button>
+                    <button onClick={handleLogin} className={classes.button}>Proceed</button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 .modal_overlay {
-    background: #000000be;
+    background: rgba(0, 0, 0, 0.4);
     position: fixed;
     top: 0;
     left: 0;
@@ -18,9 +18,9 @@
     display: none;
 }
 
-.modal_wrapper{
+.modal_wrapper {
     position: relative;
-    max-width: 420px;
+    max-width: 480px;
     width: 100%;
     padding: 0 20px;
 }
@@ -47,12 +47,12 @@
     top: -40px;
 }
 
-.login_signup_p{
+.p {
     font-size: 22px;
     font-weight: 600;
 }
 
-.input_box{
+.input_box {
     max-width: 380px;
     width: 100%;
     height: 45px;
@@ -60,7 +60,7 @@
     margin-block: 30px;
 }
 
-.input{
+.input {
     width: 100%;
     height: 100%;
     padding: 10px 20px;
@@ -69,31 +69,45 @@
     outline: none;
 }
 
-.checkbox_wrapper {
+.button {
+    outline: none;
+    border: none;
+    background: transparent;
     display: flex;
     align-items: center;
+    gap: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.radio_wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 20px;
     margin-top: 40px;
 }
 
-.checkbox {
+.radio {
     accent-color: black;
     width: 16px;
     height: 16px;
 }
 
-.checkbox_p {
-    font-size: 14px;
+.radio_wrapper>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
-.button{
+.button:last-child {
     width: 100%;
-    border: none;
-    outline: none;
     padding: 15px;
     margin-top: 30px;
     border-radius: 6px;
-    background: #000;
+    background: black;
     color: white;
-    cursor: pointer;
+    justify-content: center;
 }

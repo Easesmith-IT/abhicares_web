@@ -11,24 +11,33 @@ import ProductPage from './pages/productPage/ProductPage';
 import CheckoutPage from './pages/checkoutPage/CheckoutPage';
 import RegisterAsAProfessional from './pages/registerAsAProfessional/RegisterAsAProfessional';
 import TermsAndConditions from "./pages/termsAndConditions/TermsAndConditions";
+import { Toaster } from "react-hot-toast";
+
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/aboutUs" element={<AboutUs />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/termsAndConditions" element={<TermsAndConditions />} />
-        <Route path="/privacy&policy" element={<PrivacyPolicy />} />
-        <Route path="/services/:serviceId" element={<ProductPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <>
+      <Provider store={store}>
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/aboutUs" element={<AboutUs />} />
+            <Route path="/contactUs" element={<ContactUs />} />
+            <Route path="/termsAndConditions" element={<TermsAndConditions />} />
+            <Route path="/privacy&policy" element={<PrivacyPolicy />} />
+            <Route path="/services/:serviceId" element={<ProductPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </Provider>
+      <Toaster />
+    </>
   );
 }
 

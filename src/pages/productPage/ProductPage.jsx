@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "./ProductPage.module.css";
 import axios from "axios";
+import parse from "html-react-parser";
 
 import SubService from "../../components/productPage/SubService";
 import Service from "../../components/productPage/Service";
@@ -24,7 +25,6 @@ const ProductPage = () => {
         setIsOpen(!isOpen);
     };
 
-    console.log(params);
 
     const getAllProducts = async () => {
         try {
@@ -67,18 +67,34 @@ const ProductPage = () => {
                     </div>
 
                     <div className={classes.wrapper}>
-                        <Service />
                         <div className={classes.selected_service}>
-                            <h2 className={classes.selected_service_h2}>Bestseller Packages</h2>
-                            <div className={classes.sub_services_container}>
-                                <SubService
-                                    handleOnclick={handleOnclick}
-                                />
-                                <SubService
-                                    handleOnclick={handleOnclick}
-                                />
+                            <div>
+                                <h2 className={classes.selected_service_h2}>Bestseller Packages</h2>
+                                <div className={classes.sub_services_container}>
+                                    <SubService
+                                        handleOnclick={handleOnclick}
+                                    />
+                                    <SubService
+                                        handleOnclick={handleOnclick}
+                                    />
+                                </div>
+                            </div>
+                            <div className={classes.products_cotainer}>
+                                <h2>Products</h2>
+                                {allProducts?.map((product) => (
+                                    <div key={product._id} className={classes.product}>
+                                        <img src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
+                                        <h4>{product.name}</h4>
+                                        <p>{parse(product.description)}</p>
+                                        <div className={classes.price_cotainer}>
+                                        <p className={classes.price}>₹{product.price}</p>
+                                        <p className={classes.price}>₹{product.offerPrice}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
+
                         <div className={classes.sm_cart}>
                             <span className={classes.sm_cart_span}>₹669</span>
                             <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
