@@ -8,8 +8,8 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        changeUserStatus(state) {
-            state.isUser = true;
+        changeUserStatus(state,action) {
+            state.isUser = action.payload;
         },
     },
 })

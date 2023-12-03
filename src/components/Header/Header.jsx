@@ -12,6 +12,7 @@ import LoginSignupModal from '../loginSignupModal/LoginSignupModal';
 import { useLocation } from 'react-router';
 import { FaUser } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import LogoutModal from '../logoutModal/LogoutModal';
 
 
 export const Header = () => {
@@ -19,13 +20,20 @@ export const Header = () => {
   const [toggle, setToggle] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
   const ref = useRef();
   const userIconRef = useRef();
 
-  const {isUser} = useSelector(state=> state.user);
+  const { isUser } = useSelector(state => state.user);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogoutModal = () => {
+    setIsUserModalOpen(false);
+    setIsLogoutModalOpen(true);
   };
 
   useEffect(() => {
@@ -99,7 +107,13 @@ export const Header = () => {
               </div>
             </div>
             {!isUser && <div className={classes['button-container']}>
-              <Button onClick={handleOnclick} variant='outlined'>Login</Button>
+              <Button
+                onClick={handleOnclick}
+                style={{
+                  backgroundColor: "#000",
+                }}
+                variant='contained'
+              >Login</Button>
             </div>}
             {isUser && <div ref={userIconRef} onClick={() => setIsUserModalOpen(!isUserModalOpen)} className={classes.icon_container}>
               <FaUser size={20} color='#B0B0B0' />
@@ -107,9 +121,9 @@ export const Header = () => {
             {
               isUserModalOpen &&
               <div ref={ref} className={classes.info}>
-                <p>Help Center</p>
-                <p>My Bookings</p>
-                <p>Log out</p>
+                <Link onClick={() => setIsUserModalOpen(false)} to={"/help_center"} className={classes.p}>Help Center</Link>
+                <Link onClick={() => setIsUserModalOpen(false)} to={"/my_bookings"} className={classes.p}>My Bookings</Link>
+                <p onClick={handleLogoutModal} className={classes.p}>Log out</p>
               </div>
             }
           </div>
@@ -120,6 +134,11 @@ export const Header = () => {
         isOpen={isOpen}
         handleOnclick={handleOnclick}
       />
+      {isLogoutModalOpen &&
+        <LogoutModal
+          setIsLogoutModalOpen={setIsLogoutModalOpen}
+        />
+      }
     </>
   )
 }

@@ -15,6 +15,8 @@ import { Toaster } from "react-hot-toast";
 
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import HelpCenter from "./pages/HelpCenter";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
             <Route path="/services/:serviceId" element={<ProductPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
+            <Route path="/help_center" element={<HelpCenter />} />
+            <Route path="/my_bookings" element={<MyBookings />} />
           </Routes>
           <Footer />
         </Router>

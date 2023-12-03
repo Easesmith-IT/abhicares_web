@@ -138,20 +138,22 @@
     width: 130px;
     border-radius: 6px;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    padding: 10px 20px;
     position: absolute;
     right: 10px;
     top: 80px;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
 }
 
-.info p{
+.info .p{
     cursor: pointer;
     padding: 6px;
     border-radius: 4px;
 }
 
-.info p:hover{
+.info .p:hover{
     background: #f1f1f1;
 }
 

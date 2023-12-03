@@ -7,7 +7,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     const dispatch = useDispatch();
 
     const handleLogin = ()=>{
-        dispatch(changeUserStatus());
+        dispatch(changeUserStatus(true));
         handleOnclick();
     }
 
