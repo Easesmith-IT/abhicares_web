@@ -8,13 +8,17 @@ import { BsStarFill } from "react-icons/bs";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import parse from "html-react-parser";
 
 import Faqs from "./Faqs";
 import CustomerReview from "./CustomerReview";
 import SpecificStarRating from "./SpecificStarRating";
 import HowItWorks from "./HowItWorks";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const Modal = ({isOpen,handleOnclick}) => {
+const Modal = ({ isOpen, handleOnclick, Data, }) => {
+    const [allProducts, setAllProducts] = useState([]);
 
     const responsive = {
         superLargeDesktop: {
@@ -44,6 +48,21 @@ const Modal = ({isOpen,handleOnclick}) => {
         );
     };
 
+    const getAllProducts = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
+            console.log(data);
+            // setAllProducts(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getAllProducts();
+    }, [])
+
+
     return (
         <div className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close}`}>
             <div className={classes.modal_wrapper}>
@@ -52,31 +71,36 @@ const Modal = ({isOpen,handleOnclick}) => {
                 </button>
                 <div className={classes.modal_wrapper_overflow}>
                     <div className={classes.modal}>
-                        <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
-                            <img className={classes.carousel_img} src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_template,q_auto:low,f_auto/w_520,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1682674566217-2c8752.jpeg" alt="" />
-                            <img className={classes.carousel_img} src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_template,q_auto:low,f_auto/w_520,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1682674566217-2c8752.jpeg" alt="" />
-                        </Carousel>
+                        {Data.imageUrl && <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
+                            {Data?.imageUrl?.map((image) => (
+                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_DOMAIN}/uploads/${image}`} alt="" />
+                            ))}
+                        </Carousel>}
                         <div className={classes.modal_body}>
                             <div className={classes.border_bottom}>
                                 <div className={classes.modal_header}>
                                     <div className={classes.modal_header_left}>
-                                        <h4 className={classes.modal_header_left_h4}>Deep clean AC service (split)</h4>
+                                        <h4 className={classes.modal_header_left_h4}>{Data.name}</h4>
                                         <div className={classes.rating}>
                                             <BsStarFill color="gray" size={11} />
                                             <span className={classes.rating_span}>4.83 (1.2M)</span>
                                         </div>
                                         <div className={classes.price_time_container}>
-                                            <div className={classes.price}>₹669</div>
-                                            <div className={classes.dot_time_container}>
+                                            <div className={classes.price_cotainer}>
+                                                <span className={classes.price}>₹{Data.price}</span>
+                                                <span className={classes.price}>₹{Data.offerPrice}</span>
+                                            </div>
+                                            {/* <div className={classes.dot_time_container}>
                                                 <div className={classes.dot}></div>
                                                 <span className={classes.time}>45 mins</span>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div className={classes.modal_header_right}>
                                         <button className={classes.button}>Add</button>
                                     </div>
                                 </div>
+                                {Data?.description && <p>{parse(Data?.description)}</p>}
                                 <div className={classes.box}>
                                     <div className={classes.box_left}>
                                         <img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_94,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/customer-subscription/1693221423328-595820.jpeg" alt="" />
@@ -84,6 +108,21 @@ const Modal = ({isOpen,handleOnclick}) => {
                                     </div>
                                     <FiChevronRight size={23} />
                                 </div>
+                            </div>
+
+                            <div className={classes.products_cotainer}>
+                                <h2>Products</h2>
+                                {allProducts?.map((product) => (
+                                    <div key={product._id} className={classes.product}>
+                                        <img onClick={() => handleOnclick(product)} src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
+                                        <h4>{product.name}</h4>
+                                        <p>{parse(product.description)}</p>
+                                        <div className={classes.price_cotainer}>
+                                            <p className={classes.price}>₹{product.price}</p>
+                                            <p className={classes.price}>₹{product.offerPrice}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
 
                             <div className={classes.border_bottom}>

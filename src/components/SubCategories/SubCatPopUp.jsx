@@ -8,7 +8,7 @@ import { Slide } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import men from '../../assets/men.png'
+import loader from '../../assets/rolling.gif'
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
     console.log(category);
@@ -54,9 +54,13 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                     <Box>
                         <div className={classes['container']}>
                             <div className={classes['sub-category']}>
-                                <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div>
+                                {/* <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div> */}
                                 <Grid container spacing={2}>
-
+                                    {allServices.length === 0 &&
+                                        <div className={classes.img_container}>
+                                            <img src={loader} alt="loader" />
+                                        </div>
+                                    }
                                     {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>

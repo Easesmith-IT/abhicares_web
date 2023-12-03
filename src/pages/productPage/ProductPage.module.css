@@ -255,6 +255,7 @@
     height: 190px;
     object-fit: contain;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .price_cotainer{
@@ -263,10 +264,16 @@
     margin-top: 10px;
 }
 
+.price_time_container .price:first-child,
 .product .price:first-child{
     font-size: 14px;
     text-decoration: line-through;
     color: gray;
+}
+
+.price_time_container .price:last-child,
+.product .price:last-child{
+    font-size: 16px;
 }
 
 

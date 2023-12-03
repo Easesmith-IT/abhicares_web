@@ -39,7 +39,7 @@ export const SpaForMen = ()=>{
       };
     return(
          <div className={classes['Card']}>
-            <div className={classes['heading']}><Typography variant='h4'>Salon for Kids & Men</Typography><Button onClick={()=>navigate("/product")} variant='outlined'>See All</Button></div>
+            <div className={classes['heading']}><Typography variant='h4'>Salon for Kids & Men</Typography><Button onClick={()=>navigate("/product")} style={{backgroundColor: "#000"}} variant='contained'>See All</Button></div>
             <Carousel
                 removeArrowOnDeviceType={["tablet", "mobile"]}
                 swipeable={true}

@@ -15,13 +15,16 @@ import { FiChevronDown } from "react-icons/fi";
 
 
 const ProductPage = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
+    const [allPackages, setAllPackages] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [product, setProduct] = useState({});
 
     const navigate = useNavigate();
     const params = useParams();
 
-    const handleOnclick = async () => {
+    const handleOnclick = async (product) => {
+        setProduct(product);
         setIsOpen(!isOpen);
     };
 
@@ -29,8 +32,16 @@ const ProductPage = () => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-product/${params.serviceId}`);
-            console.log(data);
             setAllProducts(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getAllPackages = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-service-package/${params?.serviceId}`);
+            setAllPackages(data.data);
         } catch (error) {
             console.log(error);
         }
@@ -38,6 +49,7 @@ const ProductPage = () => {
 
     useEffect(() => {
         getAllProducts();
+        getAllPackages();
     }, [])
 
     return (
@@ -71,24 +83,25 @@ const ProductPage = () => {
                             <div>
                                 <h2 className={classes.selected_service_h2}>Bestseller Packages</h2>
                                 <div className={classes.sub_services_container}>
-                                    <SubService
-                                        handleOnclick={handleOnclick}
-                                    />
-                                    <SubService
-                                        handleOnclick={handleOnclick}
-                                    />
+                                    {allPackages?.map((singlePackage) => (
+                                        <SubService
+                                            key={singlePackage._id}
+                                            singlePackage={singlePackage}
+                                            serviceId={params?.serviceId}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                             <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
                                 {allProducts?.map((product) => (
                                     <div key={product._id} className={classes.product}>
-                                        <img src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
+                                        <img onClick={() => handleOnclick(product)} src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
                                         <h4>{product.name}</h4>
                                         <p>{parse(product.description)}</p>
                                         <div className={classes.price_cotainer}>
-                                        <p className={classes.price}>₹{product.price}</p>
-                                        <p className={classes.price}>₹{product.offerPrice}</p>
+                                            <p className={classes.price}>₹{product.price}</p>
+                                            <p className={classes.price}>₹{product.offerPrice}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -131,10 +144,11 @@ const ProductPage = () => {
                     </div>
                 </div>
             </section>
-            <Modal
+            {isOpen && <Modal
                 isOpen={isOpen}
                 handleOnclick={handleOnclick}
-            />
+                Data={product}
+            />}
         </>
     );
 };
