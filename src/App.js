@@ -16,7 +16,7 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import HelpCenter from "./pages/HelpCenter";
-import MyBookings from "./pages/MyBookings";
+import MyBookings from "./pages/myBookings/MyBookings";
 
 function App() {
 

@@ -201,6 +201,11 @@
     color: gray;
 }
 
+.d_flex{
+    display: flex;
+    justify-content: space-between;
+}
+
 .button {
     display: flex;
     align-items: center;

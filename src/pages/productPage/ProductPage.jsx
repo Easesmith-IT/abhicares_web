@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "./ProductPage.module.css";
 import axios from "axios";
-import parse from "html-react-parser";
 
 import SubService from "../../components/productPage/SubService";
 import Service from "../../components/productPage/Service";
@@ -12,21 +11,20 @@ import CartItem from "../../components/checkout/CartItem";
 import { BsStarFill } from "react-icons/bs";
 import { AiOutlinePercentage } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartDetails } from "../../store/slices/cartSlice";
+import Product from "../../components/Product";
 
 
 const ProductPage = () => {
     const [allProducts, setAllProducts] = useState([]);
     const [allPackages, setAllPackages] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [product, setProduct] = useState({});
 
+    const cart = useSelector(state => state.cart);
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
-
-    const handleOnclick = async (product) => {
-        setProduct(product);
-        setIsOpen(!isOpen);
-    };
 
 
     const getAllProducts = async () => {
@@ -50,6 +48,9 @@ const ProductPage = () => {
     useEffect(() => {
         getAllProducts();
         getAllPackages();
+        (async () => {
+            await dispatch(getCartDetails());
+        })()
     }, [])
 
     return (
@@ -95,15 +96,9 @@ const ProductPage = () => {
                             <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
                                 {allProducts?.map((product) => (
-                                    <div key={product._id} className={classes.product}>
-                                        <img onClick={() => handleOnclick(product)} src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
-                                        <h4>{product.name}</h4>
-                                        <p>{parse(product.description)}</p>
-                                        <div className={classes.price_cotainer}>
-                                            <p className={classes.price}>₹{product.price}</p>
-                                            <p className={classes.price}>₹{product.offerPrice}</p>
-                                        </div>
-                                    </div>
+                                    <Product
+                                        product={product}
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -116,12 +111,18 @@ const ProductPage = () => {
                         </div>
                         <div className={`${classes.right_section} ${classes.max_lg_hidden}`}>
                             <div className={classes.cart_detail_box}>
-                                <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
-                                    <span>₹669</span>
+                                {cart?.items?.length !== 0 && <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
+                                    <span>₹{cart.totalPrice}</span>
                                     <span>View Cart</span>
-                                </button>
-                                <CartItem />
-                                <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button>
+                                </button>}
+                                {cart?.items?.map((item) => (
+                                    <CartItem
+                                        key={item._id}
+                                        item={item}
+                                    />
+                                ))}
+                                {cart?.items?.length === 0 && <p>No items in your cart</p>}
+                                {/* <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button> */}
                             </div>
                             <div className={classes.offer_container}>
                                 <div className={classes.offer}>
@@ -144,11 +145,6 @@ const ProductPage = () => {
                     </div>
                 </div>
             </section>
-            {isOpen && <Modal
-                isOpen={isOpen}
-                handleOnclick={handleOnclick}
-                Data={product}
-            />}
         </>
     );
 };
