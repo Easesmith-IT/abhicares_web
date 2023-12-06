@@ -64,6 +64,8 @@ const CheckoutPage = () => {
         setIsOpen(!isOpen);
     };
 
+    console.log('cart==',cart)
+
     return (
         <>
             <div>

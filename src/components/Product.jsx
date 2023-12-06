@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import classes from '../pages/productPage/ProductPage.module.css'
 import parse from "html-react-parser";
 import Modal from './productInfoModal/Modal';
-import { addItemToCart, getCartDetails } from '../store/slices/cartSlice';
+import {
+  addItemToCart,
+  getCartDetails,
+  updateQty,
+} from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 
@@ -49,13 +53,20 @@ const Product = ({ product }) => {
 
     const handleOnPlusClick = async () => {
         let updatedQuantity = productInCart.quantity + 1;
-        await dispatch(addItemToCart({ id: productInCart.product._id, updatedQuantity }))
+        await dispatch(
+          updateQty({ id: productInCart.product._id, quantity:updatedQuantity })
+        );
         await dispatch(getCartDetails());
     }
 
     const handleOnMinusClick = async () => {
         let updatedQuantity = productInCart.quantity - 1;
-        await dispatch(addItemToCart({ id: productInCart.product._id, updatedQuantity }))
+        await dispatch(
+          updateQty({
+            id: productInCart.product._id,
+            quantity: updatedQuantity,
+          })
+        );
         await dispatch(getCartDetails());
     }
 

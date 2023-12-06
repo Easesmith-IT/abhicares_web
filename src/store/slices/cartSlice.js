@@ -54,6 +54,28 @@ export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => 
     }
 })
 
+export const updateQty = createAsyncThunk(
+  "/cart/update-item-quantity",
+  async (data) => {
+    try {
+      const res = axios.post(
+        `${process.env.REACT_APP_API_URL}/update-item-quantity/${data.id}`,
+        {
+          quantity: data.quantity,
+        },
+        { withCredentials: true }
+      );
+
+      const response = await res;
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (data) => {
     console.log(data);
     try {
