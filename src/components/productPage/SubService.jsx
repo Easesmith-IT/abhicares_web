@@ -12,7 +12,6 @@ const SubService = ({ singlePackage, serviceId }) => {
         setIsOpen(!isOpen);
     };
 
-    console.log(singlePackage);
 
     return (
         <>

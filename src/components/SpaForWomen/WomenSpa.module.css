@@ -27,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   border:1px solid rgb(237, 237, 237);
-  box-shadow: 1px 1px 4px 1px #B0B0B0;
+  /* box-shadow: 1px 1px 4px 1px #B0B0B0; */
   border-radius: 8px;
   margin-right: 8px;
   margin-left: 8px;

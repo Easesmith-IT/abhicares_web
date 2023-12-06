@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import classes from "./CheckoutPage.module.css";
 
@@ -12,11 +12,22 @@ import Carousel from "react-multi-carousel";
 import CartItem from "../../components/checkout/CartItem";
 import FrequentlyAddedItems from "../../components/checkout/FrequentlyAddedItems";
 import LoginSignupModal from "../../components/loginSignupModal/LoginSignupModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddressModal from "../../components/addressModal/AddressModal";
+import { getCartDetails } from "../../store/slices/cartSlice";
 
 const CheckoutPage = () => {
     const { isUser } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        (async () => {
+            await dispatch(getCartDetails());
+        })()
+    }, [])
+
+    const cart = useSelector(state => state.cart);
+    console.log(cart);
 
     const responsive = {
         superLargeDesktop: {
@@ -72,14 +83,19 @@ const CheckoutPage = () => {
                             </>
                         }
                         {isUser &&
-                            <button onClick={()=> setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
+                            <button onClick={() => setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
                         }
                     </div>
 
                     <div className={classes.cart_checkout_container}>
                         <div className={classes.cart}>
                             <div className={classes.cart_items_container}>
-                                <CartItem />
+                                {cart?.items?.map((item) => (
+                                    <CartItem
+                                        key={item._id}
+                                        item={item}
+                                    />
+                                ))}
                             </div>
                             <div className={classes.frequently_added}>
                                 <h4 className={classes.frequently_added_heading}>Frequently added together</h4>
@@ -124,7 +140,7 @@ const CheckoutPage = () => {
                                 Amount to pay
                             </h4>
                             <div>
-                                <p className={classes.amount_to_pay}>₹358</p>
+                                <p className={classes.amount_to_pay}>₹{cart.totalPrice}</p>
                                 <button className={classes.view_break_up_button}>View breakup</button>
                             </div>
                         </div>

@@ -16,9 +16,15 @@ import SpecificStarRating from "./SpecificStarRating";
 import HowItWorks from "./HowItWorks";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { addItemToCart, createCart, getCartDetails } from "../../store/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Product from "../Product";
 
 const Modal = ({ isOpen, handleOnclick, Data, }) => {
     const [allProducts, setAllProducts] = useState([]);
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart)
+    const [isProductInCart, setIsProductInCart] = useState(false);
 
     const responsive = {
         superLargeDesktop: {
@@ -51,16 +57,54 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
-            console.log(data);
-            // setAllProducts(data.data);
+            console.log(data.data[0].productObjects);
+            setAllProducts(data.data[0].productObjects);
         } catch (error) {
             console.log(error);
         }
     };
 
+
     useEffect(() => {
         getAllProducts();
+        (async () => {
+            await dispatch(getCartDetails());
+        })()
+        const filtered = cart.items.find((item) => item.productId === Data._id)
+        setIsProductInCart(filtered)
     }, [])
+
+
+    const handleAddToCart = async () => {
+        if (!cart.isCart) {
+            await dispatch(createCart(
+                "656967d8f6f027570817cdef",
+                [
+                    {
+                        productId: Data._id,
+                        quantity: 1
+                    },
+                ],
+                Data.price
+            ));
+
+            await dispatch(getCartDetails());
+        }
+        else {
+            const filtered = cart.items.find((item) => item.productId === Data._id)
+            console.log(filtered);
+            if (filtered) {
+                let updatedQuantity = filtered.quantity + 1;
+                await dispatch(addItemToCart(Data._id, updatedQuantity))
+                await dispatch(getCartDetails());
+            }
+            else {
+                await dispatch(addItemToCart(Data._id, 1))
+                await dispatch(getCartDetails());
+            }
+        }
+    }
+
 
 
     return (
@@ -97,7 +141,7 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
                                         </div>
                                     </div>
                                     <div className={classes.modal_header_right}>
-                                        <button className={classes.button}>Add</button>
+                                        {/* {!isProductInCart && <button onClick={handleAddToCart} className={classes.button}>Add</button>} */}
                                     </div>
                                 </div>
                                 {Data?.description && <p>{parse(Data?.description)}</p>}
@@ -110,20 +154,15 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
                                 </div>
                             </div>
 
-                            <div className={classes.products_cotainer}>
+                            {allProducts.length !== 0 && <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
                                 {allProducts?.map((product) => (
-                                    <div key={product._id} className={classes.product}>
-                                        <img onClick={() => handleOnclick(product)} src={`${process.env.REACT_APP_DOMAIN}/uploads/${product.imageUrl[0]}`} alt="product" />
-                                        <h4>{product.name}</h4>
-                                        <p>{parse(product.description)}</p>
-                                        <div className={classes.price_cotainer}>
-                                            <p className={classes.price}>₹{product.price}</p>
-                                            <p className={classes.price}>₹{product.offerPrice}</p>
-                                        </div>
-                                    </div>
+                                    <Product
+                                        key={product._id}
+                                        product={product}
+                                    />
                                 ))}
-                            </div>
+                            </div>}
 
                             <div className={classes.border_bottom}>
                                 <img className={classes.uc_cover_img} src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_template,q_auto:low,f_auto/w_1232,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1682683348153-32c1cf.jpeg" alt="" />

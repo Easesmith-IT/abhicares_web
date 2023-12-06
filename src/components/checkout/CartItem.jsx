@@ -1,24 +1,48 @@
 import { BiMinus, BiPlus } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 
 import classes from "../../pages/checkoutPage/CheckoutPage.module.css";
+import { addItemToCart, deleteItemFromCart, getCartDetails } from "../../store/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const CartItem = () => {
+const CartItem = ({ item }) => {
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart);
+
+    const handleOnPlusClick = async () => {
+        let updatedQuantity = item.quantity + 1;
+        await dispatch(addItemToCart({ id: item.product._id, updatedQuantity }))
+        await dispatch(getCartDetails());
+    }
+
+    const handleOnMinusClick = async () => {
+        let updatedQuantity = item.quantity - 1;
+        await dispatch(addItemToCart({ id: item.product._id, updatedQuantity }))
+        await dispatch(getCartDetails());
+    }
+
+    const handleCartItemDelete = async () => {
+        await dispatch(deleteItemFromCart({ itemId: item.product._id }));
+        await dispatch(getCartDetails());
+    }
+
     return (
         <div className={classes.cart_item}>
             <div className={classes.cart_item_left}>
-                <p className={classes.p}>AC repair (split/window)</p>
-                <ul className={classes.list_container}>
+                <p className={classes.p}>{item.product.name}</p>
+                {/* <ul className={classes.list_container}>
                     <li className={classes.list_item}>Less/ no cooling x1</li>
                     <li className={classes.list_item}>Less/ no cooling x1</li>
-                </ul>
+                </ul> */}
             </div>
             <div className={classes.cart_item_right}>
                 <button className={classes.button}>
-                    <BiMinus size={20} />
-                    <span className={classes.quantity}>1</span>
-                    <BiPlus size={20} />
+                    <BiMinus size={20} onClick={handleOnMinusClick} />
+                    <span className={classes.quantity}>{item?.quantity}</span>
+                    <BiPlus size={20} onClick={handleOnPlusClick} />
                 </button>
-                <span className={classes.price}>₹299</span>
+                <MdDelete size={20} onClick={handleCartItemDelete} />
+                <span className={classes.price}>₹{item.itemPrice}</span>
             </div>
         </div>
     );
