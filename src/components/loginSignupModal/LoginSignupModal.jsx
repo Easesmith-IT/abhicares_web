@@ -1,40 +1,83 @@
-import { AiOutlineClose } from "react-icons/ai";
-import classes from "./LoginSignupModal.module.css";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeUserStatus } from "../../store/slices/userSlice";
+import classes from "./LoginSignupModal.module.css";
 import axios from "axios";
-import { useState } from "react";
+
+import { AiOutlineClose } from "react-icons/ai";
+
+import loader from "../../assets/rolling-white.gif";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     const dispatch = useDispatch();
-    const [isLogin, setIsLogin] = useState(true)
-    const [phone, setPhone] = useState("");
-    const [otp, setOtp] = useState("");
 
-    const handleLogin = async () => {
-        if (!phone) {
+    const [loginSignupInfo, setLoginSignupInfo] = useState({
+        name: "",
+        phone: "",
+    })
+
+    const [otp, setOtp] = useState("");
+    const [isLogin, setIsLogin] = useState(true)
+    const [isOtp, setIsOtp] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const handleOnChange = (e) => {
+        const { name, value } = e.target;
+        setLoginSignupInfo({ ...loginSignupInfo, [name]: value })
+    }
+
+    const handleSignUp = async () => {
+        if (!loginSignupInfo.phone
+            || !loginSignupInfo.name
+        ) {
             return;
         }
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/generate-otp`, { phoneNumber:phone },{withCredentials:true});
+            setIsLoading(true);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-user  `, { ...loginSignupInfo }, { withCredentials: true });
+            setIsLoading(false);
             console.log(data);
-            setIsLogin(false);
+            setLoginSignupInfo({});
+            setIsOtp(true);
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
         }
     }
-    
+
+    const handleLogin = async () => {
+        if (!loginSignupInfo.phone) {
+            return;
+        }
+        try {
+            setIsLoading(true);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/generate-otp`, { phoneNumber: loginSignupInfo.phone }, { withCredentials: true });
+            setIsLoading(false);
+            setIsOtp(true);
+            setLoginSignupInfo({});
+            console.log(data);
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    }
+
     const handleOtpVerification = async () => {
         if (!otp) {
             return;
         }
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/verify-otp`,{otp},{withCredentials:true});
+            setIsLoading(true);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/verify-otp`, { enteredOTP: otp }, { withCredentials: true });
             dispatch(changeUserStatus(true));
             handleOnclick();
             console.log(data);
-            setIsLogin(false);
+            setIsLoading(false);
+            setIsOtp(false);
+            setOtp("");
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
         }
     }
@@ -46,29 +89,64 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     <AiOutlineClose size={20} />
                 </button>
                 <div className={classes.modal}>
-                    {isLogin ?
+                    {!isOtp && (isLogin ?
                         <>
-                            <p className={classes.login_signup_p}>Login/Sign up</p>
+                            <p className={classes.login_signup_p}>Login</p>
                             <div className={classes.input_box}>
-                                <input onChange={(e) => setPhone(e.target.value)} value={phone} className={classes.input} type="text" placeholder="Enter mobile number" />
+                                <input onChange={handleOnChange} value={loginSignupInfo.phone} className={classes.input} name="phone" id="phone" type="text" placeholder="Enter mobile number" />
                             </div>
-                            <div className={classes.checkbox_wrapper}>
-                                <input className={classes.checkbox} type="checkbox" name="" id="" />
-                                <p className={classes.checkbox_p}>Get order updates on Whatsapp</p>
-                            </div>
-                            <button onClick={handleLogin} className={classes.button}>Proceed</button>
+                            <p className={classes.p}>
+                                New user?
+                                <button onClick={() => setIsLogin(!isLogin)}>Sign up</button>
+                            </p>
+                            <button onClick={handleLogin} className={classes.button}>
+                                {!isLoading && <span>Proceed</span>}
+                                {isLoading && <span>
+                                    <img className={classes.img} src={loader} alt="loader" />
+                                    Processing...
+                                </span>}
+                            </button>
                         </>
                         : <>
+                            <p className={classes.login_signup_p}>Sign up</p>
+                            <div className={classes.input_box}>
+                                <input onChange={handleOnChange} value={loginSignupInfo.name} className={classes.input} type="text" name="name" id="name" placeholder="Enter name" />
+                            </div>
+                            <div className={classes.input_box}>
+                                <input onChange={handleOnChange} value={loginSignupInfo.phone} className={classes.input} type="text" name="phone" id="phone" placeholder="Enter mobile number" />
+                            </div>
+                            <p className={classes.p}>
+                                Already account?
+                                <button onClick={() => setIsLogin(!isLogin)}>Login</button>
+                            </p>
+                            <button onClick={handleSignUp} className={classes.button}>
+                                {!isLoading && <span>Proceed</span>}
+                                {isLoading && <span>
+                                    <img className={classes.img} src={loader} alt="loader" />
+                                    Processing...
+                                </span>}
+                            </button>
+                        </>)
+                    }
+
+                    {isOtp &&
+                        <>
                             <p className={classes.login_signup_p}>Verify Otp</p>
                             <div className={classes.input_box}>
                                 <input onChange={(e) => setOtp(e.target.value)} value={otp} className={classes.input} type="text" placeholder="Enter Otp" />
                             </div>
-                            <button onClick={handleOtpVerification} className={classes.button}>Proceed</button>
+                            <button onClick={handleOtpVerification} className={classes.button}>
+                                {!isLoading && <span>Proceed</span>}
+                                {isLoading && <span>
+                                    <img className={classes.img} src={loader} alt="loader" />
+                                    Processing...
+                                </span>}
+                            </button>
                         </>
                     }
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

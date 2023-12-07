@@ -3,13 +3,21 @@ import classes from './LogoutModal.module.css'
 
 import { MdOutlineWarning } from "react-icons/md";
 import { changeUserStatus } from '../../store/slices/userSlice';
+import axios from 'axios';
 
 function LogoutModal({ setIsLogoutModalOpen }) {
     const dispatch = useDispatch();
-    const handleLogout = ()=>{
-        dispatch(changeUserStatus(false));
-        setIsLogoutModalOpen(false);
+
+    const handleLogout = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
+            dispatch(changeUserStatus(false));
+            setIsLogoutModalOpen(false);
+        } catch (error) {
+            console.log(error);
+        }
     }
+    
     return (
         <div className={classes.modal_wrapper}>
             <div className={classes.modal}>

@@ -10,7 +10,12 @@ const userSlice = createSlice({
     reducers: {
         changeUserStatus(state,action) {
             state.isUser = action?.payload;
-            localStorage.setItem("user",action?.payload)
+            if (action?.payload) {
+                localStorage.setItem("user",action?.payload);
+            }
+            else{
+                localStorage.removeItem("user");
+            }
         },
     },
 })

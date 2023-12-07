@@ -204,6 +204,8 @@
 .d_flex{
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    margin-top: 10px;
 }
 
 .button {
@@ -250,14 +252,20 @@
 }
 
 .product{
-    max-width: 340px;
-    padding: 20px;
+    /* max-width: 340px; */
+    padding: 20px 0;
     border-bottom: 1px solid #dcdcdc;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.product > div{
+    width: 40%;
 }
 
 .product img {
-    width: 100%;
-    height: 190px;
+    width: 53%;
     object-fit: contain;
     margin-bottom: 10px;
     cursor: pointer;
