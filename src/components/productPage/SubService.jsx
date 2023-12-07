@@ -41,11 +41,12 @@ const SubService = ({ singlePackage, serviceId }) => {
                         </p>
                     </div>
                     <div>
-                        <button className={classes.button}>
+                        {/* <button className={classes.button}>
                             <BiMinus cursor="pointer" />
                             <span>1</span>
                             <BiPlus cursor="pointer" />
-                        </button>
+                        </button> */}
+                        <button className={classes.button}>Add</button>
                     </div>
                 </div>
                 <div className={classes.dashed_underline}></div>

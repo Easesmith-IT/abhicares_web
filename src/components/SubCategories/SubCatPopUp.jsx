@@ -65,7 +65,7 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
                                                 <div onClick={() => navigate(`/services/${service._id}`)} className={classes['category-cards']} >
-                                                    <div className={classes['image-Box']}><img src={`${process.env.REACT_APP_DOMAIN}/uploads/${service.imageUrl}`} alt="img" /></div>
+                                                    <div className={classes['image-Box']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>
                                             </Grid>
