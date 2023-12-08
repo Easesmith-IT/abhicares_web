@@ -74,7 +74,8 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
             setIsLoading(true);
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/verify-otp`, { enteredOTP: otp }, { withCredentials: true });
             console.log("verify otp", data);
-            dispatch(changeUserStatus({ status: true, userId: data.data }));
+            localStorage.setItem("userId", data.data);
+            // dispatch(changeUserStatus({ status: true, userId: data.data }));
             dispatch(getCartDetails())
             handleOnclick();
 

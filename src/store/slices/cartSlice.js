@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const initialState = {
-    userId: "656967d8f6f027570817cdef",
+    userId: "",
     items: [],
     totalPrice: 0,
     isCart: false,

@@ -24,7 +24,8 @@ import { useNavigate } from "react-router-dom";
 const CheckoutPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isUser, userId } = useSelector(state => state.user);
+    // const { isUser, userId } = useSelector(state => state.user);
+    const userId = localStorage.getItem('userId')
 
     const [address, setAddress] = useState("");
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -76,9 +77,11 @@ const CheckoutPage = () => {
 
     const handleOrder = async () => {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order/`, { userId, userAddressId: address._id }, { withCredentials: true });
-            setIsSuccessModalOpen(true);
+            console.log('addddress',address)
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userId, userAddressId: address._id }, { withCredentials: true });
             console.log(data);
+            setIsSuccessModalOpen(true);
+            
         } catch (error) {
             console.log(error);
         }
@@ -96,14 +99,14 @@ const CheckoutPage = () => {
 
                 <div className={`${classes.container} ${classes.checkout_container}`}>
                     <div className={classes.login_button_container}>
-                        {!isUser &&
+                        {!userId &&
                             <>
                                 <p className={classes.heading}>Account</p>
                                 <p className={classes.p}>To book the service, please login or sign up</p>
                                 <button onClick={handleOnclick} className={classes.button}>Login</button>
                             </>
                         }
-                        {isUser &&
+                        {userId &&
                             <button onClick={() => setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
                         }
                         {address &&

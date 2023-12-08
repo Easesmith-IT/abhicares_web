@@ -28,7 +28,6 @@ const Product = ({ product }) => {
     }, [])
 
     const cart = useSelector(state => state.cart)
-    const { isUser } = useSelector(state => state.user)
 
     useEffect(() => {
         const filtered = cart?.items?.find((item) => item?.product?._id === product._id);

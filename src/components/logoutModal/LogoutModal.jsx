@@ -12,7 +12,8 @@ function LogoutModal({ setIsLogoutModalOpen }) {
     const handleLogout = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
-            dispatch(changeUserStatus({ status: false, userId: null }));
+            localStorage.removeItem('userId');
+            // dispatch(changeUserStatus({ status: false, userId: null }));
             dispatch(getCartDetails())
             setIsLogoutModalOpen(false);
         } catch (error) {
