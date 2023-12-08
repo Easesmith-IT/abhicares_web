@@ -10,10 +10,11 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Address from "./Address";
 
-const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
+const AddressModal = ({ isOpen, setIsAddressModalOpen, setAddress = () => { } }) => {
     const user = useSelector(state => state.user);
     const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
     const [allAddress, setAllAddress] = useState([]);
+    const [temporaryAddress, setTemporaryAddress   ] = useState({});
 
     const getAllAddress = async () => {
         try {
@@ -31,6 +32,11 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
     useEffect(() => {
         getAllAddress();
     }, [])
+
+    const handleOnClick = ()=>{
+        setAddress(temporaryAddress);
+        setIsAddressModalOpen(false);
+    }
 
 
     return (
@@ -52,11 +58,12 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
                                     key={data._id}
                                     data={data}
                                     getAllAddress={getAllAddress}
+                                    setTemporaryAddress={setTemporaryAddress}
                                 />
                             ))}
                         </div>
 
-                        <button className={classes.button}>Proceed</button>
+                        <button onClick={handleOnClick} className={classes.button}>Proceed</button>
                     </div>
                 </div>
             </div>

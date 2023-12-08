@@ -2,8 +2,9 @@ import { useState } from 'react';
 import classes from './Order.module.css'
 import OrderInfoModal from '../orderInfoModal/OrderInfoModal';
 
-const Order = () => {
+const Order = ({ order }) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    console.log(order);
 
     const handleOnclick = () => {
         setIsInfoModalOpen(true);
@@ -16,7 +17,7 @@ const Order = () => {
                     <div className={classes.info}>
                         <h3>Order1</h3>
                         <p>products</p>
-                        <p>05/12/2023</p>
+                        <p>{}</p>
                         <p>Qty: 1</p>
                     </div>
                 </div>

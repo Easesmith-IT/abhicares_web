@@ -1,14 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './MyBookings.module.css';
 import OrderInfoModal from '../../components/orderInfoModal/OrderInfoModal';
 import Order from '../../components/order/Order';
+import axios from 'axios';
 
 const MyBookings = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [allOrders, setAllOrders] = useState([]);
+  const userId = localStorage.getItem("userId");
 
-  const handleOnclick = () => {
-    setIsInfoModalOpen(true);
+  const getAllOrders = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders/${userId}`, { withCredentials: true });
+      setAllOrders(data.data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(() => {
+    getAllOrders();
+  }, [])
+
+
 
   return (
     <>
@@ -46,10 +61,12 @@ const MyBookings = () => {
           </tbody>
         </table> */}
         <div className={classes.bookings_container}>
-          <Order />
-          <Order />
-          <Order />
-          <Order />
+          {allOrders?.map((order) => (
+            <Order
+              key={order._id}
+              order={order}
+            />
+          ))}
         </div>
       </section>
       {isInfoModalOpen &&

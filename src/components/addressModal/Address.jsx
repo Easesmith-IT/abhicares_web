@@ -6,7 +6,7 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const Address = ({ data, getAllAddress }) => {
+const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
@@ -21,15 +21,22 @@ const Address = ({ data, getAllAddress }) => {
     }
   }
 
+  const handleOnChange = (e) => {
+    console.log(e.target.value);
+    setTemporaryAddress(data);
+  }
+
   return (
     <>
       <div className={classes.radio_wrapper}>
         <div>
           <input
+            onChange={handleOnChange}
             className={classes.radio}
             type="radio"
             name="radio"
             id="radio"
+            value={data.addressLine}
           />
           <div>
             <h4>{data.mobile}</h4>
