@@ -8,6 +8,7 @@ import { Slide } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "../loader/Loader";
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
     const theme = useTheme();
@@ -16,6 +17,7 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
     const navigate = useNavigate();
 
     const [allServices, setAllServices] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleClose = () => {
         onClose();
@@ -29,6 +31,9 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
             setAllServices(data.data);
         } catch (error) {
             console.log(error);
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -54,11 +59,20 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                             <div className={classes['sub-category']}>
                                 {/* <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div> */}
                                 <Grid container spacing={2}>
-                                    {allServices.length === 0 && <p>No service found</p>}
+                                    {!isLoading
+                                        && allServices.length === 0
+                                        && <p>No service found</p>
+                                    }
+
+                                    {isLoading
+                                        && allServices.length === 0
+                                        && <Loader />
+                                    }
+
                                     {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
-                                                <div onClick={() => navigate(`/services/${service._id}`,{state:service.name})} className={classes['category-cards']} >
+                                                <div onClick={() => navigate(`/services/${service._id}`, { state: service.name })} className={classes['category-cards']} >
                                                     <div className={classes['image-Box']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>

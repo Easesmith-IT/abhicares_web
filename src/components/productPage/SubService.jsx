@@ -63,6 +63,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                 <button onClick={handleOnclick} className={classes.package_button}>View details</button>
             </div>
             {isOpen && <Modal
+            isProduct={false}
                 isOpen={isOpen}
                 handleOnclick={handleOnclick}
                 Data={singlePackage}

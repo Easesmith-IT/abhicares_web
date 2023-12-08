@@ -74,15 +74,6 @@
     margin-bottom: 20px;
 }
 
-.img_container{
-    display: flex;
-    justify-content: center;
-}
-
-.img_container img{
-    width: 30px;
-}
-
 @media (max-width:3000px){
     /* .dialog{
        border-radius: 10%;
