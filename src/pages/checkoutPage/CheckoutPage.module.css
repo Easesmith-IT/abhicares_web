@@ -34,12 +34,45 @@
     top: 130px;
 }
 
+.modal_wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    z-index: 20;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.modal {
+    max-width: 390px;
+    width: 100%;
+    background: white;
+    padding: 40px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal > .button{
+    background: green;
+}
+
 .heading {
     font-weight: 600;
 }
 
 .p {
     font-size: 15px;
+}
+
+.mt {
+    margin-top: 20px;
 }
 
 .button {
@@ -123,7 +156,7 @@
 }
 
 
-.frequently_added_heading{
+.frequently_added_heading {
     margin-bottom: 20px;
 }
 
@@ -178,30 +211,32 @@
     margin-left: 10px;
 }
 
-.frequently_added_item:first-child{
+.frequently_added_item:first-child {
     margin-left: 0px;
 }
 
-.item_price, .item_name{
+.item_price,
+.item_name {
     font-size: 14px;
 }
-.item_price{
+
+.item_price {
     font-weight: 600;
 }
 
-.frequently_added_item_right{
+.frequently_added_item_right {
     display: flex;
     flex-direction: column;
 }
 
-.frequently_added_item_right .button{
+.frequently_added_item_right .button {
     border: 1px solid #d5d5d5;
     background: transparent;
     color: #5d17f4;
     margin-top: 0;
 }
 
-.item_img{
+.item_img {
     width: 80px;
     border-radius: 6px;
 }
@@ -290,7 +325,7 @@
 
 
 
-.amount_to_pay_box{
+.amount_to_pay_box {
     padding: 20px;
     background: white;
     border-radius: 6px;
@@ -305,17 +340,17 @@
     right: 0;
 }
 
-.amount_to_pay_box_h4{
+.amount_to_pay_box_h4 {
     margin-top: 0;
 }
 
-.amount_to_pay{
+.amount_to_pay {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
-.view_break_up_button{
+.view_break_up_button {
     border: none;
     outline: none;
     background: transparent;
@@ -345,7 +380,7 @@
 }
 
 @media screen and (max-width:420px) {
-    .cart_item_right{
+    .cart_item_right {
         flex-direction: column;
     }
 }

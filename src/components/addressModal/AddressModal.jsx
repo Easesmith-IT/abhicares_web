@@ -15,6 +15,7 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
     const userId=  localStorage.getItem("userId");
     const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
     const [allAddress, setAllAddress] = useState([]);
+    const [temporaryAddress, setTemporaryAddress   ] = useState({});
 
     const getAllAddress = async () => {
         try {
@@ -32,6 +33,11 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
     useEffect(() => {
         getAllAddress();
     }, [])
+
+    const handleOnClick = ()=>{
+        setAddress(temporaryAddress);
+        setIsAddressModalOpen(false);
+    }
 
 
     return (
@@ -53,11 +59,12 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
                                     key={data._id}
                                     data={data}
                                     getAllAddress={getAllAddress}
+                                    setTemporaryAddress={setTemporaryAddress}
                                 />
                             ))}
                         </div>
 
-                        <button className={classes.button}>Proceed</button>
+                        <button onClick={handleOnClick} className={classes.button}>Proceed</button>
                     </div>
                 </div>
             </div>
