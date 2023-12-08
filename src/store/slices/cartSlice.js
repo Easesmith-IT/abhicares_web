@@ -99,7 +99,7 @@ const userSlice = createSlice({
                 if (action?.payload?.data) {
                     state.isCart = true;
                     state.items = action?.payload?.data
-                    state.totalPrice = action?.payload?.totalProductPrice
+                    state.totalPrice = action?.payload?.totalOfferPrice
                     // state.cartId = action?.payload?.data[0]._id
                 }
                 else {

@@ -12,15 +12,14 @@ import Address from "./Address";
 
 const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
     const user = useSelector(state => state.user);
-    const [selectedAddress, setSelectedAddress] = useState({});
     const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
     const [allAddress, setAllAddress] = useState([]);
 
     const getAllAddress = async () => {
         try {
             const { data } = await axios.get(
-              `${process.env.REACT_APP_API_URL}/get-user-address/656dbc4e717fe785a1c5e47d`,
-              { withCredentials: true }
+                `${process.env.REACT_APP_API_URL}/get-user-address/${user?.userId}`,
+                { withCredentials: true }
             );
             setAllAddress(data.data);
             console.log(data);
