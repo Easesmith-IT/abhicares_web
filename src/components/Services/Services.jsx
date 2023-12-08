@@ -9,6 +9,7 @@ import Photo from '../../assets/rightPhoto.png';
 import men from '../../assets/men.png';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
+import Loader from "../loader/Loader";
 
 
 
@@ -18,6 +19,7 @@ export const Services = ({ open }) => {
     const [allCategories, setAllCategories] = useState([]);
     const [allServices, setAllServices] = useState([]);
     const [isMessage, setIsMessage] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -76,6 +78,9 @@ export const Services = ({ open }) => {
         } catch (error) {
             console.log(error);
         }
+        finally{
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -126,6 +131,15 @@ export const Services = ({ open }) => {
                     <div className={classes['services-content']}>
                         <div className={classes['services-name']}><Typography variant='h6'>What are you looking for?</Typography></div>
                         <div className={classes['services-card']}>
+                                {!isLoading
+                                    && allCategories.length === 0
+                                    && <p>No category found</p>
+                                }
+
+                                {isLoading
+                                    && allCategories.length === 0
+                                    && <Loader />
+                                }
                             <Grid container>
 
                                 {

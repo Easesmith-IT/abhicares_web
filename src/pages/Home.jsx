@@ -30,7 +30,7 @@ export const Home = () => {
             <div className={classes['body-wrapper']}>
                 <div className={classes['body']}>
                     <Services onClick={handleOpen} open={handleOpen} />
-                    <SubCatPopUp category={category} open={open} onClose={handleClose} />
+                    {open && <SubCatPopUp category={category} open={open} onClose={handleClose} />}
                     <BannerCard />
                     {/* <MostBooked/> */}
                     <SalonForWomen />

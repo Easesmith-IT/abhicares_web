@@ -96,6 +96,7 @@ const Product = ({ product }) => {
             </div>
             {
                 isOpen && <Modal
+                    isProduct={true}
                     isOpen={isOpen}
                     handleOnclick={handleOnclick}
                     Data={product}

@@ -14,27 +14,23 @@ import { FiChevronDown } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import Product from "../../components/Product";
+import Loader from "../../components/loader/Loader";
 
 
 const ProductPage = () => {
     const [allProducts, setAllProducts] = useState([]);
     const [allPackages, setAllPackages] = useState([]);
+    const [isProductLoading, setIsProductLoading] = useState(true);
+    const [isPackageLoading, setIsPackageLoading] = useState(true);
 
     const cart = useSelector(state => state.cart);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {state} = useLocation();
-    console.log(cart);
+    const { state } = useLocation();
+
 
     const params = useParams();
-
-    useEffect(() => {
-      const filtered = cart.items.filter((item)=> item.quantity !== 0);
-      
-      console.log(filtered);
-    }, [])
-    
 
 
     const getAllProducts = async () => {
@@ -44,6 +40,9 @@ const ProductPage = () => {
         } catch (error) {
             console.log(error);
         }
+        finally{
+            setIsProductLoading(false);
+        }
     };
 
     const getAllPackages = async () => {
@@ -52,6 +51,9 @@ const ProductPage = () => {
             setAllPackages(data.data);
         } catch (error) {
             console.log(error);
+        }
+        finally{
+            setIsPackageLoading(false);
         }
     };
 
@@ -94,7 +96,17 @@ const ProductPage = () => {
                             <div>
                                 <h2 className={classes.selected_service_h2}>Bestseller Packages</h2>
                                 <div className={classes.sub_services_container}>
-                                    {allPackages?.length === 0 && <p>No packages found</p>}
+                                    {
+                                        !isPackageLoading
+                                        && allPackages?.length === 0
+                                        && <p>No packages found</p>
+                                    }
+
+                                    {isPackageLoading
+                                        && allPackages?.length === 0
+                                        && <Loader />
+                                    }
+
                                     {allPackages?.map((singlePackage) => (
                                         <SubService
                                             key={singlePackage._id}
@@ -106,7 +118,16 @@ const ProductPage = () => {
                             </div>
                             <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
-                                {allProducts?.length === 0 && <p>No products found</p>}
+                                {!isProductLoading
+                                    && allProducts?.length === 0
+                                    && <p>No products found</p>
+                                }
+
+                                {isProductLoading
+                                    && allProducts?.length === 0
+                                    && <Loader />
+                                }
+
                                 {allProducts?.map((product) => (
                                     <Product
                                         product={product}

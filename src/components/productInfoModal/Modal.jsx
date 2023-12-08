@@ -19,12 +19,15 @@ import { useEffect, useState } from "react";
 import { addItemToCart, createCart, getCartDetails } from "../../store/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "../Product";
+import Loader from "../loader/Loader";
 
-const Modal = ({ isOpen, handleOnclick, Data, }) => {
+const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
+    const [isProductInCart, setIsProductInCart] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart)
-    const [isProductInCart, setIsProductInCart] = useState(false);
 
     const responsive = {
         superLargeDesktop: {
@@ -61,6 +64,9 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
             setAllProducts(data.data[0].productObjects);
         } catch (error) {
             console.log(error);
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -154,7 +160,16 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
                                 </div>
                             </div>
 
-                            {allProducts.length !== 0 && <div className={classes.products_cotainer}>
+                            {!isProduct && !isLoading
+                                && allProducts.length === 0
+                                && <p>No product found</p>
+                            }
+
+                            {!isProduct && isLoading
+                                && allProducts.length === 0
+                                && <Loader />
+                            }
+                            {!isProduct && <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
                                 {allProducts?.map((product) => (
                                     <Product
@@ -163,10 +178,6 @@ const Modal = ({ isOpen, handleOnclick, Data, }) => {
                                     />
                                 ))}
                             </div>}
-
-                            <div className={classes.border_bottom}>
-                                <img className={classes.uc_cover_img} src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_template,q_auto:low,f_auto/w_1232,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1682683348153-32c1cf.jpeg" alt="" />
-                            </div>
 
                             <div className={classes.border_bottom}>
                                 <HowItWorks />
