@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import classes from "./ProductPage.module.css";
 import axios from "axios";
 
@@ -24,7 +24,17 @@ const ProductPage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {state} = useLocation();
+    console.log(cart);
+
     const params = useParams();
+
+    useEffect(() => {
+      const filtered = cart.items.filter((item)=> item.quantity !== 0);
+      
+      console.log(filtered);
+    }, [])
+    
 
 
     const getAllProducts = async () => {
@@ -57,7 +67,7 @@ const ProductPage = () => {
         <>
             <section className={classes.product_page}>
                 <div className={classes.container}>
-                    <h1 className={classes.heading}>Salon Classic</h1>
+                    <h1 className={classes.heading}>{state}</h1>
                     <div className={classes.booking}>
                         <div className={classes.star_container}>
                             <BsStarFill color="white" size={15} />
@@ -84,6 +94,7 @@ const ProductPage = () => {
                             <div>
                                 <h2 className={classes.selected_service_h2}>Bestseller Packages</h2>
                                 <div className={classes.sub_services_container}>
+                                    {allPackages?.length === 0 && <p>No packages found</p>}
                                     {allPackages?.map((singlePackage) => (
                                         <SubService
                                             key={singlePackage._id}
@@ -95,6 +106,7 @@ const ProductPage = () => {
                             </div>
                             <div className={classes.products_cotainer}>
                                 <h2>Products</h2>
+                                {allProducts?.length === 0 && <p>No products found</p>}
                                 {allProducts?.map((product) => (
                                     <Product
                                         product={product}

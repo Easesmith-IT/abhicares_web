@@ -20,6 +20,7 @@ const CheckoutPage = () => {
     const { isUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
+
     useEffect(() => {
         (async () => {
             await dispatch(getCartDetails());
@@ -27,7 +28,6 @@ const CheckoutPage = () => {
     }, [])
 
     const cart = useSelector(state => state.cart);
-    console.log(cart);
 
     const responsive = {
         superLargeDesktop: {
@@ -57,6 +57,7 @@ const CheckoutPage = () => {
         );
     };
 
+    const [isShow, setIsShow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
@@ -64,7 +65,6 @@ const CheckoutPage = () => {
         setIsOpen(!isOpen);
     };
 
-    console.log('cart==',cart)
 
     return (
         <>
@@ -121,21 +121,21 @@ const CheckoutPage = () => {
                                 <p className={classes.offer_p}>Login/Sign up to view offers</p>
                             </div>
                         </div>
-                        <div className={classes.payment_summary}>
+                        {isShow && <div className={classes.payment_summary}>
                             <h4 className={classes.payment_summary_h4}>Payment Summary</h4>
                             <div className={classes.payment_summary_div}>
                                 <p className={classes.payment_summary_p}>Item total</p>
-                                <p className={classes.payment_summary_p}>₹299</p>
+                                <p className={classes.payment_summary_p}>₹{cart.totalPrice}</p>
                             </div>
                             <div className={classes.payment_summary_div}>
                                 <p className={classes.payment_summary_p}>Tax and Fee</p>
-                                <p className={classes.payment_summary_p}>₹59</p>
+                                <p className={classes.payment_summary_p}>₹0</p>
                             </div>
                             <div className={classes.payment_summary_div}>
                                 <p className={classes.payment_summary_p}>Total</p>
-                                <p className={classes.payment_summary_p}>₹358</p>
+                                <p className={classes.payment_summary_p}>₹{cart.totalPrice + 0}</p>
                             </div>
-                        </div>
+                        </div>}
 
                         <div className={classes.amount_to_pay_box}>
                             <h4 className={classes.amount_to_pay_box_h4}>
@@ -143,7 +143,7 @@ const CheckoutPage = () => {
                             </h4>
                             <div>
                                 <p className={classes.amount_to_pay}>₹{cart.totalPrice}</p>
-                                <button className={classes.view_break_up_button}>View breakup</button>
+                                <button onClick={() => setIsShow(true)} className={classes.view_break_up_button}>View breakup</button>
                             </div>
                         </div>
                     </div>
