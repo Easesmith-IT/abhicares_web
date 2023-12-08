@@ -15,10 +15,19 @@ import LoginSignupModal from "../../components/loginSignupModal/LoginSignupModal
 import { useDispatch, useSelector } from "react-redux";
 import AddressModal from "../../components/addressModal/AddressModal";
 import { getCartDetails } from "../../store/slices/cartSlice";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+import { FaCheckCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
-    const { isUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { isUser, userId } = useSelector(state => state.user);
+
+    const [address, setAddress] = useState("");
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
 
     useEffect(() => {
@@ -65,6 +74,16 @@ const CheckoutPage = () => {
         setIsOpen(!isOpen);
     };
 
+    const handleOrder = async () => {
+        try {
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order/`, { userId, userAddressId: address._id }, { withCredentials: true });
+            setIsSuccessModalOpen(true);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     return (
         <>
@@ -86,6 +105,13 @@ const CheckoutPage = () => {
                         }
                         {isUser &&
                             <button onClick={() => setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
+                        }
+                        {address &&
+                            <>
+                                <h4 className={classes.mt}>{address?.mobile}</h4>
+                                <p>{`${address?.addressLine},${address?.landmark},${address?.pincode}`}</p>
+                                <button onClick={handleOrder} className={`${classes.button}`}>Continue</button>
+                            </>
                         }
                     </div>
 
@@ -143,7 +169,7 @@ const CheckoutPage = () => {
                             </h4>
                             <div>
                                 <p className={classes.amount_to_pay}>₹{cart.totalPrice}</p>
-                                <button onClick={() => setIsShow(true)} className={classes.view_break_up_button}>View breakup</button>
+                                <button onClick={() => setIsShow(!isShow)} className={classes.view_break_up_button}>{isShow ? "Close" : "View"} breakup</button>
                             </div>
                         </div>
                     </div>
@@ -157,7 +183,20 @@ const CheckoutPage = () => {
                 <AddressModal
                     isOpen={isAddressModalOpen}
                     setIsAddressModalOpen={setIsAddressModalOpen}
+                    setAddress={setAddress}
                 />}
+
+            {isSuccessModalOpen &&
+                <div className={classes.modal_wrapper}>
+                    <div className={classes.modal}>
+                        <div>
+                            <FaCheckCircle size={80} color="green" />
+                        </div>
+                        <h3>Your order has been placed.</h3>
+                        <button onClick={()=>navigate("/my_bookings")} className={classes.button}>Ok</button>
+                    </div>
+                </div>
+            }
         </>
     );
 };
