@@ -53,10 +53,12 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         try {
             setIsLoading(true);
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/generate-otp`, { phoneNumber: loginSignupInfo.phone }, { withCredentials: true });
+            // console.log()
+                  console.log('gener',data);
             setIsLoading(false);
             setIsOtp(true);
             setLoginSignupInfo({});
-            console.log(data);
+      
         } catch (error) {
             setIsLoading(false);
             console.log(error);
@@ -70,9 +72,10 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         try {
             setIsLoading(true);
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/verify-otp`, { enteredOTP: otp }, { withCredentials: true });
+                 console.log("verify otp", data);
             dispatch(changeUserStatus({status:true,userId:data.data}));
             handleOnclick();
-            console.log(data);
+       
             setIsLoading(false);
             setIsOtp(false);
             setOtp("");

@@ -11,7 +11,7 @@ function LogoutModal({ setIsLogoutModalOpen }) {
     const handleLogout = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
-            dispatch(changeUserStatus(false));
+            dispatch(changeUserStatus({ status: false, userId: null }));
             setIsLogoutModalOpen(false);
         } catch (error) {
             console.log(error);

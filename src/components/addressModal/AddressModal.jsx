@@ -18,7 +18,10 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
 
     const getAllAddress = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-address/656c897bf8aa1bb3806013ef`, { withCredentials: true });
+            const { data } = await axios.get(
+              `${process.env.REACT_APP_API_URL}/get-user-address/656dbc4e717fe785a1c5e47d`,
+              { withCredentials: true }
+            );
             setAllAddress(data.data);
             console.log(data);
         } catch (error) {

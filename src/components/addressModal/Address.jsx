@@ -22,42 +22,66 @@ const Address = ({ data,getAllAddress }) => {
     const handleDeleteModal = (id) => { }
 
     return (
-        <>
-            <div className={classes.radio_wrapper}>
-                <div>
-                    <input className={classes.radio} type="radio" name="radio" id="radio" />
-                    <div>
-                        <h4>{data.mobile}</h4>
-                        <p>{`${data.addressLine},${data.pincode}`}</p>
-                    </div>
-                </div>
-                {/* <CiMenuKebab onClick={()=> setIsSetting(!isSetting)} /> */}
-                <div>
-                    <MdEdit onClick={() => setIsUpdateModal(true)} cursor={"pointer"} size={20} />
-                    <MdDelete onClick={() => setIsDeleteModal(true)} cursor={"pointer"} size={20} />
-                </div>
+      <>
+        <div className={classes.radio_wrapper}>
+          <div>
+            <input
+              className={classes.radio}
+              type="radio"
+              name="radio"
+              id="radio"
+            />
+            <div>
+              <h4>{data.mobile}</h4>
+              <p>{`${data.addressLine},${data.pincode}`}</p>
             </div>
+          </div>
+          {/* <CiMenuKebab onClick={()=> setIsSetting(!isSetting)} /> */}
+          <div>
+            <MdEdit
+              onClick={() => setIsUpdateModal(true)}
+              cursor={"pointer"}
+              size={20}
+            />
+            <MdDelete
+              onClick={() => setIsDeleteModal(true)}
+              cursor={"pointer"}
+              size={20}
+            />
+          </div>
+        </div>
 
-            {isDeleteModal &&
-                <div className={classes.delete_modal_wrapper}>
-                    <div className={classes.delete_modal}>
-                        <p>Are you sure to delete ?</p>
-                        <div className={classes.button_wrapper}>
-                            <button onClick={handleDelete} className={classes.delete_modal_button}>Yes</button>
-                            <button onClick={() => setIsDeleteModal(false)} className={classes.delete_modal_button}>No</button>
-                        </div>
-                    </div>
-                </div>
-            }
-            {isUpdateModal &&
-                <AddAddressModal
-                    isOpen={isUpdateModal}
-                    setIsAddAddressModalOpen={setIsUpdateModal}
-                    Data={data}
-                />
-            }
-        </>
-    )
+        {isDeleteModal && (
+          <div className={classes.delete_modal_wrapper}>
+            <div className={classes.delete_modal}>
+              <p>Are you sure to delete ?</p>
+              <div className={classes.button_wrapper}>
+                <button
+                  onClick={handleDelete}
+                  className={classes.delete_modal_button}
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setIsDeleteModal(false)}
+                  className={classes.delete_modal_button}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {isUpdateModal && (
+          <AddAddressModal
+            isOpen={isUpdateModal}
+            setIsAddAddressModalOpen={setIsUpdateModal}
+            Data={data}
+            getAllAddress={getAllAddress}
+          />
+        )}
+      </>
+    );
 }
 
 export default Address

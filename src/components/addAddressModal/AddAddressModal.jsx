@@ -10,15 +10,17 @@ import { useSelector } from "react-redux";
 const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen,getAllAddress, Data = "" }) => {
     console.log("data", Data);
     const user = useSelector(state => state.user);
+    console.log('userinfo',user)
 
     const [addressInfo, setAddressInfo] = useState({
-        addressLine: Data.addressLine || "",
-        pincode: Data.pincode || "",
-        mobile: Data.mobile || "",
-        landmark: "landmark",
-        defaultAddress: Data.defaultAddress || false,
-        userId: user?.userId || "656c897bf8aa1bb3806013ef"
-    })
+      addressLine: Data.addressLine || "",
+      pincode: Data.pincode || "",
+      mobile: Data.mobile || "",
+      landmark: "landmark",
+      defaultAddress: Data.defaultAddress || false,
+      //   userId: user?.userId || "656dbc4e717fe785a1c5e47d",
+      userId: "656dbc4e717fe785a1c5e47d",
+    });
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
