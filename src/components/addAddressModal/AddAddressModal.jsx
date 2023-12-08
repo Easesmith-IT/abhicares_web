@@ -7,19 +7,18 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen,getAllAddress, Data = "" }) => {
+const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen, getAllAddress, Data = "" }) => {
     console.log("data", Data);
     const user = useSelector(state => state.user);
-    console.log('userinfo',user)
+    console.log('userinfo', user)
 
     const [addressInfo, setAddressInfo] = useState({
-      addressLine: Data.addressLine || "",
-      pincode: Data.pincode || "",
-      mobile: Data.mobile || "",
-      landmark: "landmark",
-      defaultAddress: Data.defaultAddress || false,
-      //   userId: user?.userId || "656dbc4e717fe785a1c5e47d",
-      userId: "656dbc4e717fe785a1c5e47d",
+        addressLine: Data.addressLine || "",
+        pincode: Data.pincode || "",
+        mobile: Data.mobile || "",
+        landmark: Data.landmark,
+        defaultAddress: Data.defaultAddress || false,
+        userId: user?.userId || "",
     });
 
     const handleOnChange = (e) => {
@@ -27,13 +26,11 @@ const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen,getAllAddress, Data 
         setAddressInfo({ ...addressInfo, [name]: value });
     }
 
-    console.log(addressInfo);
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!addressInfo.addressLine
             || !addressInfo.mobile
-            // || !addressInfo.defaultAddress
             || !addressInfo.pincode
         ) {
             return;
@@ -73,21 +70,41 @@ const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen,getAllAddress, Data 
                     <div className={classes.modal}>
                         <form onSubmit={handleOnSubmit}>
                             <p className={classes.p}>{Data ? "Update" : "Add"} address</p>
-                            <div className={classes.input_box}>
-                                <input className={classes.input} onChange={handleOnChange} value={addressInfo.addressLine} type="text" name="addressLine" id="addressLine" placeholder="Enter address line" />
+                            <div className={classes.mt}>
+                                <label htmlFor="addressLine">Address Line</label>
+                                <div className={classes.input_box}>
+                                    <input className={classes.input} onChange={handleOnChange} value={addressInfo.addressLine} type="text" name="addressLine" id="addressLine" placeholder="Enter address line" />
+                                </div>
                             </div>
-                            <div className={classes.input_box}>
-                                <input className={classes.input} onChange={handleOnChange} value={addressInfo.pincode} type="number" name="pincode" id="pincode" placeholder="Enter pincode" />
+                            <div className={classes.mt}>
+                                <label htmlFor="pincode">Pincode</label>
+                                <div className={classes.input_box}>
+                                    <input className={classes.input} onChange={handleOnChange} value={addressInfo.pincode} type="number" name="pincode" id="pincode" placeholder="Enter pincode" />
+                                </div>
                             </div>
-                            <div className={classes.input_box}>
-                                <input className={classes.input} onChange={handleOnChange} value={addressInfo.mobile} type="text" name="mobile" id="mobile" placeholder="Enter number" />
+                            <div className={classes.mt}>
+                                <label htmlFor="mobile">Mobile</label>
+                                <div className={classes.input_box}>
+                                    <input className={classes.input} onChange={handleOnChange} value={addressInfo.mobile} type="text" name="mobile" id="mobile" placeholder="Enter number" />
+                                </div>
                             </div>
-                            <select className={`${classes.input_box} ${classes.defaultAddress}`} onChange={handleOnChange} value={addressInfo.defaultAddress} name="defaultAddress" id="defaultAddress">
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                            </select>
+                            <div className={classes.mt}>
+                                <label htmlFor="landmark">Landmark</label>
+                                <div className={classes.input_box}>
+                                    <input className={classes.input} onChange={handleOnChange} value={addressInfo.landmark} type="text" name="landmark" id="landmark" placeholder="Enter landmark" />
+                                </div>
+                            </div>
+                            <div className={classes.mt}>
+                                <label htmlFor="defaultAddress">Default Address</label>
+                                <select className={`${classes.input_box} ${classes.defaultAddress}`} onChange={handleOnChange} value={addressInfo.defaultAddress} name="defaultAddress" id="defaultAddress">
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </div>
                             <button className={classes.button}><MdMyLocation />use my current location</button>
-                            <button type="submit" className={classes.button}>{Data ? "Update" : "Proceed"}</button>
+                            <button type="submit" className={classes.button}>
+                                {Data ? "Update" : "Proceed"}
+                            </button>
                         </form>
                     </div>
                 </div>
