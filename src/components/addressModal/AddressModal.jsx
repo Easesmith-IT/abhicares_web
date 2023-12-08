@@ -3,11 +3,33 @@ import classes from "./AddressModal.module.css";
 
 import { FaPlus } from "react-icons/fa6";
 import { CiMenuKebab } from "react-icons/ci";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddAddressModal from "../addAddressModal/AddAddressModal";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import Address from "./Address";
 
 const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
+    const user = useSelector(state => state.user);
+    const [selectedAddress, setSelectedAddress] = useState({});
     const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
+    const [allAddress, setAllAddress] = useState([]);
+
+    const getAllAddress = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-address/656c897bf8aa1bb3806013ef`, { withCredentials: true });
+            setAllAddress(data.data);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getAllAddress();
+    }, [])
+
 
     return (
         <>
@@ -22,16 +44,16 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
                             <FaPlus />
                             Add another address
                         </button>
-                        <div className={classes.radio_wrapper}>
-                            <div>
-                                <input className={classes.radio} type="radio" name="" id="" />
-                                <div>
-                                    <h4>Home</h4>
-                                    <p>address</p>
-                                </div>
-                            </div>
-                            <CiMenuKebab />
+                        <div className={classes.container}>
+                            {allAddress?.map((data) => (
+                                <Address
+                                    key={data._id}
+                                    data={data}
+                                    getAllAddress={getAllAddress}
+                                />
+                            ))}
                         </div>
+
                         <button className={classes.button}>Proceed</button>
                     </div>
                 </div>
@@ -40,6 +62,7 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
                 <AddAddressModal
                     setIsAddAddressModalOpen={setIsAddAddressModalOpen}
                     isOpen={isAddAddressModalOpen}
+                    getAllAddress={getAllAddress}
                 />
             }
         </>

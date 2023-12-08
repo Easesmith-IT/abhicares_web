@@ -8,10 +8,8 @@ import { Slide } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import loader from '../../assets/rolling.gif'
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
-    console.log(category);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -56,15 +54,11 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                             <div className={classes['sub-category']}>
                                 {/* <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div> */}
                                 <Grid container spacing={2}>
-                                    {allServices.length === 0 &&
-                                        <div className={classes.img_container}>
-                                            <img src={loader} alt="loader" />
-                                        </div>
-                                    }
+                                    {allServices.length === 0 && <p>No service found</p>}
                                     {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
-                                                <div onClick={() => navigate(`/services/${service._id}`)} className={classes['category-cards']} >
+                                                <div onClick={() => navigate(`/services/${service._id}`,{state:service.name})} className={classes['category-cards']} >
                                                     <div className={classes['image-Box']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>
