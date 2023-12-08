@@ -25,7 +25,9 @@ export const Header = () => {
   const ref = useRef();
   const userIconRef = useRef();
 
-  const { isUser } = useSelector(state => state.user);
+    const userId = localStorage.getItem("userId");
+
+  const isUser = userId ? true : false;
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);

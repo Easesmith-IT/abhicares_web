@@ -7,6 +7,7 @@ import axios from "axios";
 import { AiOutlineClose } from "react-icons/ai";
 
 import loader from "../../assets/rolling-white.gif";
+import { getCartDetails } from "../../store/slices/cartSlice";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     const dispatch = useDispatch();
@@ -74,6 +75,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/verify-otp`, { enteredOTP: otp }, { withCredentials: true });
             console.log("verify otp", data);
             dispatch(changeUserStatus({ status: true, userId: data.data }));
+            dispatch(getCartDetails())
             handleOnclick();
 
             setIsLoading(false);

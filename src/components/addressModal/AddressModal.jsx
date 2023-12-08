@@ -11,14 +11,15 @@ import { useSelector } from "react-redux";
 import Address from "./Address";
 
 const AddressModal = ({ isOpen, setIsAddressModalOpen }) => {
-    const user = useSelector(state => state.user);
+    // const user = useSelector(state => state.user);
+    const userId=  localStorage.getItem("userId");
     const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
     const [allAddress, setAllAddress] = useState([]);
 
     const getAllAddress = async () => {
         try {
             const { data } = await axios.get(
-                `${process.env.REACT_APP_API_URL}/get-user-address/${user?.userId}`,
+                `${process.env.REACT_APP_API_URL}/get-user-address/${userId}`,
                 { withCredentials: true }
             );
             setAllAddress(data.data);

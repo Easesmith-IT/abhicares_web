@@ -2,7 +2,8 @@ import { useDispatch } from 'react-redux';
 import classes from './LogoutModal.module.css'
 
 import { MdOutlineWarning } from "react-icons/md";
-import { changeUserStatus } from '../../store/slices/userSlice';
+import { changeUserStatus } from "../../store/slices/userSlice";
+import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from 'axios';
 
 function LogoutModal({ setIsLogoutModalOpen }) {
@@ -12,6 +13,7 @@ function LogoutModal({ setIsLogoutModalOpen }) {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
             dispatch(changeUserStatus({ status: false, userId: null }));
+            dispatch(getCartDetails())
             setIsLogoutModalOpen(false);
         } catch (error) {
             console.log(error);

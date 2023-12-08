@@ -15,6 +15,7 @@ const Address = ({ data, getAllAddress }) => {
       const res = await axios.delete(`${process.env.REACT_APP_API_URL}/delete-user-address/${data._id}`, { withCredentials: true });
       toast.success("Address deleted successfully");
       console.log(res.data);
+      setIsDeleteModal(false)
       getAllAddress();
     } catch (error) {
       console.log(error);

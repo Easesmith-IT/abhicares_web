@@ -71,10 +71,10 @@ const ProductPage = () => {
                 <div className={classes.container}>
                     <h1 className={classes.heading}>{state}</h1>
                     <div className={classes.booking}>
-                        <div className={classes.star_container}>
+                        {/* <div className={classes.star_container}>
                             <BsStarFill color="white" size={15} />
-                        </div>
-                        <span className={classes.booking_span}>4.83 (4.0 M bookings)</span>
+                        </div> */}
+                        {/* <span className={classes.booking_span}>4.83 (4.0 M bookings)</span> */}
                     </div>
 
                     <div className={classes.min_lg_hidden}>
