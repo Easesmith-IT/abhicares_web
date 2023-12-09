@@ -80,6 +80,16 @@
     width:100%;
 }
 
+.img_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img_container .img{
+    width: 20px;
+}
+
 .modal_wrapper {
     width: 100%;
     height: 100vh;

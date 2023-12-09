@@ -17,11 +17,17 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(item);
   const [info, setInfo] = useState({
     productId: item?.product?._id,
     name: item?.product?.name,
+    price: item?.product?.price,
+    offerPrice: item?.product?.offerPrice,
+    description: item?.product?.description,
+    quantity: item?.quantity,
+    imageUrl: item?.product?.imageUrl,
     bookingDate: "",
-    bookingTime: ""
+    bookingTime: "Select time (08:00AM-08:00PM)"
   })
 
   const handleOnSubmit = (e) => {
