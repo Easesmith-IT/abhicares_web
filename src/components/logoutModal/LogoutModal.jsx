@@ -11,11 +11,15 @@ function LogoutModal({ setIsLogoutModalOpen }) {
 
     const handleLogout = async () => {
         try {
+            console.log('handle logout')
+            localStorage.removeItem("userId");
+            setIsLogoutModalOpen(false);
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
-            localStorage.removeItem('userId');
+            console.log(data)
+           
             // dispatch(changeUserStatus({ status: false, userId: null }));
             dispatch(getCartDetails())
-            setIsLogoutModalOpen(false);
+            
         } catch (error) {
             console.log(error);
         }
