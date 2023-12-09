@@ -47,12 +47,7 @@
     top: -40px;
 }
 
-.p {
-    font-size: 22px;
-    font-weight: 600;
-}
-
-.mt{
+.mt {
     margin-top: 10px;
 }
 
@@ -61,12 +56,12 @@
     width: 100%;
     height: 45px;
     display: flex;
+    border-radius: 6px;
     margin-top: 5px;
 }
 
-.input_box.defaultAddress{
-    border-radius: 6px;
-    padding: 0px 20px;
+.input_box.padding{
+    padding: 10px 20px;
 }
 
 .input {
@@ -88,27 +83,6 @@
     font-weight: 600;
     margin-top: 20px;
     cursor: pointer;
-}
-
-.radio_wrapper {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 40px;
-}
-
-.radio {
-    accent-color: black;
-    width: 16px;
-    height: 16px;
-}
-
-.radio_wrapper>div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
 }
 
 .button:last-child {
