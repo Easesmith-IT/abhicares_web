@@ -40,7 +40,7 @@ const ProductPage = () => {
         } catch (error) {
             console.log(error);
         }
-        finally{
+        finally {
             setIsProductLoading(false);
         }
     };
@@ -52,7 +52,7 @@ const ProductPage = () => {
         } catch (error) {
             console.log(error);
         }
-        finally{
+        finally {
             setIsPackageLoading(false);
         }
     };
@@ -137,10 +137,10 @@ const ProductPage = () => {
                         </div>
 
                         <div className={classes.sm_cart}>
-                            <span className={classes.sm_cart_span}>₹669</span>
-                            <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
+                            <span className={classes.sm_cart_span}>₹{cart.totalPrice}</span>
+                            {cart?.items?.length !== 0 && <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                 View Cart
-                            </button>
+                            </button>}
                         </div>
                         <div className={`${classes.right_section} ${classes.max_lg_hidden}`}>
                             <div className={classes.cart_detail_box}>

@@ -27,6 +27,16 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const [isOtp, setIsOtp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleOnClose = () => {
+    handleOnclick();
+    setIsLogin(true);
+    setIsOtp(false);
+    setLoginSignupInfo({
+        name: "",
+        phone: "",
+    })
+}
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setLoginSignupInfo({ ...loginSignupInfo, [name]: value });
@@ -92,7 +102,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       localStorage.setItem("userId", data.data);
       // dispatch(changeUserStatus({ status: true, userId: data.data }));
       dispatch(getCartDetails());
-      handleOnclick();
+      handleOnClose();
 
       setIsLoading(false);
       setIsOtp(false);
@@ -110,7 +120,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       }`}
     >
       <div className={classes.modal_wrapper}>
-        <button onClick={handleOnclick} className={classes.modal_close}>
+        <button onClick={handleOnClose} className={classes.modal_close}>
           <AiOutlineClose size={20} />
         </button>
         <div className={classes.modal}>
