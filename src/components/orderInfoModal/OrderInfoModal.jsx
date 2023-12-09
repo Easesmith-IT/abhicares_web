@@ -1,7 +1,8 @@
 import { MdCancel } from 'react-icons/md'
 import classes from './OrderInfoModal.module.css'
+import { format } from 'date-fns'
 
-const OrderInfoModal = ({ setIsInfoModalOpen }) => {
+const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
     return (
         <div className={classes.modal_overlay}>
             <div className={classes.modal}>
@@ -12,19 +13,21 @@ const OrderInfoModal = ({ setIsInfoModalOpen }) => {
                 <h3>Order1</h3>
                 <div className={classes.p_container}>
                     <p className={classes.qty}>Qty: 1</p>
-                    <p>booking date: 05/12/2023</p>
+                    <p>booking date: {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
                     <p>appointment date: 05/12/2023</p>
                 </div>
                 <h3>Products</h3>
                 <div className={classes.product_contaner}>
-                    <div className={classes.product}>
-                        <img className={classes.img} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACUCAMAAAAj+tKkAAAAJ1BMVEX09PTMzMz4+PjV1dXR0dHJycnt7e3j4+PZ2dnx8fHf39/q6urc3Nx8cu+jAAABuUlEQVR4nO3Z626DIBiA4coZ9P6vd9BaD52LkGV8LHmfn3ZN3+BA1McDAAAAAAAAAAAAAADgH4muSezdt5ipiVm65ilt2/qmyWrVsc/nPtsk/73vWKjzkCTfIOUvhH59JdA0jYcyBJ4cAmOsWUHEAmPSxoT5djSlAuNUlht7P0GlAs26HNr55gtCgX5bhe9+XChw2a8nn0HOnc66UGDYA89TWcV85FgoE6jSvhc4fx7LoWOz0AjO2//gaa+i3PPYcQyFAtV2jt2xL67VZi+UWmZUKJuayRxnxLuvjOF2XO5SNy8h+Hjq27ey+xiOs1nYx+81edYxHCfQfeyj15kySuDH+L3GcIDA6Nc+961vvU7LBkZt07MvXt3q2bIGiQaWrFJ4cX63VVwyMD73XDZdnt8BAuO6J7Tpp1t54cDp9hZeNPA9fqMGXk7bgQJj1SMawcCl6hGSYGAg8LeBNX2yI1glyN24hype7qapkvR2q4JEYHkyWOvx6Buoljw5jW5QLolLx4forvktRF5ter7LUT7vspreQtip51uIXDinljOsdbp7xPkHjW269wEAAAAAAAAAAAAAgJF9AWqwFQ8Ed9TQAAAAAElFTkSuQmCC" alt="" />
-                        <div className={classes.info}>
-                            <h4>Product1</h4>
-                            <p>Qty: 1</p>
-                            <p>₹1000</p>
+                    {order?.products?.map((product) => (
+                        <div className={classes.product}>
+                            <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="" />
+                            <div className={classes.info}>
+                                <h4>{product.product.name}</h4>
+                                <p>Qty: {product.quantity}</p>
+                                <p>₹{product.product.offerPrice}</p>
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
                 <h4>Track Order</h4>
                 <div>
@@ -36,7 +39,7 @@ const OrderInfoModal = ({ setIsInfoModalOpen }) => {
                     </div>
                 </div>
                 <hr />
-                <p className={classes.p}>Total Price:₹1000</p>
+                <p className={classes.p}>Total Price: ₹{order.orderValue}</p>
             </div>
         </div>
     )

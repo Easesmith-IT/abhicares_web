@@ -23,6 +23,13 @@
     gap: 30px;
 }
 
+.checkout_container_left {
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .login_button_container {
     max-width: 550px;
     width: 100%;
@@ -30,8 +37,19 @@
     border-radius: 8px;
     margin-top: 40px;
     padding: 15px;
-    position: sticky;
-    top: 130px;
+}
+
+.booking_info_container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.booking_info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal_wrapper {
@@ -89,7 +107,7 @@
 
 .cart_checkout_container {
     margin-top: 30px;
-    max-width: 450px;
+    max-width: 490px;
     width: 100%;
     position: relative;
 }
@@ -112,7 +130,7 @@
 
 .cart_item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     margin-block: 20px;
 }
@@ -145,6 +163,14 @@
     background: #fff;
     border: 1px solid #000;
     color: #000;
+}
+
+.link{
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    cursor: pointer;
 }
 
 .price {
