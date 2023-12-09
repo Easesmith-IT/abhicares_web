@@ -10,25 +10,18 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Address from "./Address";
 
-const AddressModal = ({ isOpen, setIsAddressModalOpen, setAddress }) => {
+const AddressModal = ({
+  isOpen,
+  setIsAddressModalOpen,
+  setAddress,
+  getAllAddress,
+  allAddress,
+}) => {
   // const user = useSelector(state => state.user);
   const userId = localStorage.getItem("userId");
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
-  const [allAddress, setAllAddress] = useState([]);
-  const [temporaryAddress, setTemporaryAddress] = useState("");
 
-  const getAllAddress = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/get-user-address/${userId}`,
-        { withCredentials: true }
-      );
-      setAllAddress(data.data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [temporaryAddress, setTemporaryAddress] = useState("");
 
   useEffect(() => {
     getAllAddress();

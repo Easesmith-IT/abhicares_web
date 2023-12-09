@@ -88,7 +88,7 @@ const Product = ({ product }) => {
                                 <span className={classes.quantity}>{productInCart?.quantity}</span>
                                 <BiPlus size={20} onClick={handleOnPlusClick} />
                             </button>
-                            : <button onClick={handleAddToCart} className={classes.button}>Add</button>
+                            : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>Add</button>
                         }
                     </div>
                 </div>

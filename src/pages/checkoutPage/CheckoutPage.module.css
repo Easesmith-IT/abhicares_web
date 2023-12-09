@@ -29,7 +29,15 @@
     flex-direction: column;
     width: 100%;
 }
+.login_button_container_guest{
+      max-width: 550px;
+    width: 100%;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    margin-top: 40px;
+    padding: 15px;
 
+}
 .login_button_container {
     max-width: 550px;
     width: 100%;
@@ -37,6 +45,18 @@
     border-radius: 8px;
     margin-top: 40px;
     padding: 15px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bookingWrapper{
+     max-width: 550px;
+    width: 100%;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    margin-top: 40px
 }
 
 .booking_info_container{
@@ -44,12 +64,20 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
+
+      /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+    /* border: 2px solid; */
 }
 
 .booking_info{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px;
+    /* border: 2px solid; */
+    width:100%;
 }
 
 .img_container{
@@ -113,6 +141,32 @@
     color: white;
     margin-top: 20px;
     cursor: pointer;
+}
+
+.continue_btn{
+   width: 200px;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    margin: 0 auto;
+    margin-top: 50px;
+    cursor: pointer;
+    background-color: black;
+}
+
+.select_address_btn{
+    background-color: black;
+    /* width: 100%; */
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    margin-top: 20px;
+    cursor: pointer; 
+}
+
+.address_container{
+    /* border: 2px solid green; */
+    padding:15px;
 }
 
 .cart_checkout_container {
