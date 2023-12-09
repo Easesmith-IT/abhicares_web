@@ -23,7 +23,6 @@ const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   }
 
   const handleOnChange = (e) => {
-    console.log(e.target.value);
     setTemporaryAddress(data);
   }
 

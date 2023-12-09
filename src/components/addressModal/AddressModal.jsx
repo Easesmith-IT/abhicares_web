@@ -15,7 +15,7 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen, setAddress }) => {
   const userId = localStorage.getItem("userId");
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
   const [allAddress, setAllAddress] = useState([]);
-  const [temporaryAddress, setTemporaryAddress] = useState({});
+  const [temporaryAddress, setTemporaryAddress] = useState("");
 
   const getAllAddress = async () => {
     try {
@@ -35,6 +35,10 @@ const AddressModal = ({ isOpen, setIsAddressModalOpen, setAddress }) => {
   }, []);
 
   const handleOnClick = () => {
+    if (!temporaryAddress) {
+      toast.error("Select address");
+      return;
+    }
     setAddress(temporaryAddress);
     setIsAddressModalOpen(false);
   };

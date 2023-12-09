@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import classes from "./CheckoutPage.module.css";
 
-import logo from "../../assets/Main Logo V1-02.png";
 
 import { AiOutlinePercentage } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -24,11 +23,14 @@ import { useNavigate } from "react-router-dom";
 const CheckoutPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const { isUser, userId } = useSelector(state => state.user);
     const userId = localStorage.getItem('userId')
 
-    const [address, setAddress] = useState("");
+    const [isShow, setIsShow] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [address, setAddress] = useState("");
+    const [bookingInfo, setBookingInfo] = useState([]);
 
 
     useEffect(() => {
@@ -67,21 +69,24 @@ const CheckoutPage = () => {
         );
     };
 
-    const [isShow, setIsShow] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    
+    console.log("bookingInfo",bookingInfo);
 
     const handleOnclick = () => {
         setIsOpen(!isOpen);
     };
 
     const handleOrder = async () => {
+        if (!address) {
+            toast.error("Select address");
+            return;
+        }
         try {
-            console.log('addddress',address)
+            console.log('addddress', address)
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userId, userAddressId: address._id }, { withCredentials: true });
             console.log(data);
             setIsSuccessModalOpen(true);
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -91,31 +96,38 @@ const CheckoutPage = () => {
     return (
         <>
             <div>
-                {/* <div className={classes.header}>
-                    <div className={classes.container}>
-                        <img src={logo} alt="logo" className={classes.logo_img} />
-                    </div>
-                </div> */}
-
                 <div className={`${classes.container} ${classes.checkout_container}`}>
-                    <div className={classes.login_button_container}>
-                        {!userId &&
-                            <>
-                                <p className={classes.heading}>Account</p>
-                                <p className={classes.p}>To book the service, please login or sign up</p>
-                                <button onClick={handleOnclick} className={classes.button}>Login</button>
-                            </>
-                        }
-                        {userId &&
-                            <button onClick={() => setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
-                        }
-                        {address &&
-                            <>
-                                <h4 className={classes.mt}>{address?.mobile}</h4>
-                                <p>{`${address?.addressLine},${address?.landmark},${address?.pincode}`}</p>
-                                <button onClick={handleOrder} className={`${classes.button}`}>Continue</button>
-                            </>
-                        }
+                    <div className={classes.checkout_container_left}>
+                        <div className={classes.login_button_container}>
+                            {!userId &&
+                                <>
+                                    <p className={classes.heading}>Account</p>
+                                    <p className={classes.p}>To book the service, please login or sign up</p>
+                                    <button onClick={handleOnclick} className={classes.button}>Login</button>
+                                </>
+                            }
+                            {userId &&
+                                <button onClick={() => setIsAddressModalOpen(true)} className={`${classes.button}`}>Select an address</button>
+                            }
+                            {address &&
+                                <>
+                                    <h4 className={classes.mt}>{address?.mobile}</h4>
+                                    <p>{`${address?.addressLine},${address?.landmark},${address?.pincode}`}</p>
+                                </>
+                            }
+                        </div>
+                       {bookingInfo.length !== 0 && <div className={classes.login_button_container}>
+                            <div className={classes.booking_info_container}>
+                            {bookingInfo?.map((data)=>(
+                                <div className={classes.booking_info} key={data.productId}>
+                                    <h4>{data.name}</h4>
+                                    <p>{data.bookingDate}</p>
+                                    <p>{data.bookingTime}</p>
+                                </div>
+                            ))}
+                            </div>
+                            <button onClick={handleOrder} className={`${classes.button}`}>Continue</button>
+                        </div>}
                     </div>
 
                     <div className={classes.cart_checkout_container}>
@@ -125,6 +137,9 @@ const CheckoutPage = () => {
                                     <CartItem
                                         key={item._id}
                                         item={item}
+                                        isButton
+                                        setBookingInfo={setBookingInfo}
+                                        bookingInfo={bookingInfo}
                                     />
                                 ))}
                             </div>
@@ -196,7 +211,7 @@ const CheckoutPage = () => {
                             <FaCheckCircle size={80} color="green" />
                         </div>
                         <h3>Your order has been placed.</h3>
-                        <button onClick={()=>navigate("/my_bookings")} className={classes.button}>Ok</button>
+                        <button onClick={() => navigate("/my_bookings")} className={classes.button}>Ok</button>
                     </div>
                 </div>
             }
