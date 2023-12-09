@@ -32,6 +32,7 @@ const CheckoutPage = () => {
   const [address, setAddress] = useState("");
   const [bookingInfo, setBookingInfo] = useState([]);
   const [allAddress, setAllAddress] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const getAllAddress = async () => {
     try {
@@ -99,78 +100,75 @@ const CheckoutPage = () => {
     );
   };
 
-    
-    console.log("bookingInfo",bookingInfo);
+
+  console.log("bookingInfo", bookingInfo);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
   };
-    const handleOnclick = () => {
-        setIsOpen(!isOpen);
-    };
 
-    console.log("address", address);
-
-    const handleOrder = async () => {
-        if (!address) {
-            toast.error("Select address");
-            return;
-        }
-
-        if (cart?.items.length !== bookingInfo.length) {
-            toast.error("Select booking date and time");
-            return;
-        }
-        try {
-            setIsLoading(true);
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userId, userAddressId: address._id }, { withCredentials: true });
-            setIsLoading(false);
-            console.log(data);
-
-            const formData = new FormData();
-            formData.append("orderId", data?._id);
-            // formData.append("userAddress",);
-            const { addressLine, pincode, landmark, mobile } = address;
-            const info = {
-                orderId: data?._id,
-                userAddress: {
-                    addressLine,
-                    pincode,
-                    landmark,
-                    mobile
-                },
-                productDetails: bookingInfo,
-                orderValue: data?.orderValue
-            }
-            setIsSuccessModalOpen(true);
-
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { withCredentials: true });
-            console.log("res", res);
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  console.log("address", address);
 
   const handleOrder = async () => {
     if (!address) {
       toast.error("Select address");
       return;
     }
+
+    if (cart?.items.length !== bookingInfo.length) {
+      toast.error("Select booking date and time");
+      return;
+    }
     try {
-      console.log("addddress", address);
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/place-cod-order`,
-        { userId, userAddressId: address._id },
-        { withCredentials: true }
-      );
+      setIsLoading(true);
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userId, userAddressId: address._id }, { withCredentials: true });
+      setIsLoading(false);
       console.log(data);
+
+      const formData = new FormData();
+      formData.append("orderId", data?._id);
+      // formData.append("userAddress",);
+      const { addressLine, pincode, landmark, mobile } = address;
+      const info = {
+        orderId: data?._id,
+        userAddress: {
+          addressLine,
+          pincode,
+          landmark,
+          mobile
+        },
+        productDetails: bookingInfo,
+        orderValue: data?.orderValue
+      }
       setIsSuccessModalOpen(true);
+
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { withCredentials: true });
+      console.log("res", res);
+
+
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const handleOrder = async () => {
+  //   if (!address) {
+  //     toast.error("Select address");
+  //     return;
+  //   }
+  //   try {
+  //     console.log("addddress", address);
+  //     const { data } = await axios.post(
+  //       `${process.env.REACT_APP_API_URL}/place-cod-order`,
+  //       { userId, userAddressId: address._id },
+  //       { withCredentials: true }
+  //     );
+  //     console.log(data);
+  //     setIsSuccessModalOpen(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -232,7 +230,13 @@ const CheckoutPage = () => {
                   onClick={handleOrder}
                   className={`${classes.continue_btn}`}
                 >
-                  Continue
+                  {isLoading ?
+                    <span className={classes.img_container}>
+                      <img className={classes.img} src={loader} alt="loader" />
+                      Continuing...
+                    </span>
+                    : "Continue"
+                  }
                 </button>
               </>
             )}

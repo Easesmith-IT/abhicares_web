@@ -25,7 +25,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     offerPrice: item?.product?.offerPrice,
     description: item?.product?.description,
     quantity: item?.quantity,
-    imageUrl: item?.product?.imageUrl,
+    imageUrl: item?.product?.imageUrl[0],
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
@@ -37,7 +37,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
       return;
     }
     setIsModalOpen(false);
-    setBookingInfo([...bookingInfo, info])
+    setBookingInfo(info);
   }
 
 
