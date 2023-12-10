@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { changeUserStatus } from "../../store/slices/userSlice";
 import classes from "./LoginSignupModal.module.css";
 import axios from "axios";
 
 import { AiOutlineClose } from "react-icons/ai";
 
+
 import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
+  const userId = useSelector(state => state.user.userId);;
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
@@ -98,10 +100,8 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { enteredOTP: otp },
         { withCredentials: true }
       );
-      console.log("verify otp", data);
-      localStorage.setItem("userId", data.data);
-      // dispatch(changeUserStatus({ status: true, userId: data.data }));
-      dispatch(getCartDetails());
+      dispatch(changeUserStatus(data.data));
+      dispatch(getCartDetails(userId));
       handleOnClose();
 
       setIsLoading(false);

@@ -62,14 +62,14 @@ export const Footer = ()=>{
               <div className={classes['sections']}>
                         <div className={classes['heading']}><Typography variant='h5'>Social Links</Typography></div> 
                         <div className={classes['social']}>
-                            <div><a href="#"><TwitterIcon/></a></div>
-                            <div><a href="#"><FacebookIcon/></a></div>
-                            <div><a href="#"><InstagramIcon/></a></div>
-                            <div><a href="#"><LinkedInIcon/></a></div>
+                            <div><Link to="#"><TwitterIcon/></Link></div>
+                            <div><Link to="#"><FacebookIcon/></Link></div>
+                            <div><Link to="#"><InstagramIcon/></Link></div>
+                            <div><Link to="#"><LinkedInIcon/></Link></div>
                         </div>
                         <div className={classes['download']}>
-                            <div><a href="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></a></div>
-                            <div><a href="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg" alt="image" /></a></div>
+                            {/* <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></Link></div> */}
+                            <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg" alt="image" /></Link></div>
                         </div>
               </div>
                     

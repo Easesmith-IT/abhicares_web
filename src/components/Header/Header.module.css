@@ -3,7 +3,8 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 1.00);
+    /* background-color: rgba(255, 255, 255, 1.00); */
+    background-color: black;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -92,6 +93,7 @@
 .dFlexRow {
     display: flex;
     flex-direction: row;
+    width: 100%;
     align-items: center;
     justify-content: flex-end;
     gap: 10px;

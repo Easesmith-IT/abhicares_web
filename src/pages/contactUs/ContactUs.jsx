@@ -1,5 +1,8 @@
+import {Link} from 'react-router-dom'
 import { contactAddress } from "../../data/contactAddress";
 import classes from "./ContactUs.module.css";
+
+
 
 const ContactUs = () => {
     return (
@@ -8,12 +11,13 @@ const ContactUs = () => {
                 <h1 className={classes.h1}>Contact Us</h1>
                 <p className={classes.link_p}>
                     For any help regarding your bookings, please log-in and visit our{" "}
-                    <a className={classes.link} href="#">Help Center </a>
-                    | For media queries, please send us an email on{" "}
-                    <a className={classes.link} href="#">press@urbancompany.com</a>
+                    <Link className={classes.link} to="#">Help Center </Link>
+                    {/* | For media queries, please send us an email on{" "} */}
+                    {/* <Link className={classes.link} to="#">press@abhicares.com</Link> */}
                 </p>
                 <h3 className={classes.h3}>
-                    Our Mission is to empower millions of service professionals by delivering services at-home in a way that has never been experienced before.
+                    Our Mission is to empower millions of service professionals by delivering services at-home. 
+                    {/* in a way that has never been experienced before. */}
                 </h3>
             </div>
             <div className={classes.container}>

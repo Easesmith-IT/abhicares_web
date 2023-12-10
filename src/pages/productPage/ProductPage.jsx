@@ -28,6 +28,7 @@ const ProductPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { state } = useLocation();
+    const userId = useSelector(state => state.user.userId);;
 
 
     const params = useParams();
@@ -61,7 +62,7 @@ const ProductPage = () => {
         getAllProducts();
         getAllPackages();
         (async () => {
-            await dispatch(getCartDetails());
+            await dispatch(getCartDetails(userId));
         })()
     }, [])
 

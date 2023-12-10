@@ -1,6 +1,7 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Banner } from '../../assets/data';
+import DummyBanner from '../../assets/banner-dummy.jpg'
 import classes from './Banner.module.css'
 
 export const BannerCard = ()=>{
@@ -44,7 +45,7 @@ export const BannerCard = ()=>{
  {
     Banner.map((item)=>(
         <div key={item.id} className={classes['image-container']}>
-            <img src={item.url} alt="Banner" />
+            <img src={DummyBanner} alt="Banner" />
         </div>
     ))
 

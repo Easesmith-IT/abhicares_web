@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import classes from './LogoutModal.module.css'
 
 import { MdOutlineWarning } from "react-icons/md";
@@ -8,17 +8,18 @@ import axios from 'axios';
 
 function LogoutModal({ setIsLogoutModalOpen }) {
     const dispatch = useDispatch();
+    const userId = useSelector(state => state.user.userId);;
 
     const handleLogout = async () => {
         try {
             console.log('handle logout')
             localStorage.removeItem("userId");
             setIsLogoutModalOpen(false);
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user `, { withCredentials: true });
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
             console.log(data)
            
-            // dispatch(changeUserStatus({ status: false, userId: null }));
-            dispatch(getCartDetails())
+            dispatch(changeUserStatus(null));
+            dispatch(getCartDetails(userId))
             
         } catch (error) {
             console.log(error);

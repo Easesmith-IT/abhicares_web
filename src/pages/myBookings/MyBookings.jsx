@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import classes from './MyBookings.module.css';
 import OrderInfoModal from '../../components/orderInfoModal/OrderInfoModal';
 import Order from '../../components/order/Order';
@@ -7,7 +8,7 @@ import axios from 'axios';
 const MyBookings = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [allOrders, setAllOrders] = useState([]);
-  const userId = localStorage.getItem("userId");
+  const userId = useSelector(state => state.user.userId);;
 
   const getAllOrders = async () => {
     try {

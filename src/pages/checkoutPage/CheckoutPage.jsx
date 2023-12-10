@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const userId = useSelector(state => state.user.userId);;
 
   const [isShow, setIsShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +54,7 @@ const CheckoutPage = () => {
   };
   useEffect(() => {
     (async () => {
-      await dispatch(getCartDetails());
+      await dispatch(getCartDetails(userId));
     })();
 
     getAllAddress();
@@ -138,7 +138,7 @@ const CheckoutPage = () => {
           mobile
         },
         productDetails: bookingInfo,
-        orderValue: data?.orderValue
+        // orderValue: data?.orderValue
       }
       setIsSuccessModalOpen(true);
 
@@ -213,7 +213,7 @@ const CheckoutPage = () => {
               <>
                 <div className={classes.bookingWrapper}>
                   <div className={classes.booking_info_container}>
-                    {bookingInfo?.map((data) => (
+                    {bookingInfo && bookingInfo?.map((data) => (
                       <div
                         className={classes.booking_info}
                         key={data.productId}
@@ -255,7 +255,7 @@ const CheckoutPage = () => {
                   />
                 ))}
               </div>
-              <div className={classes.frequently_added}>
+              {/* <div className={classes.frequently_added}>
                 <h4 className={classes.frequently_added_heading}>
                   Frequently added together
                 </h4>
@@ -267,9 +267,9 @@ const CheckoutPage = () => {
                 >
                   <FrequentlyAddedItems />
                 </Carousel>
-              </div>
+              </div> */}
 
-              <div className={classes.checkbox_wrapper}>
+              {/* <div className={classes.checkbox_wrapper}>
                 <input
                   className={classes.checkbox}
                   type="checkbox"
@@ -279,7 +279,7 @@ const CheckoutPage = () => {
                 <p className={classes.checkbox_p}>
                   Avoid calling before reaching the location
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <div className={classes.offer_box}>

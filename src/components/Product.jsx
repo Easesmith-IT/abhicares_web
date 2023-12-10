@@ -12,6 +12,8 @@ import { BiMinus, BiPlus } from 'react-icons/bi';
 
 
 const Product = ({ product }) => {
+    const userId = useSelector(state => state.user.userId);
+    // console.log('Product userid',userId)
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
 
@@ -23,7 +25,7 @@ const Product = ({ product }) => {
 
     useEffect(() => {
         (async () => {
-            await dispatch(getCartDetails());
+            await dispatch(getCartDetails(userId));
         })()
     }, [])
 
@@ -40,12 +42,12 @@ const Product = ({ product }) => {
 
         if (productInCart) {
             let updatedQuantity = productInCart.quantity + 1;
-            await dispatch(addItemToCart({ id: product._id, quantity: updatedQuantity }))
-            await dispatch(getCartDetails());
+            await dispatch(addItemToCart({ id: product._id, quantity: updatedQuantity,userId }))
+            await dispatch(getCartDetails(userId));
         }
         else {
-            await dispatch(addItemToCart({ id: product._id, quantity: 1 }))
-            await dispatch(getCartDetails());
+            await dispatch(addItemToCart({ id: product._id, quantity: 1,userId }))
+            await dispatch(getCartDetails(userId));
         }
     }
 
@@ -55,7 +57,7 @@ const Product = ({ product }) => {
         await dispatch(
             updateQty({ id: productInCart.product._id, quantity: updatedQuantity })
         );
-        await dispatch(getCartDetails());
+        await dispatch(getCartDetails(userId));
     }
 
     const handleOnMinusClick = async () => {
@@ -66,7 +68,7 @@ const Product = ({ product }) => {
                 quantity: updatedQuantity,
             })
         );
-        await dispatch(getCartDetails());
+        await dispatch(getCartDetails(userId));
     }
 
 

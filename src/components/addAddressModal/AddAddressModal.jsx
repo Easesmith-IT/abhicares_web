@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen, getAllAddress, Data = "" }) => {
     console.log("data", Data);
     // const user = useSelector(state => state.user);
-        const userId = localStorage.getItem("userId");
+    const userId = useSelector(state => state.user.userId);;
 
     const [addressInfo, setAddressInfo] = useState({
       addressLine: Data.addressLine || "",

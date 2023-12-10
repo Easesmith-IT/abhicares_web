@@ -25,6 +25,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const userId = useSelector(state => state.user.userId);;
 
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart)
@@ -74,7 +75,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     useEffect(() => {
         getAllProducts();
         (async () => {
-            await dispatch(getCartDetails());
+            await dispatch(getCartDetails(userId));
         })()
         const filtered = cart.items.find((item) => item.productId === Data._id)
         setIsProductInCart(filtered)
@@ -94,19 +95,19 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                 Data.price
             ));
 
-            await dispatch(getCartDetails());
+            await dispatch(getCartDetails(userId));
         }
         else {
             const filtered = cart.items.find((item) => item.productId === Data._id)
             console.log(filtered);
             if (filtered) {
                 let updatedQuantity = filtered.quantity + 1;
-                await dispatch(addItemToCart(Data._id, updatedQuantity))
-                await dispatch(getCartDetails());
+                await dispatch(addItemToCart(Data._id, updatedQuantity,userId))
+                await dispatch(getCartDetails(userId));
             }
             else {
-                await dispatch(addItemToCart(Data._id, 1))
-                await dispatch(getCartDetails());
+                await dispatch(addItemToCart(Data._id, 1,userId))
+                await dispatch(getCartDetails(userId));
             }
         }
     }

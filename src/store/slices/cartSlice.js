@@ -22,12 +22,14 @@ export const createCart = createAsyncThunk("/cart/create", async (userId, items,
     }
 })
 
-export const getCartDetails = createAsyncThunk("/cart/details", async () => {
+export const getCartDetails = createAsyncThunk("/cart/details", async (userId) => {
     try {
-        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { withCredentials: true });
+        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { withCredentials: true,params:{
+            userId
+        } });
 
         const response = await res;
-        console.log(response.data);
+        console.log('cart details',response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -40,13 +42,14 @@ export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => 
         const res = axios.post(`${process.env.REACT_APP_API_URL}/add-item-cart`,
             {
                 itemId: data.id,
-                quantity: data.quantity
+                quantity: data.quantity,
+                userId:data.userId
             }
             , { withCredentials: true }
         );
 
         const response = await res;
-        console.log(response.data);
+        console.log('add-item to cart',response);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -89,7 +92,7 @@ export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (d
     }
 })
 
-const userSlice = createSlice({
+const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {},
@@ -110,5 +113,4 @@ const userSlice = createSlice({
     },
 })
 
-// export const {  } = userSlice.actions
-export default userSlice.reducer
+export default cartSlice.reducer

@@ -2,6 +2,13 @@ import LeaderCard from "../../components/leaderCard/LeaderCard";
 import { company } from "../../data/company";
 import { investers } from "../../data/invester";
 import { leaders } from "../../data/leader";
+
+import RecImg1 from '../../assets/recongized-by/rec-by-1.jpg'
+import RecImg2 from '../../assets/recongized-by/rec-by-2.png'
+import RecImg3 from '../../assets/recongized-by/rec-by-3.png'
+import RecImg4 from '../../assets/recongized-by/rec-by-4.png'
+import RecImg5 from '../../assets/recongized-by/rec-by-5.png'
+
 import classes from "./AboutUs.module.css";
 
 const AboutUs = () => {
@@ -70,13 +77,16 @@ const AboutUs = () => {
 
           <section className={classes.section}>
             <h2 className={classes.h2}>Reconigzed by</h2>
-            {/* <div className={classes.company_container}>
-                            {
-                                company.map(({ src }, i) => (
-                                    <img className={classes.company_img} key={i} src={src} alt="company" />
-                                ))
-                            }
-                        </div> */}
+            <div className={classes.company_container}>
+                            
+            <img className={classes.company_img}  src={RecImg1} alt="company" />
+            <img className={classes.company_img}  src={RecImg2} alt="company" />
+            <img className={classes.company_img}  src={RecImg3} alt="company" />
+            <img className={classes.company_img}  src={RecImg4} alt="company" />
+            <img className={classes.company_img}  src={RecImg5} alt="company" />
+                                
+                            
+                        </div>
 
             {/* <div className={classes.investers_container}>
                             {
@@ -94,10 +104,10 @@ const AboutUs = () => {
             {/* <p className={classes.link_p}>
                         For media queries, contact: <a className={classes.link} href="#">press@urbancompany.com</a>
                         </p> */}
-            <p className={classes.p}>
+            {/* <p className={classes.p}>
               You could be a part of our journey. Interested?
-            </p>
-            <button className={classes.button}>Apply Now</button>
+            </p> */}
+            {/* <button className={classes.button}>Apply Now</button> */}
           </section>
         </div>
       </div>

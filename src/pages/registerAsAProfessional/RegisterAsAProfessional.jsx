@@ -1,5 +1,6 @@
 import axios from "axios";
 import classes from "./RegisterAsAProfessional.module.css";
+import ProfessionalImg from '../../assets/professional_img.png'
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -48,14 +49,17 @@ const RegisterAsAProfessional = () => {
                 <div className={classes.hero_section}>
                     <div className={classes.container}>
                         <div className={classes.hero_section_top}>
-                            <div className={classes.hero_section_left}>
-                                <h1 className={classes.hero_section_h1}>Earn More. Earn Respect. Safety Ensured.</h1>
+                            <div className={classes.hero_section_left} style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+                                <div>
+                                <h1 className={classes.hero_section_h1}>Earn More. Earn Respect.</h1>
                                 <p className={classes.hero_section_p}>
-                                    Join 40,000+ partners across India, USA, Singapore, UAE and many more
+                                    Join 100+ partners across Darbhanga
                                 </p>
+                                </div>
+                                
                             </div>
                             <div>
-                                <img className={classes.hero_section_img} src="https://urbanclap-prod.s3-ap-southeast-1.amazonaws.com/categories/category_v2/partner_hero_india_cover.png" alt="heroImg" />
+                                <img className={classes.hero_section_img} src={ProfessionalImg} alt="heroImg" />
                             </div>
                         </div>
                         <div className={classes.hero_section_bottom}>
@@ -76,7 +80,7 @@ const RegisterAsAProfessional = () => {
                     <div className={classes.container}>
                         <h2 className={classes.company_info_h3}>Join AbhiCares to change your life</h2>
                         <p className={classes.company_info_p}>AbhiCares is an app-based marketplace that empowers professionals like you to become your own boss</p>
-                        <ul className={classes.list_container}>
+                        {/* <ul className={classes.list_container}>
                             <li className={classes.list_item}>
                                 <h3 className={classes.list_item_h3}>40,000+</h3>
                                 <p className={classes.list_item_p}>Partners already on board</p>
@@ -89,7 +93,7 @@ const RegisterAsAProfessional = () => {
                                 <h3 className={classes.list_item_h3}>1,250,000+</h3>
                                 <p className={classes.list_item_p}>Services delivered each month</p>
                             </li>
-                        </ul>
+                        </ul> */}
                     </div>
                 </div>
             </div>

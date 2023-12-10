@@ -18,7 +18,7 @@ const AddressModal = ({
   allAddress,
 }) => {
   // const user = useSelector(state => state.user);
-  const userId = localStorage.getItem("userId");
+  const userId = useSelector(state => state.user.userId);;
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
 
   const [temporaryAddress, setTemporaryAddress] = useState("");

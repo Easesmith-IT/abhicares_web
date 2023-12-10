@@ -9,6 +9,10 @@ import HomeRepairs from "../components/QuickHomeRepairs/HomeRepairs.jsx"
 import classes from './Home.module.css'
 import SubCatPopUp from "../components/SubCategories/SubCatPopUp.jsx"
 import Footer from "../components/Footer/Footer.jsx"
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+import styles from '../components/Header/Header.jsx'
 
 import { useState } from "react"
 
@@ -23,7 +27,6 @@ export const Home = () => {
     const handleClose = () => {
         setOpen(false);
     }
-
 
     return (
         <div className={classes['wrapper']}>

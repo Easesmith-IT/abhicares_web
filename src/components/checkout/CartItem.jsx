@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
+  const userId = useSelector(state => state.user.userId);;
   const [isModalOpen, setIsModalOpen] = useState(false);
   console.log(item);
   const [info, setInfo] = useState({
@@ -35,6 +36,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     if (!info.bookingDate || !info.bookingTime) {
       toast.error("Select booking date and time");
       return;
+      
     }
     setIsModalOpen(false);
     setBookingInfo(info);
@@ -46,7 +48,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     await dispatch(
       updateQty({ id: item.product._id, quantity: updatedQuantity })
     );
-    await dispatch(getCartDetails());
+    await dispatch(getCartDetails(userId));
   };
 
   const handleOnMinusClick = async () => {
@@ -57,12 +59,12 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
         quantity: updatedQuantity,
       })
     );
-    await dispatch(getCartDetails());
+    await dispatch(getCartDetails(userId));
   };
 
   const handleCartItemDelete = async () => {
     await dispatch(deleteItemFromCart({ itemId: item.product._id }));
-    await dispatch(getCartDetails());
+    await dispatch(getCartDetails(userId));
   }
 
 

@@ -20,6 +20,18 @@
 .body>div{
     margin-bottom: 1.5rem;
 }
+
+.dFlexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+
+
 @media(max-width:768px){
     .body{
         width: 98%;
