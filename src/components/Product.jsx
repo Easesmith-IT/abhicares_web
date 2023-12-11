@@ -4,6 +4,7 @@ import parse from "html-react-parser";
 import Modal from './productInfoModal/Modal';
 import {
     addItemToCart,
+    deleteItemFromCart,
     getCartDetails,
     updateQty,
 } from "../store/slices/cartSlice";
@@ -13,7 +14,6 @@ import { BiMinus, BiPlus } from 'react-icons/bi';
 
 const Product = ({ product }) => {
     const userId = useSelector(state => state.user.userId);
-    // console.log('Product userid',userId)
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
 
@@ -25,16 +25,16 @@ const Product = ({ product }) => {
 
     useEffect(() => {
         (async () => {
-            await dispatch(getCartDetails(userId));
+            await dispatch(getCartDetails());
         })()
     }, [])
 
     const cart = useSelector(state => state.cart)
 
     useEffect(() => {
-        const filtered = cart?.items?.find((item) => item?.product?._id === product._id);
-        setProductInCart(filtered)
-    }, [cart])
+        const filtered = cart?.items?.find((item) => item?.productId?._id === product._id);
+        setProductInCart(filtered);
+    }, [getCartDetails,cart])
 
 
 
@@ -42,31 +42,25 @@ const Product = ({ product }) => {
 
         if (productInCart) {
             let updatedQuantity = productInCart.quantity + 1;
-            await dispatch(addItemToCart({ id: product._id, quantity: updatedQuantity,userId }))
-            await dispatch(getCartDetails(userId));
+            await dispatch(addItemToCart({ id: product._id }))
+            await dispatch(getCartDetails());
         }
         else {
-            await dispatch(addItemToCart({ id: product._id, quantity: 1,userId }))
-            await dispatch(getCartDetails(userId));
+            await dispatch(addItemToCart({ id: product._id }))
+            await dispatch(getCartDetails());
         }
     }
 
-
     const handleOnPlusClick = async () => {
-        let updatedQuantity = productInCart.quantity + 1;
         await dispatch(
-            updateQty({ id: productInCart.product._id, quantity: updatedQuantity })
+            addItemToCart({ id: productInCart?.productId?._id })
         );
-        await dispatch(getCartDetails(userId));
+        await dispatch(getCartDetails());
     }
 
     const handleOnMinusClick = async () => {
-        let updatedQuantity = productInCart.quantity - 1;
         await dispatch(
-            updateQty({
-                id: productInCart.product._id,
-                quantity: updatedQuantity,
-            })
+            deleteItemFromCart({ itemId: productInCart.productId._id })
         );
         await dispatch(getCartDetails(userId));
     }
@@ -84,7 +78,7 @@ const Product = ({ product }) => {
                             <p className={classes.price}>₹{product.price}</p>
                             <p className={classes.price}>₹{product.offerPrice}</p>
                         </div>
-                        {cart?.items?.find((item) => item.product._id === product._id) ?
+                        {cart?.items?.find((item) => item.productId._id === product._id) ?
                             <button className={classes.button}>
                                 <BiMinus size={20} onClick={handleOnMinusClick} />
                                 <span className={classes.quantity}>{productInCart?.quantity}</span>

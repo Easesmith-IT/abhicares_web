@@ -10,6 +10,7 @@
 .order_top{
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -22,6 +23,7 @@
     width: 90%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 hr{
@@ -58,4 +60,38 @@ hr{
 .d_flex{
     display: flex;
     justify-content: space-between;
+}
+
+@media screen and (max-width:590px) {
+    .progress{
+        width: 300px;
+    }
+
+    .p{}
+}
+
+@media screen and (max-width:525px) {
+    .progress{
+        width: 200px;
+    }
+
+    .p{
+        display: none;
+    }
+    .d_flex{
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width:525px) {
+    .progress{
+        width: 200px;
+    }
+}
+
+@media screen and (max-width:365px) {
+    .progress{
+        width: 170px;
+    }
+
 }

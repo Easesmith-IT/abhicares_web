@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeUserStatus } from "../../store/slices/userSlice";
 import classes from "./LoginSignupModal.module.css";
 import axios from "axios";
@@ -19,25 +19,27 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     phone: "",
   });
 
-    const [error, setError] = useState({
-      message: null,
-      from:null
+  const [error, setError] = useState({
+    message: null,
+    from: null
   });
 
   const [otp, setOtp] = useState("");
   const [isLogin, setIsLogin] = useState(true);
-  const [isOtp, setIsOtp] = useState(false);
+  const [isLoginOtp, setIsLoginOtp] = useState(false);
+  const [isSignupOtp, setIsSignupOtp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnClose = () => {
     handleOnclick();
     setIsLogin(true);
-    setIsOtp(false);
+    setIsLoginOtp(false);
+    setIsSignupOtp(false);
     setLoginSignupInfo({
-        name: "",
-        phone: "",
+      name: "",
+      phone: "",
     })
-}
+  }
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -51,18 +53,21 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-user`,
+        `${process.env.REACT_APP_API_URL}/signup-otp  `,
         { ...loginSignupInfo },
-        { withCredentials: true }
+        {withCredentials:true}
       );
       setIsLoading(false);
       console.log(data);
-      setLoginSignupInfo({});
-      setIsOtp(true);
+      setLoginSignupInfo({
+        name: "",
+        phone: "",
+      });
+      setIsSignupOtp(true);
     } catch (error) {
       setIsLoading(false);
-        console.log('NON', error);
-      setError({ message :error.response.data.message, from:'signup' });
+      console.log('NON', error);
+      setError({ message: error.response.data.message, from: 'signup' });
     }
   };
 
@@ -77,11 +82,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { phoneNumber: loginSignupInfo.phone },
         { withCredentials: true }
       );
-      // console.log()
-      console.log("gener", data);
+      console.log("login", data);
       setIsLoading(false);
-      setIsOtp(true);
-      setLoginSignupInfo({});
+      setIsLoginOtp(true);
+      setLoginSignupInfo({
+        name: "",
+        phone: "",
+      });
     } catch (error) {
       setIsLoading(false);
       console.log("EOEOE", error);
@@ -97,15 +104,44 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoading(true);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/verify-otp`,
-        { enteredOTP: otp },
+        { enteredOTP: otp, phoneNumber: loginSignupInfo.phone },
         { withCredentials: true }
       );
-      dispatch(changeUserStatus(data.data));
-      dispatch(getCartDetails(userId));
+      console.log("signup otp verification", data);
+      localStorage.setItem("token", data.token);
+      await dispatch(changeUserStatus(data.token));
+      await dispatch(getCartDetails());
+      window.location.reload();
       handleOnClose();
 
       setIsLoading(false);
-      setIsOtp(false);
+      setIsLoginOtp(false);
+      setOtp("");
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  const handleSignupOtpVerification = async () => {
+    if (!otp ) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/verify-signup `,
+        { enteredOTP: otp, phone: loginSignupInfo.phone },
+        { withCredentials: true }
+      );
+      console.log(data);
+      dispatch(changeUserStatus(data.token));
+      dispatch(getCartDetails());
+      localStorage.setItem("token", data.token);
+      handleOnClose();
+
+      setIsLoading(false);
+      setIsLoginOtp(false);
       setOtp("");
     } catch (error) {
       setIsLoading(false);
@@ -115,20 +151,19 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
   return (
     <div
-      className={`${classes.modal_overlay} ${
-        isOpen ? classes.modal_open : classes.modal_close
-      }`}
+      className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close
+        }`}
     >
       <div className={classes.modal_wrapper}>
         <button onClick={handleOnClose} className={classes.modal_close}>
           <AiOutlineClose size={20} />
         </button>
         <div className={classes.modal}>
-          {!isOtp &&
+          {!isSignupOtp && !isLoginOtp &&
             (isLogin ? (
               <>
                 <p className={classes.login_signup_p}>Login</p>
-                {!isLoading && error.from==='login' && (
+                {!isLoading && error.from === 'login' && (
                   <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
                 )}
                 <div className={classes.input_box}>
@@ -160,7 +195,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
             ) : (
               <>
                 <p className={classes.login_signup_p}>Sign up</p>
-                {!isLoading && error.from==='signup' && (
+                {!isLoading && error.from === 'signup' && (
                   <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
                 )}
                 <div className={classes.input_box}>
@@ -201,9 +236,20 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               </>
             ))}
 
-          {isOtp && (
+          {isLoginOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
+              <div className={classes.input_box}>
+                <input
+                  onChange={handleOnChange}
+                  value={loginSignupInfo.phone}
+                  className={classes.input}
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter Number"
+                />
+              </div>
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
@@ -215,6 +261,44 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               </div>
               <button
                 onClick={handleOtpVerification}
+                className={classes.button}
+              >
+                {!isLoading && <span>Proceed</span>}
+                {isLoading && (
+                  <span>
+                    <img className={classes.img} src={loader} alt="loader" />
+                    Processing...
+                  </span>
+                )}
+              </button>
+            </>
+          )}
+
+          {isSignupOtp && (
+            <>
+              <p className={classes.login_signup_p}>Verify Otp</p>
+              <div className={classes.input_box}>
+                <input
+                  onChange={handleOnChange}
+                  value={loginSignupInfo.phone}
+                  className={classes.input}
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter Number"
+                />
+              </div>
+              <div className={classes.input_box}>
+                <input
+                  onChange={(e) => setOtp(e.target.value)}
+                  value={otp}
+                  className={classes.input}
+                  type="text"
+                  placeholder="Enter Otp"
+                />
+              </div>
+              <button
+                onClick={handleSignupOtpVerification}
                 className={classes.button}
               >
                 {!isLoading && <span>Proceed</span>}

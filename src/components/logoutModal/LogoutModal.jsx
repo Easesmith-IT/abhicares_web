@@ -1,4 +1,4 @@
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classes from './LogoutModal.module.css'
 
 import { MdOutlineWarning } from "react-icons/md";
@@ -6,26 +6,26 @@ import { changeUserStatus } from "../../store/slices/userSlice";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from 'axios';
 
+
 function LogoutModal({ setIsLogoutModalOpen }) {
+    const token = localStorage.getItem("token");
     const dispatch = useDispatch();
-    const userId = useSelector(state => state.user.userId);;
 
     const handleLogout = async () => {
         try {
-            console.log('handle logout')
-            localStorage.removeItem("userId");
+            localStorage.removeItem("token");
             setIsLogoutModalOpen(false);
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
-            console.log(data)
-           
-            dispatch(changeUserStatus(null));
-            dispatch(getCartDetails(userId))
-            
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { headers: { Authorization: token }, withCredentials: true });
+
+            await dispatch(changeUserStatus(null));
+            await dispatch(getCartDetails())
+            window.location.reload();
+
         } catch (error) {
             console.log(error);
         }
     }
-    
+
     return (
         <div className={classes.modal_wrapper}>
             <div className={classes.modal}>

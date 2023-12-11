@@ -10,6 +10,8 @@ const initialState = {
     cartId: ""
 }
 
+const token = localStorage.getItem("token");
+
 export const createCart = createAsyncThunk("/cart/create", async (userId, items, totalPrice) => {
     console.log(userId, items, totalPrice);
     try {
@@ -22,14 +24,12 @@ export const createCart = createAsyncThunk("/cart/create", async (userId, items,
     }
 })
 
-export const getCartDetails = createAsyncThunk("/cart/details", async (userId) => {
+export const getCartDetails = createAsyncThunk("/cart/details", async () => {
     try {
-        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { withCredentials: true,params:{
-            userId
-        } });
+        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { headers: { Authorization: token }, withCredentials: true });
 
         const response = await res;
-        console.log('cart details',response.data);
+        console.log('cart details', response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -38,18 +38,19 @@ export const getCartDetails = createAsyncThunk("/cart/details", async (userId) =
 })
 
 export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => {
+    console.log(data.id);
     try {
         const res = axios.post(`${process.env.REACT_APP_API_URL}/add-item-cart`,
             {
                 itemId: data.id,
-                quantity: data.quantity,
-                userId:data.userId
+                // quantity: data.quantity,
+                // userId:data.userId
             }
-            , { withCredentials: true }
+            , { headers: { Authorization: token }, withCredentials: true }
         );
 
         const response = await res;
-        console.log('add-item to cart',response);
+        console.log('add-item to cart', response);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -58,36 +59,37 @@ export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => 
 })
 
 export const updateQty = createAsyncThunk(
-  "/cart/update-item-quantity",
-  async (data) => {
-    try {
-      const res = axios.post(
-        `${process.env.REACT_APP_API_URL}/update-item-quantity/${data.id}`,
-        {
-          quantity: data.quantity,
-        },
-        { withCredentials: true }
-      );
+    "/cart/update-item-quantity",
+    async (data) => {
+        try {
+            const res = axios.post(
+                `${process.env.REACT_APP_API_URL}/update-item-quantity/${data.id}`,
+                {
+                    quantity: data.quantity,
+                },
+                { withCredentials: true }
+            );
 
-      const response = await res;
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message);
+            const response = await res;
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message);
+        }
     }
-  }
 );
 
 export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (data) => {
-    console.log(data);
     try {
-        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`,{}, { withCredentials: true });
+        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, {}, { headers: { Authorization: token }, withCredentials: true });
+        console.log("delete api",data);
 
         const response = await res;
         console.log(response.data);
         return response.data;
     } catch (error) {
+        console.log(error);
         toast.error(error?.response?.data?.message);
     }
 })
