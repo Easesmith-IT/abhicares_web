@@ -13,6 +13,7 @@ import { useLocation } from "react-router";
 import { FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import LogoutModal from "../logoutModal/LogoutModal";
+import logo from "../../assets/White Logo V2-02.png"
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -84,28 +85,70 @@ export const Header = () => {
           <div className={toggle ? "open mobilenav" : ""}>
             <div>
               <div>
-                <MenuIcon className="menu-icon" onClick={handleClose} />
+                <MenuIcon sx={{color:"white"}} className="menu-icon" onClick={handleClose} />
               </div>
               <Link to="/" className={classes["LogoContainer"]}>
-                <img src={Logo4} alt="logo" />
+                <img src={logo} alt="logo" />
               </Link>
             </div>
 
             <div>
               {/* <div><LocationOnIcon /></div>
               <div><KeyboardArrowDownIcon /></div> */}
+              {!isUser && (
+                <div className={classes["button-container"]}>
+                  <Button
+                    onClick={handleOnclick}
+                    style={{
+                      backgroundColor: "white",
+                      color: "black"
+                    }}
+                    variant="contained"
+                  >
+                    Login
+                  </Button>
+                </div>
+              )}
+              {isUser && (
+                <div
+                  ref={userIconRef}
+                  onClick={() => setIsUserModalOpen(!isUserModalOpen)}
+                  className={classes.icon_container}
+                >
+                  <FaUser size={20} color="#B0B0B0" />
+                </div>
+              )}
+              {isUserModalOpen && (
+                <div ref={ref} className={classes.info}>
+                  <Link
+                    onClick={() => setIsUserModalOpen(false)}
+                    to={"/help_center"}
+                    className={classes.p}
+                  >
+                    Help Center
+                  </Link>
+                  <Link
+                    onClick={() => setIsUserModalOpen(false)}
+                    to={"/my_bookings"}
+                    className={classes.p}
+                  >
+                    My Bookings
+                  </Link>
+                  <p onClick={handleLogoutModal} className={classes.p}>
+                    Log out
+                  </p>
+                </div>
+              )}
             </div>
-            <div className={classes["button-container"]}>
-              <Button variant="outlined">Login</Button>
-            </div>
+
           </div>
         ) : (
           <div className={classes["container"]}>
             <div>
-              <MenuIcon onClick={handleOpen} />
+              <MenuIcon sx={{color:"white"}} onClick={handleOpen} />
             </div>
             <Link to="/" className={classes["LogoContainer"]}>
-              <img src={Logo4} alt="logo" />
+              <img src={logo} alt="logo" />
             </Link>
           </div>
         )
@@ -130,7 +173,7 @@ export const Header = () => {
                 onClick={handleOnclick}
                 style={{
                   backgroundColor: "white",
-                  color:"black"
+                  color: "black"
                 }}
                 variant="contained"
               >
