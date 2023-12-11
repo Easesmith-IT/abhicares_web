@@ -24,7 +24,8 @@ export const Header = () => {
   const ref = useRef();
   const userIconRef = useRef();
 
-  const userId = useSelector((state) => state.user.userId);
+  // const userId = useSelector((state) => state.user.userId);
+  const userId = localStorage.getItem("token");
 
   const isUser = userId ? true : false;
 

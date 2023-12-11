@@ -14,7 +14,6 @@ const DateTimeModal = ({ setIsModalOpen, isModalOpen, setInfo, info, handleOnSub
         return format(today, "yyyy-MM-dd");
     }
 
-    console.log();
 
     return (
         <div className={`${classes.modal_overlay} ${isModalOpen ? classes.modal_open : classes.modal_close}`}>

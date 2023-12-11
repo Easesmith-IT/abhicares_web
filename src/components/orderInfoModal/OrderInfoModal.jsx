@@ -13,21 +13,23 @@ const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
                 <h3>Order1</h3>
                 <div className={classes.p_container}>
                     <p className={classes.qty}>Qty: 1</p>
-                    <p>booking date: {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
+                    <p>booking date: {format(new Date(order.bookingDate), "dd-MM-yyyy")}</p>
+                    <p>booking time: {order.bookingTime}</p>
                     <p>appointment date: 05/12/2023</p>
+                    <p>status: {order.status}</p>
                 </div>
                 <h3>Products</h3>
                 <div className={classes.product_contaner}>
-                    {order?.products?.map((product) => (
+                    {/* {order?.products?.map((product) => ( */}
                         <div className={classes.product}>
-                            <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="" />
+                            <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${order.product.imageUrl[0]}`} alt="" />
                             <div className={classes.info}>
-                                <h4>{product.product.name}</h4>
-                                <p>Qty: {product.quantity}</p>
-                                <p>₹{product.product.offerPrice}</p>
+                                <h4>{order.product?.name}</h4>
+                                <p>Qty: {order?.quantity}</p>
+                                <p>₹{order.product.offerPrice}</p>
                             </div>
                         </div>
-                    ))}
+                    {/* ))} */}
                 </div>
                 <h4>Track Order</h4>
                 <div>

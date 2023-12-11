@@ -9,24 +9,19 @@ import {
   updateQty,
 } from "../../store/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateTimeModal from "../dateTimeModal/DateTimeModal";
 import toast from "react-hot-toast";
 
 const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
-  const userId = useSelector(state => state.user.userId);;
+  const userId = useSelector(state => state.user.userId);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(item);
+  const [isSelectButton, setIsSelectButton] = useState(true);
   const [info, setInfo] = useState({
-    productId: item?.product?._id,
-    name: item?.product?.name,
-    price: item?.product?.price,
-    offerPrice: item?.product?.offerPrice,
-    description: item?.product?.description,
-    quantity: item?.quantity,
-    imageUrl: item?.product?.imageUrl[0],
+    productId: item?.productId?._id,
+    name: item?.productId?.name,
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
@@ -36,35 +31,43 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     if (!info.bookingDate || !info.bookingTime) {
       toast.error("Select booking date and time");
       return;
-      
+
     }
     setIsModalOpen(false);
-    setBookingInfo(info);
+    setBookingInfo([...bookingInfo, info]);
   }
+
+  useEffect(() => {
+    const find = bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id)
+    if (find >= 0) {
+      setIsSelectButton(false);
+    }
+    else {
+      setIsSelectButton(true);
+    }
+  }, [bookingInfo])
+
 
 
   const handleOnPlusClick = async () => {
-    let updatedQuantity = item.quantity + 1;
     await dispatch(
-      updateQty({ id: item.product._id, quantity: updatedQuantity })
+      addItemToCart({ id: item.productId._id })
     );
-    await dispatch(getCartDetails(userId));
+    await dispatch(getCartDetails());
   };
 
   const handleOnMinusClick = async () => {
-    let updatedQuantity = item.quantity - 1;
     await dispatch(
-      updateQty({
-        id: item.product._id,
-        quantity: updatedQuantity,
+      deleteItemFromCart({
+        itemId: item.productId._id
       })
     );
-    await dispatch(getCartDetails(userId));
+    await dispatch(getCartDetails());
   };
 
   const handleCartItemDelete = async () => {
-    await dispatch(deleteItemFromCart({ itemId: item.product._id }));
-    await dispatch(getCartDetails(userId));
+    await dispatch(deleteItemFromCart({ itemId: item.productId._id }));
+    await dispatch(getCartDetails());
   }
 
 
@@ -72,7 +75,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     <>
       <div className={classes.cart_item}>
         <div className={classes.cart_item_left}>
-          <p className={classes.p}>{item.product.name}</p>
+          <p className={classes.p}>{item.productId.name}</p>
         </div>
 
         <div className={classes.cart_item_right}>
@@ -81,10 +84,10 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
             <span className={classes.quantity}>{item?.quantity}</span>
             <BiPlus size={20} onClick={handleOnPlusClick} />
           </button>
-          <MdDelete size={20} onClick={handleCartItemDelete} />
-          <span className={classes.price}>₹{item.itemTotalOfferPrice}</span>
+          {/* <MdDelete size={20} onClick={handleCartItemDelete} /> */}
+          <span className={classes.price}>₹{item.quantity * item.productId.offerPrice}</span>
         </div>
-        {isButton && <button onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
+        {isButton && isSelectButton && <button onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
       </div>
 
       {isModalOpen &&

@@ -9,16 +9,17 @@ import { useSelector } from "react-redux";
 
 const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen, getAllAddress, Data = "" }) => {
     console.log("data", Data);
+    const token = localStorage.getItem("token");
     // const user = useSelector(state => state.user);
-    const userId = useSelector(state => state.user.userId);;
+    const userId = useSelector(state => state.user.userId);
 
     const [addressInfo, setAddressInfo] = useState({
-      addressLine: Data.addressLine || "",
-      pincode: Data.pincode || "",
-      mobile: Data.mobile || "",
-      landmark: Data.landmark,
-      defaultAddress: Data.defaultAddress || false,
-      userId: userId,
+        addressLine: Data.addressLine || "",
+        pincode: Data.pincode || "",
+        mobile: Data.mobile || "",
+        landmark: Data.landmark,
+        defaultAddress: Data.defaultAddress || false,
+        // userId: userId,
     });
 
     const handleOnChange = (e) => {
@@ -37,7 +38,7 @@ const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen, getAllAddress, Data
         }
         if (Data) {
             try {
-                const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-user-address/${Data._id}`, { ...addressInfo }, { withCredentials: true });
+                const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-user-address/${Data._id}`, { ...addressInfo }, { headers: { Authorization: token } });
                 toast.success("Address updated successfully");
                 getAllAddress();
                 setIsAddAddressModalOpen(false);
@@ -48,7 +49,7 @@ const AddAddressModal = ({ isOpen, setIsAddAddressModalOpen, getAllAddress, Data
         }
         else {
             try {
-                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-user-address`, { ...addressInfo }, { withCredentials: true });
+                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-user-address`, { ...addressInfo }, { headers: { Authorization: token }, withCredentials: true });
                 toast.success("Address created successfully");
                 getAllAddress();
                 setIsAddAddressModalOpen(false);

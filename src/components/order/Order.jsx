@@ -6,7 +6,6 @@ import { format } from 'date-fns';
 const Order = ({ order }) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     console.log(order);
-    console.log(order.products[1]);
 
     const handleOnclick = () => {
         setIsInfoModalOpen(true);
@@ -29,9 +28,9 @@ const Order = ({ order }) => {
                     <div>
                         <div className={classes.progress}></div>
                         <div className={classes.d_flex}>
-                            <p></p>
+                            <p className={classes.p}></p>
                             <p>Out for delivary</p>
-                            <p>Delivered</p>
+                            <p className={classes.p}>Delivered</p>
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ import loader from "../../assets/rolling-white.gif"
 
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -33,12 +34,23 @@ const CheckoutPage = () => {
   const [bookingInfo, setBookingInfo] = useState([]);
   const [allAddress, setAllAddress] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [index, setIndex] = useState(-1);
+
+  const [info, setInfo] = useState({
+    productId: "",
+    name: "",
+    bookingDate: "",
+    bookingTime: "Select time (08:00AM-08:00PM)"
+  })
+
+  const token = localStorage.getItem("token");
 
   const getAllAddress = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/get-user-address/${userId}`,
-        { withCredentials: true }
+        `${process.env.REACT_APP_API_URL}/get-user-address`,
+        { headers: { Authorization: token } }
       );
       setAllAddress(data.data);
       let defaultAddress = data.data.find((add) => add.defaultAddress === true);
@@ -47,14 +59,13 @@ const CheckoutPage = () => {
         defaultAddress = data.data[data.data.length - 1];
       }
       setAddress(defaultAddress);
-      console.log("adddress", data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     (async () => {
-      await dispatch(getCartDetails(userId));
+      await dispatch(getCartDetails());
     })();
 
     getAllAddress();
@@ -62,52 +73,11 @@ const CheckoutPage = () => {
 
   const cart = useSelector((state) => state.cart);
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 550 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 550, min: 0 },
-      items: 1,
-    },
-  };
-
-  const ButtonGroup = ({ next, previous }) => {
-    return (
-      <>
-        <button
-          className={`${classes.carousel_button} ${classes.carousel_button_left}`}
-          onClick={() => previous()}
-        >
-          <IoIosArrowBack size={35} />
-        </button>
-        <button
-          className={`${classes.carousel_button} ${classes.carousel_button_right}`}
-          onClick={() => next()}
-        >
-          <IoIosArrowForward size={35} />
-        </button>
-      </>
-    );
-  };
-
-
-  console.log("bookingInfo", bookingInfo);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
   };
 
-  console.log("address", address);
 
   const handleOrder = async () => {
     if (!address) {
@@ -121,29 +91,26 @@ const CheckoutPage = () => {
     }
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userId, userAddressId: address._id }, { withCredentials: true });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo }, { headers: { Authorization: token } });
       setIsLoading(false);
-      console.log(data);
 
-      const formData = new FormData();
-      formData.append("orderId", data?._id);
-      // formData.append("userAddress",);
-      const { addressLine, pincode, landmark, mobile } = address;
-      const info = {
-        orderId: data?._id,
-        userAddress: {
-          addressLine,
-          pincode,
-          landmark,
-          mobile
-        },
-        productDetails: bookingInfo,
-        // orderValue: data?.orderValue
-      }
+
+      // const { addressLine, pincode, landmark, mobile } = address;
+      // const info = {
+      //   orderId: data?._id,
+      //   userAddress: {
+      //     addressLine,
+      //     pincode,
+      //     landmark,
+      //     mobile
+      //   },
+      //   productDetails: bookingInfo,
+      //   orderValue: data?.orderValue
+      // }
       setIsSuccessModalOpen(true);
 
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { withCredentials: true });
-      console.log("res", res);
+      // const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { headers: { Authorization: token } });
+      // console.log("res", res);
 
 
     } catch (error) {
@@ -151,24 +118,32 @@ const CheckoutPage = () => {
     }
   };
 
-  // const handleOrder = async () => {
-  //   if (!address) {
-  //     toast.error("Select address");
-  //     return;
-  //   }
-  //   try {
-  //     console.log("addddress", address);
-  //     const { data } = await axios.post(
-  //       `${process.env.REACT_APP_API_URL}/place-cod-order`,
-  //       { userId, userAddressId: address._id },
-  //       { withCredentials: true }
-  //     );
-  //     console.log(data);
-  //     setIsSuccessModalOpen(true);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    if (!info.bookingDate || !info.bookingTime) {
+      toast.error("Select booking date and time");
+      return;
+
+    }
+    const findIndex = bookingInfo.findIndex((_, i) => i === index);
+
+    bookingInfo.splice(findIndex, 1, info)
+    setBookingInfo(bookingInfo);
+
+    setIsModalOpen(false);
+  }
+
+
+  const handleDateTimeChange = (index) => {
+    setIndex(index);
+
+    const findIndex = bookingInfo.findIndex((item, i) => i === index);
+
+    setInfo(bookingInfo[findIndex]);
+    setIsModalOpen(true);
+  }
 
   return (
     <>
@@ -176,7 +151,7 @@ const CheckoutPage = () => {
         <div className={`${classes.container} ${classes.checkout_container}`}>
           <div className={classes.checkout_container_left}>
             <div className={classes.login_button_container_guest}>
-              {!userId && (
+              {!token && (
                 <>
                   <p className={classes.heading}>Account</p>
                   <p className={classes.p}>
@@ -200,7 +175,7 @@ const CheckoutPage = () => {
                 </div>
               )}
 
-              {userId && (
+              {token && (
                 <button
                   onClick={() => setIsAddressModalOpen(true)}
                   className={`${classes.select_address_btn}`}
@@ -213,7 +188,7 @@ const CheckoutPage = () => {
               <>
                 <div className={classes.bookingWrapper}>
                   <div className={classes.booking_info_container}>
-                    {bookingInfo && bookingInfo?.map((data) => (
+                    {bookingInfo && bookingInfo?.map((data, index) => (
                       <div
                         className={classes.booking_info}
                         key={data.productId}
@@ -221,7 +196,7 @@ const CheckoutPage = () => {
                         <h4>{data.name}</h4>
                         <p>{data.bookingDate}</p>
                         <p>{data.bookingTime}</p>
-                        <h6>Change</h6>
+                        <button onClick={() => handleDateTimeChange(index)}>Change</button>
                       </div>
                     ))}
                   </div>
@@ -244,6 +219,7 @@ const CheckoutPage = () => {
 
           <div className={classes.cart_checkout_container}>
             <div className={classes.cart}>
+              <h3>Your Services</h3>
               <div className={classes.cart_items_container}>
                 {cart?.items?.map((item) => (
                   <CartItem
@@ -355,6 +331,16 @@ const CheckoutPage = () => {
           </div>
         </div>
       )}
+
+      {isModalOpen &&
+        <DateTimeModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          info={info}
+          setInfo={setInfo}
+          handleOnSubmit={handleOnSubmit}
+        />
+      }
     </>
   );
 };
