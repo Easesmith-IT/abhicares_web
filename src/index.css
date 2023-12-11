@@ -48,6 +48,7 @@ code {
 }
 .open{
   max-height: 90vh;
+  background: #000;
 }
 .mobilenav>div{
   display: flex;
