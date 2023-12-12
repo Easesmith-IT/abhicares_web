@@ -20,6 +20,7 @@ import loader from "../../assets/rolling-white.gif"
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
+import useGeolocation from "../../hooks/usegelocation";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ const CheckoutPage = () => {
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
+
+  const { location } = useGeolocation()
+  console.log(location)
 
   const token = localStorage.getItem("token");
 
@@ -91,8 +95,10 @@ const CheckoutPage = () => {
     }
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo,city:location.components.city }, { headers: { Authorization: token } });
       setIsLoading(false);
+
+      console.log(data)
 
 
       // const { addressLine, pincode, landmark, mobile } = address;
@@ -115,6 +121,8 @@ const CheckoutPage = () => {
 
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.message)
+      setIsLoading(false)
     }
   };
 

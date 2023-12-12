@@ -1,30 +1,40 @@
-import { CiMenuKebab } from 'react-icons/ci';
-import classes from './AddressModal.module.css';
-import AddAddressModal from '../addAddressModal/AddAddressModal';
-import { useState } from 'react';
-import { MdDelete, MdEdit } from 'react-icons/md';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { CiMenuKebab } from "react-icons/ci";
+import classes from "./AddressModal.module.css";
+import AddAddressModal from "../addAddressModal/AddAddressModal";
+import { useState } from "react";
+import { MdDelete, MdEdit } from "react-icons/md";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_API_URL}/delete-user-address/${data._id}`, { withCredentials: true });
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/delete-user-address/${data._id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+          withCredentials: true,
+        }
+      );
       toast.success("Address deleted successfully");
       console.log(res.data);
-      setIsDeleteModal(false)
+      setIsDeleteModal(false);
       getAllAddress();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleOnChange = (e) => {
     setTemporaryAddress(data);
-  }
+  };
 
   return (
     <>
@@ -88,6 +98,6 @@ const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
       )}
     </>
   );
-}
+};
 
-export default Address
+export default Address;
