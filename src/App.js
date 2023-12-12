@@ -23,7 +23,11 @@ import { Toaster } from "react-hot-toast";
 import HelpCenter from "./pages/HelpCenter";
 import MyBookings from "./pages/myBookings/MyBookings";
 import SuccessPage from "./pages/successPage/SuccessPage";
+
+import AntiDiscriminationPolicy from "./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy";
+=======
 import useGeolocation from "./hooks/usegelocation";
+
 
 function App() {
   const {  location } = useGeolocation();
@@ -39,13 +43,19 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/aboutUs" element={<AboutUs />} />
             <Route path="/contactUs" element={<ContactUs />} />
+
             <Route path="/termsAndConditions" element={<TermsAndConditions />} />
             <Route path="/privacy&policy" element={<PrivacyPolicy />} />
+            <Route path="/antiDiscriminationPolicy" element={<AntiDiscriminationPolicy />} />
+
+            <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
+
             <Route path="/services/:serviceId" element={<ProductPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
+
             <Route path="/help_center" element={<HelpCenter />} />
             <Route path="/my_bookings" element={<MyBookings />} />
+
             <Route path="/success" element={<SuccessPage />} />
           </Routes>
           <Footer />

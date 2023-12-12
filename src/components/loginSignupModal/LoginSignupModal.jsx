@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
+import toast from "react-hot-toast";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
@@ -38,7 +39,11 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     setLoginSignupInfo({
       name: "",
       phone: "",
-    })
+    });
+    setError({
+      message: null,
+      from: null
+    });
   }
 
   const handleOnChange = (e) => {
@@ -46,16 +51,40 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     setLoginSignupInfo({ ...loginSignupInfo, [name]: value });
   };
 
+  const handleLoginSignupChange = () => {
+    setIsLogin(!isLogin);
+    setLoginSignupInfo({
+      name: "",
+      phone: "",
+    });
+    setError({
+      message: null,
+      from: null
+    });
+  }
+
   const handleSignUp = async () => {
-    if (!loginSignupInfo.phone || !loginSignupInfo.name) {
+    if (!loginSignupInfo.name) {
+      setError({ message: "Enter name", from: 'signup' });
       return;
     }
+
+    if (!loginSignupInfo.phone) {
+      setError({ message: "Enter phone number", from: 'signup' });
+      return;
+    }
+
+    if (loginSignupInfo.phone.length !== 10) {
+      setError({ message: "Enter a valid phone number", from: 'signup' });
+      return;
+    }
+
     try {
       setIsLoading(true);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/signup-otp  `,
         { ...loginSignupInfo },
-        {withCredentials:true}
+        { withCredentials: true }
       );
       setIsLoading(false);
       console.log(data);
@@ -73,6 +102,11 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
   const handleLogin = async () => {
     if (!loginSignupInfo.phone) {
+      setError({ message: "Enter phone number", from: 'login' });
+      return;
+    }
+    if (loginSignupInfo.phone.length !== 10) {
+      setError({ message: "Enter a valid phone number", from: 'login' });
       return;
     }
     try {
@@ -98,8 +132,25 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
   const handleOtpVerification = async () => {
     if (!otp) {
+      setError({ message: "Enter otp", from: 'login otp verification' });
       return;
     }
+
+    if (otp.length !== 6) {
+      setError({ message: "Enter a valid otp", from: 'signup otp verification' });
+      return;
+    }
+
+    if (!loginSignupInfo.phone) {
+      setError({ message: "Enter phone number", from: 'login otp verification' });
+      return;
+    }
+
+    if (loginSignupInfo.phone.length !== 10) {
+      setError({ message: "Enter a valid phone number", from: 'login otp verification' });
+      return;
+    }
+
     try {
       setIsLoading(true);
       const { data } = await axios.post(
@@ -124,9 +175,26 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   };
 
   const handleSignupOtpVerification = async () => {
-    if (!otp ) {
+    if (!otp) {
+      setError({ message: "Enter otp", from: 'signup otp verification' });
       return;
     }
+
+    if (otp.length !== 6) {
+      setError({ message: "Enter a valid otp", from: 'signup otp verification' });
+      return;
+    }
+
+    if (!loginSignupInfo.phone) {
+      setError({ message: "Enter phone number", from: 'signup otp verification' });
+      return;
+    }
+
+    if (loginSignupInfo.phone.length !== 10) {
+      setError({ message: "Enter a valid phone number", from: 'signup otp verification' });
+      return;
+    }
+
     try {
       setIsLoading(true);
       const { data } = await axios.post(
@@ -173,14 +241,14 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     className={classes.input}
                     name="phone"
                     id="phone"
-                    type="text"
+                    type="number"
                     placeholder="Enter mobile number"
                   />
                 </div>
 
                 <p className={classes.p}>
                   New user?
-                  <button onClick={() => setIsLogin(!isLogin)}>Sign up</button>
+                  <button onClick={handleLoginSignupChange}>Sign up</button>
                 </p>
                 <button onClick={handleLogin} className={classes.button}>
                   {!isLoading && <span>Proceed</span>}
@@ -214,7 +282,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     onChange={handleOnChange}
                     value={loginSignupInfo.phone}
                     className={classes.input}
-                    type="text"
+                    type="number"
                     name="phone"
                     id="phone"
                     placeholder="Enter mobile number"
@@ -222,7 +290,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                 </div>
                 <p className={classes.p}>
                   Already account?
-                  <button onClick={() => setIsLogin(!isLogin)}>Login</button>
+                  <button onClick={handleLoginSignupChange}>Login</button>
                 </p>
                 <button onClick={handleSignUp} className={classes.button}>
                   {!isLoading && <span>Proceed</span>}
@@ -255,7 +323,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   onChange={(e) => setOtp(e.target.value)}
                   value={otp}
                   className={classes.input}
-                  type="text"
+                  type="number"
                   placeholder="Enter Otp"
                 />
               </div>
@@ -293,7 +361,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   onChange={(e) => setOtp(e.target.value)}
                   value={otp}
                   className={classes.input}
-                  type="text"
+                  type="number"
                   placeholder="Enter Otp"
                 />
               </div>

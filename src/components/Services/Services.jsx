@@ -87,12 +87,8 @@ export const Services = ({ open }) => {
   useEffect(() => {
     getAllCategories();
   }, []);
+
   const data = [
-    {
-      _id: "6565a1a4ec5141d4ab50f3ae",
-      name: "saloon",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/paint.png`,
-    },
     {
       _id: "656b8abe9f3a2d134bee9396",
       name: "House care",

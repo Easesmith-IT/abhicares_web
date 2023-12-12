@@ -36,7 +36,7 @@ p {
 .modal {
     overflow-y: scroll;
     border-radius: 15px;
-    max-width: 520px;
+    max-width: 620px;
     width: 100%;
     height: 600px;
 }
@@ -174,10 +174,9 @@ p {
     color: gray;
 }
 
-.button {
-    color: #5d17f4;
-    background-color: transparent;
-    border: 1px solid #d6d6d6;
+.customer_reviews_section .button {
+    color: #fff;
+    background: #000;
     border-radius: 6px;
     padding: 6px 25px;
     cursor: pointer;
@@ -375,6 +374,12 @@ p {
 .customer_reviews_h3{
     font-size: 26px;
     font-weight: 600;
+}
+
+.d_flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .customer_reviews_section .rating{
