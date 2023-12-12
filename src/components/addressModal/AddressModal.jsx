@@ -2,10 +2,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import classes from "./AddressModal.module.css";
 
 import { FaPlus } from "react-icons/fa6";
-import { CiMenuKebab } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import AddAddressModal from "../addAddressModal/AddAddressModal";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Address from "./Address";
@@ -18,7 +16,6 @@ const AddressModal = ({
   allAddress,
 }) => {
   // const user = useSelector(state => state.user);
-  const userId = useSelector(state => state.user.userId);;
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
 
   const [temporaryAddress, setTemporaryAddress] = useState("");

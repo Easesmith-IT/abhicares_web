@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import classes from "./CheckoutPage.module.css";
 
 import { AiOutlinePercentage } from "react-icons/ai";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 import Carousel from "react-multi-carousel";
 
 import CartItem from "../../components/checkout/CartItem";
-import FrequentlyAddedItems from "../../components/checkout/FrequentlyAddedItems";
 import LoginSignupModal from "../../components/loginSignupModal/LoginSignupModal";
 import { useDispatch, useSelector } from "react-redux";
 import AddressModal from "../../components/addressModal/AddressModal";

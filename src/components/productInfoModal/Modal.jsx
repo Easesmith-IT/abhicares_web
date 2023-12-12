@@ -10,25 +10,22 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import parse from "html-react-parser";
 
-import Faqs from "./Faqs";
 import CustomerReview from "./CustomerReview";
 import SpecificStarRating from "./SpecificStarRating";
-import HowItWorks from "./HowItWorks";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { addItemToCart, createCart, getCartDetails } from "../../store/slices/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
 import Product from "../Product";
 import Loader from "../loader/Loader";
+import ReviewModal from "../reviewModal/AddReviewModal";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
-    const [isProductInCart, setIsProductInCart] = useState(false);
+    const token = localStorage.getItem("token");
     const [allProducts, setAllProducts] = useState([]);
+    const [allReviews, setAllReviews] = useState([]);
+    const [userReviews, setUserReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const userId = useSelector(state => state.user.userId);;
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-    const dispatch = useDispatch();
-    const cart = useSelector(state => state.cart)
 
     const responsive = {
         superLargeDesktop: {
@@ -61,7 +58,6 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
-            console.log(data.data[0].productObjects);
             setAllProducts(data.data[0].productObjects);
         } catch (error) {
             console.log(error);
@@ -71,46 +67,32 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
         }
     };
 
+    const getAllReviewsOfUser = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`);
+            console.log("user reviews",data);
+            setUserReviews(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getAllReviews = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`);
+            console.log("reviews",data);
+            setAllReviews(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     useEffect(() => {
-        getAllProducts();
-        (async () => {
-            await dispatch(getCartDetails(userId));
-        })()
-        const filtered = cart.items.find((item) => item.productId === Data._id)
-        setIsProductInCart(filtered)
+        !isProduct && getAllProducts();
+        getAllReviews();
+        getAllReviewsOfUser();
     }, [])
-
-
-    const handleAddToCart = async () => {
-        if (!cart.isCart) {
-            await dispatch(createCart(
-                "656967d8f6f027570817cdef",
-                [
-                    {
-                        productId: Data._id,
-                        quantity: 1
-                    },
-                ],
-                Data.price
-            ));
-
-            await dispatch(getCartDetails(userId));
-        }
-        else {
-            const filtered = cart.items.find((item) => item.productId === Data._id)
-            console.log(filtered);
-            if (filtered) {
-                let updatedQuantity = filtered.quantity + 1;
-                await dispatch(addItemToCart(Data._id, updatedQuantity,userId))
-                await dispatch(getCartDetails(userId));
-            }
-            else {
-                await dispatch(addItemToCart(Data._id, 1,userId))
-                await dispatch(getCartDetails(userId));
-            }
-        }
-    }
 
 
 
@@ -124,7 +106,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                     <div className={classes.modal}>
                         {Data.imageUrl && <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                             {Data?.imageUrl?.map((image) => (
-                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_DOMAIN}/uploads/${image}`} alt="" />
+                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt="product" />
                             ))}
                         </Carousel>}
                         <div className={classes.modal_body}>
@@ -152,13 +134,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     </div>
                                 </div>
                                 {Data?.description && <p>{parse(Data?.description)}</p>}
-                                <div className={classes.box}>
+                                {/* <div className={classes.box}>
                                     <div className={classes.box_left}>
                                         <img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_94,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/customer-subscription/1693221423328-595820.jpeg" alt="" />
                                         <p className={classes.box_left_p}>Standard rate card</p>
                                     </div>
                                     <FiChevronRight size={23} />
-                                </div>
+                                </div> */}
                             </div>
 
                             {!isProduct && !isLoading
@@ -180,7 +162,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                 ))}
                             </div>}
 
-                            <div className={classes.border_bottom}>
+                            {/* <div className={classes.border_bottom}>
                                 <HowItWorks />
                             </div>
                             <div className={classes.border_bottom}>
@@ -199,17 +181,20 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
 
                             <div className={classes.border_bottom}>
                                 <Faqs />
-                            </div>
+                            </div> */}
 
-                            <div className={classes.border_bottom}>
+                            {/* <div className={classes.border_bottom}>
                                 <img className={classes.brands_img} src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_template,q_auto:low,f_auto/w_1232,dpr_1,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1682596517581-ec0422.jpeg" alt="" />
-                            </div>
+                            </div> */}
 
                             <div className={classes.customer_reviews_section}>
                                 <h3 className={classes.customer_reviews_h3}>Customer reviews</h3>
-                                <div className={classes.rating}>
-                                    <BsStarFill color="black" size={15} />
-                                    <span className={classes.rating_span}>4.83</span>
+                                <div className={classes.d_flex}>
+                                    <div className={classes.rating}>
+                                        <BsStarFill color="black" size={15} />
+                                        <span className={classes.rating_span}>4.83</span>
+                                    </div>
+                                    {token && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
                                 </div>
                                 <p className={classes.reviews}>1.2M reviews</p>
 
@@ -220,6 +205,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     <CustomerReview />
                                 </div>
                             </div>
+                            {isReviewModalOpen &&
+                                <ReviewModal
+                                    isReviewModalOpen={isReviewModalOpen}
+                                    setIsReviewModalOpen={setIsReviewModalOpen}
+                                    id={Data._id}
+                                />
+                            }
                         </div>
                     </div>
                 </div>
