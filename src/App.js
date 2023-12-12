@@ -23,37 +23,16 @@ import { Toaster } from "react-hot-toast";
 import HelpCenter from "./pages/HelpCenter";
 import MyBookings from "./pages/myBookings/MyBookings";
 import SuccessPage from "./pages/successPage/SuccessPage";
+
 import AntiDiscriminationPolicy from "./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy";
+=======
+import useGeolocation from "./hooks/usegelocation";
+
 
 function App() {
-  const dispatch = useDispatch()
+  const {  location } = useGeolocation();
 
-  const getUserId = async (token) =>{
-    try{
-      if(!token){dispatch(changeUserStatus(null));return;}
-      const body = {
-        str:token,
-        code:"893232342123245575433222&&#@#%@61729953"
-      }
-      console.log('code',body.code)
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-by-token`,body)
-
-      console.log(response)
-
-      dispatch(changeUserStatus(response.data.userId));
-
-    }catch(err){
-      console.log(err)
-    }
-  }
-
-  const token = Cookies.get('token');
-
-  useEffect(() => {
-    // Read a cookie
-    getUserId(token)
-
-  },[token]);
+  // console.log("APP.JS", location);
 
   return (
     <>
