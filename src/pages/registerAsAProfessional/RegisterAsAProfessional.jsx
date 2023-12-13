@@ -38,7 +38,7 @@ const RegisterAsAProfessional = () => {
                 city: "",
                 state: ""
             })
-            toast.success("Registered successfully");
+            toast.success("Thank you! We will get back to you soon");
         } catch (error) {
             console.log(error);
         }
