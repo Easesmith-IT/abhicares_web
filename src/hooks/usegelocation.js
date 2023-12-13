@@ -25,8 +25,13 @@ const useGeolocation = () => {
     }
   };
 
-  const fetchLocation = () => {
-    if (navigator.geolocation) {
+  
+
+  const fetchLocation = (permissionStatus) => {
+    console.log("log", permissionStatus);
+
+    if (permissionStatus.state === "granted") {
+      console.log("inside grrnated");
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -39,13 +44,40 @@ const useGeolocation = () => {
           console.error("Error in getting location", error.message);
         }
       );
-    } else {
+    } else if (
+      permissionStatus.state === "prompt" ||
+      permissionStatus.state === "denied"
+    ) {
+      setTimeout(() => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocation({ latitude, longitude });
+          },
+          (error) => {
+            console.error("Error getting location:", error.message);
+          }
+        );
+      }, 2 * 60 * 1000);
+    }
+  }; 
+  
+
+useEffect(() => {
+  if (navigator.geolocation) {
+    const permissionStatus = navigator.permissions
+      .query({
+        name: "geolocation",
+      })
+      .then((status) => {
+         fetchLocation(status);
+        return;
+      });
+  }
+  else {
       console.error("Geolocation is supported by your web browser");
     }
-  };
-
-  useEffect(() => {
-    fetchLocation();
+   
   }, []);
     
     

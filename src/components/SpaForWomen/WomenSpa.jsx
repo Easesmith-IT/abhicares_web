@@ -44,7 +44,7 @@ export const WomenSpa = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8ad29f3a2d134bee9398`, { withCredentials: true });
-      console.log("woment spa",data);
+      // console.log("woment spa",data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {

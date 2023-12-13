@@ -15,6 +15,7 @@ import men from "../../assets/men.png";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import Loader from "../loader/Loader";
+import useGeolocation from '../../hooks/usegelocation'
 
 export const Services = ({ open }) => {
   const [isShow, setIsShow] = useState(true);
@@ -23,6 +24,17 @@ export const Services = ({ open }) => {
   const [allServices, setAllServices] = useState([]);
   const [isMessage, setIsMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userlocation,setUserLocation] = useState(null)
+
+  const { location } = useGeolocation();
+
+  useEffect(() => {
+    if (location) {
+      setUserLocation(location.formatted);
+    }
+    
+
+  }, [location]);
 
   const navigate = useNavigate();
 
@@ -131,13 +143,18 @@ export const Services = ({ open }) => {
         </div>
         <div className={classes["left"]}>
           <div className={`${styles.dFlexRow} ${styles.actions}`}>
-            <div className={`${styles.dFlexRow} ${styles.location}`}>
+            <div className={`${styles.location_container}`}>
               <div>
-                <LocationOnIcon />
+                <input
+                  type="text"
+                  name="location"
+                  id="location"
+                  placeholder="Your Location"
+                  className={styles.locationInput}
+                  value={userlocation?userlocation:'Please Allow Location'}
+                />
               </div>
-              {/* <div>
-                <KeyboardArrowDownIcon />
-              </div> */}
+              <LocationOnIcon />
             </div>
           </div>
           <div className={classes["heading"]}>

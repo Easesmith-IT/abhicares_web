@@ -25,7 +25,7 @@ import MyBookings from "./pages/myBookings/MyBookings";
 import SuccessPage from "./pages/successPage/SuccessPage";
 
 import AntiDiscriminationPolicy from "./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy";
-=======
+
 import useGeolocation from "./hooks/usegelocation";
 
 

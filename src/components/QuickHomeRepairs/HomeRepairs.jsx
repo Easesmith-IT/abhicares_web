@@ -45,7 +45,7 @@ export const HomeRepairs = () => {
   const getServiceProducts = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-cms-data/656bf7375840ef11ad814f85`, { withCredentials: true });
-      console.log(data);
+      // console.log(data);
       setAllServiceProducts(data.data);
       // setLoading(false);
     } catch (error) {

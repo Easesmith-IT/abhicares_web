@@ -45,7 +45,7 @@ export const SalonForWomen = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8abe9f3a2d134bee9396`, { withCredentials: true });
-      console.log(data);
+      // console.log(data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {

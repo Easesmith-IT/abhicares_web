@@ -45,7 +45,7 @@ export const SpaForMen = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8af29f3a2d134bee939c`, { withCredentials: true });
-      console.log("woment spa", data);
+      // console.log("woment spa", data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {
