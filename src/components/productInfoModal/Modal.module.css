@@ -478,9 +478,14 @@ p {
     color: #5c5c5c;
 }
 
-.customer_review_p{
+.h5{
     margin-top: 10px;
+    margin-bottom: 5px;
     font-size: 14px;
+}
+
+.customer_review_p{
+    font-size: 12px;
     color: #5c5c5c;
 
 }

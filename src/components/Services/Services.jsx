@@ -133,6 +133,7 @@ export const Services = ({ open }) => {
     },
   ];
 
+
   return (
     <div className={classes["wrapper"]}>
       <div className={classes["main"]}>
@@ -194,10 +195,13 @@ export const Services = ({ open }) => {
                     className={classes.search_result_item}
                   >
                     <img
-                      src={`${process.env.REACT_APP_DOMAIN}/uploads/${service.imageUrl}`}
-                      alt=""
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                      alt="service"
                     />
-                    <p>{service.name}</p>
+                    <div>
+                      <p>{service.name}</p>
+                      <p>₹{service.startingPrice}</p>
+                    </div>
                   </div>
                 ))}
               </div>

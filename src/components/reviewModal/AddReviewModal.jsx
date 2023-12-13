@@ -42,7 +42,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id }) => {
             toast.success("Review added successfully");
             console.log(data);
         } catch (error) {
-            setIsReviewModalOpen(false);
+            // setIsReviewModalOpen(false);
             toast.error(error?.response?.data?.message);
             console.log(error);
         }
