@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 const RegisterAsAProfessional = () => {
     const [registrationInfo, setRegistrationInfo] = useState({
+        name: "",
         phone: "",
         serviceType: "",
         city: "",
@@ -31,6 +32,7 @@ const RegisterAsAProfessional = () => {
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-enquiry`, { ...registrationInfo });
             console.log(data);
             setRegistrationInfo({
+                name: "",
                 phone: "",
                 serviceType: "",
                 city: "",
@@ -66,6 +68,7 @@ const RegisterAsAProfessional = () => {
                             <h2 className={classes.hero_section_bottom_h2}>Share your WhatsApp number and we'll reach out via our WhatsApp Business Account.</h2>
                             <form onSubmit={handleOnSubmit}>
                                 <div className={classes.input_container}>
+                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.name} name="name" id="name" type="text" placeholder="Your name" />
                                     <input className={classes.input} onChange={handleOnChange} value={registrationInfo.phone} name="phone" id="phone" type="text" placeholder="Your phone number" />
                                     <input className={classes.input} onChange={handleOnChange} value={registrationInfo.serviceType} name="serviceType" id="serviceType" type="text" placeholder="Service type" />
                                     <input className={classes.input} onChange={handleOnChange} value={registrationInfo.city} name="city" id="city" type="text" placeholder="Your city" />

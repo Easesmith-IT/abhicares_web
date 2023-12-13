@@ -69,8 +69,8 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
 
     const getAllReviewsOfUser = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`);
-            console.log("user reviews",data);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { headers: { Authorization: token } });
+            console.log("user reviews", data);
             setUserReviews(data.data);
         } catch (error) {
             console.log(error);
@@ -80,7 +80,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     const getAllReviews = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`);
-            console.log("reviews",data);
+            console.log("reviews", data);
             setAllReviews(data.data);
         } catch (error) {
             console.log(error);
@@ -202,7 +202,19 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     <SpecificStarRating />
                                 </div>
                                 <div className={classes.customer_reviews_container}>
-                                    <CustomerReview />
+                                    {userReviews?.map((review) => (
+                                        <CustomerReview
+                                            key={review._id}
+                                            review={review}
+                                        />
+                                    ))}
+                                    
+                                    {allReviews?.map((review) => (
+                                        <CustomerReview
+                                            key={review._id}
+                                            review={review}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                             {isReviewModalOpen &&

@@ -1,0 +1,158 @@
+.container {
+    height: 100vh;
+    width: 100%;
+    background: #0000009e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+}
+
+.invoice_box_wrapper {
+    max-width: 800px;
+    width: 100%;
+    height: 90vh;
+    overflow-y: scroll;
+    position: relative;
+    background: white;
+}
+
+.invoice_box {
+    background: white;
+    padding: 40px;
+}
+
+.icon {
+    font-size: 25px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.invoice_top {
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+.logo {
+    width: 200px;
+    margin-top: -70px;
+}
+
+.info {
+    margin-top: 40px;
+}
+
+.h3 {
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.p {
+    font-size: 14px;
+}
+
+.h1 {
+    font-size: 34px;
+    margin-bottom: 30px;
+}
+
+.invoice_detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.table_wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 50px;
+}
+
+.tr {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    font-size: 14px;
+    padding-block: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+thead .tr {
+    background: #000;
+    color: white;
+}
+
+tbody .tr,
+thead .tr {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+}
+
+.tr .ml {
+    width: 180px;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.tr .ml:first-child {
+    margin-left: 0px;
+}
+
+.tr .ml:nth-child(2) {
+    width: 215px;
+}
+
+.tr .ml .input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    outline: 1px solid gray;
+}
+
+.tr .ml .description {
+    padding: 8px;
+    width: 100%;
+    resize: none;
+    border: none;
+    border-radius: 3px;
+    outline: 1px solid gray;
+}
+
+
+.invoice_bottom_calculation{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.d_flex {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.button {
+    padding: 8px 20px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: black;
+    color: white;
+}

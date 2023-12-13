@@ -4,8 +4,8 @@ import OrderInfoModal from '../orderInfoModal/OrderInfoModal';
 import { format } from 'date-fns';
 
 const Order = ({ order }) => {
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     console.log(order);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const handleOnclick = () => {
         setIsInfoModalOpen(true);
