@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 import classes from './MyBookings.module.css';
-import OrderInfoModal from '../../components/orderInfoModal/OrderInfoModal';
 import Order from '../../components/order/Order';
 import axios from 'axios';
 import Loader from '../../components/loader/Loader';
 
 const MyBookings = () => {
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true)
   const token = localStorage.getItem("token");
 
   const getAllOrders = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-bookings`, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders`, { headers: { Authorization: token }, withCredentials: true });
+      console.log(data);
       setAllOrders(data.data);
       setLoading(false);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -50,11 +48,6 @@ const MyBookings = () => {
           ))}
         </div>
       </section>
-      {isInfoModalOpen &&
-        <OrderInfoModal
-          setIsInfoModalOpen={setIsInfoModalOpen}
-        />
-      }
     </>
   )
 }

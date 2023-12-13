@@ -28,6 +28,16 @@
     margin-bottom: 20px;
 }
 
+.button{
+    background: #000;
+    color: white;
+    padding: 4px 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
 .p_container {
     margin-block: 10px;
 }
