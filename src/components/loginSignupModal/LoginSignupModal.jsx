@@ -88,10 +88,10 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       );
       setIsLoading(false);
       console.log(data);
-      setLoginSignupInfo({
-        name: "",
-        phone: "",
-      });
+      // setLoginSignupInfo({
+      //   name: "",
+      //   phone: "",
+      // });
       setIsSignupOtp(true);
     } catch (error) {
       setIsLoading(false);
@@ -119,10 +119,10 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       console.log("login", data);
       setIsLoading(false);
       setIsLoginOtp(true);
-      setLoginSignupInfo({
-        name: "",
-        phone: "",
-      });
+      // setLoginSignupInfo({
+      //   name: "",
+      //   phone: "",
+      // });
     } catch (error) {
       setIsLoading(false);
       console.log("EOEOE", error);

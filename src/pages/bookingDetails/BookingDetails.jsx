@@ -1,17 +1,21 @@
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import classes from './BookingDetails.module.css'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import InvoiceModal from '../../components/invoiceModal/InvoiceModal';
 import { format } from 'date-fns';
+import toast from 'react-hot-toast';
 
 const BookingDetails = () => {
     const { state } = useLocation();
     const params = useParams();
     const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     const [invoice, setInvoice] = useState({});
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+    const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
+    const [total, setTotal] = useState(0);
 
     const getOrderInvoice = async () => {
         try {
@@ -22,9 +26,22 @@ const BookingDetails = () => {
         }
     }
 
+    const handleCancelOrder = async () => {
+        try {
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { headers: { Authorization: token }, withCredentials: true });
+            toast.success("Your order cancelled successfully");
+            navigate("/my_bookings");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         getOrderInvoice();
+        setTotal((state.orderValue * 18) / 100)
     }, [])
+
+
 
     return (
         <section className={classes.booking_details}>
@@ -35,19 +52,23 @@ const BookingDetails = () => {
                         <div>
                             <p>Order Date: {format(new Date(state.createdAt), "dd-MM-yyyy")}</p>
                             <p>Order ID: {params.id}</p>
+                            <p>Order Status: {state.status}</p>
                         </div>
-                        <button onClick={() => setIsInvoiceModalOpen(true)} className={classes.button}>View Invoice</button>
+                        <div className={classes.buttons_container}>
+                            <button onClick={() => setIsInvoiceModalOpen(true)} className={classes.button}>View Invoice</button>
+                            {state.status !== "Cancelled" && <button onClick={() => setIsCancelledModalOpen(true)} className={`${classes.button} ${classes.red}`}>Cancel Order</button>}
+                        </div>
                     </div>
                 </div>
                 <div className={classes.delivery_details}>
                     <h4 className={classes.h4}>Delivery Details</h4>
                     <div className={classes.d_flex}>
-                        <h5>Order Status: {state.status}</h5>
+                        {/* <h5>Order Status: {state.status}</h5> */}
                         <div>
                             <div className={classes.progress}></div>
                             <div className={classes.status_container}>
                                 <p></p>
-                                <p>Out for delivary</p>
+                                <p>Out for delivery</p>
                                 <p>Delivered</p>
                             </div>
                         </div>
@@ -75,25 +96,38 @@ const BookingDetails = () => {
                         <div>
                             <p>Subtotal: </p>
                             <p>Shipping: </p>
-                            <p>Tax: </p>
+                            <p>Tax(18%): </p>
                             <p><b>Total: </b></p>
                         </div>
                         <div>
                             <p>₹{state.orderValue}</p>
                             <p>Free</p>
-                            <p>₹0</p>
-                            <p><b>₹{state.orderValue}</b></p>
+                            <p>₹{total}</p>
+                            <p><b>₹{total+state.orderValue}</b></p>
                         </div>
                     </div>
                 </div>
             </div>
+
             {isInvoiceModalOpen &&
                 <InvoiceModal
-                state={state}
+                    state={state}
                     invoice={invoice}
                     setIsInvoiceModalOpen={setIsInvoiceModalOpen}
                 />
 
+            }
+
+            {isCancelledModalOpen &&
+                <div className={classes.modal_wrapper}>
+                    <div className={classes.modal}>
+                        <p>Are you sure to cancel ?</p>
+                        <div className={classes.button_wrapper}>
+                            <button onClick={handleCancelOrder} className={`${classes.button} ${classes.yes}`}>Yes</button>
+                            <button onClick={() => setIsCancelledModalOpen(false)} className={`${classes.button} ${classes.no}`}>No</button>
+                        </div>
+                    </div>
+                </div>
             }
         </section>
     )
