@@ -1,0 +1,113 @@
+.help_center {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.help_center_title {
+    text-align: center;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+}
+
+.box form {
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input_box {
+    width: 100%;
+    height: 45px;
+    margin-top: 5px;
+    border-radius: 6px;
+    position: relative;
+}
+
+select {
+    padding: 0 10px;
+}
+
+.input {
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid gray;
+    outline: none;
+}
+
+.d_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multi_select {
+    position: absolute;
+    top: 51px;
+    left: 0;
+    background: white;
+    padding: 5px 20px;
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 6px;
+    z-index: 5;
+}
+
+.multi_select label{
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    margin: 2px 0;
+}
+
+.input_box .input > span{
+    color: rgb(107, 107, 107);
+}
+
+.label{
+    padding: 2px;
+}
+
+.label:hover{
+    background: #ececec;
+}
+
+.button_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.multi_select .button_wrapper {
+    justify-content: flex-end;
+}
+
+.button {
+    outline: none;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+    padding: 8px 50px;
+    border-radius: 6px;
+}
+
+.h3 {
+    margin-top: 60px;
+}

@@ -64,8 +64,8 @@
 
 .invoice_detail {
     display: flex;
-    justify-content: space-between;
-    gap: 30px;
+    /* justify-content: space-between; */
+    gap: 10px;
     margin-bottom: 20px;
 }
 

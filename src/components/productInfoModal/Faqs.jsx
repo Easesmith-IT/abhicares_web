@@ -21,7 +21,6 @@ const Faqs = () => {
 
     return (
         <div className={classes.faq}>
-            <p className={classes.faq_heading}>Frequently asked questions</p>
             <ul className={classes.faq_ul}>
                 {faqData?.map((faq, index) => (
                     <FaqLi
