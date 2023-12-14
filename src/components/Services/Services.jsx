@@ -11,7 +11,6 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Grid, Typography } from "@mui/material";
 
 import Photo from "../../assets/hero_img.png";
-import men from "../../assets/men.png";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import Loader from "../loader/Loader";
@@ -123,12 +122,12 @@ export const Services = ({ open }) => {
     },
     {
       _id: "656b8afa9f3a2d134bee939e",
-      name: "Painting",
+      name: "Women's Salon & Spa",
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/paint.png`,
     },
     {
       _id: "656b8b0a9f3a2d134bee93a0",
-      name: "CCTV",
+      name: "Men's Salon & Massage",
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/cctv-camera.png`,
     },
   ];
@@ -143,19 +142,21 @@ export const Services = ({ open }) => {
           </div>
         </div>
         <div className={classes["left"]}>
-          <div className={`${styles.dFlexRow} ${styles.actions}`}>
+          <div
+            className={`${styles.location_container_wrapper} ${styles.actions}`}
+          >
             <div className={`${styles.location_container}`}>
-              <div>
+              <LocationOnIcon />
+              <div style={{width:'100%'}}>
                 <input
                   type="text"
                   name="location"
                   id="location"
                   placeholder="Your Location"
                   className={styles.locationInput}
-                  value={userlocation?userlocation:'Please Allow Location'}
+                  value={userlocation ? userlocation : "Please Allow Location"}
                 />
               </div>
-              <LocationOnIcon />
             </div>
           </div>
           <div className={classes["heading"]}>
