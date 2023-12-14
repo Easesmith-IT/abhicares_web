@@ -21,7 +21,8 @@ const RegisterAsAProfessional = () => {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!registrationInfo.phone
+        if (!registrationInfo.name
+            || !registrationInfo.phone
             || !registrationInfo.serviceType
             || !registrationInfo.city
             || !registrationInfo.state

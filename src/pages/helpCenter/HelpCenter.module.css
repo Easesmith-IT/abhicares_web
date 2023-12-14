@@ -111,3 +111,87 @@ select {
 .h3 {
     margin-top: 60px;
 }
+
+.issues_container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    background: #ececec;
+    padding: 20px;
+}
+
+.issue{
+    background: white;
+    padding: 10px 15px;
+    border: 2px solid #ececec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.in_review{
+    background: orange;
+    padding: 2px 10px;
+    border-radius: 30px;
+}
+
+.solved{
+    background: green;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 30px;
+}
+
+.issue .button{
+    padding: 8px 20px;
+}
+
+.modal_overlay {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99999;
+}
+
+.modal_overlay.modal_open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal_overlay.modal_close {
+    display: none;
+}
+
+.modal_wrapper {
+    position: relative;
+    max-width: 480px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.modal {
+    border-radius: 15px;
+    background: white;
+    padding: 20px;
+}
+
+
+.modal_close {
+    cursor: pointer;
+    border: none;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0px;
+    top: -40px;
+}
