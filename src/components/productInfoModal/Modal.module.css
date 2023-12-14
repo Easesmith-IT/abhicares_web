@@ -302,17 +302,8 @@ p {
 
 .faq {
     width: 90%;
-    margin: 45px auto;
-    padding-inline: 20px;
     position: relative;
-}
-
-.faq_heading {
-    font-size: 18px;
-    font-weight: 600;
-    margin-left: -10px;
-    margin-top: -30px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .faq_ul {
@@ -334,7 +325,7 @@ p {
 
 .faq_li_none {
     list-style: none;
-    margin-left: -50px;
+    /* margin-left: -50px; */
 }
 
 .faq_li_h6 {

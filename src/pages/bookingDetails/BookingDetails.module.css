@@ -1,0 +1,141 @@
+.booking_details{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    /* flex-wrap: wrap; */
+    margin-block: 40px;
+    padding: 10px;
+}
+
+.booking_details_left{
+    width: 70%;
+}
+
+.booking_details_right{
+    width: 30%;
+}
+
+.order_details,
+.delivery_details,
+.booking_details_right_top{
+    border: 1px solid gray;
+    width: 100%;
+}
+
+.delivery_details{
+    margin-top: 20px;
+}
+
+.h4{
+    padding: 10px;
+    background: #ccc;
+}
+
+.d_flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+
+
+.button{
+    background: #000;
+    color: white;
+    padding: 4px 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+
+
+.delivery_details .d_flex{
+    flex-direction: column;
+    align-items: normal;
+}
+
+.delivery_details .d_flex > div{
+    width: 100%;
+}
+
+.progress {
+    margin-top: 10px;
+    /* max-width: 400px; */
+    width: 100%;
+    height: 5px;
+    background-color: #ccc;
+    border-radius: 6px;
+    position: relative;
+}
+
+.progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 5px;
+    background: rgb(44, 173, 44);
+    border-radius: 6px;
+}
+
+.status_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.product_contaner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.img {
+    width: 100px;
+    height: 100px;
+}
+
+.info {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.p {
+    text-align: right;
+}
+
+.booking_details_right_top .d_flex > div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media screen and (max-width:800px) {
+    .booking_details{
+        flex-wrap: wrap;
+    }
+
+    .booking_details_left,
+    .booking_details_right{
+        width: 100%;
+    }
+}
