@@ -44,6 +44,7 @@ import AvailableCities from "./pages/AdminPanel/availableCities/AvailableCities"
 import AdminHelpCenter from "./pages/AdminPanel/helpCenter/HelpCenter";
 import HelpCenterFaqs from "./pages/AdminPanel/helpCenter/HelpCenterFaqs";
 import HelpCenterTickets from "./pages/AdminPanel/helpCenter/HelpCenterTickets";
+import AdminLogin from "./pages/AdminPanel/AdminLogin"
 
 import Banner from "./pages/AdminPanel/Banners/Banner";
 import AppBanner from "./pages/AdminPanel/Banners/AppBanner";
@@ -97,7 +98,7 @@ function App() {
 
           {/* Admin Panel Routes */}
 
-          {/* <Route path="/" element={<AdminLogin />} /> */}
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" exact element={<Dashboard />} />
 
           <Route path="/admin/banners" exact element={<Banner />} />

@@ -79,6 +79,7 @@ export const Footer = () => {
           <div>© Copyright 2023 Abhi Cares. All rights reserved.</div>  
         </div>
         </div>
+        </div>
     )
 }
 export default Footer
