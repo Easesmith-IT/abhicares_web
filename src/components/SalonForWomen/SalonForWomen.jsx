@@ -45,7 +45,7 @@ export const SalonForWomen = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8abe9f3a2d134bee9396`, { withCredentials: true });
-      console.log(data);
+      // console.log(data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {
@@ -75,13 +75,15 @@ export const SalonForWomen = () => {
         itemClass="carousel-item-padding-30-px">
         {
           allServices.map((item) => (
+            <>
 
             <div key={item._id} onClick={()=> navigate(`services/${item._id}`)} className={classes['single-card']}>
-              <div className={classes['cardname']}><b>{item.name}</b></div>
+              
               <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
             </div>
-
-
+            <p className={classes['cardname']}>{item.name}</p>
+            <p className={classes['cardname']} ><i>Starting From : ₹{item.startingPrice}</i></p>
+            </>
           ))
         }
 

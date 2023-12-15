@@ -64,6 +64,7 @@ const HelpCenter = () => {
         issue: "Select issue",
         others: ""
       });
+      getAllIssues()
     } catch (error) {
       console.log(error);
     }

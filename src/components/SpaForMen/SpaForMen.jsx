@@ -45,7 +45,7 @@ export const SpaForMen = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8af29f3a2d134bee939c`, { withCredentials: true });
-      console.log("woment spa", data);
+      // console.log("woment spa", data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {
@@ -76,10 +76,16 @@ export const SpaForMen = () => {
         {
           allServices.map((item) => (
 
-            <div key={item._id} onClick={() => navigate(`/services/${item._id}`)} className={classes['single-card']}>
-              <div className={classes['cardname']}><b>{item.name}</b></div>
-              <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
+            <>
+            <div onClick={()=> navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
+              <div className={classes['single-card']}>
+                <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
+              </div>
+
             </div>
+            <p className={classes['cardname']}>{item.name}</p>
+            <p className={classes['cardname']} ><i>Starting From : ₹{item.startingPrice}</i></p>
+            </>
 
 
           ))

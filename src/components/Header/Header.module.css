@@ -71,7 +71,26 @@
     height: 3rem;
 }
 
-.location>div {}
+.location_container{
+    display: flex;
+      border: 1px solid rgba(227, 227, 227, 1.00);
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  height: 3rem;
+  position: relative;
+
+}
+
+.locationInput{
+   border: none;
+   height: 100%;
+   width: 100%;
+    /* padding: 10px 60px; */
+    padding: 15px 10px ;
+    border-radius: 5px;
+}
 
 .actions {
     flex: 1;

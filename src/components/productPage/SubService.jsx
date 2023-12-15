@@ -91,6 +91,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                             </button>
                             : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>Add</button>
                         }
+
                     </div>
                 </div>
                 {/* <div className={classes.dashed_underline}></div> */}

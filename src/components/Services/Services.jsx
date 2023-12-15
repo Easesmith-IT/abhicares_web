@@ -11,10 +11,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Grid, Typography } from "@mui/material";
 
 import Photo from "../../assets/hero_img.png";
-import men from "../../assets/men.png";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import Loader from "../loader/Loader";
+import useGeolocation from '../../hooks/usegelocation'
 
 export const Services = ({ open }) => {
   const [isShow, setIsShow] = useState(true);
@@ -23,6 +23,17 @@ export const Services = ({ open }) => {
   const [allServices, setAllServices] = useState([]);
   const [isMessage, setIsMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userlocation,setUserLocation] = useState(null)
+
+  const { location } = useGeolocation();
+
+  useEffect(() => {
+    if (location) {
+      setUserLocation(location.formatted);
+    }
+    
+
+  }, [location]);
 
   const navigate = useNavigate();
 
@@ -91,18 +102,29 @@ export const Services = ({ open }) => {
 
   const data = [
     {
-      _id: "656b8abe9f3a2d134bee9396",
-      name: "House care",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-care.png`,
+      _id: "656b8afa9f3a2d134bee939e",
+      name: "Women's Salon & Spa",
+      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/women-salon.png`,
     },
     {
       _id: "656b8ad29f3a2d134bee9398",
-      name: "Personal care",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/personal-care.png`,
+      name: "Makeup & Mehandi",
+      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/makeup-mehndi.png`,
     },
     {
+      _id: "656b8b0a9f3a2d134bee93a0",
+      name: "Men's Salon & Massage",
+      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/mens-salon.png`,
+    },
+    {
+      _id: "656b8abe9f3a2d134bee9396",
+      name: "Home care",
+      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-care.png`,
+    },
+   
+    {
       _id: "656b8ae69f3a2d134bee939a",
-      name: "House repair",
+      name: "Home repair",
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-repair.png`,
     },
     {
@@ -110,16 +132,8 @@ export const Services = ({ open }) => {
       name: "Appliance repair",
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/appliance-repair.png`,
     },
-    {
-      _id: "656b8afa9f3a2d134bee939e",
-      name: "Painting",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/paint.png`,
-    },
-    {
-      _id: "656b8b0a9f3a2d134bee93a0",
-      name: "CCTV",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/cctv-camera.png`,
-    },
+
+  
   ];
 
 
@@ -132,20 +146,23 @@ export const Services = ({ open }) => {
           </div>
         </div>
         <div className={classes["left"]}>
-          <div className={`${styles.dFlexRow} ${styles.actions}`}>
-            <div className={`${styles.dFlexRow} ${styles.location}`}>
-              <div>
-                <LocationOnIcon />
+            <div className={`${styles.location_container}`}>
+              <LocationOnIcon />
+              <div style={{width:'100%'}}>
+                <input
+                  type="text"
+                  name="location"
+                  id="location"
+                  placeholder="Your Location"
+                  className={styles.locationInput}
+                  value={userlocation ? userlocation : "Please Allow Location"}
+                />
               </div>
-              {/* <div>
-                <KeyboardArrowDownIcon />
-              </div> */}
             </div>
-          </div>
           <div className={classes["heading"]}>
-            <Typography variant={innerWidth < 1000 ? "h5" : "h3"}>
+            <p style={{fontWeight:'lighter',fontSize:'2.25rem'}}>
               Home services at your doorstep
-            </Typography>
+            </p>
           </div>
           <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
             <div>

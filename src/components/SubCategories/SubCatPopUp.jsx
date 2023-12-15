@@ -3,8 +3,8 @@ import classes from './SubCat.module.css'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
-import { Salon } from "../../assets/data";
-import { Slide } from "@mui/material";
+// import { Salon } from "../../assets/data";
+// import { Slide } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -73,7 +73,8 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
                                                 <div onClick={() => navigate(`/services/${service._id}`, { state: service.name })} className={classes['category-cards']} >
-                                                    <div className={classes['image-Box']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
+                                                    <div className={classes['image-Box']}>
+                                                        <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>
                                             </Grid>
@@ -106,24 +107,3 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
     )
 }
 export default SubCatPopUp
-
-{/* <div>Women's Salon Spa and Laser Clinic</div>
-        <div>
-            <div>
-                <div>Salon & Spa</div>
-                <div>
-                    <div>
-                        <div><img src="IMg" alt="img" /></div>
-                        <div>Salon For women</div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div>Laser Clinic</div>
-                <div>
-                   <div>
-                        <img src="IMg" alt="img" /></div>
-                        <div>Salon For women</div>
-                  </div>
-            </div>
-        </div> */}
