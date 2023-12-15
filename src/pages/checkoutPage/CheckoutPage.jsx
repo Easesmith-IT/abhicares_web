@@ -35,6 +35,10 @@ const CheckoutPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [index, setIndex] = useState(-1);
+  const [offerCode, setOfferCode] = useState("")
+  const [offerValue, setOfferValue] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [message, setMessage] = useState("");
 
   const [info, setInfo] = useState({
     productId: "",
@@ -42,6 +46,7 @@ const CheckoutPage = () => {
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
+  const [totalTaxRs, setTotalTaxRs] = useState(0);
 
   const { location } = useGeolocation()
   console.log(location)
@@ -69,11 +74,18 @@ const CheckoutPage = () => {
     (async () => {
       await dispatch(getCartDetails());
     })();
-
+    setTotalTaxRs((cart.totalPrice * 18) / 100)
     getAllAddress();
   }, []);
 
+
   const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    const totalTaxRupee = (cart.totalPrice * 18) / 100;
+    setTotal(Number(totalTaxRupee) + Number(cart.totalPrice));
+    setTotalTaxRs(totalTaxRupee);
+  }, [getCartDetails, cart]);
 
 
   const handleOnclick = () => {
@@ -93,7 +105,7 @@ const CheckoutPage = () => {
     }
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo,city:location.components.city }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: location.components.city }, { headers: { Authorization: token } });
       setIsLoading(false);
 
       console.log(data)
@@ -149,6 +161,39 @@ const CheckoutPage = () => {
 
     setInfo(bookingInfo[findIndex]);
     setIsModalOpen(true);
+  }
+
+  const handleCheck = async () => {
+    if (!offerCode) {
+      toast.error("Enter coupon code");
+      return
+    }
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/get-coupon-details`, { name: offerCode },
+        { headers: { Authorization: token } }
+      );
+      if (data.data[0].status === "active") {
+        setMessage("Offer available");
+        const offerTotal = total * (Number(data.data[0].offPercentage) / 100);
+        setOfferValue(Math.floor(offerTotal));
+        const totalValue = total - Number(offerTotal);
+        setTotal(totalValue);
+      }
+      else {
+        setMessage("Offer not available");
+        setOfferValue(0);
+        const totalValue = total - Number(0);
+        setTotal(totalValue);
+      }
+      console.log(data);
+    } catch (error) {
+      setMessage("Enter valid coupon code");
+      setOfferValue(0);
+      const totalValue = total - Number(0);
+      setTotal(totalValue);
+      console.log(error);
+    }
   }
 
   return (
@@ -270,7 +315,11 @@ const CheckoutPage = () => {
               </div>
               <div>
                 <p className={classes.offer_p}>Coupons and offers</p>
-                <p className={classes.offer_p}>Login/Sign up to view offers</p>
+                <div className={classes.input_wrapper}>
+                  <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
+                  <button onClick={handleCheck}>Check</button>
+                </div>
+                {message && <p className={message === "Offer available"?classes.green:classes.red}>{message}</p>}
               </div>
             </div>
             {isShow && (
@@ -284,12 +333,16 @@ const CheckoutPage = () => {
                 </div>
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Tax and Fee</p>
-                  <p className={classes.payment_summary_p}>₹0</p>
+                  <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
+                </div>
+                <div className={classes.payment_summary_div}>
+                  <p className={classes.payment_summary_p}>Discount</p>
+                  <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
                 </div>
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Total</p>
                   <p className={classes.payment_summary_p}>
-                    ₹{cart.totalPrice + 0}
+                    ₹{total}
                   </p>
                 </div>
               </div>
@@ -298,7 +351,7 @@ const CheckoutPage = () => {
             <div className={classes.amount_to_pay_box}>
               <h4 className={classes.amount_to_pay_box_h4}>Amount to pay</h4>
               <div>
-                <p className={classes.amount_to_pay}>₹{cart.totalPrice}</p>
+                <p className={classes.amount_to_pay}>₹{total}</p>
                 <button
                   onClick={() => setIsShow(!isShow)}
                   className={classes.view_break_up_button}

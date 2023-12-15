@@ -103,7 +103,7 @@ const BookingDetails = () => {
                             <p>₹{state.orderValue}</p>
                             <p>Free</p>
                             <p>₹{total}</p>
-                            <p><b>₹{total+state.orderValue}</b></p>
+                            <p><b>₹{Number(total) + Number(state.orderValue)}</b></p>
                         </div>
                     </div>
                 </div>

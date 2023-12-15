@@ -137,17 +137,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     }
 
     if (otp.length !== 6) {
-      setError({ message: "Enter a valid otp", from: 'signup otp verification' });
-      return;
-    }
-
-    if (!loginSignupInfo.phone) {
-      setError({ message: "Enter phone number", from: 'login otp verification' });
-      return;
-    }
-
-    if (loginSignupInfo.phone.length !== 10) {
-      setError({ message: "Enter a valid phone number", from: 'login otp verification' });
+      setError({ message: "Enter a valid otp", from: 'login otp verification' });
       return;
     }
 
@@ -182,16 +172,6 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
     if (otp.length !== 6) {
       setError({ message: "Enter a valid otp", from: 'signup otp verification' });
-      return;
-    }
-
-    if (!loginSignupInfo.phone) {
-      setError({ message: "Enter phone number", from: 'signup otp verification' });
-      return;
-    }
-
-    if (loginSignupInfo.phone.length !== 10) {
-      setError({ message: "Enter a valid phone number", from: 'signup otp verification' });
       return;
     }
 
@@ -309,17 +289,6 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               <p className={classes.login_signup_p}>Verify Otp</p>
               <div className={classes.input_box}>
                 <input
-                  onChange={handleOnChange}
-                  value={loginSignupInfo.phone}
-                  className={classes.input}
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder="Enter Number"
-                />
-              </div>
-              <div className={classes.input_box}>
-                <input
                   onChange={(e) => setOtp(e.target.value)}
                   value={otp}
                   className={classes.input}
@@ -345,17 +314,6 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
           {isSignupOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
-              <div className={classes.input_box}>
-                <input
-                  onChange={handleOnChange}
-                  value={loginSignupInfo.phone}
-                  className={classes.input}
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder="Enter Number"
-                />
-              </div>
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
