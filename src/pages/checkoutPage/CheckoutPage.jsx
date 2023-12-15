@@ -19,6 +19,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 import useGeolocation from "../../hooks/usegelocation";
+import WebsiteWrapper from "../WebsiteWrapper";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -175,8 +176,8 @@ const CheckoutPage = () => {
       );
       if (data.data[0].status === "active") {
         setMessage("Offer available");
-        const offerTotal = total * (Number(data.data[0].offPercentage) / 100);
-        setOfferValue(Math.floor(offerTotal));
+        const offerTotal = cart.totalPrice * (Number(data.data[0].offPercentage) / 100);
+        setOfferValue(offerTotal);
         const totalValue = total - Number(offerTotal);
         setTotal(totalValue);
       }
@@ -197,7 +198,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <>
+    <WebsiteWrapper>
       <div>
         <div className={`${classes.container} ${classes.checkout_container}`}>
           <div className={classes.checkout_container_left}>
@@ -400,7 +401,7 @@ const CheckoutPage = () => {
           handleOnSubmit={handleOnSubmit}
         />
       }
-    </>
+    </WebsiteWrapper>
   );
 };
 

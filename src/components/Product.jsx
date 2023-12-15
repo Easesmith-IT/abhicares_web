@@ -62,7 +62,7 @@ const Product = ({ product }) => {
         await dispatch(
             deleteItemFromCart({ itemId: productInCart.productId._id })
         );
-        await dispatch(getCartDetails(userId));
+        await dispatch(getCartDetails());
     }
 
 

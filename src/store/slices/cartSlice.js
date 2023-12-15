@@ -83,10 +83,9 @@ export const updateQty = createAsyncThunk(
 export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (data) => {
     try {
         const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, {}, { headers: { Authorization: token }, withCredentials: true });
-        console.log("delete api",data);
 
         const response = await res;
-        console.log(response.data);
+        console.log("delete",response.data);
         return response.data;
     } catch (error) {
         console.log(error);

@@ -1,33 +1,70 @@
 import classes from "../../pages/productPage/ProductPage.module.css";
-
+import { useDispatch, useSelector } from 'react-redux';
 import { BsStarFill } from "react-icons/bs";
 import { BiMinus, BiPackage, BiPlus } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../productInfoModal/Modal";
-
+import {
+    addItemToCart,
+    deleteItemFromCart,
+    getCartDetails,
+} from "../../store/slices/cartSlice";
 const SubService = ({ singlePackage, serviceId }) => {
+    const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false);
+    const [productInCart, setProductInCart] = useState({});
+
+    useEffect(() => {
+        (async () => {
+            await dispatch(getCartDetails());
+        })()
+    }, [])
+
+    const cart = useSelector(state => state.cart)
+
+    useEffect(() => {
+        const filtered = cart?.items?.find((item) => item?.productId?._id === singlePackage._id);
+        setProductInCart(filtered);
+    }, [getCartDetails, cart])
 
     const handleOnclick = async () => {
         setIsOpen(!isOpen);
     };
 
+    const handleAddToCart = async () => {
+        console.log('package id', singlePackage._id)
+        await dispatch(addItemToCart({ id: singlePackage._id }))
+        await dispatch(getCartDetails());
+    }
 
+    const handleOnPlusClick = async () => {
+        await dispatch(
+            addItemToCart({ id: productInCart?.productId?._id })
+        );
+        await dispatch(getCartDetails());
+    }
+
+    const handleOnMinusClick = async () => {
+        await dispatch(
+            deleteItemFromCart({ itemId: productInCart.productId._id })
+        );
+        await dispatch(getCartDetails());
+    }
     return (
         <>
             <div className={classes.sub_service}>
-                <button className={classes.badge}>
-                    <BiPackage color="#12acac" />
-                    <span className={classes.badge_span}>Package</span>
+                <button className={classes.badge} style={{ marginBottom: '20px' }}>
+                    <BiPackage color="#12ACAC" />
+                    <span className={classes.badge_span}>Packages</span>
                 </button>
                 <div className={classes.info_container}>
                     <div className={classes.info_container_left}>
                         <h4 className={classes.sub_service_h4}>{singlePackage.name}</h4>
                         <div className={classes.booking}>
-                            <div className={`${classes.star_container} ${classes.sub_service_star_container}`}>
+                            {/* <div className={`${classes.star_container} ${classes.sub_service_star_container}`}>
                                 <BsStarFill color="white" size={10} />
-                            </div>
-                            <span className={`${classes.booking_span} ${classes.sub_service_booking_span}`}>4.81 (1M reviews)</span>
+                            </div> */}
+                            {/* <span className={`${classes.booking_span} ${classes.sub_service_booking_span}`}>4.81 (1M reviews)</span> */}
                         </div>
                         <p className={classes.price_time_container}>
                             <div className={classes.price_cotainer}>
@@ -46,11 +83,18 @@ const SubService = ({ singlePackage, serviceId }) => {
                             <span>1</span>
                             <BiPlus cursor="pointer" />
                         </button> */}
-                        <button className={classes.button}>Add</button>
+                        {cart?.items?.find((item) => item?.productId?._id === singlePackage?._id) ?
+                            <button className={classes.button}>
+                                <BiMinus size={20} onClick={handleOnMinusClick} />
+                                <span className={classes.quantity}>{productInCart.quantity}</span>
+                                <BiPlus size={20} onClick={handleOnPlusClick} />
+                            </button>
+                            : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>Add</button>
+                        }
                     </div>
                 </div>
-                <div className={classes.dashed_underline}></div>
-                <ul className={classes.list_container}>
+                {/* <div className={classes.dashed_underline}></div> */}
+                {/* <ul className={classes.list_container}>
                     <li className={classes.list}>
                         <span className={classes.list_first_span}>Facial: </span>
                         <span className={classes.list_second_span}>Crave beauty hydrating banana facial</span>
@@ -59,11 +103,11 @@ const SubService = ({ singlePackage, serviceId }) => {
                         <span className={classes.list_first_span}>Facial: </span>
                         <span className={classes.list_second_span}>Crave beauty hydrating banana facial</span>
                     </li>
-                </ul>
+                </ul> */}
                 <button onClick={handleOnclick} className={classes.package_button}>View details</button>
             </div>
             {isOpen && <Modal
-            isProduct={false}
+                isProduct={false}
                 isOpen={isOpen}
                 handleOnclick={handleOnclick}
                 Data={singlePackage}
@@ -72,5 +116,4 @@ const SubService = ({ singlePackage, serviceId }) => {
         </>
     );
 };
-
 export default SubService;

@@ -56,9 +56,10 @@
 }
 
 .type_animation{
+  font-size: 16px;
   position: absolute;
-  top: 13px;
-  left: 157px;
+  top: 12px;
+  left: 164px;
   color: gray;
   cursor: text;
 }

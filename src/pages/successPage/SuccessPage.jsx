@@ -1,8 +1,11 @@
+import WebsiteWrapper from '../WebsiteWrapper'
 import classes from './SuccessPage.module.css'
 
 const SuccessPage = () => {
   return (
-    <div>SuccessPage</div>
+    <WebsiteWrapper>
+      <div>SuccessPage</div>
+    </WebsiteWrapper >
   )
 }
 

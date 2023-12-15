@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import Product from "../../components/Product";
 import Loader from "../../components/loader/Loader";
+import WebsiteWrapper from "../WebsiteWrapper";
 
 
 const ProductPage = () => {
@@ -28,7 +29,6 @@ const ProductPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { state } = useLocation();
-    const userId = useSelector(state => state.user.userId);;
 
 
     const params = useParams();
@@ -62,12 +62,12 @@ const ProductPage = () => {
         getAllProducts();
         getAllPackages();
         (async () => {
-            await dispatch(getCartDetails(userId));
+            await dispatch(getCartDetails());
         })()
     }, [])
 
     return (
-        <>
+        <WebsiteWrapper>
             <section className={classes.product_page}>
                 <div className={classes.container}>
                     <h1 className={classes.heading}>{state}</h1>
@@ -179,7 +179,7 @@ const ProductPage = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </WebsiteWrapper>
     );
 };
 

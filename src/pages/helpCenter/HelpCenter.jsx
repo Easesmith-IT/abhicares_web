@@ -6,6 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { AiOutlineClose } from 'react-icons/ai';
+import WebsiteWrapper from '../WebsiteWrapper';
 
 const HelpCenter = () => {
   const token = localStorage.getItem("token");
@@ -88,78 +89,81 @@ const HelpCenter = () => {
 
   return (
     <>
-      <section className={classes.help_center}>
-        <h2 className={classes.help_center_title}>Help Center</h2>
-        <div className={classes.box}>
-          <form onSubmit={handleOnSubmit}>
+      <WebsiteWrapper>
+        <section className={classes.help_center}>
+          <h2 className={classes.help_center_title}>Help Center</h2>
+          <div className={classes.box}>
+            <form onSubmit={handleOnSubmit}>
 
-            <div className={classes.input_box}>
-              <input
-                onChange={handleOnChange}
-                value={helpCenterInfo.description}
-                className={classes.input}
-                type="text"
-                name="description"
-                id="description"
-                placeholder="Enter description"
-              />
-            </div>
-            <div className={classes.input_box}>
-              <div onClick={handleMultiSelectClose} className={`${classes.input} ${classes.d_flex}`}>
-                <span>{helpCenterInfo.issue || helpCenterInfo.others}</span>
-                <IoIosArrowDown />
+              <div className={classes.input_box}>
+                <input
+                  onChange={handleOnChange}
+                  value={helpCenterInfo.description}
+                  className={classes.input}
+                  type="text"
+                  name="description"
+                  id="description"
+                  placeholder="Enter description"
+                />
               </div>
-              {isMultiSelectOpen &&
-                <div className={classes.multi_select}>
-                  <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
-                  <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
-                  <label onClick={() => setIsOtherOpen(true)} htmlFor="">other</label>
-                  {isOtherOpen &&
-                    <div>
-                      <div className={classes.input_box}>
-                        <input
-                          onChange={handleOnChange}
-                          value={helpCenterInfo.others}
-                          className={classes.input}
-                          type="text"
-                          name="others"
-                          id="others"
-                          placeholder="Enter your issue"
-                        />
-                      </div>
-                      <div className={classes.button_wrapper}>
-                        <button type='button' onClick={handleOtherClose} className={classes.button}>Ok</button>
-                      </div>
-                    </div>
-                  }
+              <div className={classes.input_box}>
+                <div onClick={handleMultiSelectClose} className={`${classes.input} ${classes.d_flex}`}>
+                  <span>{helpCenterInfo.issue || helpCenterInfo.others}</span>
+                  <IoIosArrowDown />
                 </div>
-              }
-            </div>
-            <div className={classes.button_wrapper}>
-              <button className={classes.button}>Submit</button>
-            </div>
-          </form>
-        </div>
-        <div>
-          <h3 className={classes.h3}>Frequently asked questions</h3>
-        </div>
-        <Faqs />
-        <h3 className={classes.h3}>All issues</h3>
-        <div className={classes.issues_container}>
-          <div className={classes.issue}>
-            <p>Date</p>
-            <p>Status</p>
-            <p>View</p>
+                {isMultiSelectOpen &&
+                  <div className={classes.multi_select}>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
+                    <label onClick={() => setIsOtherOpen(true)} htmlFor="">other</label>
+                    {isOtherOpen &&
+                      <div>
+                        <div className={classes.input_box}>
+                          <input
+                            onChange={handleOnChange}
+                            value={helpCenterInfo.others}
+                            className={classes.input}
+                            type="text"
+                            name="others"
+                            id="others"
+                            placeholder="Enter your issue"
+                          />
+                        </div>
+                        <div className={classes.button_wrapper}>
+                          <button type='button' onClick={handleOtherClose} className={classes.button}>Ok</button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+              <div className={classes.button_wrapper}>
+                <button className={classes.button}>Submit</button>
+              </div>
+            </form>
           </div>
-          {allIssues?.map((issue) => (
-            <div key={issue._id} className={classes.issue}>
-              <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
-              <p className={issue.status === "in-review" ? classes.in_review : classes.solved}>{issue.status}</p>
-              <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+          <div>
+            <h3 className={classes.h3}>Frequently asked questions</h3>
+          </div>
+          <Faqs />
+          <h3 className={classes.h3}>All issues</h3>
+          <div className={classes.issues_container}>
+            <div className={classes.issue}>
+              <p>Date</p>
+              <p>Status</p>
+              <p>View</p>
             </div>
-          ))}
-        </div>
-      </section>
+            {allIssues?.map((issue) => (
+              <div key={issue._id} className={classes.issue}>
+                <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
+                <p className={issue.status === "in-review" ? classes.in_review : classes.solved}>{issue.status}</p>
+                <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+              </div>
+            ))}
+          </div>
+        </section>
+      </WebsiteWrapper>
+
       {isIssueModalOpen &&
         <div
           className={`${classes.modal_overlay} ${isIssueModalOpen ? classes.modal_open : classes.modal_close
@@ -169,6 +173,7 @@ const HelpCenter = () => {
             <button
               onClick={() => setIsIssueModalOpen(false)}
               className={classes.modal_close}
+              disabled={!issue.resolution}
             >
               <AiOutlineClose size={20} />
             </button>

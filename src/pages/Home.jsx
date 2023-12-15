@@ -14,12 +14,13 @@ import SubCatPopUp from "../components/SubCategories/SubCatPopUp.jsx";
 // import axios from "axios";
 
 import { useState } from "react";
+import WebsiteWrapper from "./WebsiteWrapper.jsx";
 
 
 export const Home = () => {
   const [category, setCategory] = useState("");
-    const [open, setOpen] = useState(false);
-    
+  const [open, setOpen] = useState(false);
+
   const handleOpen = (data) => {
     setCategory(data);
     setOpen(true);
@@ -29,26 +30,28 @@ export const Home = () => {
   };
 
   return (
-    <div className={classes["wrapper"]}>
-      <div className={classes["body-wrapper"]}>
-        <div className={classes["body"]}>
-          <Services onClick={handleOpen} open={handleOpen} />
-          {open && (
-            <SubCatPopUp
-              category={category}
-              open={open}
-              onClose={handleClose}
-            />
-          )}
-          <BannerCard />
-          {/* <MostBooked/> */}
-          <SalonForWomen />
-          <WomenSpa />
-          <HomeRepairs />
-          <SpaForMen />
+    <WebsiteWrapper>
+      <div className={classes["wrapper"]}>
+        <div className={classes["body-wrapper"]}>
+          <div className={classes["body"]}>
+            <Services onClick={handleOpen} open={handleOpen} />
+            {open && (
+              <SubCatPopUp
+                category={category}
+                open={open}
+                onClose={handleClose}
+              />
+            )}
+            <BannerCard />
+            {/* <MostBooked/> */}
+            <SalonForWomen />
+            <WomenSpa />
+            <HomeRepairs />
+            <SpaForMen />
+          </div>
         </div>
       </div>
-    </div>
+    </WebsiteWrapper>
   );
 };
 export default Home;
