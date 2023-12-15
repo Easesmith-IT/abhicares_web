@@ -387,6 +387,35 @@
     margin-bottom: 6px;
 }
 
+.input_wrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.input_wrapper input{
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.input_wrapper button{
+    padding: 4px 10px;
+    border: none;
+    background: #000;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.green{
+    font-size: 14px;
+    color: green;
+}
+
+.red{
+    font-size: 14px;
+    color: red;
+}
+
 
 
 .payment_summary {
