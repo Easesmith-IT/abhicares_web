@@ -1,23 +1,60 @@
 import classes from "../../pages/productPage/ProductPage.module.css";
-
+import { useDispatch, useSelector } from 'react-redux';
 import { BsStarFill } from "react-icons/bs";
 import { BiMinus, BiPackage, BiPlus } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../productInfoModal/Modal";
-
+import {
+    addItemToCart,
+    deleteItemFromCart,
+    getCartDetails,
+} from "../../store/slices/cartSlice";
 const SubService = ({ singlePackage, serviceId }) => {
+    const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false);
+    const [productInCart, setProductInCart] = useState({});
+
+    useEffect(() => {
+        (async () => {
+            await dispatch(getCartDetails());
+        })()
+    }, [])
+
+    const cart = useSelector(state => state.cart)
+
+    useEffect(() => {
+        const filtered = cart?.items?.find((item) => item?.productId?._id === singlePackage._id);
+        setProductInCart(filtered);
+    }, [getCartDetails, cart])
 
     const handleOnclick = async () => {
         setIsOpen(!isOpen);
     };
 
+    const handleAddToCart = async () => {
+        console.log('package id', singlePackage._id)
+        await dispatch(addItemToCart({ id: singlePackage._id }))
+        await dispatch(getCartDetails());
+    }
 
+    const handleOnPlusClick = async () => {
+        await dispatch(
+            addItemToCart({ id: productInCart?.productId?._id })
+        );
+        await dispatch(getCartDetails());
+    }
+
+    const handleOnMinusClick = async () => {
+        await dispatch(
+            deleteItemFromCart({ itemId: productInCart.productId._id })
+        );
+        await dispatch(getCartDetails());
+    }
     return (
         <>
             <div className={classes.sub_service}>
-                <button className={classes.badge} style={{marginBottom:'20px'}}>
-                    <BiPackage color="#12acac" />
+                <button className={classes.badge} style={{ marginBottom: '20px' }}>
+                    <BiPackage color="#12ACAC" />
                     <span className={classes.badge_span}>Packages</span>
                 </button>
                 <div className={classes.info_container}>
@@ -46,7 +83,15 @@ const SubService = ({ singlePackage, serviceId }) => {
                             <span>1</span>
                             <BiPlus cursor="pointer" />
                         </button> */}
-                        <button className={classes.addToCartBtn}>Add</button>
+                        {cart?.items?.find((item) => item?.productId?._id === singlePackage?._id) ?
+                            <button className={classes.button}>
+                                <BiMinus size={20} onClick={handleOnMinusClick} />
+                                <span className={classes.quantity}>{productInCart.quantity}</span>
+                                <BiPlus size={20} onClick={handleOnPlusClick} />
+                            </button>
+                            : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>Add</button>
+                        }
+
                     </div>
                 </div>
                 {/* <div className={classes.dashed_underline}></div> */}
@@ -63,7 +108,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                 <button onClick={handleOnclick} className={classes.package_button}>View details</button>
             </div>
             {isOpen && <Modal
-            isProduct={false}
+                isProduct={false}
                 isOpen={isOpen}
                 handleOnclick={handleOnclick}
                 Data={singlePackage}
@@ -72,5 +117,4 @@ const SubService = ({ singlePackage, serviceId }) => {
         </>
     );
 };
-
 export default SubService;

@@ -3,6 +3,7 @@ import classes from './MyBookings.module.css';
 import Order from '../../components/order/Order';
 import axios from 'axios';
 import Loader from '../../components/loader/Loader';
+import WebsiteWrapper from '../WebsiteWrapper';
 
 const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
@@ -27,7 +28,7 @@ const MyBookings = () => {
 
 
   return (
-    <>
+    <WebsiteWrapper>
       <section className={classes.my_bookings}>
         <h1>MyBookings</h1>
         {!loading
@@ -48,7 +49,7 @@ const MyBookings = () => {
           ))}
         </div>
       </section>
-    </>
+    </WebsiteWrapper>
   )
 }
 

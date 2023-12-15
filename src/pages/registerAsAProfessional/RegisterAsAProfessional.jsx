@@ -3,6 +3,7 @@ import classes from "./RegisterAsAProfessional.module.css";
 import ProfessionalImg from '../../assets/professional_img.png'
 import { useState } from "react";
 import toast from "react-hot-toast";
+import WebsiteWrapper from "../WebsiteWrapper";
 
 const RegisterAsAProfessional = () => {
     const [registrationInfo, setRegistrationInfo] = useState({
@@ -47,7 +48,7 @@ const RegisterAsAProfessional = () => {
     console.log(registrationInfo);
 
     return (
-        <>
+        <WebsiteWrapper>
             <div>
                 <div className={classes.hero_section}>
                     <div className={classes.container}>
@@ -101,7 +102,7 @@ const RegisterAsAProfessional = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </WebsiteWrapper>
     );
 };
 

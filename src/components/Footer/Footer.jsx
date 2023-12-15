@@ -1,5 +1,5 @@
 import classes from './Footer.module.css'
-import { CompanyData,ForCustomers, Partner } from '../../assets/data'
+import { CompanyData, ForCustomers, Partner } from '../../assets/data'
 import { Grid, Typography } from '@mui/material'
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -9,8 +9,7 @@ import Logo from '../../assets/mainLogo2.png'
 import { Link } from 'react-router-dom';
 
 
-export const Footer = ()=>{
-
+export const Footer = () => {
     return(
        <div className={classes['wrapper']}>
         <div className={classes['main']}>
@@ -80,7 +79,6 @@ export const Footer = ()=>{
           <div>© Copyright 2023 Abhi Cares. All rights reserved.</div>  
         </div>
         </div>
-       </div>
     )
 }
 export default Footer

@@ -79,6 +79,7 @@ export const Services = ({ open }) => {
       setIsShow(true);
       setAllServices([]);
     } else {
+      setAllServices([]);
       setIsShow(false);
     }
   }, [searchInput]);
