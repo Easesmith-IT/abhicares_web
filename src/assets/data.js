@@ -58,6 +58,7 @@ export const CompanyData = [
     {id:1,name:'Terms and conditions', url: "termsAndConditions"},
     {id:2,name:'Privacy & Policy', url: "privacy&policy"},
     {id:3,name:'Anti-discrimination Policy', url: "antiDiscriminationPolicy"},
+    {id:4,name:'Admin', url: "admin/login"},
 ]
 export const ForCustomers = [
 
