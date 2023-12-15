@@ -54,7 +54,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
         if (service) {
             if(!token){
-                navigate('/');
+              navigate('/admin/login');
                 return;
               }
             const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData,{headers});
@@ -65,7 +65,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
         }
         else {
             if(!token){
-                navigate('/');
+              navigate('/admin/login');
                 return;
               }
             const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-service`, formData,{headers});
@@ -76,7 +76,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     }
 
     if(!token){
-        navigate('/');
+      navigate('/admin/login');
         return;
       }
 

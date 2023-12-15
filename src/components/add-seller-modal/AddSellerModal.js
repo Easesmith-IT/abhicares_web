@@ -78,7 +78,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
         try {
             if(!token){
-                navigate('/');
+                navigate('/admin/login');
                 return;
               }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`,{headers})
@@ -95,7 +95,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const getCategoryServices = async () => {
         try {
             if(!token){
-                navigate('/');
+                navigate('/admin/login');
                 return;
               }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`,{headers});
@@ -178,7 +178,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
         if (seller) {
             if(!token){
-                navigate('/');
+                navigate('/admin/login');
                 return;
               }
             const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData,{headers});
@@ -189,7 +189,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         }
         else {
             if(!token){
-                navigate('/');
+                navigate('/admin/login');
                 return;
               }
             const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData,{headers});
@@ -201,7 +201,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     }
 
     if(!token){
-        navigate('/');
+        navigate('/admin/login');
         return;
       }
 

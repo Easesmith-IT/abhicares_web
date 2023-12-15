@@ -71,7 +71,7 @@ const Product = ({ product }) => {
             <div className={classes.product}>
                 <img onClick={handleOnclick} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product?.imageUrl[0]}`} alt="product" />
                 <div>
-                    <h4>{product?.name}</h4>
+                    <h5>{product?.name}</h5>
                     <p>{parse(product.description)}</p>
                     <div className={classes.d_flex}>
                         <div className={classes.price_cotainer}>

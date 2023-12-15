@@ -81,8 +81,8 @@ export const WomenSpa = () => {
               </div>
 
             </div>
-            <p className={classes['cardname']}>{item.name}</p>
-            <p className={classes['cardname']} ><i>Starting From : ₹{item.startingPrice}</i></p>
+            <p className={classes['cardname']}><b>{item.name}</b></p>
+            <p className={classes['cardname']} style={{fontSize:'17px'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
             </>
           ))
         }

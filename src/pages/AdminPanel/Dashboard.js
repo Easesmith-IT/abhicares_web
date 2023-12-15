@@ -17,7 +17,7 @@ const AdminPage = () => {
   };
   const token = localStorage.getItem("adUx")
   if(!token){
-    navigate('/');
+    navigate('/admin/login');
     return;
   }
   return (

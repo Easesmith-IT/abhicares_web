@@ -43,7 +43,7 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         if (user) {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-user/${user._id}`, { ...userInfo},{headers});
@@ -58,7 +58,7 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         else {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-user`, { ...userInfo },{headers});
@@ -72,7 +72,7 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         }
     }
     if(!token){
-        navigate('/');
+        navigate('/admin/login');
         return;
       }
     return (

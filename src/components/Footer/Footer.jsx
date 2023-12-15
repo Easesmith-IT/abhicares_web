@@ -13,7 +13,7 @@ export const Footer = () => {
     return(
        <div className={classes['wrapper']}>
         <div className={classes['main']}>
-        <div className={classes['logo-container']}>
+        <div className={classes['logo-container']} style={{marginTop:'20px'}}>
             <div><img src={Logo} alt="logo" /></div>
         </div>
         <div className={classes['Footer']}>

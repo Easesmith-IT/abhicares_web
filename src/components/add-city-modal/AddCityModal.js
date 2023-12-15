@@ -36,7 +36,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         if (city) {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo},{headers});
@@ -51,7 +51,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         else {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-availabe-city  `, { ...cityInfo },{headers});
@@ -65,7 +65,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         }
     }
     if(!token){
-        navigate('/');
+        navigate('/admin/login');
         return;
       }
     return (

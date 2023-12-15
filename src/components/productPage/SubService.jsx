@@ -59,7 +59,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                 </button>
                 <div className={classes.info_container}>
                     <div className={classes.info_container_left}>
-                        <h4 className={classes.sub_service_h4}>{singlePackage.name}</h4>
+                        <h5 className={classes.sub_service_h4}>{singlePackage.name}</h5>
                         <div className={classes.booking}>
                             {/* <div className={`${classes.star_container} ${classes.sub_service_star_container}`}>
                                 <BsStarFill color="white" size={10} />

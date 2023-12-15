@@ -245,7 +245,7 @@ const CheckoutPage = () => {
                         className={classes.booking_info}
                         key={data.productId}
                       >
-                        <h4>{data.name}</h4>
+                        <h6>{data.name}</h6>
                         <p>{data.bookingDate}</p>
                         <p>{data.bookingTime}</p>
                         <button onClick={() => handleDateTimeChange(index)}>Change</button>
@@ -325,7 +325,7 @@ const CheckoutPage = () => {
             </div>
             {isShow && (
               <div className={classes.payment_summary}>
-                <h4 className={classes.payment_summary_h4}>Payment Summary</h4>
+                <h5 className={classes.payment_summary_h4}>Payment Summary</h5>
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Item total</p>
                   <p className={classes.payment_summary_p}>
@@ -350,7 +350,7 @@ const CheckoutPage = () => {
             )}
 
             <div className={classes.amount_to_pay_box}>
-              <h4 className={classes.amount_to_pay_box_h4}>Amount to pay</h4>
+              <h5 className={classes.amount_to_pay_box_h4}>Amount to pay</h5>
               <div>
                 <p className={classes.amount_to_pay}>₹{total}</p>
                 <button
@@ -381,7 +381,7 @@ const CheckoutPage = () => {
             <div>
               <FaCheckCircle size={80} color="green" />
             </div>
-            <h3>Your order has been placed.</h3>
+            <h5>Your order has been placed.</h5>
             <button
               onClick={() => navigate("/my_bookings")}
               className={classes.button}

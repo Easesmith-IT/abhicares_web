@@ -54,20 +54,20 @@ export const HomeRepairsdata = [
 ]
 export const CompanyData = [
 
-    {id:0,name:'About Us', url: "aboutUs"},
-    {id:1,name:'Terms and conditions', url: "termsAndConditions"},
-    {id:2,name:'Privacy & Policy', url: "privacy&policy"},
-    {id:3,name:'Anti-discrimination Policy', url: "antiDiscriminationPolicy"},
-    {id:4,name:'Admin', url: "admin/login"},
+    {id:0,name:'About Us', url: "/aboutUs"},
+    {id:1,name:'Terms and conditions', url: "/termsAndConditions"},
+    {id:2,name:'Privacy & Policy', url: "/privacy&policy"},
+    {id:3,name:'Anti-discrimination Policy', url: "/antiDiscriminationPolicy"},
+    // {id:4,name:'Admin', url: "admin/login"},
 ]
 export const ForCustomers = [
 
 
-    {id:1,name:'Blog', url: "blog"},
-    {id:2,name:'Contact Us', url: "contactUs"},
+    {id:1,name:'Blog', url: "/blog"},
+    {id:2,name:'Contact Us', url: "/contactUs"},
 ]
 export const Partner = [
 
-    {id:0,name:'Register as Professionals',url:"registerAsProfessionals"},
+    {id:0,name:'Register as Professionals',url:"/registerAsProfessionals"},
     
 ]

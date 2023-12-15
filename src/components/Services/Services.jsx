@@ -160,7 +160,7 @@ export const Services = ({ open }) => {
               </div>
             </div>
           <div className={classes["heading"]}>
-            <p style={{fontWeight:'lighter',fontSize:'2.25rem'}}>
+            <p style={{fontSize:'2rem'}}>
               Home services at your doorstep
             </p>
           </div>

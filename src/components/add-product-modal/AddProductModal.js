@@ -56,7 +56,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         if (product) {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-product/${product._id}`, formData, {headers});
@@ -70,7 +70,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         else {
             try {
                 if(!token){
-                    navigate('/');
+                    navigate('/admin/login');
                     return;
                   }
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-product`, formData,{headers});
@@ -85,7 +85,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
     }
 
     if(!token){
-        navigate('/');
+        navigate('/admin/login');
         return;
       }
 
