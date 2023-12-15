@@ -48,8 +48,8 @@ border-radius: 8px;
  .cardMedia{
   width: 100%;
  }
-.cardname{
-  font-size: 10px;
+ .cardname{
+  font-size: 18px;
 }
 .rating{
   font-size: 11px;

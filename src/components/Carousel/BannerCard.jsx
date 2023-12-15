@@ -37,6 +37,7 @@ export const BannerCard = () => {
   const fetchBanners = async() => {
     try {
       // setIsLoading(true)
+      console.log('cms url',process.env.REACT_APP_CMS_URL)
       const response = await axios.get(`${process.env.REACT_APP_CMS_URL}/get-banners`,{
           params: {
            heroBanners:true,
@@ -44,6 +45,8 @@ export const BannerCard = () => {
             section: "web-homepage",
           },
       })
+
+      console.log('BANNERS',response)
 
       if (response.status === 200) {
               setBanners(response.data.banners);

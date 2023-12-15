@@ -76,7 +76,7 @@ export const Footer = () => {
              </Grid>
         </div>
         <div className={classes['sub-footer']}>
-          <div>© Copyright 2023 Abhi Cares. All rights reserved.</div>  
+          <div>© Copyright 2023 AzadKart Pvt. Ltd. All rights reserved.</div>  
         </div>
         </div>
         </div>

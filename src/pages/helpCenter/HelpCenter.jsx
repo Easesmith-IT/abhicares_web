@@ -97,17 +97,6 @@ const HelpCenter = () => {
             <form onSubmit={handleOnSubmit}>
 
               <div className={classes.input_box}>
-                <input
-                  onChange={handleOnChange}
-                  value={helpCenterInfo.description}
-                  className={classes.input}
-                  type="text"
-                  name="description"
-                  id="description"
-                  placeholder="Enter description"
-                />
-              </div>
-              <div className={classes.input_box}>
                 <div onClick={handleMultiSelectClose} className={`${classes.input} ${classes.d_flex}`}>
                   <span>{helpCenterInfo.issue || helpCenterInfo.others}</span>
                   <IoIosArrowDown />
@@ -137,6 +126,17 @@ const HelpCenter = () => {
                     }
                   </div>
                 }
+              </div>
+              <div className={classes.input_box}>
+                <input
+                  onChange={handleOnChange}
+                  value={helpCenterInfo.description}
+                  className={classes.input}
+                  type="text"
+                  name="description"
+                  id="description"
+                  placeholder="Enter description"
+                />
               </div>
               <div className={classes.button_wrapper}>
                 <button className={classes.button}>Submit</button>
@@ -174,7 +174,7 @@ const HelpCenter = () => {
             <button
               onClick={() => setIsIssueModalOpen(false)}
               className={classes.modal_close}
-              disabled={!issue.resolution}
+              // disabled={!issue.resolution}
             >
               <AiOutlineClose size={20} />
             </button>

@@ -1,10 +1,18 @@
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo .png";
 import classes from "../Shared.module.css";
 
 const Header = (props) => {
+  const navigate = useNavigate();
+  const handleLogout = () =>{
+    localStorage.removeItem('adUx')
+    navigate('/');
+    return
+  }
   return (
+    <>
     <header className={classes.header}>
       <div className={classes.logosec}>
         <div className={classes.logo}>
@@ -27,10 +35,13 @@ const Header = (props) => {
             className={classes["nav-img"]}
             alt="logout"
           />
-          <h3 className={classes.title}>Logout</h3>
+          <h3 className={classes.title} onClick={handleLogout}>Logout</h3>
         </div>
       </div>
     </header>
+
+    
+    </>
   );
 };
 

@@ -81,8 +81,8 @@ export const SalonForWomen = () => {
               
               <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
             </div>
-            <p className={classes['cardname']}><b>{item.name}</b></p>
-            <p className={classes['cardname']} style={{fontSize:'17px'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
+            <h5 className={classes['cardname']}><b>{item.name}</b></h5>
+            <p className={classes['cardname']} style={{fontSize:'1rem'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
             </>
           ))
         }
