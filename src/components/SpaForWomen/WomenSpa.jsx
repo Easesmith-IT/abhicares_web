@@ -58,7 +58,7 @@ export const WomenSpa = () => {
 
   return (
     <div className={classes['Card']}>
-      <div className={classes['heading']}><Typography variant='h4'>Personal Care</Typography></div>
+      <div className={classes['heading']}><Typography variant='h4'>Makeup & Mehandi</Typography></div>
       <Carousel
         removeArrowOnDeviceType={["tablet", "mobile"]}
         swipeable={true}
@@ -74,13 +74,16 @@ export const WomenSpa = () => {
         itemClass="carousel-item-padding-30-px">
         {
           allServices.map((item) => (
+            <>
             <div onClick={()=> navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
               <div className={classes['single-card']}>
-                <div className={classes['cardname']}><b>{item.name}</b></div>
                 <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
               </div>
 
             </div>
+            <p className={classes['cardname']}>{item.name}</p>
+            <p className={classes['cardname']} ><i>Starting From : ₹{item.startingPrice}</i></p>
+            </>
           ))
         }
 

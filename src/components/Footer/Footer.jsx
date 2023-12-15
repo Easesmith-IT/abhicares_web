@@ -25,7 +25,7 @@ export const Footer = ()=>{
                         {
                     CompanyData.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><Link to={item.url}>{item.name}</Link></div>
+                            <p className={classes.p}><Link to={item.url}>{item.name}</Link></p>
                         </div>
                     ))
                         }
@@ -37,7 +37,7 @@ export const Footer = ()=>{
                         {
                     ForCustomers.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><Link to={item.url}>{item.name}</Link></div>
+                            <p  className={classes.p}><Link to={item.url}>{item.name}</Link></p>
                         </div>
                     ))
                         }
@@ -51,7 +51,7 @@ export const Footer = ()=>{
                         {
                     Partner.map((item)=>(
                         <div className={classes['footer-content']}>
-                            <div><Link to={item.url}>{item.name}</Link></div>
+                            <p  className={classes.p}><Link to={item.url}>{item.name}</Link></p>
                         </div>
                     ))
                         }

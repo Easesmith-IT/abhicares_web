@@ -21,15 +21,7 @@ const AboutUs = () => {
         <div className={classes.container}>
           <h2 className={classes.h2}>Who we are</h2>
           <p className={classes.p}>
-            AbhiCares is Mithilas's largest online home services platform.
-            Launched in 2022, AbhiCares today operates in Darbhanga. The
-            platform helps customers book reliable & high quality services like
-            – Home repair, Beauty treatment, Massages, Haircuts, Handyman,
-            Appliance repair, painting, carpentry, event management & planner ,
-            Business & tax consultancy and many more - delivered by trained
-            professionals conveniently at home. AbhiCares vision is to empower
-            millions of professionals indiawide to deliver services at home like
-            never experienced before.
+          AbhiCares, established in 2022, has emerged as the largest online home services platform in Mithila, currently serving the vibrant city of Darbhanga. Our platform is dedicated to facilitating customers in booking a wide array of reliable and high-quality services, ranging from home repairs, home care, beauty treatments, massages, haircuts, handyman services, appliance repairs, painting, carpentry, and much more. Our commitment is to ensure these services are seamlessly delivered by skilled professionals in the comfort of customers' homes.
           </p>
 
           <ul className={classes.list_container}>
@@ -38,7 +30,7 @@ const AboutUs = () => {
               <p className={classes.list_item_p}>Trained Professionals</p>
             </li>
             <li className={classes.list_item}>
-              <p className={classes.list_item_bold_p}>10,000+</p>
+              <p className={classes.list_item_bold_p}>1300+</p>
               <p className={classes.list_item_p}>Happy Customers</p>
             </li>
             <li className={classes.list_item}>
@@ -54,15 +46,7 @@ const AboutUs = () => {
           <section className={classes.section}>
             <h2 className={classes.h2}>How We do it</h2>
             <p className={classes.p}>
-              AbhiCares is Mithilas's largest online home services platform.
-              Launched in 2022, AbhiCares today operates in Darbhanga. The
-              platform helps customers book reliable & high quality services
-              like – Home repair, Beauty treatment, Massages, Haircuts,
-              Handyman, Appliance repair, painting, carpentry, event management
-              & planner , Business & tax consultancy and many more - delivered
-              by trained professionals conveniently at home. AbhiCares vision is
-              to empower millions of professionals indiawide to deliver services
-              at home like never experienced before.
+            At AbhiCares, we aspire to revolutionize the home services industry by empowering millions of professionals across India. Our vision extends beyond the ordinary – we aim to redefine the home service experience, offering a level of convenience and excellence that has never been experienced before. Join us on this transformative journey as we bring the future of home services to your doorstep.
             </p>
           </section>
 

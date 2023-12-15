@@ -8,7 +8,7 @@ export const contactAddress = [
     //     address: "Plot No:- 66, Phase-2, Industrial Area, Chandigarh"
     // },
     {
-        city: "Hyderabad",
+        city: "Darbhanga",
         address: "C/O-SHYAM BIHARI SAH-KHASRA NO.1288 1289, VILL/TOLA/PANCH-TARALAHI BAHADURPUR Darbhanga, Darbhanga , Bihar-846003"
     }
 ];

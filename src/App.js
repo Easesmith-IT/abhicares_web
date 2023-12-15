@@ -1,10 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import { changeUserStatus } from "./store/slices/userSlice";
-import { useDispatch } from "react-redux";
-
-import {useEffect} from 'react';
 
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";

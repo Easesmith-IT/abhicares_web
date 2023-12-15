@@ -74,11 +74,13 @@ export const BannerCard = () => {
         containerClass="carousel-container"
         itemClass="carousel-item-padding-40-px"
       >
+
         {banners.length>0 && banners.map((url,index) => (
           <div key={index} className={classes["image-container"]}>
             <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" />
           </div>
         ))}
+
       </Carousel>
     </>
   );

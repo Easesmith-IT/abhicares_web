@@ -1,8 +1,9 @@
 
-/* .image-container{
-   width:29vw;   
-   margin-right:8px ;
-} */
+.banners_wrapper{
+   /* width:100%;   
+   border: 2px solid; */
+  margin-right:8px ; 
+}
 .image-container>div{
   display: flex;
   flex-direction: row;

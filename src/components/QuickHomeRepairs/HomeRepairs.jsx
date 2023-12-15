@@ -44,7 +44,7 @@ export const HomeRepairs = () => {
 
   const getServiceProducts = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-cms-data/656bf7375840ef11ad814f85`, { withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8b0a9f3a2d134bee93a0`, { withCredentials: true });
       // console.log(data);
       setAllServiceProducts(data.data);
       // setLoading(false);
@@ -59,7 +59,7 @@ export const HomeRepairs = () => {
 
   return (
     <div className={classes['Card']}>
-      <div className={classes['heading']}><Typography variant='h4'>Bridal makeup</Typography><Button onClick={() => navigate("/services/656bf7375840ef11ad814f85")} style={{ backgroundColor: "#000" }} variant='contained'>See All</Button></div>
+      <div className={classes['heading']}><Typography variant='h4'>Men's Salon & Massage</Typography></div>
       <Carousel
         removeArrowOnDeviceType={["tablet", "mobile"]}
         swipeable={true}
@@ -72,20 +72,19 @@ export const HomeRepairs = () => {
         customTransition="all 1s"
         transitionDuration={500}
         containerClass="carousel-container"
-        itemClass="carousel-item-padding-40-px">
+        itemClass="carousel-item-padding-30-px">
         {
           allServiceProducts.map((item) => (
-
-            <div key={item.id} className={classes['single-card']}>
-              <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl[0]}`} alt="product" /></div>
-              <div className={classes['card-content']}>
-                <div className={classes['cardname']}>{item.name}</div>
-                {/* <div className={classes['rating']}><StarIcon />&nbsp;4.86&nbsp;&nbsp;(76.8k)</div> */}
-                <div className={classes['price']}>₹{item.offerPrice}</div>
+            <>
+            <div onClick={()=> navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
+              <div className={classes['single-card']}>
+                <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
               </div>
+
             </div>
-
-
+            <p className={classes['cardname']}>{item.name}</p>
+            <p className={classes['cardname']} ><i>Starting From : ₹{item.startingPrice}</i></p>
+            </>
           ))
         }
 

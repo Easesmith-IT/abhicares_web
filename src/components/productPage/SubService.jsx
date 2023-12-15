@@ -16,18 +16,18 @@ const SubService = ({ singlePackage, serviceId }) => {
     return (
         <>
             <div className={classes.sub_service}>
-                <button className={classes.badge}>
+                <button className={classes.badge} style={{marginBottom:'20px'}}>
                     <BiPackage color="#12acac" />
-                    <span className={classes.badge_span}>Package</span>
+                    <span className={classes.badge_span}>Packages</span>
                 </button>
                 <div className={classes.info_container}>
                     <div className={classes.info_container_left}>
                         <h4 className={classes.sub_service_h4}>{singlePackage.name}</h4>
                         <div className={classes.booking}>
-                            <div className={`${classes.star_container} ${classes.sub_service_star_container}`}>
+                            {/* <div className={`${classes.star_container} ${classes.sub_service_star_container}`}>
                                 <BsStarFill color="white" size={10} />
-                            </div>
-                            <span className={`${classes.booking_span} ${classes.sub_service_booking_span}`}>4.81 (1M reviews)</span>
+                            </div> */}
+                            {/* <span className={`${classes.booking_span} ${classes.sub_service_booking_span}`}>4.81 (1M reviews)</span> */}
                         </div>
                         <p className={classes.price_time_container}>
                             <div className={classes.price_cotainer}>
@@ -46,11 +46,11 @@ const SubService = ({ singlePackage, serviceId }) => {
                             <span>1</span>
                             <BiPlus cursor="pointer" />
                         </button> */}
-                        <button className={classes.button}>Add</button>
+                        <button className={classes.addToCartBtn}>Add</button>
                     </div>
                 </div>
-                <div className={classes.dashed_underline}></div>
-                <ul className={classes.list_container}>
+                {/* <div className={classes.dashed_underline}></div> */}
+                {/* <ul className={classes.list_container}>
                     <li className={classes.list}>
                         <span className={classes.list_first_span}>Facial: </span>
                         <span className={classes.list_second_span}>Crave beauty hydrating banana facial</span>
@@ -59,7 +59,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                         <span className={classes.list_first_span}>Facial: </span>
                         <span className={classes.list_second_span}>Crave beauty hydrating banana facial</span>
                     </li>
-                </ul>
+                </ul> */}
                 <button onClick={handleOnclick} className={classes.package_button}>View details</button>
             </div>
             {isOpen && <Modal
