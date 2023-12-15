@@ -78,7 +78,7 @@ const Product = ({ product }) => {
                             <p className={classes.price}>₹{product.price}</p>
                             <p className={classes.price}>₹{product.offerPrice}</p>
                         </div>
-                        {cart?.items?.find((item) => item.productId._id === product._id) ?
+                        {cart?.items?.find((item) => item?.productId?._id === product?._id) ?
                             <button className={classes.button}>
                                 <BiMinus size={20} onClick={handleOnMinusClick} />
                                 <span className={classes.quantity}>{productInCart?.quantity}</span>

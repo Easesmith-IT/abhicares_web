@@ -20,12 +20,13 @@ import TermsAndConditions from "./pages/termsAndConditions/TermsAndConditions";
 import { Toaster } from "react-hot-toast";
 
 
-import HelpCenter from "./pages/HelpCenter";
+import HelpCenter from "./pages/helpCenter/HelpCenter";
 import MyBookings from "./pages/myBookings/MyBookings";
 import SuccessPage from "./pages/successPage/SuccessPage";
 
 import AntiDiscriminationPolicy from "./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy";
 import useGeolocation from "./hooks/usegelocation";
+import BookingDetails from "./pages/bookingDetails/BookingDetails";
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
 
             <Route path="/help_center" element={<HelpCenter />} />
             <Route path="/my_bookings" element={<MyBookings />} />
+            <Route path="/my_bookings/:id" element={<BookingDetails />} />
 
             <Route path="/success" element={<SuccessPage />} />
           </Routes>

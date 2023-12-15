@@ -1,8 +1,28 @@
+import axios from "axios";
 import FaqLi from "./FaqLi";
 
 import classes from "./Modal.module.css";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Faqs = () => {
+    const token = localStorage.getItem("token");
+    const [allFaqs, setAllFaqs] = useState([]);
+
+    const getAllFaqs = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-faq`, { headers: { Authorization: token } });
+            console.log(data);
+            setAllFaqs(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getAllFaqs();
+    }, [])
+
 
     const faqData = [
         {
@@ -21,9 +41,8 @@ const Faqs = () => {
 
     return (
         <div className={classes.faq}>
-            <p className={classes.faq_heading}>Frequently asked questions</p>
             <ul className={classes.faq_ul}>
-                {faqData?.map((faq, index) => (
+                {allFaqs?.map((faq, index) => (
                     <FaqLi
                         key={index}
                         faq={faq}

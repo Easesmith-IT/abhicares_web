@@ -4,9 +4,11 @@ import logo from '../../assets/Main Logo V1-02.png';
 import { FaXmark } from 'react-icons/fa6';
 
 import html2PDF from 'jspdf-html2canvas';
+import parse from 'html-react-parser';
 import { format } from 'date-fns';
 
-const InvoiceModal = ({ setIsInvoiceModalOpen, services, subtotal, taxRate, total, invoiceNumber, invoiceDate, state }) => {
+const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
+
     const downloadInvoice = () => {
         html2PDF(document.querySelector("#invoice_box"), {
             jsPDF: {
@@ -28,7 +30,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, services, subtotal, taxRate, tota
                             <img className={classes.logo} src={logo} alt="logo" />
                             <div className={classes.info}>
                                 <b>From</b>
-                                <h3 className={classes.h3}>Company</h3>
+                                <h3 className={classes.h3}>AbhiCares</h3>
                                 <p className={classes.p}>Name</p>
                                 <p className={classes.p}>email@gmail.com</p>
                                 <p className={classes.p}>1234567890</p>
@@ -43,15 +45,15 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, services, subtotal, taxRate, tota
                                     <p className={classes.p}>Invoice Date</p>
                                 </div>
                                 <div className={classes.invoice_detail_left}>
-                                    <p className={classes.p}># {"invoiceNumber"}</p>
-                                    {/* <p className={classes.p}>{invoiceDate && format(new Date(invoiceDate), 'dd-MM-yyyy')}</p> */}
+                                    <p className={classes.p}># {state._id}</p>
+                                    <p className={classes.p}>{format(new Date(state.createdAt), 'dd-MM-yyyy')}</p>
                                 </div>
                             </div>
                             <b>Bill to</b>
-                            <h3 className={classes.h3}>{"state.companyName"}</h3>
-                            <p className={classes.p}>{"state.email"}</p>
-                            <p className={classes.p}>{"state.phone"}</p>
-                            {/* <p className={classes.p}>{`${state.address.houseNumber} ${state.address.streetName} ${state.address.city}, ${state.address.country}, ${state.address.zipCode}`}</p> */}
+                            <h3 className={classes.h3}>{invoice.user.name}</h3>
+                            <p className={classes.p}>{invoice.user.phone}</p>
+                            {/* <p className={classes.p}>{"state.phone"}</p> */}
+                            <p className={classes.p}>{`${invoice.user.address.addressLine}, ${invoice.user.address.landmark}, ${invoice.user.address.pincode}`}</p>
                         </div>
                     </div>
                     <div className={classes.invoice_bottom}>
@@ -59,25 +61,25 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, services, subtotal, taxRate, tota
                             <table className="">
                                 <thead>
                                     <tr className={classes.tr}>
-                                        <th className={classes.ml}>Service Name</th>
+                                        <th className={classes.ml}>Product Name</th>
                                         <th className={classes.ml}>Description</th>
                                         <th className={classes.ml}>Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {services.map((service, i) => (
+                                    {invoice?.products?.map((product, i) => (
                                         <tr key={i} className={classes.tr}>
                                             <td className={classes.ml}>
-                                                <p>{service.serviceName}</p>
+                                                <p>{product.product.name}</p>
                                             </td>
                                             <td className={classes.ml}>
-                                                <p>{service.desccription}</p>
+                                                <p>{parse(product.product.description)}</p>
                                             </td>
                                             <td className={classes.ml}>
-                                                <p>₹ {service.price}</p>
+                                                <p>₹ {product.product.offerPrice * product.quantity}</p>
                                             </td>
                                         </tr>
-                                    ))} */}
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -85,24 +87,24 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, services, subtotal, taxRate, tota
                             <div className={classes.invoice_bottom_calculation_left}>
                                 <div className={classes.d_flex}>
                                     <b>Subtotal:</b>
-                                    <p>₹ {"subtotal"}</p>
+                                    <p>₹ {invoice.orderValue}</p>
                                 </div>
                                 <div className={classes.d_flex}>
                                     <b>Tax Rate:</b>
-                                    <p>{"taxRate"} %</p>
+                                    <p>{0} %</p>
                                 </div>
                                 <div className={classes.d_flex}>
                                     <b>Total:</b>
-                                    <p>₹ {"total"}</p>
+                                    <p>₹ {invoice.orderValue}</p>
                                 </div>
                             </div>
                         </div>
                         {/* <p className={classes.p}>{state.note}</p> */}
                     </div>
                 </div>
-                    <div className={classes.button_wrapper}>
-                        <button onClick={downloadInvoice} className={classes.button}>Download Invoice</button>
-                    </div>
+                <div className={classes.button_wrapper}>
+                    <button onClick={downloadInvoice} className={classes.button}>Download Invoice</button>
+                </div>
             </div>
         </div>
     )

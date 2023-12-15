@@ -2,12 +2,15 @@ import { useState } from 'react';
 import classes from './Order.module.css'
 import OrderInfoModal from '../orderInfoModal/OrderInfoModal';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const Order = ({ order }) => {
     console.log(order);
+    const navigate = useNavigate();
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const handleOnclick = () => {
+        navigate(`/my_bookings/${order._id}`, { state: order })
         setIsInfoModalOpen(true);
     }
     return (
@@ -18,7 +21,7 @@ const Order = ({ order }) => {
                     <div className={classes.info}>
                         <h3>Order1</h3>
                         {/* <p>{`${order.products[0].product.name}, ${order.products[1] && order.products[1].product.name}, ...`}</p> */}
-                        <p>{format(new Date(order.createdAt),"dd-MM-yyyy")}</p>
+                        <p>{format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
                         <p>Qty: 1</p>
                     </div>
                 </div>
