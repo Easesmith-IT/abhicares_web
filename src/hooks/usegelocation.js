@@ -3,15 +3,14 @@ import axios from "axios";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState(null);
+  const [status,setStatus] = useState(null)
 
   const getAddressInfo = async (latitude, longitude) => {
     try {
-      // console.log(process.env.OPENCAGE_GECODING_API_KEY);
       const response = await axios.get(
         `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=6617eda336c541faba5c1f54119e2de0`
       );
 
-      // console.log(response);
       if (response.status === 200) {
         const address = {
           components: response.data.results[0].components,
@@ -25,63 +24,59 @@ const useGeolocation = () => {
     }
   };
 
-  
-
-  const fetchLocation = (permissionStatus) => {
-    console.log("log", permissionStatus);
-
-    if (permissionStatus.state === "granted") {
-      console.log("inside grrnated");
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-
-          if (latitude && longitude) {
-            getAddressInfo(latitude, longitude);
-          }
-        },
-        (error) => {
-          console.error("Error in getting location", error.message);
-        }
-      );
-    } else if (
-      permissionStatus.state === "prompt" ||
-      permissionStatus.state === "denied"
-    ) {
-      setTimeout(() => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setLocation({ latitude, longitude });
-          },
-          (error) => {
-            console.error("Error getting location:", error.message);
-          }
-        );
-      }, 2 * 60 * 1000);
-    }
-  }; 
-  
-
 useEffect(() => {
-  if (navigator.geolocation) {
-    const permissionStatus = navigator.permissions
-      .query({
+  const getLocation = async () => {
+    try {
+      const status = await navigator.permissions.query({
         name: "geolocation",
-      })
-      .then((status) => {
-         fetchLocation(status);
-        return;
       });
-  }
-  else {
-      console.error("Geolocation is supported by your web browser");
+
+        setStatus(status.state)
+
+      const handlePermission = async () => {
+        if (status.state === "granted") {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              getAddressInfo(latitude, longitude);
+            },
+            (error) => {
+              console.error("Error in getting location", error.message);
+            }
+          );
+        }
+        else if (status.state === "prompt" || status.state === "denied") {
+          // You can handle UI updates or show a message to the user here
+          console.error("Geolocation permission denied by the user");
+
+          // Example: Show a button in your modal to request location again
+          // This button should trigger the geolocation request
+          const requestLocationAgain = () => {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                const { latitude, longitude } = position.coords;
+                getAddressInfo(latitude, longitude);
+              },
+              (error) => {
+                console.error("Error in getting location", error.message);
+              }
+            );
+          };
+
+          requestLocationAgain()
+        }
+      };
+
+      handlePermission();
+    } catch (error) {
+      console.error("Error checking geolocation permission:", error);
     }
-   
-  }, []);
-    
-    
-    return { location };
+  };
+
+  getLocation();
+}, []);
+
+  return { location, status };
 };
 
 export default useGeolocation;
