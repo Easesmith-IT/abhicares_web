@@ -318,7 +318,7 @@ const CheckoutPage = () => {
                 <p className={classes.offer_p}>Coupons and offers</p>
                 <div className={classes.input_wrapper}>
                   <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
-                  <button onClick={handleCheck}>Check</button>
+                  <button onClick={handleCheck}>Apply</button>
                 </div>
                 {message && <p className={message === "Offer available"?classes.green:classes.red}>{message}</p>}
               </div>

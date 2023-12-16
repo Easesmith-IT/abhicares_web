@@ -37,6 +37,10 @@ const Services = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getAllCategories();
   }, [])
 

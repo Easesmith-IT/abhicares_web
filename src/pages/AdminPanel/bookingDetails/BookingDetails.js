@@ -13,6 +13,11 @@ const BookingDetails = () => {
     const [status, setStatus] = useState(state?.status);
 
     const token = localStorage.getItem("adUx");
+
+    if (!token) {
+        navigate('/admin/login');
+        return;
+    }
     const headers = {
         Authorization: token,
     };
@@ -21,7 +26,7 @@ const BookingDetails = () => {
         setStatus(e.target.value);
         try {
             if (!token) {
-                navigate("/");
+                navigate('/admin/login');
                 return;
             }
             const { data } = await axios.post(

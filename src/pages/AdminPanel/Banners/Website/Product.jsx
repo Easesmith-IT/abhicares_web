@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
@@ -8,6 +8,14 @@ const WebProduct = () => {
   const [image, setImage] = useState({
       file: null, preview: null,
   });
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+  if(!token){
+    navigate('/admin/login');
+    return;
+  }
 
   const bannerChangeHandler = (e) => {
     const file = e.target.files[0];

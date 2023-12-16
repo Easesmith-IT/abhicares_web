@@ -33,10 +33,6 @@ const HelpCenterTickets = () => {
 
   const getAllIssues = async () => {
     try {
-      if (!token) {
-        navigate("/");
-        return;
-      }
       const { data } = await axios.post(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list`,
         { status },
@@ -50,9 +46,18 @@ const HelpCenterTickets = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
+  }, []);
+
   useEffect(() => {
     getAllIssues();
   }, [status]);
+
 
   const handleDeleteModal = (id) => {
     setIssue(id);

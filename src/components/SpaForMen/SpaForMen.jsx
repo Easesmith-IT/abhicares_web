@@ -1,7 +1,7 @@
 import Carousel from "react-multi-carousel";
 import { Typography } from "@mui/material";
 import "react-multi-carousel/lib/styles.css";
-import classes from './SpaForMen.module.css'
+import classes from '../QuickHomeRepairs/HomeRepairs.module.css'
 import { WomenSalon } from "../../assets/data";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -18,27 +18,27 @@ export const SpaForMen = () => {
     superLargeDesktop: {
       // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
-      items: 5
+      items: 4
     },
     desktop: {
       breakpoint: { max: 3000, min: 1400 },
-      items: 5
+      items: 3
     },
     laptop: {
       breakpoint: { max: 1399, min: 1024 },
-      items: 5
+      items: 3
     },
     tablet: {
       breakpoint: { max: 768, min: 1023 },
-      items: 3
+      items: 2
     },
     largemobile: {
-      breakpoint: { max: 768, min: 521 },
-      items: 3
+      breakpoint: { max: 767, min: 521 },
+      items: 1
     },
     mobile: {
       breakpoint: { max: 520, min: 0 },
-      items: 2
+      items: 1
     }
   };
 
@@ -84,7 +84,7 @@ export const SpaForMen = () => {
 
             </div>
             <p className={classes['cardname']}><b>{item.name}</b></p>
-            <p className={classes['cardname']} style={{fontSize:'17px'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
+            <p style={{fontSize:'17px'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
             </>
 
 

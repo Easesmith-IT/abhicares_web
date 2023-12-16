@@ -32,10 +32,6 @@ const HelpCenterFaqs = () => {
 
   const getAllFaqs = async () => {
     try {
-      if (!token) {
-        navigate("/");
-        return;
-      }
       const { data } = await axios.get(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-all-faq`,
         { headers }
@@ -49,6 +45,10 @@ const HelpCenterFaqs = () => {
     }
   };
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getAllFaqs();
   }, []);
 

@@ -47,22 +47,22 @@ const CategoryServices = () => {
     };
     const getCategoryServices = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { headers });
             console.log(data);
             setAllCategoryServices(data.data);
         } catch (error) {
             console.log(error);
         }
-        finally{
+        finally {
             setIsLoading(false);
         }
     };
 
     useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         getCategoryServices();
     }, [])
 
@@ -70,10 +70,7 @@ const CategoryServices = () => {
 
     const handleDelete = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
+
             const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-service/${service}`, { headers });
             toast.success("Service deleted successfully");
             getCategoryServices();
@@ -82,11 +79,6 @@ const CategoryServices = () => {
             console.log(error);
         }
     };
-
-    if (!token) {
-        navigate('/');
-        return;
-    }
 
 
     return (
@@ -137,21 +129,21 @@ const CategoryServices = () => {
                 />
             }
 
-        {isUpdateModalOpen && (
-          <AddServiceModal
-            setIsModalOpen={setIsUpdateModalOpen}
-            service={service}
-            getCategoryServices={getCategoryServices}
-          />
-        )}
+            {isUpdateModalOpen && (
+                <AddServiceModal
+                    setIsModalOpen={setIsUpdateModalOpen}
+                    service={service}
+                    getCategoryServices={getCategoryServices}
+                />
+            )}
 
-        {isDeleteModalOpen && (
-          <DeleteModal
-            setState={setIsDeleteModalOpen}
-            handleDelete={handleDelete}
-          />
-        )}
-      </>
+            {isDeleteModalOpen && (
+                <DeleteModal
+                    setState={setIsDeleteModalOpen}
+                    handleDelete={handleDelete}
+                />
+            )}
+        </>
     );
 }
 

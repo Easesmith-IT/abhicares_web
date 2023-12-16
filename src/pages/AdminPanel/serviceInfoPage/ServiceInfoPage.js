@@ -95,6 +95,10 @@ const ServiceInfoPage = () => {
     };
 
     useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         getAllProducts();
         getAllPackage();
     }, [])
