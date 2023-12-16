@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { contactAddress } from "../../data/contactAddress";
 import classes from "./ContactUs.module.css";
 import WebsiteWrapper from '../WebsiteWrapper';
@@ -6,6 +6,14 @@ import WebsiteWrapper from '../WebsiteWrapper';
 
 
 const ContactUs = () => {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("adUx")
+
+    if (!token) {
+        navigate('/admin/login');
+        return;
+    }
+
     return (
         <WebsiteWrapper>
             <section className={classes.contact_us}>

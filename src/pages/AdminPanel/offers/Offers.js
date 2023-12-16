@@ -33,10 +33,6 @@ const Offers = () => {
 
     const getAllOffers = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return
-            }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-coupons`, { headers });
             console.log(data);
             setAllOffers(data.data);
@@ -48,6 +44,10 @@ const Offers = () => {
         }
     };
     useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         getAllOffers();
     }, [])
 
@@ -64,10 +64,6 @@ const Offers = () => {
 
     const handleDelete = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
             const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-coupon/${offer}`, { headers });
             toast.success("Offer deleted successfully");
             getAllOffers();

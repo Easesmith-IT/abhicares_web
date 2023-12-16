@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useState } from "react";
 import Wrapper from "../../../Wrapper";
@@ -9,6 +9,15 @@ const WebService = () => {
     { bannerName: "banner2", file: null, preview: null },
     { bannerName: "banner3", file: null, preview: null },
   ]);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+  if(!token){
+    navigate('/admin/login');
+    return;
+  }
+
   const imageChangeHandler = (e, bannerName) => {
     const file = e.target.files[0];
 

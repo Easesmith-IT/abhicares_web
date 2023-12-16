@@ -390,6 +390,7 @@
 .input_wrapper{
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .input_wrapper input{

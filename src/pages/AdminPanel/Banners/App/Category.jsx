@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Wrapper from "../../../Wrapper";
@@ -16,6 +16,10 @@ const Category = () => {
     { bannerName: "banner4", file: null, preview: null },
     { bannerName: "banner5", file: null, preview: null },
   ]);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
 
   const bannerChangeHandler = (e, bannerName) => {
     const file = e.target.files[0];
@@ -197,8 +201,14 @@ const Category = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getBannersFromServer();
   }, []);
+
+
   return (
     <Wrapper>
       <div>

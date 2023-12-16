@@ -3,12 +3,22 @@ import Header from "./components/Header";
 import SideNav from "./components/SideNav";
 
 import classes from "./Shared.module.css";
+import { useNavigate } from "react-router";
 const Payments = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenuHandler = () => {
     setShowMenu((prev) => !prev);
   };
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+
+  if(!token){
+    navigate('/admin/login');
+    return;
+  }
   return (
     <div>
       <Header onClick={toggleMenuHandler} />

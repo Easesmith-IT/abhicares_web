@@ -64,7 +64,7 @@ export const BannerCard = () => {
   },[])
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <Carousel
         removeArrowOnDeviceType={["tablet", "mobile"]}
         swipeable={true}
@@ -85,7 +85,7 @@ export const BannerCard = () => {
         ))}
 
       </Carousel>
-    </>
+    </div>
   );
 };
 

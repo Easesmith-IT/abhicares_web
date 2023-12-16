@@ -30,7 +30,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
                             <img className={classes.logo} src={logo} alt="logo" />
                             <div className={classes.info}>
                                 <b>From</b>
-                                <h3 className={classes.h3}>AbhiCares</h3>
+                                <h5 className={classes.h3}>AbhiCares</h5>
                                 <p className={classes.p}>Name</p>
                                 <p className={classes.p}>email@gmail.com</p>
                                 <p className={classes.p}>1234567890</p>
@@ -50,7 +50,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
                                 </div>
                             </div>
                             <b>Bill to</b>
-                            <h3 className={classes.h3}>{invoice.user.name}</h3>
+                            <h5 className={classes.h3}>{invoice.user.name}</h5>
                             <p className={classes.p}>{invoice.user.phone}</p>
                             {/* <p className={classes.p}>{"state.phone"}</p> */}
                             <p className={classes.p}>{`${invoice.user.address.addressLine}, ${invoice.user.address.landmark}, ${invoice.user.address.pincode}`}</p>
@@ -62,7 +62,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
                                 <thead>
                                     <tr className={classes.tr}>
                                         <th className={classes.ml}>Product Name</th>
-                                        <th className={classes.ml}>Description</th>
+                                        <th className={classes.ml}>Quantity</th>
                                         <th className={classes.ml}>Price</th>
                                     </tr>
                                 </thead>
@@ -73,7 +73,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
                                                 <p>{product.product.name}</p>
                                             </td>
                                             <td className={classes.ml}>
-                                                <p>{parse(product.product.description)}</p>
+                                                <p>{product.quantity}</p>
                                             </td>
                                             <td className={classes.ml}>
                                                 <p>₹ {product.product.offerPrice * product.quantity}</p>

@@ -25,22 +25,23 @@ const Customers = () => {
     Authorization: token
   }
   const navigate = useNavigate()
+
   const getAllUsers = async () => {
     try {
-      if (!token) {
-        navigate('/');
-        return
-      }
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-user`, { headers });
       setAllUsers(data.data);
     } catch (error) {
       console.log(error);
     }
-    finally{
+    finally {
       setIsLoading(false);
     }
   };
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getAllUsers();
   }, [])
 

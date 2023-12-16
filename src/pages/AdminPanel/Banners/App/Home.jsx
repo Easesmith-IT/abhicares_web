@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../../../Wrapper";
 import DummyImage from "../../../../assets/dummy.png";
@@ -17,6 +17,10 @@ const Home = () => {
     { bannerName: "banner4", file: null, preview: null },
     { bannerName: "banner5", file: null, preview: null },
   ]);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
 
   const bannerChangeHandler = (e, bannerName) => {
     const file = e.target.files[0];
@@ -58,14 +62,14 @@ const Home = () => {
     const formDataHero = new FormData();
     const t = type === "banner1" ? 0 : 1;
 
-  
-      if (banners[t].file === null) {
-        alert("Please select the images");
-        return;
+
+    if (banners[t].file === null) {
+      alert("Please select the images");
+      return;
     }
-    
-      formDataHero.append("img", banners[t].file);
-    
+
+    formDataHero.append("img", banners[t].file);
+
 
     formDataHero.append("type", type);
 
@@ -123,7 +127,7 @@ const Home = () => {
         `${process.env.REACT_APP_CMS_URL}/get-banners`,
         {
           params: {
-           heroBanners:true,
+            heroBanners: true,
             page: "home-hero-banners",
             section: "app-homepage",
           },
@@ -158,7 +162,7 @@ const Home = () => {
           },
         }
       );
-      console.log('rs 2 bann',response2)
+      console.log('rs 2 bann', response2)
 
       const instance = [...banners];
       const index = banners.findIndex((banner) => banner.bannerName === "banner4");
@@ -188,10 +192,15 @@ const Home = () => {
     }
   };
 
-
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getBannersFromServer();
   }, []);
+
+
 
   return (
     <Wrapper>
@@ -219,12 +228,12 @@ const Home = () => {
                   className="mb-2"
                 />
                 <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
-                  >
-                    Update
-                  </button>
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
+                >
+                  Update
+                </button>
               </div>
             ))}
         </div>

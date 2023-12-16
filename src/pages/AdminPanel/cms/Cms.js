@@ -1,8 +1,15 @@
 import classes from './Cms.module.css';
 import Wrapper from '../../Wrapper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cms = () => {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("adUx")
+  
+    if(!token){
+      navigate('/admin/login');
+      return;
+    }
     return (
         <Wrapper>
             <div className={classes.parentContainer}>
