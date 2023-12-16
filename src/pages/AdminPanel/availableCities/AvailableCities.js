@@ -31,10 +31,6 @@ const AvailableCities = () => {
 
     const getAllCities = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return
-            }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-availabe-city`, { headers });
             console.log(data);
             setAllCities(data.data);
@@ -46,6 +42,10 @@ const AvailableCities = () => {
         }
     };
     useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         getAllCities();
     }, [])
 

@@ -1,9 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Wrapper from "../../Wrapper";
 import classes from "./Banner.module.css";
 
 const WebsiteBanner = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+  if (!token) {
+    navigate('/admin/login');
+    return;
+  }
+  
   return (
     <Wrapper>
       <div className={classes.parentContainer}>

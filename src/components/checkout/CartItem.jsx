@@ -75,7 +75,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     <>
       <div className={classes.cart_item}>
         <div className={classes.cart_item_left}>
-          <p className={classes.p}>{item.productId.name}</p>
+          <p className={classes.p}>{item.productId ? item.productId.name : item.packageId.name}</p>
         </div>
 
         <div className={classes.cart_item_right}>
@@ -85,7 +85,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
             <BiPlus size={20} onClick={handleOnPlusClick} />
           </button>
           {/* <MdDelete size={20} onClick={handleCartItemDelete} /> */}
-          <span className={classes.price}>₹{item.quantity * item.productId.offerPrice}</span>
+          <span className={classes.price}>₹{item?.quantity * item.productId ? item?.productId?.offerPrice : item?.packageId?.offerPrice}</span>
         </div>
         {isButton && isSelectButton && <button onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
       </div>

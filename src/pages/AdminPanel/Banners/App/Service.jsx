@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "../../../Wrapper";
 import toast from "react-hot-toast";
 import classes from "../Banner.module.css";
@@ -10,6 +10,10 @@ const Service = () => {
     { bannerName: "hero-banner2", file: null, preview: null },
     { bannerName: "hero-banner3", file: null, preview: null },
   ]);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
 
   const imageChangeHandler = (e, bannerName) => {
     const file = e.target.files[0];
@@ -95,8 +99,14 @@ const Service = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getBannersFromServer();
   }, []);
+
+
   return (
     <Wrapper>
       <div>

@@ -32,12 +32,9 @@ const Partners = () => {
     Authorization: token
   }
 
+
   const getAllSellers = async () => {
     try {
-      if (!token) {
-        navigate('/');
-        return;
-      }
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { headers });
       setAllSellers(data.data);
     } catch (error) {
@@ -49,39 +46,42 @@ const Partners = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getAllSellers();
   }, [])
 
 
-
-  const handleOnChange = async (e, id) => {
-    if (e.target.checked) {
-      try {
-        if (!token) {
-          navigate('/');
-          return;
-        }
-        const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: true }, { headers });
-        toast.success("Seller status updated");
-        getAllSellers();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    else {
-      try {
-        if (!token) {
-          navigate('/');
-          return;
-        }
-        const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: false }, { headers });
-        toast.success("Seller status updated");
-        getAllSellers();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  // const handleOnChange = async (e, id) => {
+  //   if (e.target.checked) {
+  //     try {
+  //       if (!token) {
+  //         navigate('/');
+  //         return;
+  //       }
+  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: true }, { headers });
+  //       toast.success("Seller status updated");
+  //       getAllSellers();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   else {
+  //     try {
+  //       if (!token) {
+  //         navigate('/');
+  //         return;
+  //       }
+  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: false }, { headers });
+  //       toast.success("Seller status updated");
+  //       getAllSellers();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
   const handleUpdateModal = (e, seller) => {
     e.stopPropagation();
@@ -97,10 +97,6 @@ const Partners = () => {
 
   const handleDelete = async () => {
     try {
-      if (!token) {
-        navigate('/');
-        return;
-      }
       const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-seller/${seller}`, { headers });
       toast.success("Seller deleted successfully");
       getAllSellers();
@@ -114,10 +110,6 @@ const Partners = () => {
     const value = e.target.value;
 
     try {
-      if (!token) {
-        navigate('/');
-        return;
-      }
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { headers });
       setAllSellers(data.data);
     } catch (error) {
@@ -137,11 +129,6 @@ const Partners = () => {
         // id = null;
       }, time);
     };
-  }
-
-  if (!token) {
-    navigate('/');
-    return;
   }
 
   const handleSellerInfoModal = (data) => {

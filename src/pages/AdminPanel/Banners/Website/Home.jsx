@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../../../Wrapper";
 import DummyImage from "../../../../assets/dummy.png";
@@ -15,6 +15,9 @@ const WebHome = () => {
     { bannerName: "banner5", file: null, preview: null },
     { bannerName: "banner6", file: null, preview: null },
   ]);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
 
 
   const imageChangeHandler = (e, bannerName) => {
@@ -32,7 +35,7 @@ const WebHome = () => {
     });
   };
 
-  
+
   const uploadHeroImages = async (type) => {
     console.log(type)
     const formDataHero = new FormData();
@@ -69,7 +72,7 @@ const WebHome = () => {
         `${process.env.REACT_APP_CMS_URL}/get-banners`,
         {
           params: {
-           heroBanners:true,
+            heroBanners: true,
             page: "home-sale-banners",
             section: "web-homepage",
           },
@@ -101,6 +104,10 @@ const WebHome = () => {
 
 
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getBannersFromServer();
   }, []);
 

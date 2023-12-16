@@ -21,10 +21,6 @@ const Bookings = () => {
 
     const getAllOrders = async () => {
         try {
-            if (!token) {
-                navigate("/");
-                return;
-            }
             const { data } = await axios.get(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
                 { headers }
@@ -39,6 +35,10 @@ const Bookings = () => {
     };
 
     useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         getAllOrders();
     }, [])
 
@@ -67,7 +67,7 @@ const Bookings = () => {
                             {allOrders?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
                                     <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
-                                    <h3 className={classes["t-op-nextlvl"]}>{order.products.map((product)=> product.product.name)}</h3>
+                                    <h3 className={classes["t-op-nextlvl"]}>{order.products.map((product) => product.product.name)}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>Seller1</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>
                                         <button onClick={() => navigate(`/admin/bookings/${order._id}`, { state: order })} className={classes.button}>View Details</button>

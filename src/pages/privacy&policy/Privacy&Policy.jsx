@@ -1,7 +1,15 @@
+import { useNavigate } from "react-router";
 import WebsiteWrapper from "../WebsiteWrapper"
 import classes from "./Privacy&Policy.module.css"
 
 const PrivacyPolicy = () => {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("adUx")
+  
+    if(!token){
+      navigate('/admin/login');
+      return;
+    }
     return (
         <WebsiteWrapper>
             <section className={classes.privacy_policy}>

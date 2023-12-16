@@ -10,8 +10,17 @@ import RecImg4 from '../../assets/recongized-by/rec-by-4.png'
 import RecImg5 from '../../assets/recongized-by/rec-by-5.png'
 
 import classes from "./AboutUs.module.css";
+import { useNavigate } from "react-router";
 
 const AboutUs = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+  if(!token){
+    navigate('/admin/login');
+    return;
+  }
+
   return (
     <section className={classes.about_section}>
       <div className={classes.heading_div}>

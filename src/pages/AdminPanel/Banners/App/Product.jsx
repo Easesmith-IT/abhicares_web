@@ -1,14 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Product = () => {
   const [image, setImage] = useState({
-      file: null, preview: null,
+    file: null, preview: null,
   });
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adUx")
+
+
+
 
   const bannerChangeHandler = (e) => {
     const file = e.target.files[0];
@@ -22,15 +28,15 @@ const Product = () => {
   };
 
   const uploadImages = async () => {
-   
+
     const formDataHero = new FormData();
-      if (image.file === null) {
-        alert("Please select the images");
-        return;
+    if (image.file === null) {
+      alert("Please select the images");
+      return;
     }
-    
-      formDataHero.append("img", image.file);
-    
+
+    formDataHero.append("img", image.file);
+
 
     formDataHero.append("type", "product-banner");
 
@@ -54,7 +60,7 @@ const Product = () => {
 
   const getBannersFromServer = async () => {
     try {
- 
+
 
       const response = await axios.get(
         `${process.env.REACT_APP_CMS_URL}/get-banners`,
@@ -76,10 +82,14 @@ const Product = () => {
     }
   };
 
-
   useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
     getBannersFromServer();
   }, []);
+
 
   return (
     <Wrapper>

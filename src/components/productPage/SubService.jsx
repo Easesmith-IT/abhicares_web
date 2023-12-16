@@ -90,7 +90,7 @@ const SubService = ({ singlePackage, serviceId }) => {
                                 <BiPlus size={20} onClick={handleOnPlusClick} />
                             </button>
                             : <button 
-                            // onClick={handleAddToCart} 
+                            onClick={handleAddToCart} 
                             className={`${classes.addToCartBtn}`}>Add</button>
                         }
 

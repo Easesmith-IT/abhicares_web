@@ -13,7 +13,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     const [serviceInfo, setServiceInfo] = useState({
         name: service?.name || "",
         startingPrice: service?.startingPrice || "",
-        img: service?.img || "https://www.shutterstock.com/image-photo/interior-hotel-bathroom-260nw-283653278.jpg",
+        img: service?.img || "",
         appHomepage: service?.appHomepage || false,
         webHomepage: service?.webHomepage || false,
         // totalProducts: service?.totalProducts || ""
@@ -41,6 +41,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!serviceInfo.name || !serviceInfo.startingPrice || !serviceInfo.img || !description) {
+          toast.error("All the fields are required");
             return;
         }
         const formData = new FormData();
@@ -57,7 +58,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
               navigate('/admin/login');
                 return;
               }
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData,{headers});
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData,{headers,withCredentials:true});
             console.log(data);
             toast.success("Service updated successfully");
             getCategoryServices();
