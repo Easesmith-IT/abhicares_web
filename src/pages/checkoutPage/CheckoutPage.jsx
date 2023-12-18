@@ -40,6 +40,7 @@ const CheckoutPage = () => {
   const [offerValue, setOfferValue] = useState(0);
   const [total, setTotal] = useState(0);
   const [message, setMessage] = useState("");
+  const [couponId, setCouponId] = useState("");
 
   const [info, setInfo] = useState({
     productId: "",
@@ -106,10 +107,10 @@ const CheckoutPage = () => {
     }
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: location.components.city }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: "Lucknow",couponId }, { headers: { Authorization: token } });
       setIsLoading(false);
 
-      console.log(data)
+      console.log("cod",data);
 
 
       // const { addressLine, pincode, landmark, mobile } = address;
@@ -175,6 +176,7 @@ const CheckoutPage = () => {
         { headers: { Authorization: token } }
       );
       if (data.data[0].status === "active") {
+        setCouponId(data.data[0]._id);
         setMessage("Offer available");
         const offerTotal = cart.totalPrice * (Number(data.data[0].offPercentage) / 100);
         setOfferValue(offerTotal);
@@ -196,6 +198,8 @@ const CheckoutPage = () => {
       console.log(error);
     }
   }
+
+  console.log("couponId",couponId);
 
   return (
     <WebsiteWrapper>

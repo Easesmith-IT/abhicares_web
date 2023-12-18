@@ -23,7 +23,7 @@ const SubService = ({ singlePackage, serviceId }) => {
     const cart = useSelector(state => state.cart)
 
     useEffect(() => {
-        const filtered = cart?.items?.find((item) => item?.productId?._id === singlePackage._id);
+        const filtered = cart?.items?.find((item) => item?.packageId?._id === singlePackage._id);
         setProductInCart(filtered);
     }, [getCartDetails, cart])
 
@@ -33,20 +33,20 @@ const SubService = ({ singlePackage, serviceId }) => {
 
     const handleAddToCart = async () => {
         console.log('package id', singlePackage._id)
-        await dispatch(addItemToCart({ id: singlePackage._id }))
+        await dispatch(addItemToCart({ id: singlePackage._id,type:"package" }))
         await dispatch(getCartDetails());
     }
 
     const handleOnPlusClick = async () => {
         await dispatch(
-            addItemToCart({ id: productInCart?.productId?._id })
+            addItemToCart({ id: productInCart?.packageId?._id,type:"package" })
         );
         await dispatch(getCartDetails());
     }
 
     const handleOnMinusClick = async () => {
         await dispatch(
-            deleteItemFromCart({ itemId: productInCart.productId._id })
+            deleteItemFromCart({ itemId: productInCart.packageId._id,type:"package" })
         );
         await dispatch(getCartDetails());
     }
@@ -83,10 +83,10 @@ const SubService = ({ singlePackage, serviceId }) => {
                             <span>1</span>
                             <BiPlus cursor="pointer" />
                         </button> */}
-                        {cart?.items?.find((item) => item?.productId?._id === singlePackage?._id) ?
+                        {cart?.items?.find((item) => item?.packageId?._id === singlePackage?._id) ?
                             <button className={classes.button}>
                                 <BiMinus size={20} onClick={handleOnMinusClick} />
-                                <span className={classes.quantity}>{productInCart.quantity}</span>
+                                <span className={classes.quantity}>{productInCart?.quantity}</span>
                                 <BiPlus size={20} onClick={handleOnPlusClick} />
                             </button>
                             : <button 

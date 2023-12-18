@@ -78,10 +78,10 @@ const BookingDetails = () => {
                         {state.products?.map((product) => (
                             <div key={product.product._id} className={classes.item}>
                                 <div>
-                                    <img className={classes.img} src="https://dashui.codescandy.com/dashuipro/assets/images/ecommerce/product-2.jpg" alt="product" />
+                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="product" />
                                     <div>
                                         <h6>{product.product.name}</h6>
-                                        <p>category</p>
+                                        {/* <p>category</p> */}
                                     </div>
                                 </div>
                                 <p>Qty: {product.quantity}</p>
@@ -106,11 +106,7 @@ const BookingDetails = () => {
                             <p>₹{(Number(state.orderValue) * 18) / 100}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Discount :</p>
-                            <p>₹300</p>
-                        </div>
-                        <div className={classes.d_flex}>
-                            <p>Shipping Charge :</p>
+                            <p>Discount () :</p>
                             <p>₹300</p>
                         </div>
                         <div className={classes.d_flex}>
