@@ -10,7 +10,11 @@ import RecImg4 from '../../assets/recongized-by/rec-by-4.png'
 import RecImg5 from '../../assets/recongized-by/rec-by-5.png'
 
 import classes from "./AboutUs.module.css";
+
+import WebsiteWrapper from "../WebsiteWrapper";
+
 import { useNavigate } from "react-router";
+
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -22,44 +26,59 @@ const AboutUs = () => {
   }
 
   return (
-    <section className={classes.about_section}>
-      <div className={classes.heading_div}>
-        <h1 className={classes.heading}>AboutUs</h1>
-      </div>
-      <div className={classes.wrapper}>
-        <div className={classes.container}>
-          <h2 className={classes.h2}>Who we are</h2>
-          <p className={classes.p}>
-          AbhiCares, established in 2022, has emerged as the largest online home services platform in Mithila, currently serving the vibrant city of Darbhanga. Our platform is dedicated to facilitating customers in booking a wide array of reliable and high-quality services, ranging from home repairs, home care, beauty treatments, massages, haircuts, handyman services, appliance repairs, painting, carpentry, and much more. Our commitment is to ensure these services are seamlessly delivered by skilled professionals in the comfort of customers' homes.
-          </p>
-
-          <ul className={classes.list_container}>
-            <li className={classes.list_item}>
-              <p className={classes.list_item_bold_p}>100+</p>
-              <p className={classes.list_item_p}>Trained Professionals</p>
-            </li>
-            <li className={classes.list_item}>
-              <p className={classes.list_item_bold_p}>1300+</p>
-              <p className={classes.list_item_p}>Happy Customers</p>
-            </li>
-            <li className={classes.list_item}>
-              <p className={classes.list_item_bold_p}>2</p>
-              <p className={classes.list_item_p}>Cities</p>
-            </li>
-            <li className={classes.list_item}>
-              <p className={classes.list_item_bold_p}>1</p>
-              <p className={classes.list_item_p}>Countries</p>
-            </li>
-          </ul>
-
-          <section className={classes.section}>
-            <h2 className={classes.h2}>How We do it</h2>
+    <WebsiteWrapper>
+      <section className={classes.about_section}>
+        <div className={classes.heading_div}>
+          <h1 className={classes.heading}>AboutUs</h1>
+        </div>
+        <div className={classes.wrapper}>
+          <div className={classes.container}>
+            <h2 className={classes.h2}>Who we are</h2>
             <p className={classes.p}>
-            At AbhiCares, we aspire to revolutionize the home services industry by empowering millions of professionals across India. Our vision extends beyond the ordinary – we aim to redefine the home service experience, offering a level of convenience and excellence that has never been experienced before. Join us on this transformative journey as we bring the future of home services to your doorstep.
+              AbhiCares, established in 2022, has emerged as the largest online
+              home services platform in Mithila, currently serving the vibrant
+              city of Darbhanga. Our platform is dedicated to facilitating
+              customers in booking a wide array of reliable and high-quality
+              services, ranging from home repairs, home care, beauty treatments,
+              massages, haircuts, handyman services, appliance repairs,
+              painting, carpentry, and much more. Our commitment is to ensure
+              these services are seamlessly delivered by skilled professionals
+              in the comfort of customers' homes.
             </p>
-          </section>
 
-          {/* <section className={classes.section}>
+            <ul className={classes.list_container}>
+              <li className={classes.list_item}>
+                <p className={classes.list_item_bold_p}>100+</p>
+                <p className={classes.list_item_p}>Trained Professionals</p>
+              </li>
+              <li className={classes.list_item}>
+                <p className={classes.list_item_bold_p}>1300+</p>
+                <p className={classes.list_item_p}>Happy Customers</p>
+              </li>
+              <li className={classes.list_item}>
+                <p className={classes.list_item_bold_p}>2</p>
+                <p className={classes.list_item_p}>Cities</p>
+              </li>
+              <li className={classes.list_item}>
+                <p className={classes.list_item_bold_p}>1</p>
+                <p className={classes.list_item_p}>Countries</p>
+              </li>
+            </ul>
+
+            <section className={classes.section}>
+              <h2 className={classes.h2}>How We do it</h2>
+              <p className={classes.p}>
+                At AbhiCares, we aspire to revolutionize the home services
+                industry by empowering millions of professionals across India.
+                Our vision extends beyond the ordinary – we aim to redefine the
+                home service experience, offering a level of convenience and
+                excellence that has never been experienced before. Join us on
+                this transformative journey as we bring the future of home
+                services to your doorstep.
+              </p>
+            </section>
+
+            {/* <section className={classes.section}>
               <h2 className={classes.h2}>Our Leadership Team</h2>
               <div className={classes.leadership_team_container}>
                 {leaders.map((data) => (
@@ -68,20 +87,37 @@ const AboutUs = () => {
               </div>
             </section> */}
 
-          <section className={classes.section}>
-            <h2 className={classes.h2}>Reconigzed by</h2>
-            <div className={classes.company_container}>
-                            
-            <img className={classes.company_img}  src={RecImg1} alt="company" />
-            <img className={classes.company_img}  src={RecImg2} alt="company" />
-            <img className={classes.company_img}  src={RecImg3} alt="company" />
-            <img className={classes.company_img}  src={RecImg4} alt="company" />
-            <img className={classes.company_img}  src={RecImg5} alt="company" />
-                                
-                            
-                        </div>
+            <section className={classes.section}>
+              <h2 className={classes.h2}>Reconigzed by</h2>
+              <div className={classes.company_container}>
+                <img
+                  className={classes.company_img}
+                  src={RecImg1}
+                  alt="company"
+                />
+                <img
+                  className={classes.company_img}
+                  src={RecImg2}
+                  alt="company"
+                />
+                <img
+                  className={classes.company_img}
+                  src={RecImg3}
+                  alt="company"
+                />
+                <img
+                  className={classes.company_img}
+                  src={RecImg4}
+                  alt="company"
+                />
+                <img
+                  className={classes.company_img}
+                  src={RecImg5}
+                  alt="company"
+                />
+              </div>
 
-            {/* <div className={classes.investers_container}>
+              {/* <div className={classes.investers_container}>
                             {
                                 investers.map(({ name, src }) => (
                                     <div key={name} className={classes.invester_name_img_container}>
@@ -91,20 +127,21 @@ const AboutUs = () => {
                                 ))
                             }
                         </div> */}
-          </section>
+            </section>
 
-          <section className={`${classes.section} ${classes.media_section}`}>
-            {/* <p className={classes.link_p}>
+            <section className={`${classes.section} ${classes.media_section}`}>
+              {/* <p className={classes.link_p}>
                         For media queries, contact: <a className={classes.link} href="#">press@urbancompany.com</a>
                         </p> */}
-            {/* <p className={classes.p}>
+              {/* <p className={classes.p}>
               You could be a part of our journey. Interested?
             </p> */}
-            {/* <button className={classes.button}>Apply Now</button> */}
-          </section>
+              {/* <button className={classes.button}>Apply Now</button> */}
+            </section>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </WebsiteWrapper>
   );
 };
 
