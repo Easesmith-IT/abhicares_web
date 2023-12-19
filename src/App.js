@@ -31,8 +31,8 @@ import BookingDetails from "./pages/bookingDetails/BookingDetails";
 
 
 // Admin route imports
-import AdminAboutUs from './pages/AdminPanel/cms/about-us';
-import AdminContactUs from './pages/AdminPanel/cms/contact-us';
+import AdminAboutUs from './pages/AdminPanel/cms/about-us/AboutUs';
+import AdminContactUs from './pages/AdminPanel/cms/contact-us/ContactUs';
 import Dashboard from "./pages/AdminPanel/Dashboard";
 import Partners from "./pages/AdminPanel/Partners";
 import Customers from "./pages/AdminPanel/Customers";
