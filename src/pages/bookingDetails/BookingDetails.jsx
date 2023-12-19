@@ -12,11 +12,14 @@ const BookingDetails = () => {
     const params = useParams();
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    console.log(state);
 
     const [invoice, setInvoice] = useState({});
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
     const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
+    const [totalTaxRs, setTotalTaxRs] = useState(0);
     const [total, setTotal] = useState(0);
+    const [discount, setDiscount] = useState(0);
 
     const getOrderInvoice = async () => {
         try {
@@ -39,9 +42,12 @@ const BookingDetails = () => {
 
     useEffect(() => {
         getOrderInvoice();
-        setTotal((state.orderValue * 18) / 100)
+        setTotalTaxRs((state.orderValue * 18) / 100)
+        setTotal(Number(totalTaxRs) + Number(state.orderValue));
+        if (state.couponId) {
+            setDiscount((state.orderValue * 18) / 100)
+        }
     }, [])
-
 
 
     return (
@@ -76,15 +82,18 @@ const BookingDetails = () => {
                             </div>
                         </div>
                         <div className={classes.product_contaner}>
-                            {state?.products?.map((product) => (
-                                <div key={product._id} className={classes.product}>
-                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="" />
+                            {state?.items?.map((item,i) => (
+                                <div key={i} className={classes.product}>
+                                    <div>
+                                        <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="" />
+                                        <small>Type:{item.package ? "Package" : "Product"}</small>
+                                    </div>
                                     <div className={classes.info}>
-                                        <h4>{product?.product?.name}</h4>
-                                        <p>{product.bookingDate}</p>
-                                        <p>{product.bookingTime}</p>
-                                        <p>Qty: {product?.quantity}</p>
-                                        <p>₹{product?.product?.offerPrice * product.quantity}</p>
+                                        <h5>{item.package ? item.package.name : item.product.name}</h5>
+                                        <p>{item.package ? item.package.bookingDate : item.product.bookingDate}</p>
+                                        <p>{item.package ? item.package.bookingTime : item.product.bookingTime}</p>
+                                        <p>Qty: {item.quantity}</p>
+                                        <p>₹{Number(item.package ? item.package.offerPrice : item.product.offerPrice) * Number(item.quantity)}</p>
                                     </div>
                                 </div>
                             ))}
@@ -97,15 +106,15 @@ const BookingDetails = () => {
                         <div className={classes.d_flex}>
                             <div>
                                 <p>Subtotal: </p>
-                                <p>Shipping: </p>
                                 <p>Tax(18%): </p>
+                                <p>Discount: </p>
                                 <p><b>Total: </b></p>
                             </div>
                             <div>
                                 <p>₹{state.orderValue}</p>
-                                <p>Free</p>
-                                <p>₹{total}</p>
-                                <p><b>₹{Number(total) + Number(state.orderValue)}</b></p>
+                                <p> + ₹{totalTaxRs}</p>
+                                <p> - {}</p>
+                                <p><b>₹{total}</b></p>
                             </div>
                         </div>
                     </div>

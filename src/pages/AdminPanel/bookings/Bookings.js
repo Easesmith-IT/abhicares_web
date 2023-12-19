@@ -6,11 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/loader/Loader';
 import { format } from 'date-fns';
+import MonthlyOrderModal from '../../../components/monthly-order-modal/MonthlyOrderModal';
 
 const Bookings = () => {
     const [allOrders, setAllOrders] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [dateYearInfo, setDateYearInfo] = useState("");
+    const [monthlyOrders, setMonthlyOrders] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -26,6 +29,7 @@ const Bookings = () => {
                 { headers }
             );
             setAllOrders(data.data);
+            console.log("allOrders",data);
         } catch (error) {
             console.log(error);
         } finally {
@@ -53,20 +57,22 @@ const Bookings = () => {
         }
         try {
             const arr = dateYearInfo.split("-");
-            console.log(arr);
             const { data } = await axios.post(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-monthly-orders`,
                 {
                     month: arr[1],
                     year: arr[0]
                 },
-                { headers },
+                { headers }
             );
+            if (data.data.length > 0) {
+                setIsModalOpen(true);
+            }
+            setMonthlyOrders(data.data);
             console.log('orders-month', data);
         } catch (error) {
             console.log(error);
         }
-        console.log("month-year");
     }
 
 
@@ -97,7 +103,7 @@ const Bookings = () => {
                             {allOrders?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
                                     <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
-                                    <h3 className={`${classes["t-op-nextlvl"]} ${classes.width}`}>{order.products.map((product) => product.product.name)}</h3>
+                                    <h3 className={`${classes["t-op-nextlvl"]} ${classes.width}`}>{order.items.map((item) => item.package ? item.package.name : item.product.name).join(", ")}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>
                                         <button onClick={() => navigate(`/admin/bookings/${order._id}`, { state: order })} className={classes.button}>View Details</button>
                                     </h3>
@@ -107,6 +113,13 @@ const Bookings = () => {
                     </div>
                 </div>
             </Wrapper >
+
+            {isModalOpen &&
+                <MonthlyOrderModal
+                    setIsModalOpen={setIsModalOpen}
+                    monthlyOrders={monthlyOrders}
+                />
+            }
         </>
     )
 }

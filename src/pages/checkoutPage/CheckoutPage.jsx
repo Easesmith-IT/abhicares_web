@@ -51,7 +51,7 @@ const CheckoutPage = () => {
   const [totalTaxRs, setTotalTaxRs] = useState(0);
 
   const { location } = useGeolocation()
-  console.log(location)
+  console.log("bookings",bookingInfo)
 
   const token = localStorage.getItem("token");
 

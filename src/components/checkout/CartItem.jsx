@@ -20,9 +20,9 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSelectButton, setIsSelectButton] = useState(true);
   const [info, setInfo] = useState({
-    productId: item.type === "product" ? item?.productId?._id : item?.packageId?._id,
-    // packageId: item.type === "package" && item?.packageId?._id,
-    name: item?.productId?.name,
+    productId: item.type === "product" ? item?.productId?._id : "",
+    packageId: item.type === "package" ? item?.packageId?._id : "",
+    name: item.type === "product" ? item?.productId?.name : item?.packageId?.name,
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
@@ -39,7 +39,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   }
 
   useEffect(() => {
-    const find = bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id)
+    const find = item.type === "product" ? bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id) : bookingInfo?.findIndex((data) => data?.productId === item?.packageId?._id)
     if (find >= 0) {
       setIsSelectButton(false);
     }

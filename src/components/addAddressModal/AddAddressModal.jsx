@@ -17,7 +17,7 @@ const AddAddressModal = ({
   Data = "",
 }) => {
     const { location } = useGeolocation();
-    console.log(location)
+    console.log("location",location)
   const token = localStorage.getItem("token");
 
   const [showCurrentLocationAdd, setShowCurrentLocationAdd] = useState(false);
