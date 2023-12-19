@@ -37,12 +37,14 @@ const BookingDetails = () => {
   }
   useEffect(() => {
     getOrderInvoice();
-    setTotalTaxRs((state.orderValue * 18) / 100)
+    setTotalTaxRs((Number(state.orderValue) * 18) / 100);
     setTotal(Number(totalTaxRs) + Number(state.orderValue));
     if (state.couponId) {
-      setDiscount((state.orderValue * 18) / 100)
+      setDiscount(
+        (Number(state.orderValue) * state.couponId.offPercentage) / 100
+      );
     }
-  }, [])
+  }, [state.orderValue, state.couponId, totalTaxRs]);
   return (
     <WebsiteWrapper>
       <section className={classes.booking_details}>
@@ -51,13 +53,27 @@ const BookingDetails = () => {
             <h4 className={classes.h4}>Order Details</h4>
             <div className={classes.d_flex}>
               <div>
-                <p>Order Date: {format(new Date(state.createdAt), "dd-MM-yyyy")}</p>
+                <p>
+                  Order Date: {format(new Date(state.createdAt), "dd-MM-yyyy")}
+                </p>
                 <p>Order ID: {params.id}</p>
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
-                <button onClick={() => setIsInvoiceModalOpen(true)} className={classes.button}>View Invoice</button>
-                {state.status !== "Cancelled" && <button onClick={() => setIsCancelledModalOpen(true)} className={`${classes.button} ${classes.red}`}>Cancel Order</button>}
+                <button
+                  onClick={() => setIsInvoiceModalOpen(true)}
+                  className={classes.button}
+                >
+                  View Invoice
+                </button>
+                {state.status !== "Cancelled" && (
+                  <button
+                    onClick={() => setIsCancelledModalOpen(true)}
+                    className={`${classes.button} ${classes.red}`}
+                  >
+                    Cancel Order
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -78,15 +94,40 @@ const BookingDetails = () => {
               {state?.items?.map((item, i) => (
                 <div key={i} className={classes.product}>
                   <div>
-                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="" />
+                    <img
+                      className={classes.img}
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
+                        item.package
+                          ? item.package.imageUrl[0]
+                          : item.product.imageUrl[0]
+                      }`}
+                      alt=""
+                    />
                     <small>Type:{item.package ? "Package" : "Product"}</small>
                   </div>
                   <div className={classes.info}>
-                    <h5>{item.package ? item.package.name : item.product.name}</h5>
-                    <p>{item.package ? item.package.bookingDate : item.product.bookingDate}</p>
-                    <p>{item.package ? item.package.bookingTime : item.product.bookingTime}</p>
+                    <h5>
+                      {item.package ? item.package.name : item.product.name}
+                    </h5>
+                    <p>
+                      {item.package
+                        ? item.package.bookingDate
+                        : item.product.bookingDate}
+                    </p>
+                    <p>
+                      {item.package
+                        ? item.package.bookingTime
+                        : item.product.bookingTime}
+                    </p>
                     <p>Qty: {item.quantity}</p>
-                    <p>₹{Number(item.package ? item.package.offerPrice : item.product.offerPrice) * Number(item.quantity)}</p>
+                    <p>
+                      ₹
+                      {Number(
+                        item.package
+                          ? item.package.offerPrice
+                          : item.product.offerPrice
+                      ) * Number(item.quantity)}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -101,37 +142,51 @@ const BookingDetails = () => {
                 <p>Subtotal: </p>
                 <p>Tax(18%): </p>
                 <p>Discount: </p>
-                <p><b>Total: </b></p>
+                <p>
+                  <b>Total: </b>
+                </p>
               </div>
               <div>
                 <p>₹{state.orderValue}</p>
                 <p> + ₹{totalTaxRs}</p>
-                <p> - { }</p>
-                <p><b>₹{total}</b></p>
+                <p> - ₹{discount}</p>
+                <p>
+                  <b>₹{total-discount}</b>
+                </p>
               </div>
             </div>
           </div>
         </div>
-        {isInvoiceModalOpen &&
+        {isInvoiceModalOpen && (
           <InvoiceModal
             state={state}
             invoice={invoice}
             setIsInvoiceModalOpen={setIsInvoiceModalOpen}
           />
-        }
-        {isCancelledModalOpen &&
+        )}
+        {isCancelledModalOpen && (
           <div className={classes.modal_wrapper}>
             <div className={classes.modal}>
               <p>Are you sure to cancel ?</p>
               <div className={classes.button_wrapper}>
-                <button onClick={handleCancelOrder} className={`${classes.button} ${classes.yes}`}>Yes</button>
-                <button onClick={() => setIsCancelledModalOpen(false)} className={`${classes.button} ${classes.no}`}>No</button>
+                <button
+                  onClick={handleCancelOrder}
+                  className={`${classes.button} ${classes.yes}`}
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setIsCancelledModalOpen(false)}
+                  className={`${classes.button} ${classes.no}`}
+                >
+                  No
+                </button>
               </div>
             </div>
           </div>
-        }
+        )}
       </section>
     </WebsiteWrapper>
-  )
+  );
 }
 export default BookingDetails
