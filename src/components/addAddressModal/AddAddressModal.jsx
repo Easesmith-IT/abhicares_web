@@ -16,11 +16,15 @@ const AddAddressModal = ({
   getAllAddress,
   Data = "",
 }) => {
-    const { location } = useGeolocation();
-    console.log("location",location)
+
+
+    const { location,status } = useGeolocation();
+
   const token = localStorage.getItem("token");
 
   const [showCurrentLocationAdd, setShowCurrentLocationAdd] = useState(false);
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const [addressInfo, setAddressInfo] = useState({
     addressLine: Data.addressLine || "",
@@ -80,12 +84,22 @@ const AddAddressModal = ({
   };
 
   const handleCurrentLocation = () => {
-    setShowCurrentLocationAdd(true);
+    console.log('on click')
+     if (status !== "granted") {
+       console.log("inside if");
+       setIsButtonDisabled(true);
+     } else {
+       console.log("inside else");
+           setShowCurrentLocationAdd(true);
+       setIsButtonDisabled(false);
+     }
   };
 
   const closeCurrentLocationAddModal = () => {
     setShowCurrentLocationAdd(false);
   };
+
+ 
 
   return (
     <>
@@ -157,7 +171,6 @@ const AddAddressModal = ({
                     name="landmark"
                     id="landmark"
                     placeholder="Enter landmark"
-                    required
                   />
                 </div>
               </div>
@@ -177,9 +190,13 @@ const AddAddressModal = ({
               <button
                 className={classes.button}
                 onClick={handleCurrentLocation}
+                disabled={isButtonDisabled}
+                style={{color:status !== "granted"?'grey':'black'}}
               >
                 <MdMyLocation />
-                use my current location
+                {status === "granted"
+                  ? "Use Current Location"
+                  : "Location Disabled"}
               </button>
               <button type="submit" className={classes.button}>
                 {Data ? "Update" : "Proceed"}
