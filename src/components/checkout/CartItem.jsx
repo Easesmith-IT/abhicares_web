@@ -20,8 +20,9 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSelectButton, setIsSelectButton] = useState(true);
   const [info, setInfo] = useState({
-    productId: item?.productId?._id,
-    name: item?.productId?.name,
+    productId: item.type === "product" ? item?.productId?._id : "",
+    packageId: item.type === "package" ? item?.packageId?._id : "",
+    name: item.type === "product" ? item?.productId?.name : item?.packageId?.name,
     bookingDate: "",
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
@@ -38,7 +39,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   }
 
   useEffect(() => {
-    const find = bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id)
+    const find = item.type === "product" ? bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id) : bookingInfo?.findIndex((data) => data?.productId === item?.packageId?._id)
     if (find >= 0) {
       setIsSelectButton(false);
     }
@@ -51,7 +52,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
 
   const handleOnPlusClick = async () => {
     await dispatch(
-      addItemToCart({ id: item.productId._id })
+      addItemToCart({ id: item.type === "product" ? item.productId._id : item.packageId._id, type: item.type })
     );
     await dispatch(getCartDetails());
   };
@@ -59,23 +60,22 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const handleOnMinusClick = async () => {
     await dispatch(
       deleteItemFromCart({
-        itemId: item.productId._id
+        itemId: item.type === "product" ? item.productId._id : item.packageId._id,
+        type: item.type
       })
     );
     await dispatch(getCartDetails());
   };
 
-  const handleCartItemDelete = async () => {
-    await dispatch(deleteItemFromCart({ itemId: item.productId._id }));
-    await dispatch(getCartDetails());
-  }
 
+  console.log(item.type, item?.quantity);
+  // console.log(item.type, item?.quantity * item.type === "product" ? item.productId.offerPrice : item?.packageId?.offerPrice);
 
   return (
     <>
       <div className={classes.cart_item}>
         <div className={classes.cart_item_left}>
-          <p className={classes.p}>{item.productId ? item.productId.name : item.packageId.name}</p>
+          <p className={classes.p}>{item?.type === "product" ? item?.productId?.name : item?.packageId?.name}</p>
         </div>
 
         <div className={classes.cart_item_right}>
@@ -85,7 +85,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
             <BiPlus size={20} onClick={handleOnPlusClick} />
           </button>
           {/* <MdDelete size={20} onClick={handleCartItemDelete} /> */}
-          <span className={classes.price}>₹{item?.quantity * item.productId ? item?.productId?.offerPrice : item?.packageId?.offerPrice}</span>
+          <span className={classes.price}>₹{Number(item?.quantity) * Number(item.type === "product" ? item.productId.offerPrice : item?.packageId?.offerPrice)}</span>
         </div>
         {isButton && isSelectButton && <button onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
       </div>

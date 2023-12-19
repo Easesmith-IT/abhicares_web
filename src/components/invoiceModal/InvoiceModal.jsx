@@ -7,8 +7,8 @@ import html2PDF from 'jspdf-html2canvas';
 import parse from 'html-react-parser';
 import { format } from 'date-fns';
 
-const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
-
+const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
+console.log(invoice);
     const downloadInvoice = () => {
         html2PDF(document.querySelector("#invoice_box"), {
             jsPDF: {
@@ -67,16 +67,16 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice,state }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {invoice?.products?.map((product, i) => (
+                                    {invoice?.items?.map((item, i) => (
                                         <tr key={i} className={classes.tr}>
                                             <td className={classes.ml}>
-                                                <p>{product.product.name}</p>
+                                                <p>{item.package ? item.package.name : item.product.name}</p>
                                             </td>
                                             <td className={classes.ml}>
-                                                <p>{product.quantity}</p>
+                                                <p>{item.quantity}</p>
                                             </td>
                                             <td className={classes.ml}>
-                                                <p>₹ {product.product.offerPrice * product.quantity}</p>
+                                                <p>₹ {Number(item.package ? item.package.offerPrice : item.product.offerPrice) * Number(item.quantity)}</p>
                                             </td>
                                         </tr>
                                     ))}

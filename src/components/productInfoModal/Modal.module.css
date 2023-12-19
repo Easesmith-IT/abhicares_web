@@ -24,6 +24,8 @@ p {
 .modal_wrapper {
     position: relative;
     margin-top: 40px;
+    max-width: 620px;
+    width: 100%;
 }
 
 .modal_wrapper_overflow {

@@ -75,17 +75,17 @@ const BookingDetails = () => {
                     </div> */}
                     <h5 className={classes.heading}>Products</h5>
                     <div className={classes.container}>
-                        {state.products?.map((product) => (
-                            <div key={product.product._id} className={classes.item}>
+                        {state.items?.map((item, i) => (
+                            <div key={i} className={classes.item}>
                                 <div>
-                                    <img className={classes.img} src="https://dashui.codescandy.com/dashuipro/assets/images/ecommerce/product-2.jpg" alt="product" />
+                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="product" />
                                     <div>
-                                        <h6>{product.product.name}</h6>
-                                        <p>category</p>
+                                        <h6>{item.package ? item.package.name : item.product.name}</h6>
+                                        <p>{item.package ? "Package" : "Product"}</p>
                                     </div>
                                 </div>
-                                <p>Qty: {product.quantity}</p>
-                                <p>₹{product.product.offerPrice * product.quantity}</p>
+                                <p>Qty: {item.quantity}</p>
+                                <p>₹{Number(item.package ? item.package.offerPrice : item.product.offerPrice) * Number(item.quantity)}</p>
                             </div>
                         ))}
                     </div>
@@ -106,11 +106,7 @@ const BookingDetails = () => {
                             <p>₹{(Number(state.orderValue) * 18) / 100}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Discount :</p>
-                            <p>₹300</p>
-                        </div>
-                        <div className={classes.d_flex}>
-                            <p>Shipping Charge :</p>
+                            <p>Discount () :</p>
                             <p>₹300</p>
                         </div>
                         <div className={classes.d_flex}>

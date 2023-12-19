@@ -6,11 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/loader/Loader';
 import { format } from 'date-fns';
+import MonthlyOrderModal from '../../../components/monthly-order-modal/MonthlyOrderModal';
 
 const Bookings = () => {
-    const arr = [1, 2, 3, 4, 5];
     const [allOrders, setAllOrders] = useState([])
     const [isLoading, setIsLoading] = useState(true);
+    const [dateYearInfo, setDateYearInfo] = useState("");
+    const [monthlyOrders, setMonthlyOrders] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -25,8 +28,8 @@ const Bookings = () => {
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
                 { headers }
             );
-            console.log('orders', data);
             setAllOrders(data.data);
+            console.log("allOrders",data);
         } catch (error) {
             console.log(error);
         } finally {
@@ -43,19 +46,52 @@ const Bookings = () => {
     }, [])
 
 
+    const handleOnChange = (e) => {
+        console.log("month-year", e.target.value);
+        setDateYearInfo(e.target.value);
+    }
+
+    const handleOnSubmit = async () => {
+        if (!dateYearInfo) {
+            return;
+        }
+        try {
+            const arr = dateYearInfo.split("-");
+            const { data } = await axios.post(
+                `${process.env.REACT_APP_ADMIN_API_URL}/get-monthly-orders`,
+                {
+                    month: arr[1],
+                    year: arr[0]
+                },
+                { headers }
+            );
+            if (data.data.length > 0) {
+                setIsModalOpen(true);
+            }
+            setMonthlyOrders(data.data);
+            console.log('orders-month', data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     return (
         <>
             <Wrapper>
                 <div className={classes["report-container"]}>
                     <div className={classes["report-header"]}>
                         <h1 className={classes["recent-Articles"]}>Bookings</h1>
+                        <div className={classes.d_flex}>
+                            <input onChange={handleOnChange} type="month" name="month" id="month" />
+                            <button onClick={handleOnSubmit}>Submit</button>
+                        </div>
                     </div>
 
                     <div className={classes["report-body"]}>
                         <div className={classes["report-topic-heading"]}>
                             <h3 className={classes["t-op"]}>Booking Date</h3>
-                            <h3 className={classes["t-op"]}>Product Name</h3>
-                            <h3 className={classes["t-op"]}>Seller Name</h3>
+                            <h3 className={`${classes["t-op"]} ${classes.width}`}>Product Name</h3>
                             <h3 className={classes["t-op"]}>Details</h3>
                         </div>
 
@@ -67,8 +103,7 @@ const Bookings = () => {
                             {allOrders?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
                                     <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
-                                    <h3 className={classes["t-op-nextlvl"]}>{order.products.map((product) => product.product.name)}</h3>
-                                    <h3 className={classes["t-op-nextlvl"]}>Seller1</h3>
+                                    <h3 className={`${classes["t-op-nextlvl"]} ${classes.width}`}>{order.items.map((item) => item.package ? item.package.name : item.product.name).join(", ")}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>
                                         <button onClick={() => navigate(`/admin/bookings/${order._id}`, { state: order })} className={classes.button}>View Details</button>
                                     </h3>
@@ -77,7 +112,14 @@ const Bookings = () => {
                         </div>
                     </div>
                 </div>
-            </Wrapper>
+            </Wrapper >
+
+            {isModalOpen &&
+                <MonthlyOrderModal
+                    setIsModalOpen={setIsModalOpen}
+                    monthlyOrders={monthlyOrders}
+                />
+            }
         </>
     )
 }

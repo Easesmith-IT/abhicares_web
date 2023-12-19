@@ -7,24 +7,10 @@ import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from 'axios';
 
 
-function LogoutModal({ setIsLogoutModalOpen }) {
+function LogoutModal({ setIsLogoutModalOpen,handleLogout }) {
     const token = localStorage.getItem("token");
     const dispatch = useDispatch();
 
-    const handleLogout = async () => {
-        try {
-            localStorage.removeItem("token");
-            setIsLogoutModalOpen(false);
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { headers: { Authorization: token }, withCredentials: true });
-
-            await dispatch(changeUserStatus(null));
-            await dispatch(getCartDetails())
-            window.location.reload();
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     return (
         <div className={classes.modal_wrapper}>

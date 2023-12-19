@@ -315,6 +315,26 @@
   color: #5500cb;
 }
 
+.d_flex{
+  display: flex;
+  gap: 10px;
+}
+
+.d_flex input{
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.d_flex button{
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background: #000;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
 .view {
   height: 35px;
   width: 90px;
@@ -373,6 +393,11 @@
   font-size: 14px;
   letter-spacing: 0px;
   font-weight: 600;
+}
+
+
+.width{
+  width: 280px;
 }
 
 .item1 .t-op-nextlvl:last-child,

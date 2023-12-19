@@ -34,33 +34,26 @@ const Product = ({ product }) => {
     useEffect(() => {
         const filtered = cart?.items?.find((item) => item?.productId?._id === product._id);
         setProductInCart(filtered);
-    }, [getCartDetails,cart])
+    }, [getCartDetails, cart])
 
 
 
     const handleAddToCart = async () => {
+        await dispatch(addItemToCart({ id: product._id, type: "product" }))
+        await dispatch(getCartDetails());
 
-        if (productInCart) {
-            let updatedQuantity = productInCart.quantity + 1;
-            await dispatch(addItemToCart({ id: product._id }))
-            await dispatch(getCartDetails());
-        }
-        else {
-            await dispatch(addItemToCart({ id: product._id }))
-            await dispatch(getCartDetails());
-        }
     }
 
     const handleOnPlusClick = async () => {
         await dispatch(
-            addItemToCart({ id: productInCart?.productId?._id })
+            addItemToCart({ id: productInCart?.productId?._id, type: "product" })
         );
         await dispatch(getCartDetails());
     }
 
     const handleOnMinusClick = async () => {
         await dispatch(
-            deleteItemFromCart({ itemId: productInCart.productId._id })
+            deleteItemFromCart({ itemId: productInCart.productId._id, type: "product" })
         );
         await dispatch(getCartDetails());
     }

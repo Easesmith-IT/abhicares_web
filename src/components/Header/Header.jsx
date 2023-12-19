@@ -11,9 +11,12 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LoginSignupModal from "../loginSignupModal/LoginSignupModal";
 import { useLocation } from "react-router";
 import { FaUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LogoutModal from "../logoutModal/LogoutModal";
 import logo from "../../assets/White Logo V2-02.png"
+import { changeUserStatus } from "../../store/slices/userSlice";
+import { getCartDetails } from "../../store/slices/cartSlice";
+import axios from "axios";
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -24,6 +27,8 @@ export const Header = () => {
 
   const ref = useRef();
   const userIconRef = useRef();
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
   // const userId = useSelector((state) => state.user.userId);
   const userId = localStorage.getItem("token");
@@ -33,6 +38,21 @@ export const Header = () => {
   const handleOnclick = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem("token");
+      setIsLogoutModalOpen(false);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { headers: { Authorization: token }, withCredentials: true });
+
+      await dispatch(changeUserStatus(null));
+      await dispatch(getCartDetails());
+      window.location.reload();
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleLogoutModal = () => {
     setIsUserModalOpen(false);
@@ -85,7 +105,7 @@ export const Header = () => {
           <div className={toggle ? "open mobilenav" : ""}>
             <div>
               <div>
-                <MenuIcon sx={{color:"white"}} className="menu-icon" onClick={handleClose} />
+                <MenuIcon sx={{ color: "white" }} className="menu-icon" onClick={handleClose} />
               </div>
               <Link to="/" className={classes["LogoContainer"]}>
                 <img src={logo} alt="logo" />
@@ -145,7 +165,7 @@ export const Header = () => {
         ) : (
           <div className={classes["container"]}>
             <div>
-              <MenuIcon sx={{color:"white"}} onClick={handleOpen} />
+              <MenuIcon sx={{ color: "white" }} onClick={handleOpen} />
             </div>
             <Link to="/" className={classes["LogoContainer"]}>
               <img src={logo} alt="logo" />
@@ -216,7 +236,10 @@ export const Header = () => {
 
       <LoginSignupModal isOpen={isOpen} handleOnclick={handleOnclick} />
       {isLogoutModalOpen && (
-        <LogoutModal setIsLogoutModalOpen={setIsLogoutModalOpen} />
+        <LogoutModal
+          setIsLogoutModalOpen={setIsLogoutModalOpen}
+          handleLogout={handleLogout}
+        />
       )}
     </>
   );
