@@ -49,6 +49,7 @@ export const Header = () => {
 
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
+      window.location.reload();
       navigate("/");
 
     } catch (error) {
