@@ -4,11 +4,14 @@ import Order from '../../components/order/Order';
 import axios from 'axios';
 import Loader from '../../components/loader/Loader';
 import WebsiteWrapper from '../WebsiteWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true)
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
 
   const getAllOrders = async () => {
     try {
@@ -22,6 +25,9 @@ const MyBookings = () => {
   }
 
   useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
     getAllOrders();
   }, [])
 

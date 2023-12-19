@@ -41,6 +41,9 @@ const BookingDetails = () => {
     }
 
     useEffect(() => {
+        if (!token) {
+            navigate("/");
+        }
         getOrderInvoice();
         setTotalTaxRs((state.orderValue * 18) / 100)
         setTotal(Number(totalTaxRs) + Number(state.orderValue));
@@ -82,7 +85,7 @@ const BookingDetails = () => {
                             </div>
                         </div>
                         <div className={classes.product_contaner}>
-                            {state?.items?.map((item,i) => (
+                            {state?.items?.map((item, i) => (
                                 <div key={i} className={classes.product}>
                                     <div>
                                         <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="" />
@@ -113,7 +116,7 @@ const BookingDetails = () => {
                             <div>
                                 <p>₹{state.orderValue}</p>
                                 <p> + ₹{totalTaxRs}</p>
-                                <p> - {}</p>
+                                <p> - { }</p>
                                 <p><b>₹{total}</b></p>
                             </div>
                         </div>
