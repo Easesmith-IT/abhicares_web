@@ -1,16 +1,9 @@
-import { useDispatch } from 'react-redux';
 import classes from './LogoutModal.module.css'
 
 import { MdOutlineWarning } from "react-icons/md";
-import { changeUserStatus } from "../../store/slices/userSlice";
-import { getCartDetails } from "../../store/slices/cartSlice";
-import axios from 'axios';
 
 
 function LogoutModal({ setIsLogoutModalOpen,handleLogout }) {
-    const token = localStorage.getItem("token");
-    const dispatch = useDispatch();
-
 
     return (
         <div className={classes.modal_wrapper}>

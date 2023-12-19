@@ -84,6 +84,13 @@ const CheckoutPage = () => {
   const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
+    if (cart.items.length === 0) {
+      navigate("/")
+    }
+  }, [cart])
+  
+
+  useEffect(() => {
     const totalTaxRupee = (cart.totalPrice * 18) / 100;
     setTotal(Number(totalTaxRupee) + Number(cart.totalPrice));
     setTotalTaxRs(totalTaxRupee);

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Wrapper from '../../Wrapper'
 import classes from './BookingDetails.module.css'
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,16 +8,14 @@ import { format } from 'date-fns';
 const BookingDetails = () => {
     const { state } = useLocation();
     console.log(state);
-
+    const [totalTaxRs, setTotalTaxRs] = useState(0);
+    const [total, setTotal] = useState(0);
+    const [discount, setDiscount] = useState(0);
     const navigate = useNavigate();
     const [status, setStatus] = useState(state?.status);
 
     const token = localStorage.getItem("adUx");
 
-    if (!token) {
-        navigate('/admin/login');
-        return;
-    }
     const headers = {
         Authorization: token,
     };
@@ -37,6 +35,19 @@ const BookingDetails = () => {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
+        setTotalTaxRs((state.orderValue * 18) / 100)
+        setTotal(Number(totalTaxRs) + Number(state.orderValue));
+        if (state.couponId) {
+            setDiscount((state?.orderValue * state?.couponId?.offPercentage) / 100)
+        }
+    }, [])
+
 
     return (
         <Wrapper>
@@ -102,16 +113,16 @@ const BookingDetails = () => {
                             <p>₹{state.orderValue}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Tax :</p>
-                            <p>₹{(Number(state.orderValue) * 18) / 100}</p>
+                            <p>Tax (18%) :</p>
+                            <p>₹{totalTaxRs}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Discount () :</p>
-                            <p>₹300</p>
+                            <p>Discount ('{state.couponId.name}') :</p>
+                            <p>₹{discount}</p>
                         </div>
                         <div className={classes.d_flex}>
                             <p>Total Amount :</p>
-                            <p>₹{(Number(state.orderValue) * 18) / 100 + Number(state.orderValue)}</p>
+                            <p>₹{total - discount}</p>
                         </div>
                     </div>
                     <div className={classes.right_div_bottom}>

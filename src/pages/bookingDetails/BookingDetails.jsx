@@ -48,7 +48,7 @@ const BookingDetails = () => {
         setTotalTaxRs((state.orderValue * 18) / 100)
         setTotal(Number(totalTaxRs) + Number(state.orderValue));
         if (state.couponId) {
-            setDiscount((state.orderValue * 18) / 100)
+            setDiscount((state?.orderValue * state?.couponId?.offPercentage) / 100)
         }
     }, [])
 
@@ -110,14 +110,14 @@ const BookingDetails = () => {
                             <div>
                                 <p>Subtotal: </p>
                                 <p>Tax(18%): </p>
-                                <p>Discount: </p>
+                                <p>Discount ('{state.couponId.name}'): </p>
                                 <p><b>Total: </b></p>
                             </div>
                             <div>
                                 <p>₹{state.orderValue}</p>
                                 <p> + ₹{totalTaxRs}</p>
-                                <p> - { }</p>
-                                <p><b>₹{total}</b></p>
+                                <p> - {discount}</p>
+                                <p><b>₹{total - discount}</b></p>
                             </div>
                         </div>
                     </div>

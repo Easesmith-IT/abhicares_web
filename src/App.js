@@ -63,11 +63,15 @@ import WebService from "./pages/AdminPanel/Banners/Website/Service";
 import Cms from "./pages/AdminPanel/cms/Cms";
 import Bookings from "./pages/AdminPanel/bookings/Bookings";
 import AdminBookings from "./pages/AdminPanel/bookingDetails/BookingDetails";
+import { getCartDetails } from "./store/slices/cartSlice";
 
 
 function App() {
   const { location } = useGeolocation();
-
+  const dispatch = useDispatch();
+  (async () => {
+    await dispatch(getCartDetails());
+  })()
   // console.log("APP.JS", location);
 
   return (

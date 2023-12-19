@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import classes from "./ProductPage.module.css";
+import loaderClasses from "../../components/loader/Loader.module.css";
+import loader from "../../assets/rolling-white.gif";
 import axios from "axios";
 
 import SubService from "../../components/productPage/SubService";
@@ -23,6 +25,7 @@ const ProductPage = () => {
     const [allPackages, setAllPackages] = useState([]);
     const [isProductLoading, setIsProductLoading] = useState(true);
     const [isPackageLoading, setIsPackageLoading] = useState(true);
+    const [isCartLoading, setIsCartLoading] = useState(false);
 
     const cart = useSelector(state => state.cart);
 
@@ -65,6 +68,8 @@ const ProductPage = () => {
             await dispatch(getCartDetails());
         })()
     }, [])
+
+    console.log("cart",cart);
 
     return (
         <WebsiteWrapper>
@@ -113,6 +118,7 @@ const ProductPage = () => {
                                             key={singlePackage._id}
                                             singlePackage={singlePackage}
                                             serviceId={params?.serviceId}
+                                            setIsCartLoading={setIsCartLoading}
                                         />
                                     ))}
                                 </div>
@@ -132,6 +138,7 @@ const ProductPage = () => {
                                 {allProducts?.map((product) => (
                                     <Product
                                         product={product}
+                                        setIsCartLoading={setIsCartLoading}
                                     />
                                 ))}
                             </div>
@@ -145,9 +152,16 @@ const ProductPage = () => {
                         </div>
                         <div className={`${classes.right_section} ${classes.max_lg_hidden}`}>
                             <div className={classes.cart_detail_box}>
-                                {cart?.items?.length !== 0 && <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
+                                {cart?.items?.length !== 0 &&
+                                 <button onClick={() => navigate("/checkout")} className={`${classes.button} ${classes.view_cart_button}`}>
                                     <span>₹{cart.totalPrice}</span>
-                                    <span>View Cart</span>
+                                    <span>
+                                        {isCartLoading ?
+                                            <div className={loaderClasses.img_container}>
+                                                <img src={loader} alt="loader" />
+                                                Loading
+                                            </div> : "View Cart"}
+                                    </span>
                                 </button>}
                                 {cart?.items?.map((item) => (
                                     <CartItem
