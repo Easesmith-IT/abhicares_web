@@ -39,7 +39,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   }
 
   useEffect(() => {
-    const find = item.type === "product" ? bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id) : bookingInfo?.findIndex((data) => data?.productId === item?.packageId?._id)
+    const find = item.type === "product" ? bookingInfo?.findIndex((data) => data?.productId === item?.productId?._id) : bookingInfo?.findIndex((data) => data?.packageId === item?.packageId?._id)
     if (find >= 0) {
       setIsSelectButton(false);
     }

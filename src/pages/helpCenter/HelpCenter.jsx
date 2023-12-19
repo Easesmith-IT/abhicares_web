@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { AiOutlineClose } from 'react-icons/ai';
 import WebsiteWrapper from '../WebsiteWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const HelpCenter = () => {
   const token = localStorage.getItem("token");
@@ -20,6 +21,7 @@ const HelpCenter = () => {
   const [allIssues, setAllIssues] = useState([]);
   const [issue, setIssue] = useState({});
   const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleView = (data) => {
     setIssue(data);
@@ -81,6 +83,9 @@ const HelpCenter = () => {
   }
 
   useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
     getAllIssues();
   }, [])
 
@@ -174,7 +179,7 @@ const HelpCenter = () => {
             <button
               onClick={() => setIsIssueModalOpen(false)}
               className={classes.modal_close}
-              // disabled={!issue.resolution}
+            // disabled={!issue.resolution}
             >
               <AiOutlineClose size={20} />
             </button>
