@@ -65,7 +65,10 @@ import WebService from "./pages/AdminPanel/Banners/Website/Service";
 import Cms from "./pages/AdminPanel/cms/Cms";
 import Bookings from "./pages/AdminPanel/bookings/Bookings";
 import AdminBookings from "./pages/AdminPanel/bookingDetails/BookingDetails";
+
 import { getCartDetails } from "./store/slices/cartSlice";
+import ErrorPage from "./pages/ErrorPage";
+
 
 
 function App() {
@@ -186,10 +189,9 @@ function App() {
             element={<HelpCenterTickets />}
           />
 
-          {/* <Route path="/*" element={<Error />} /> */}
+          <Route path="/*" element={<ErrorPage />} />
 
         </Routes>
-        {/* <Footer /> */}
       </Router>
       <Toaster />
     </>

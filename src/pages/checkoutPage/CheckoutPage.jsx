@@ -344,13 +344,13 @@ const CheckoutPage = () => {
                   </p>
                 </div>
                 <div className={classes.payment_summary_div}>
-                  <p className={classes.payment_summary_p}>Tax and Fee</p>
+                  <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-                <div className={classes.payment_summary_div}>
+               {offerValue>0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
-                </div>
+                </div>}
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Total</p>
                   <p className={classes.payment_summary_p}>
