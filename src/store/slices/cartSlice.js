@@ -7,22 +7,11 @@ const initialState = {
     items: [],
     totalPrice: 0,
     isCart: false,
-    cartId: ""
+    cartId: "",
+    isLoading: true
 }
 
 const token = localStorage.getItem("token");
-
-// export const createCart = createAsyncThunk("/cart/create", async (userId, items, totalPrice) => {
-//     console.log(userId, items, totalPrice);
-//     try {
-//         const res = axios.post(`${process.env.REACT_APP_API_URL}/create-cart`);
-
-//         const response = await res;
-//         return response.data;
-//     } catch (error) {
-//         toast.error(error?.response?.data?.message);
-//     }
-// })
 
 export const getCartDetails = createAsyncThunk("/cart/details", async () => {
     try {
@@ -43,7 +32,7 @@ export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => 
         const res = axios.post(`${process.env.REACT_APP_API_URL}/add-item-cart`,
             {
                 itemId: data.id,
-                type:data.type
+                type: data.type
                 // quantity: data.quantity,
                 // userId:data.userId
             }
@@ -83,10 +72,10 @@ export const updateQty = createAsyncThunk(
 
 export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (data) => {
     try {
-        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, {type:data.type}, { headers: { Authorization: token }, withCredentials: true });
+        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, { type: data.type }, { headers: { Authorization: token }, withCredentials: true });
 
         const response = await res;
-        console.log("delete",response.data);
+        console.log("delete", response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -97,7 +86,11 @@ export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (d
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
-    reducers: {},
+    reducers: {
+        changeCartLoadingState: (state, action) => {
+            state.isLoading = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getCartDetails.fulfilled, (state, action) => {
@@ -116,3 +109,4 @@ const cartSlice = createSlice({
 })
 
 export default cartSlice.reducer
+export const {changeCartLoadingState} = cartSlice.actions

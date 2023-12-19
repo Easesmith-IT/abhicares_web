@@ -1,11 +1,8 @@
 import unapprovedSellerModalClasses from './MonthlyOrderModal.module.css';
 import classes from '../../pages/AdminPanel/Shared.module.css';
 import { RxCross2 } from 'react-icons/rx';
-import Spreadsheet from "react-spreadsheet";
 import { format } from 'date-fns';
-import { ExcelExport } from "@progress/kendo-react-excel-export";
 import { useRef } from 'react';
-import { Grid, GridColumn } from '@progress/kendo-react-grid';
 
 const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
 
@@ -37,18 +34,19 @@ const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
                     </div>
                 </div>
                 <div className={classes["report-body"]}>
-                    <ExcelExport data={data} ref={_export}>
-                        <Grid
-                            style={{
-                                height: "420px",
-                            }}
-                            data={data}
-                        >
-                            <GridColumn field="OrderId" title="Order ID" width="50px" />
-                            <GridColumn field="date" title="Order Date" width="50px" />
-                            <GridColumn field="orderValue" title="Order Value" width="50px" />
-                        </Grid>
-                    </ExcelExport>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>OrderId</th>
+                                <th>Order Date</th>
+                                <th>Order Quantity</th>
+                                <th>Total Value</th>
+                                <th>Order Time</th>
+                                <th>User Name</th>
+                                <th>User Mobile</th>
+                            </tr>
+                        </thead>
+                    </table>
                     {/* <Spreadsheet data={data} columnLabels={["OrderId", "Order Date", "Order Quantity", "Total Value", "Order Time", "User Name", "User Mobile"]} /> */}
                     <button onClick={excelExport}>Download</button>
                 </div>

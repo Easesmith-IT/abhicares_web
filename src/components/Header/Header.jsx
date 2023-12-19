@@ -12,6 +12,7 @@ import LoginSignupModal from "../loginSignupModal/LoginSignupModal";
 import { useLocation } from "react-router";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import LogoutModal from "../logoutModal/LogoutModal";
 import logo from "../../assets/White Logo V2-02.png"
 import { changeUserStatus } from "../../store/slices/userSlice";
@@ -28,6 +29,7 @@ export const Header = () => {
   const ref = useRef();
   const userIconRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   // const userId = useSelector((state) => state.user.userId);
@@ -47,7 +49,7 @@ export const Header = () => {
 
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
-      window.location.reload();
+      navigate("/");
 
     } catch (error) {
       console.log(error);

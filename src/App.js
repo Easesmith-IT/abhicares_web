@@ -31,6 +31,8 @@ import BookingDetails from "./pages/bookingDetails/BookingDetails";
 
 
 // Admin route imports
+import AdminAboutUs from './pages/AdminPanel/cms/about-us';
+import AdminContactUs from './pages/AdminPanel/cms/contact-us';
 import Dashboard from "./pages/AdminPanel/Dashboard";
 import Partners from "./pages/AdminPanel/Partners";
 import Customers from "./pages/AdminPanel/Customers";
@@ -63,12 +65,18 @@ import WebService from "./pages/AdminPanel/Banners/Website/Service";
 import Cms from "./pages/AdminPanel/cms/Cms";
 import Bookings from "./pages/AdminPanel/bookings/Bookings";
 import AdminBookings from "./pages/AdminPanel/bookingDetails/BookingDetails";
+
+import { getCartDetails } from "./store/slices/cartSlice";
 import ErrorPage from "./pages/ErrorPage";
+
 
 
 function App() {
   const { location } = useGeolocation();
-
+  const dispatch = useDispatch();
+  (async () => {
+    await dispatch(getCartDetails());
+  })()
   // console.log("APP.JS", location);
 
   return (
@@ -145,8 +153,8 @@ function App() {
             exact
             element={<PrivacyPolicy />}
           />
-          <Route path="/admin/cms/about-us" exact element={<AboutUs />} />
-          <Route path="/admin/cms/contact-us" exact element={<ContactUs />} />
+          <Route path="/admin/cms/about-us" exact element={<AdminAboutUs />} />
+          <Route path="/admin/cms/contact-us" exact element={<AdminContactUs />} />
 
           <Route
             path="/admin/banners/website"

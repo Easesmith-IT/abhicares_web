@@ -184,7 +184,8 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       );
       console.log(data);
       dispatch(changeUserStatus(data.token));
-      dispatch(getCartDetails());
+      await dispatch(getCartDetails());
+      window.location.reload();
       localStorage.setItem("token", data.token);
       handleOnClose();
 

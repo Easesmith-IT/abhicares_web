@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react';
 import classes from '../pages/productPage/ProductPage.module.css'
+import loaderClasses from '../components/loader/Loader.module.css'
+import loader from "../assets/rolling-white.gif"
 import parse from "html-react-parser";
 import Modal from './productInfoModal/Modal';
 import {
     addItemToCart,
     deleteItemFromCart,
     getCartDetails,
-    updateQty,
+    changeCartLoadingState
 } from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 
 
-const Product = ({ product }) => {
-    const userId = useSelector(state => state.user.userId);
+const Product = ({ product,setIsCartLoading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -39,23 +41,31 @@ const Product = ({ product }) => {
 
 
     const handleAddToCart = async () => {
+        setIsLoading(true);
+        setIsCartLoading(true);
         await dispatch(addItemToCart({ id: product._id, type: "product" }))
         await dispatch(getCartDetails());
+        setIsLoading(false);
+        setIsCartLoading(false);
 
     }
 
     const handleOnPlusClick = async () => {
+        setIsLoading(true);
         await dispatch(
             addItemToCart({ id: productInCart?.productId?._id, type: "product" })
         );
         await dispatch(getCartDetails());
+        setIsLoading(false);
     }
 
     const handleOnMinusClick = async () => {
+        setIsLoading(true);
         await dispatch(
             deleteItemFromCart({ itemId: productInCart.productId._id, type: "product" })
         );
         await dispatch(getCartDetails());
+        setIsLoading(false);
     }
 
 
@@ -74,10 +84,18 @@ const Product = ({ product }) => {
                         {cart?.items?.find((item) => item?.productId?._id === product?._id) ?
                             <button className={classes.button}>
                                 <BiMinus size={20} onClick={handleOnMinusClick} />
-                                <span className={classes.quantity}>{productInCart?.quantity}</span>
+                                <span className={classes.quantity}>
+                                    {productInCart?.quantity}
+                                </span>
                                 <BiPlus size={20} onClick={handleOnPlusClick} />
                             </button>
-                            : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>Add</button>
+                            : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>
+                                {isLoading ?
+                                    <div className={loaderClasses.img_container}>
+                                        <img src={loader} alt="loader" />
+                                        Adding...
+                                    </div> : "Add"}
+                            </button>
                         }
                     </div>
                 </div>

@@ -3,16 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsStarFill } from "react-icons/bs";
 import { BiMinus, BiPackage, BiPlus } from "react-icons/bi";
 import { useEffect, useState } from "react";
+import loaderClasses from '../loader/Loader.module.css'
+import loader from "../../assets/rolling-white.gif"
 import Modal from "../productInfoModal/Modal";
 import {
     addItemToCart,
     deleteItemFromCart,
     getCartDetails,
 } from "../../store/slices/cartSlice";
-const SubService = ({ singlePackage, serviceId }) => {
+const SubService = ({ singlePackage, serviceId,setIsCartLoading }) => {
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -32,9 +35,12 @@ const SubService = ({ singlePackage, serviceId }) => {
     };
 
     const handleAddToCart = async () => {
-        console.log('package id', singlePackage._id)
+        setIsLoading(true);
+        setIsCartLoading(true);
         await dispatch(addItemToCart({ id: singlePackage._id,type:"package" }))
         await dispatch(getCartDetails());
+        setIsLoading(false);
+        setIsCartLoading(false);
     }
 
     const handleOnPlusClick = async () => {
@@ -91,7 +97,11 @@ const SubService = ({ singlePackage, serviceId }) => {
                             </button>
                             : <button 
                             onClick={handleAddToCart} 
-                            className={`${classes.addToCartBtn}`}>Add</button>
+                            className={`${classes.addToCartBtn}`}>{isLoading ?
+                                <div className={loaderClasses.img_container}>
+                                    <img src={loader} alt="loader" />
+                                    Adding...
+                                </div>: "Add"}</button>
                         }
 
                     </div>
