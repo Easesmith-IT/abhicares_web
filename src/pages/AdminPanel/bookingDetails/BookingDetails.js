@@ -37,16 +37,16 @@ const BookingDetails = () => {
     }
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
-        setTotalTaxRs((state.orderValue * 18) / 100)
-        setTotal(Number(totalTaxRs) + Number(state.orderValue));
-        if (state.couponId) {
-            setDiscount((state?.orderValue * state?.couponId?.offPercentage) / 100)
-        }
-    }, [])
+      if (!token) {
+        navigate("/admin/login");
+        return;
+      }
+      setTotalTaxRs((state.orderValue * 18) / 100);
+      setTotal(Number(totalTaxRs) + Number(state.orderValue));
+      if (state.couponId) {
+        setDiscount((state?.orderValue * state?.couponId?.offPercentage) / 100);
+      }
+    }, [state.orderValue, state.couponId, totalTaxRs,navigate,token]);
 
 
     return (
@@ -117,7 +117,7 @@ const BookingDetails = () => {
                             <p>₹{totalTaxRs}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Discount ('{state.couponId.name}') :</p>
+                            <p>Discount ('{state?.couponId?.name}') :</p>
                             <p>₹{discount}</p>
                         </div>
                         <div className={classes.d_flex}>
@@ -129,7 +129,7 @@ const BookingDetails = () => {
                         <h5>Customer Details</h5>
                         <div className={classes.d_flex}>
                             <p>Customer Name :</p>
-                            <p>{state.user.name}</p>
+                            <p>{state?.user?.name}</p>
                         </div>
                         <div className={classes.d_flex}>
                             <p>Customer Phone :</p>

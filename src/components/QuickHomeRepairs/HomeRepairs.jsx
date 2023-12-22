@@ -34,11 +34,11 @@ export const HomeRepairs = () => {
     },
     largemobile: {
       breakpoint: { max: 767, min: 521 },
-      items: 1
+      items: 2
     },
     mobile: {
       breakpoint: { max: 520, min: 0 },
-      items: 1
+      items: 2
     }
   };
 

@@ -67,7 +67,7 @@ const AddAddressModal = ({
               coordinates: [location.geometry.lat, location.geometry.lng]
             }
 
-          const body = { ...addressInfo,location:geometry };
+          const body = { ...addressInfo,location:geometry,city:'Lucknow' };
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/create-user-address`,
           { ...body },
