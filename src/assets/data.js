@@ -63,7 +63,7 @@ export const CompanyData = [
 export const ForCustomers = [
 
 
-    {id:1,name:'Blog', url: "/blog"},
+    // {id:1,name:'Blog', url: "/blog"},
     {id:2,name:'Contact Us', url: "/contactUs"},
 ]
 export const Partner = [

@@ -72,6 +72,7 @@ export const BannerCard = () => {
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
+        autoPlay={true}
         customTransition="all 2s"
         keyBoardControl={true}
         containerClass="carousel-container"
