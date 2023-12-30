@@ -348,8 +348,14 @@
 
 .report-body {
   max-width: 1160px;
+  width: 100%;
   overflow-x: auto;
   padding: 20px;
+}
+
+.report-body table{
+  width: 100%;
+  /* overflow-x: scroll; */
 }
 
 .report-topic-heading,
@@ -395,10 +401,6 @@
   font-weight: 600;
 }
 
-
-.width{
-  width: 280px;
-}
 
 .item1 .t-op-nextlvl:last-child,
 .item1 .t-op-nextlvl:nth-child(5){

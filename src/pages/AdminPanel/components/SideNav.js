@@ -41,6 +41,14 @@ const SideNav = () => {
           <h3 className={classes.title}>CMS</h3>
         </Link>
         <Link
+          to="/admin/orders"
+          className={`${classes["nav-option"]} ${classes.option2}}`}
+        >
+          <img src={ServiceIcn} className={classes["nav-img"]} alt="orders" />
+
+          <h3 className={classes.title}>Orders</h3>
+        </Link>
+        <Link
           to="/admin/bookings"
           className={`${classes["nav-option"]} ${classes.option2}}`}
         >
