@@ -31,16 +31,6 @@
     margin-top: 20px;
 }
 
-.button {
-    margin-top: 10px;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    background: #000;
-    color: white;
-    padding: 3px 10px;
-}
-
 .container {
     display: flex;
     flex-direction: column;

@@ -31,6 +31,7 @@ import BookingDetails from "./pages/bookingDetails/BookingDetails";
 
 
 // Admin route imports
+import AdminPrivacyPolicy from './pages/AdminPanel/cms/privacy-policy/PrivacyPolicy';
 import AdminAboutUs from './pages/AdminPanel/cms/about-us/AboutUs';
 import AdminContactUs from './pages/AdminPanel/cms/contact-us/ContactUs';
 import Dashboard from "./pages/AdminPanel/Dashboard";
@@ -65,9 +66,11 @@ import WebService from "./pages/AdminPanel/Banners/Website/Service";
 import Cms from "./pages/AdminPanel/cms/Cms";
 import Bookings from "./pages/AdminPanel/bookings/Bookings";
 import AdminBookings from "./pages/AdminPanel/bookingDetails/BookingDetails";
+import AdminOrders from "./pages/AdminPanel/orderDetails/OrderDetails";
 
 import { getCartDetails } from "./store/slices/cartSlice";
 import ErrorPage from "./pages/ErrorPage";
+import Orders from "./pages/AdminPanel/orders/Orders";
 
 
 
@@ -151,7 +154,7 @@ function App() {
           <Route
             path="/admin/cms/privacy-policy"
             exact
-            element={<PrivacyPolicy />}
+            element={<AdminPrivacyPolicy />}
           />
           <Route path="/admin/cms/about-us" exact element={<AdminAboutUs />} />
           <Route path="/admin/cms/contact-us" exact element={<AdminContactUs />} />
@@ -164,6 +167,9 @@ function App() {
 
           <Route path="/admin/bookings" element={<Bookings />} />
           <Route path="/admin/bookings/:id" element={<AdminBookings />} />
+
+          <Route path="/admin/orders" element={<Orders />} />
+          <Route path="/admin/orders/:id" element={<AdminOrders />} />
 
           <Route path="/admin/partners" element={<Partners />} />
           <Route path="/admin/customers" element={<Customers />} />
