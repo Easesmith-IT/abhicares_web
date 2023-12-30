@@ -1,5 +1,4 @@
 import classes from './Footer.module.css'
-import { CompanyData, ForCustomers, Partner } from '../../assets/data'
 import { Grid, Typography } from '@mui/material'
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -21,25 +20,29 @@ export const Footer = () => {
                    <Grid item xs={12} sm={6} md={3} lg={3}>
                      <div className={classes['sections']}>
                      <div className={classes['heading']}><Typography variant='h5'>Company</Typography></div>
-                        {
-                    CompanyData.map((item)=>(
-                        <div className={classes['footer-content']}>
-                            <p className={classes.p}><Link to={item.url}>{item.name}</Link></p>
+                         <div className={classes['footer-content']}>
+                            <p className={classes.p}><Link to="/aboutUs">About Us</Link></p>
                         </div>
-                    ))
-                        }
+                        <div className={classes['footer-content']}>
+                            <p className={classes.p}><Link to="/termsAndConditions">Terms and conditions</Link></p>
+                        </div>
+                        <div className={classes['footer-content']}>
+                            <p className={classes.p}><Link to="/privacy-policy">Privacy & Policy</Link></p>
+                        </div>
+
+                        <div className={classes['footer-content']}>
+                            <p className={classes.p}><Link to="/antiDiscriminationPolicy">Anti-discrimination Policy</Link></p>
+                        </div>
                      </div>
                    </Grid>
                    <Grid item xs={12} sm={6} md={3} lg={3}>
                     <div className={classes['sections']}>
                          <div className={classes['heading']}><Typography variant='h5'>For Customers</Typography></div>
-                        {
-                    ForCustomers.map((item)=>(
+                
                         <div className={classes['footer-content']}>
-                            <p  className={classes.p}><Link to={item.url}>{item.name}</Link></p>
+                            <p  className={classes.p}><Link to="/contactUs">Contact Us</Link></p>
                         </div>
-                    ))
-                        }
+                  
                     </div>
                    </Grid>
  
@@ -47,13 +50,11 @@ export const Footer = () => {
                    <Grid item xs={12} sm={6} md={3} lg={3}>
               <div className={classes['sections']}> 
                        <div className={classes['heading']}><Typography variant='h5'>For Partners</Typography></div>
-                        {
-                    Partner.map((item)=>(
+                    
                         <div className={classes['footer-content']}>
-                            <p  className={classes.p}><Link to={item.url}>{item.name}</Link></p>
+                            <p  className={classes.p}><Link to="/registerAsProfessionals">Register as Professionals</Link></p>
                         </div>
-                    ))
-                        }
+
               </div>
                    </Grid>
              

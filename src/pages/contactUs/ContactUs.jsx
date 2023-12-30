@@ -6,13 +6,7 @@ import WebsiteWrapper from '../WebsiteWrapper';
 
 
 const ContactUs = () => {
-    const navigate = useNavigate();
-    const token = localStorage.getItem("adUx")
-
-    if (!token) {
-        navigate('/admin/login');
-        return;
-    }
+ 
 
     return (
         <WebsiteWrapper>
