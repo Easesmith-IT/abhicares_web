@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "",bookingId }) => {
+const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "",bookingId,getBooking }) => {
     const [allSeller, setAllSeller] = useState([]);
 
     const navigate = useNavigate()
@@ -20,7 +20,7 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "",bookingId }) => {
                 return;
             }
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-seller-list/${serviceId}`, { headers });
-            setAllSeller()
+            setAllSeller(data.data)
             console.log("seller to assign",data);
         } catch (error) {
             console.log(error);
@@ -41,9 +41,10 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "",bookingId }) => {
                 navigate('/admin/login');
                 return;
             }
-            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/allot-seller-order/${sellerId}`, { bookingId }, { headers });
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/allot-seller-order/${sellerId}`, { bookingId }, { headers });
             console.log(data);
             toast.success("Order assigned to seller successfully");
+            getBooking()
             setIsModalOpen(false);
         } catch (error) {
             console.log(error);
@@ -66,13 +67,16 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "",bookingId }) => {
                     </div>
                 </div>
                 <div className={classes.partner_container}>
+
+                   {allSeller && allSeller.map((seller)=>(
                     <div className={classes.partner}>
                         <div className={classes.partner_left}>
-                            <p>Seller Name: name</p>
-                            <p>Seller Phone: phone</p>
-                            <button onClick={()=>handleAssign()} className={classes.button}>Assign</button>
+                            <p>Seller Name: {seller.name}</p>
+                            <p>Seller Phone: {seller.phone}</p>
+                            <button onClick={()=>handleAssign(seller._id)} className={classes.button}>Assign</button>
                         </div>
                     </div>
+                   )) }
                 </div>
             </div>
         </div>

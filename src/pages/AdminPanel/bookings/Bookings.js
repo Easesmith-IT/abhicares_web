@@ -25,6 +25,7 @@ const Bookings = () => {
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-booking-list`,
                 { headers }
             );
+            
             setAllBookings(data.data);
             console.log("allBookings", data);
         } catch (error) {
