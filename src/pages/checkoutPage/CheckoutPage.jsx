@@ -53,7 +53,7 @@ const CheckoutPage = () => {
 
   const { location } = useGeolocation();
 
-  console.log("location",location);
+  console.log("location", location);
 
   const token = localStorage.getItem("token");
 
@@ -122,7 +122,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: location?.components?.city , couponId }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { headers: { Authorization: token } });
       setIsLoading(false);
 
       console.log("cod", data);
@@ -237,22 +237,21 @@ const CheckoutPage = () => {
         { headers: { Authorization: token } }
       );
 
-      const { data: { order } } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-online-order`, { amount: total },
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/create-online-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId },
         { headers: { Authorization: token } }
       );
-      console.log("razor", order);
+      console.log("razor", data);
 
       var options = {
         key: apiKey,
-        amount: order.amount,
+        amount: data.razorpayOrder.amount,
         currency: "INR",
         name: "Abhicares Corp.",
         description: "Test Transaction",
         image: logo,
-        order_id: order.id,
+        order_id: data.razorpayOrder.id,
         handler: async function (response) {
-          console.log("response", response);
           paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
           paymentDetails.razorpay_order_id = response.razorpay_order_id;
           paymentDetails.razorpay_signature = response.razorpay_signature;
