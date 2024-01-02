@@ -71,6 +71,7 @@ import AdminOrders from "./pages/AdminPanel/orderDetails/OrderDetails";
 import { getCartDetails } from "./store/slices/cartSlice";
 import ErrorPage from "./pages/ErrorPage";
 import Orders from "./pages/AdminPanel/orders/Orders";
+import SellerAssignedOrders from "./pages/AdminPanel/seller-assigned-orders/SellerAssignedOrders";
 
 
 
@@ -172,6 +173,8 @@ function App() {
           <Route path="/admin/orders/:id" element={<AdminOrders />} />
 
           <Route path="/admin/partners" element={<Partners />} />
+          <Route path="/admin/partners/:partnerId" element={<SellerAssignedOrders />} />
+
           <Route path="/admin/customers" element={<Customers />} />
           <Route path="/admin/services" element={<Services />} />
           <Route path="/admin/payments" element={<Payments />} />

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classes from './AddPackageModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { IoIosArrowDown } from 'react-icons/io';
 
-const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts }) => {
+const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
     const navigate = useNavigate()
     const token = localStorage.getItem("adUx")
 
@@ -18,13 +18,15 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     }
 
     const [packageInfo, setPackageInfo] = useState({
-        name: "",
-        price: "",
-        offerPrice: "",
-        img: ["https://www.shutterstock.com/image-photo/interior-hotel-bathroom-260nw-283653278.jpg"],
-        products: [],
+        name: selectedPackage?.name || "",
+        price: selectedPackage?.price || "",
+        offerPrice: selectedPackage?.offerPrice || "",
+        img: selectedPackage?.imageUrl || [],
+        products: selectedPackage?.products || [],
     });
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
+
+    console.log("package", selectedPackage);
 
 
 
@@ -58,7 +60,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
             || !packageInfo.price
             || !packageInfo.offerPrice
             || !packageInfo.img
-            ) {
+        ) {
             return;
         }
         const formData = new FormData();
@@ -72,28 +74,44 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         }
 
 
-        try {
-            if (!token) {
-              navigate("/");
-              return;
+        if (selectedPackage) {
+            try {
+                if (!token) {
+                    navigate("/");
+                    return;
+                }
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-package/${selectedPackage._id}`, formData, { headers });
+                toast.success("Package updated successfully");
+                getAllPackage();
+                setIsModalOpen(false);
+            } catch (error) {
+                console.log(error);
             }
-            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-package`, formData,{headers});
-            toast.success("Package added successfully");
-            getAllPackage();
-            setIsModalOpen(false);
-        } catch (error) {
-            console.log(error);
+        }
+        else {
+            try {
+                if (!token) {
+                    navigate("/");
+                    return;
+                }
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-package`, formData, { headers });
+                toast.success("Package added successfully");
+                getAllPackage();
+                setIsModalOpen(false);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
-if (!token) {
-  navigate("/");
-  return;
-}
+    if (!token) {
+        navigate("/");
+        return;
+    }
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>
                 <div className={classes.heading_container}>
-                    <h4>Add Package</h4>
+                    <h4>{selectedPackage ? "Update" : "Add"} Package</h4>
                     <div className={classes.d_flex}>
                         <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
                     </div>
@@ -122,7 +140,7 @@ if (!token) {
                                 {allProducts?.map((product) => (
                                     <div key={product._id} className={classes.d_flex}>
                                         <label htmlFor={product.name}>{product.name}</label>
-                                        <input checked={packageInfo.products.some((item)=> item.productId === product._id)} onChange={handleProductOnChange} type="checkbox" value={product._id} name={product.name} id={product.name} />
+                                        <input checked={packageInfo.products.some((item) => item.productId === product._id)} onChange={handleProductOnChange} type="checkbox" value={product._id} name={product.name} id={product.name} />
                                     </div>
                                 ))}
                             </div>
@@ -133,7 +151,7 @@ if (!token) {
                         <input onChange={getImage} multiple type="file" name="img" id="img" />
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>Add</button>
+                        <button className={classes.button}>{selectedPackage ? "Update" : "Add"}</button>
                     </div>
                 </form>
             </div>

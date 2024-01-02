@@ -43,3 +43,21 @@
 .mt{
     margin-top: 20px;
 }
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.item > div {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.img {
+    width: 60px;
+    height: 60px;
+}

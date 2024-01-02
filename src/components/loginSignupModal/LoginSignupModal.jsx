@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.user.userId);;
+  const userId = useSelector(state => state.user.userId);
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
@@ -148,8 +148,10 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { enteredOTP: otp, phoneNumber: loginSignupInfo.phone },
         { withCredentials: true }
       );
-      console.log("signup otp verification", data);
+      console.log("login otp verification", data);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.userName);
+      localStorage.setItem("userPhone", data.userPhone);
       await dispatch(changeUserStatus(data.token));
       await dispatch(getCartDetails());
       window.location.reload();
@@ -182,11 +184,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { enteredOTP: otp, phone: loginSignupInfo.phone },
         { withCredentials: true }
       );
-      console.log(data);
+      console.log("signup otp verification", data);
       dispatch(changeUserStatus(data.token));
       await dispatch(getCartDetails());
-      window.location.reload();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.userName);
+      localStorage.setItem("userPhone", data.userPhone);
+      window.location.reload();
       handleOnClose();
 
       setIsLoading(false);

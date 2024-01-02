@@ -44,6 +44,8 @@ export const Header = () => {
   const handleLogout = async () => {
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userPhone");
       setIsLogoutModalOpen(false);
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { headers: { Authorization: token }, withCredentials: true });
 

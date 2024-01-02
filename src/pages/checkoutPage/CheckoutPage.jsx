@@ -4,7 +4,7 @@ import classes from "./CheckoutPage.module.css";
 
 import { AiOutlinePercentage } from "react-icons/ai";
 
-import Carousel from "react-multi-carousel";
+import logo from "../../assets/White Logo V2-02.png";
 
 import CartItem from "../../components/checkout/CartItem";
 import LoginSignupModal from "../../components/loginSignupModal/LoginSignupModal";
@@ -41,6 +41,7 @@ const CheckoutPage = () => {
   const [total, setTotal] = useState(0);
   const [message, setMessage] = useState("");
   const [couponId, setCouponId] = useState("");
+  const [paymentType, setPaymentType] = useState("");
 
   const [info, setInfo] = useState({
     productId: "",
@@ -50,8 +51,9 @@ const CheckoutPage = () => {
   })
   const [totalTaxRs, setTotalTaxRs] = useState(0);
 
-  const { location } = useGeolocation()
-  console.log("bookings",bookingInfo)
+  const { location } = useGeolocation();
+
+  console.log("location",location);
 
   const token = localStorage.getItem("token");
 
@@ -88,7 +90,7 @@ const CheckoutPage = () => {
       navigate("/")
     }
   }, [cart])
-  
+
 
   useEffect(() => {
     const totalTaxRupee = (cart.totalPrice * 18) / 100;
@@ -102,7 +104,7 @@ const CheckoutPage = () => {
   };
 
 
-  const handleOrder = async () => {
+  const handleCodOrder = async () => {
     if (!address) {
       toast.error("Select address");
       return;
@@ -112,12 +114,18 @@ const CheckoutPage = () => {
       toast.error("Select booking date and time");
       return;
     }
+
+    if (paymentType === "") {
+      toast.error("Select payment method");
+      return;
+    }
+
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: "Lucknow",couponId }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: location?.components?.city , couponId }, { headers: { Authorization: token } });
       setIsLoading(false);
 
-      console.log("cod",data);
+      console.log("cod", data);
 
 
       // const { addressLine, pincode, landmark, mobile } = address;
@@ -135,7 +143,6 @@ const CheckoutPage = () => {
       setIsSuccessModalOpen(true);
 
       // const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { headers: { Authorization: token } });
-      // console.log("res", res);
 
 
     } catch (error) {
@@ -172,6 +179,7 @@ const CheckoutPage = () => {
     setIsModalOpen(true);
   }
 
+
   const handleCheck = async () => {
     if (!offerCode) {
       toast.error("Enter coupon code");
@@ -196,7 +204,6 @@ const CheckoutPage = () => {
         const totalValue = total - Number(0);
         setTotal(totalValue);
       }
-      console.log(data);
     } catch (error) {
       setMessage("Enter valid coupon code");
       setOfferValue(0);
@@ -206,7 +213,82 @@ const CheckoutPage = () => {
     }
   }
 
-  console.log("couponId",couponId);
+
+  const handlePaymentTypeChange = (e) => {
+    setPaymentType(e.target.value);
+  }
+
+  const paymentDetails = {
+    razorpay_payment_id: "",
+    razorpay_subscription_id: "",
+    razorpay_signature: "",
+  };
+
+  const handleRazorpayPayment = async () => {
+    if (paymentType === "" || paymentType !== "online") {
+      toast.error("Select payment method");
+      return;
+    }
+
+    try {
+
+      const { data: { apiKey } } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/get-api-key`, {},
+        { headers: { Authorization: token } }
+      );
+
+      const { data: { order } } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/create-online-order`, { amount: total },
+        { headers: { Authorization: token } }
+      );
+      console.log("razor", order);
+
+      var options = {
+        key: apiKey,
+        amount: order.amount,
+        currency: "INR",
+        name: "Abhicares Corp.",
+        description: "Test Transaction",
+        image: logo,
+        order_id: order.id,
+        handler: async function (response) {
+          console.log("response", response);
+          paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
+          paymentDetails.razorpay_order_id = response.razorpay_order_id;
+          paymentDetails.razorpay_signature = response.razorpay_signature;
+
+          try {
+            const { data } = await axios.post(
+              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails },
+              { headers: { Authorization: token } }
+            );
+            console.log("handler", data);
+            if (data.success) {
+              navigate("/success");
+            }
+          } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message);
+          }
+        },
+        prefill: {
+          name: localStorage.getItem("userName"),
+          contact: localStorage.getItem("userPhone")
+        },
+        notes: {
+          address: "Abhicares Corporate Office"
+        },
+        theme: {
+          color: "#3399cc"
+        }
+      };
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <WebsiteWrapper>
@@ -264,8 +346,19 @@ const CheckoutPage = () => {
                     ))}
                   </div>
                 </div>
+                <h5 className={classes.select_type_heading}>Select Payment Type</h5>
+                <div className={classes.d_flex}>
+                  <div>
+                    <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="cod" id="cod" />
+                    <label htmlFor="cod">COD</label>
+                  </div>
+                  <div>
+                    <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="online" id="online" />
+                    <label htmlFor="online">Online</label>
+                  </div>
+                </div>
                 <button
-                  onClick={handleOrder}
+                  onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
                   className={`${classes.continue_btn}`}
                 >
                   {isLoading ?
@@ -331,7 +424,7 @@ const CheckoutPage = () => {
                   <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
                   <button onClick={handleCheck}>Apply</button>
                 </div>
-                {message && <p className={message === "Offer available"?classes.green:classes.red}>{message}</p>}
+                {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
               </div>
             </div>
             {isShow && (
@@ -347,7 +440,7 @@ const CheckoutPage = () => {
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-               {offerValue>0 && <div className={classes.payment_summary_div}>
+                {offerValue > 0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
                 </div>}

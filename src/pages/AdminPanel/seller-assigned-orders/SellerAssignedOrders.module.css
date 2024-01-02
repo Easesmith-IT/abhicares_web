@@ -1,0 +1,19 @@
+.contianer{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.contianer p{
+    margin-bottom: 10px;
+}
+
+.contianer > div{
+    display: flex;
+    gap: 20px;
+}
+
+.h2{
+    padding-top: 20px;
+}
+
