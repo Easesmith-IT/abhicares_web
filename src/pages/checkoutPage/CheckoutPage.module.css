@@ -81,6 +81,20 @@
     width:100%;
 }
 
+.select_type_heading{
+    margin-top: 20px;
+}
+
+.d_flex{
+    display: flex;
+    gap: 20px;
+}
+
+.d_flex > div{
+    display: flex;
+    gap: 10px;
+}
+
 .booking_info > button{
     border: none;
     outline: none;

@@ -5,12 +5,12 @@ import AddBtn from "../../assets/add-icon-nobg.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddSellerModal from "../../components/add-seller-modal/AddSellerModal";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiEye } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import DeleteModal from "../../components/deleteModal/DeleteModal";
 import Wrapper from "../Wrapper";
-import SellerInfoModal from "../../components/seller-info-modal/SellerInfoModal";
+import SellerInfoModal from "../../components/seller-info-modal/SellerOrderInfoModal";
 import Loader from "../../components/loader/Loader";
 import UnapprovedSellerModal from "../../components/unapproved-seller-modal/UnapprovedSellerModal";
 
@@ -153,11 +153,11 @@ const Partners = () => {
           <div className={classes["report-body"]}>
             <div className={classes["report-topic-heading"]}>
               <h3 className={classes["t-op"]}>Seller Name</h3>
-              <h3 className={classes["t-op"]}>Service</h3>
+              {/* <h3 className={classes["t-op"]} style={{width:"100px"}}>Service</h3> */}
               <h3 className={classes["t-op"]}>Category</h3>
               <h3 className={classes["t-op"]}>Phone</h3>
               {/* <h3 className={classes["t-op"]}>Status</h3> */}
-              <h3 className={classes["t-op"]}>Update/<br />Delete</h3>
+              <h3 className={classes["t-op"]}>Update/<br />Delete/Seller Order</h3>
             </div>
 
             <div className={classes.items}>
@@ -171,10 +171,10 @@ const Partners = () => {
                 && <Loader />
               }
               {allSellers?.map((seller) => (
-                <div key={seller._id} onClick={(e) => handleSellerInfoModal(seller)} className={classes.item1}>
+                <div key={seller._id} className={classes.item1}>
                   <h3 className={classes["t-op-nextlvl"]}>{seller.name}</h3>
-                  <h3 className={`${classes["t-op-nextlvl"]}`}>service</h3>
-                  <h3 className={`${classes["t-op-nextlvl"]}`}>category</h3>
+                  {/* <h3 className={`${classes["t-op-nextlvl"]}`} style={{width:"100px"}}>{seller.services[0].serviceId.name}, ...</h3> */}
+                  <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.categoryId.name}</h3>
                   <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.phone}</h3>
                   {/* <h3 onClick={(e) => e.stopPropagation()} className={`${classes["t-op-nextlvl"]}`}>
                     <input checked={seller.status} onChange={(e) => handleOnChange(e, seller._id)} type="checkbox" name="" id="" />
@@ -183,6 +183,7 @@ const Partners = () => {
                   <h3 className={`${classes["t-op-nextlvl"]}`}>
                     <FiEdit onClick={(e) => handleUpdateModal(e, seller)} cursor={"pointer"} size={20} />
                     <MdDelete onClick={(e) => handleDeleteModal(e, seller._id)} cursor={"pointer"} size={22} color='red' />
+                    <FiEye onClick={() => navigate(`/admin/partners/${seller._id}`, { state: seller })} cursor={"pointer"} size={20} />
                   </h3>
 
                 </div>
@@ -199,12 +200,12 @@ const Partners = () => {
         />
       }
 
-      {isSellerInfoModalOpen &&
+      {/* {isSellerInfoModalOpen &&
         <SellerInfoModal
           setIsSellerInfoModalOpen={setIsSellerInfoModalOpen}
           seller={seller}
         />
-      }
+      } */}
 
       {isUpdateModalOpen &&
         <AddSellerModal

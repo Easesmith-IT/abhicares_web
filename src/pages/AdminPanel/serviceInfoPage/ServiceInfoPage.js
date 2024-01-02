@@ -28,9 +28,11 @@ const ServiceInfoPage = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isPackageDeleteModalOpen, setIsPackageDeleteModalOpen] = useState(false);
     const [isPackageModalOpen, setIsPackageModalOpen] = useState(false);
+    const [isUpdatePackageModalOpen, setIsUpdatePackageModalOpen] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
     const [allPackages, setAllPackages] = useState([]);
     const [product, setProduct] = useState({});
+    const [selectedPackage, setSelectedPackage] = useState({});
     const [singlePackage, setSinglePackage] = useState("");
     const [isPackageLoading, setIsPackageLoading] = useState(true);
     const [isProductLoading, setIsProductLoading] = useState(true);
@@ -61,6 +63,13 @@ const ServiceInfoPage = () => {
         setProduct(product)
         setIsUpdateModalOpen(!isDeleteModalOpen);
     };
+
+    const handlePackageUpdateModal = (e, data) => {
+        e.stopPropagation();
+        setSelectedPackage(data)
+        setIsUpdatePackageModalOpen(!isUpdatePackageModalOpen);
+    };
+
     const getAllProducts = async () => {
         try {
             if (!token) {
@@ -221,6 +230,7 @@ const ServiceInfoPage = () => {
                                     <div className={serviceInfoPageClasses.heading_container}>
                                         <h5>{singlePackage.name}</h5>
                                         <div className={classes.icon_container}>
+                                            <FiEdit onClick={(e) => handlePackageUpdateModal(e, singlePackage)} size={20} />
                                             <MdDelete onClick={(e) => handlePackageDeleteModal(e, singlePackage._id)} size={22} color='red' />
                                         </div>
                                     </div>
@@ -256,6 +266,16 @@ const ServiceInfoPage = () => {
                 />
             )}
 
+
+            {isUpdateModalOpen && (
+                <AddProductModal
+                    serviceId={params?.serviceId}
+                    setIsModalOpen={setIsUpdateModalOpen}
+                    product={product}
+                    getAllProducts={getAllProducts}
+                />
+            )}
+
             {isPackageModalOpen && (
                 <AddPackageModal
                     serviceId={params?.serviceId}
@@ -265,12 +285,13 @@ const ServiceInfoPage = () => {
                 />
             )}
 
-            {isUpdateModalOpen && (
-                <AddProductModal
+            {isUpdatePackageModalOpen && (
+                <AddPackageModal
+                selectedPackage={selectedPackage}
                     serviceId={params?.serviceId}
-                    setIsModalOpen={setIsUpdateModalOpen}
-                    product={product}
-                    getAllProducts={getAllProducts}
+                    setIsModalOpen={setIsUpdatePackageModalOpen}
+                    getAllPackage={getAllPackage}
+                    allProducts={allProducts}
                 />
             )}
 
