@@ -243,7 +243,7 @@ const CheckoutPage = () => {
       );
       console.log("razor", data);
 
-      var options = {
+      const options = {
         key: apiKey,
         amount: data.razorpayOrder.amount,
         currency: "INR",
@@ -257,12 +257,12 @@ const CheckoutPage = () => {
           paymentDetails.razorpay_signature = response.razorpay_signature;
 
           try {
-            const { data } = await axios.post(
-              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails },
+            const res = await axios.post(
+              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id },
               { headers: { Authorization: token } }
             );
-            console.log("handler", data);
-            if (data.success) {
+            console.log("handler", res.data);
+            if (res.data.success) {
               navigate("/success");
             }
           } catch (error) {
