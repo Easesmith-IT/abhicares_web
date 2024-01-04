@@ -140,7 +140,7 @@ const BookingDetails = () => {
               <div>
                 <p>Subtotal: </p>
                 <p>Tax(18%): </p>
-                <p>Discount: </p>
+                {discount > 0 && <p>Discount: </p>}
                 <p>
                   <b>Total: </b>
                 </p>
@@ -148,7 +148,7 @@ const BookingDetails = () => {
               <div>
                 <p>₹{subTotal}</p>
                 <p> + ₹{totalTaxRs}</p>
-                <p> - ₹{discount}</p>
+                {discount > 0 && <p> - ₹{discount}</p>}
                 <p>
                   <b>₹{state.orderValue}</b>
                 </p>
