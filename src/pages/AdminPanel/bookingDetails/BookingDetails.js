@@ -195,10 +195,10 @@ const BookingDetails = () => {
                   <p>Tax (18%) :</p>
                   <p>₹{totalTaxRs}</p>
                 </div>
-                <div className={classes.d_flex}>
+                {/* <div className={classes.d_flex}>
                   <p>Discount ('{booking?.couponId?.name}') :</p>
                   <p>₹{discount}</p>
-                </div>
+                </div> */}
                 <div className={classes.d_flex}>
                   <p>Total Amount :</p>
                   <p>₹{total - discount}</p>

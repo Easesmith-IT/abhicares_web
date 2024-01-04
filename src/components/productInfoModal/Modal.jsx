@@ -69,7 +69,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
 
     const getAllReviewsOfUser = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { headers: { Authorization: token } });
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { type: isProduct ? "product" : "package" }, { headers: { Authorization: token } });
             console.log("user reviews", data);
             setUserReviews(data.data);
         } catch (error) {
@@ -79,7 +79,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
 
     const getAllReviews = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`, { type: isProduct ? "product" : "package" });
             console.log("reviews", data);
             setAllReviews(data.data);
         } catch (error) {
@@ -194,7 +194,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                         <BsStarFill color="black" size={15} />
                                         <span className={classes.rating_span}>4.83</span>
                                     </div>
-                                    {token && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
+                                    {token && userReviews.length === 0 && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
                                 </div>
                                 <p className={classes.reviews}>1.2M reviews</p>
 
@@ -206,9 +206,10 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                         <CustomerReview
                                             key={review._id}
                                             review={review}
+                                            isUser={true}
                                         />
                                     ))}
-                                    
+
                                     {allReviews?.map((review) => (
                                         <CustomerReview
                                             key={review._id}
@@ -222,6 +223,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     isReviewModalOpen={isReviewModalOpen}
                                     setIsReviewModalOpen={setIsReviewModalOpen}
                                     id={Data._id}
+                                    getAllReviewsOfUser={getAllReviewsOfUser}
                                 />
                             }
                         </div>

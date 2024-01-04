@@ -16,7 +16,7 @@ const BookingDetails = () => {
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
   const [totalTaxRs, setTotalTaxRs] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const getOrderInvoice = async () => {
     try {
@@ -38,11 +38,11 @@ const BookingDetails = () => {
   useEffect(() => {
     getOrderInvoice();
     setTotalTaxRs((Number(state.orderValue) * 18) / 100);
-    setTotal(Number(totalTaxRs) + Number(state.orderValue));
+    setSubTotal(() => Number(state.orderValue) - Number(totalTaxRs));
     if (state.couponId) {
-      setDiscount(
-        (Number(state.orderValue) * state.couponId.offPercentage) / 100
-      );
+      const localDiscount = (Number(state.orderValue) * state.couponId.offPercentage) / 100;
+      setDiscount(localDiscount);
+      setSubTotal((prev) => prev - Number(localDiscount));
     }
   }, [state.orderValue, state.couponId, totalTaxRs]);
   return (
@@ -96,11 +96,10 @@ const BookingDetails = () => {
                   <div>
                     <img
                       className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
-                        item.package
-                          ? item.package.imageUrl[0]
-                          : item.product.imageUrl[0]
-                      }`}
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package
+                        ? item.package.imageUrl[0]
+                        : item.product.imageUrl[0]
+                        }`}
                       alt=""
                     />
                     <small>Type:{item.package ? "Package" : "Product"}</small>
@@ -147,11 +146,11 @@ const BookingDetails = () => {
                 </p>
               </div>
               <div>
-                <p>₹{state.orderValue}</p>
+                <p>₹{subTotal}</p>
                 <p> + ₹{totalTaxRs}</p>
                 <p> - ₹{discount}</p>
                 <p>
-                  <b>₹{total-discount}</b>
+                  <b>₹{state.orderValue}</b>
                 </p>
               </div>
             </div>

@@ -122,7 +122,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { headers: { Authorization: token } });
       setIsLoading(false);
 
       console.log("cod", data);
@@ -142,13 +142,10 @@ const CheckoutPage = () => {
       // }
       setIsSuccessModalOpen(true);
 
-      // const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { headers: { Authorization: token } });
-
-
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message)
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -386,31 +383,6 @@ const CheckoutPage = () => {
                   />
                 ))}
               </div>
-              {/* <div className={classes.frequently_added}>
-                <h4 className={classes.frequently_added_heading}>
-                  Frequently added together
-                </h4>
-                <Carousel
-                  responsive={responsive}
-                  arrows={false}
-                  className={classes.carousel}
-                  customButtonGroup={<ButtonGroup />}
-                >
-                  <FrequentlyAddedItems />
-                </Carousel>
-              </div> */}
-
-              {/* <div className={classes.checkbox_wrapper}>
-                <input
-                  className={classes.checkbox}
-                  type="checkbox"
-                  name=""
-                  id=""
-                />
-                <p className={classes.checkbox_p}>
-                  Avoid calling before reaching the location
-                </p>
-              </div> */}
             </div>
 
             <div className={classes.offer_box}>
@@ -439,7 +411,7 @@ const CheckoutPage = () => {
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-                {offerValue > 0 && <div className={classes.payment_summary_div}>
+                {<div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
                 </div>}

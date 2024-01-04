@@ -24,7 +24,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     packageId: item.type === "package" ? item?.packageId?._id : "",
     name: item.type === "product" ? item?.productId?.name : item?.packageId?.name,
     bookingDate: "",
-    bookingTime: "Select time (08:00AM-08:00PM)"
+    bookingTime: ""
   })
 
   const handleOnSubmit = (e) => {
