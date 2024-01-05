@@ -6,14 +6,13 @@ import axios from 'axios'
 import InvoiceModal from '../invoiceModal/InvoiceModal'
 
 const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
-    const token = localStorage.getItem("token");
     console.log(order._id);
     const [invoice, setInvoice] = useState({});
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
 
     const getOrderInvoice = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${order._id}`, { headers: { Authorization: token }, withCredentials: true });
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${order._id}`, { withCredentials: true });
             console.log("invoice", data);
             setInvoice(data.data);
         } catch (error) {

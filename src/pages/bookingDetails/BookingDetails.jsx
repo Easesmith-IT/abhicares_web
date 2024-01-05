@@ -9,7 +9,6 @@ import WebsiteWrapper from '../WebsiteWrapper';
 const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   console.log(state);
   const [invoice, setInvoice] = useState({});
@@ -20,7 +19,7 @@ const BookingDetails = () => {
   const [discount, setDiscount] = useState(0);
   const getOrderInvoice = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
       setInvoice(data.data);
     } catch (error) {
       console.log(error);
@@ -28,7 +27,7 @@ const BookingDetails = () => {
   }
   const handleCancelOrder = async () => {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { withCredentials: true });
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
     } catch (error) {
@@ -37,14 +36,26 @@ const BookingDetails = () => {
   }
   useEffect(() => {
     getOrderInvoice();
-    setTotalTaxRs((Number(state.orderValue) * 18) / 100);
-    setSubTotal(() => Number(state.orderValue) - Number(totalTaxRs));
+    let value = 0;
+    for (const item of state.items) {
+      if (item?.product) {
+        value = value + Number(item.quantity * item.product.offerPrice);
+      }
+      else {
+        value = value + Number(item.quantity * item.package.offerPrice);
+      }
+    }
+    setSubTotal(() => value);
+    const taxRs = (Number(value) * 18) / 100;
+    setTotalTaxRs(taxRs);
+
     if (state.couponId) {
-      const localDiscount = (Number(state.orderValue) * state.couponId.offPercentage) / 100;
+      const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
+      console.log("discount", localDiscount);
       setDiscount(localDiscount);
       setSubTotal((prev) => prev - Number(localDiscount));
     }
-  }, [state.orderValue, state.couponId, totalTaxRs]);
+  }, [state.orderValue, state.couponId]);
   return (
     <WebsiteWrapper>
       <section className={classes.booking_details}>

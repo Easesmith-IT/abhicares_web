@@ -18,17 +18,12 @@ const BookingDetails = () => {
   const [status, setStatus] = useState(booking?.status || "");
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
 
-  const token = localStorage.getItem("adUx");
-
-  const headers = {
-    Authorization: token,
-  };
 
   const getBooking = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-booking-details/${id}`,
-        { headers }
+        { withCredentials: true }
       );
 
       setBooking(data.bookingDetails);
@@ -42,14 +37,10 @@ const BookingDetails = () => {
   const handleChange = async (e) => {
     setStatus(e.target.value);
     try {
-      if (!token) {
-        navigate("/admin/login");
-        return;
-      }
       const { data } = await axios.patch(
         `${process.env.REACT_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
         { status: e.target.value },
-        { headers }
+        { withCredentials: true }
       );
       console.log("status", data);
       getBooking();
@@ -63,10 +54,6 @@ const BookingDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/admin/login");
-      return;
-    }
     setTotalTaxRs((booking?.orderValue * 18) / 100);
     setTotal(Number(totalTaxRs) + Number(booking?.orderValue));
     if (booking?.couponId) {
@@ -74,7 +61,7 @@ const BookingDetails = () => {
         (booking?.orderValue * booking?.couponId?.offPercentage) / 100
       );
     }
-  }, [booking?.orderValue, booking?.couponId, totalTaxRs, navigate, token]);
+  }, [booking?.orderValue, booking?.couponId, totalTaxRs, navigate]);
 
   const handlePartnerModal = () => {
     setIsPartnerModalOpen(true);
@@ -152,11 +139,10 @@ const BookingDetails = () => {
                   <div>
                     <img
                       className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
-                        booking.package
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${booking.package
                           ? booking.package.imageUrl[0]
                           : booking.product.imageUrl[0]
-                      }`}
+                        }`}
                       alt="product"
                     />
                     <div>

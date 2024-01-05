@@ -12,7 +12,6 @@ const Service = () => {
   ]);
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
 
 
   const imageChangeHandler = (e, bannerName) => {
@@ -99,10 +98,6 @@ const Service = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getBannersFromServer();
   }, []);
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classes from './AddProductModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -30,13 +30,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         setProductInfo({ ...productInfo, [name]: value });
     }
     const navigate = useNavigate()
-    
-    const token = localStorage.getItem("adUx")
 
-        
-    const headers = {
-        Authorization:token
-    }
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!productInfo.name || !productInfo.price || !productInfo.offerPrice || !productInfo.img || !description) {
@@ -48,18 +42,14 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         formData.append("offerPrice", productInfo.offerPrice);
         formData.append("serviceId", serviceId);
         for (const img of productInfo.img) {
-            formData.append("img", img);            
+            formData.append("img", img);
         }
         formData.append("description", description);
 
 
         if (product) {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-product/${product._id}`, formData, {headers});
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-product/${product._id}`, formData, { withCredentials: true });
                 toast.success("Product updated successfully");
                 getAllProducts();
                 setIsModalOpen(false);
@@ -69,11 +59,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         }
         else {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-product`, formData,{headers});
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-product`, formData, { withCredentials: true });
                 console.log(data);
                 toast.success("Product added successfully");
                 getAllProducts();
@@ -83,11 +69,6 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
             }
         }
     }
-
-    if(!token){
-        navigate('/admin/login');
-        return;
-      }
 
     return (
         <div className={classes.wrapper}>

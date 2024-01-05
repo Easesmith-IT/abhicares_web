@@ -27,11 +27,6 @@ const CategoryServices = () => {
     const { state } = useLocation();
     const params = useParams();
 
-    const token = localStorage.getItem("adUx")
-    const headers = {
-        Authorization: token
-    }
-
 
 
     const handleUpdateModal = (e, service) => {
@@ -47,7 +42,7 @@ const CategoryServices = () => {
     };
     const getCategoryServices = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { withCredentials:true });
             console.log(data);
             setAllCategoryServices(data.data);
         } catch (error) {
@@ -59,10 +54,6 @@ const CategoryServices = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getCategoryServices();
     }, [])
 
@@ -71,7 +62,7 @@ const CategoryServices = () => {
     const handleDelete = async () => {
         try {
 
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-service/${service}`, { headers });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-service/${service}`, { withCredentials:true });
             toast.success("Service deleted successfully");
             getCategoryServices();
             setIsDeleteModalOpen(!isDeleteModalOpen);

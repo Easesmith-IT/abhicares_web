@@ -24,14 +24,9 @@ const AvailableCities = () => {
 
     const navigate = useNavigate()
 
-    const token = localStorage.getItem("adUx")
-    const headers = {
-        Authorization: token
-    }
-
     const getAllCities = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-availabe-city`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-availabe-city`, { withCredentials: true });
             console.log(data);
             setAllCities(data.data);
         } catch (error) {
@@ -42,10 +37,6 @@ const AvailableCities = () => {
         }
     };
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getAllCities();
     }, [])
 
@@ -62,11 +53,7 @@ const AvailableCities = () => {
 
     const handleDelete = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-availabe-city/${city}`, { headers });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-availabe-city/${city}`, { withCredentials: true });
             toast.success("City deleted successfully");
             getAllCities();
             setIsDeleteModalOpen(!isDeleteModalOpen);

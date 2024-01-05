@@ -5,11 +5,6 @@ import classes from "./Banner.module.css";
 
 const AppBanner = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
-  if (!token) {
-    navigate('/admin/login');
-    return;
-  }
   
   return (
     <Wrapper>

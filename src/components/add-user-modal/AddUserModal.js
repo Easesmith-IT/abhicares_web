@@ -3,7 +3,7 @@ import classes from './AddUserModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
 import ReactQuill from 'react-quill';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -23,30 +23,22 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         setUserInfo({ ...userInfo, [name]: value });
     }
     const navigate = useNavigate()
-    const token = localStorage.getItem("adUx")
-    
- 
-    const headers = {
-        Authorization:token
-    }
+
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!userInfo.name 
+        if (!userInfo.name
             || !userInfo.phone
             || !userInfo.password
             || !userInfo.gender
             || !userInfo.status
-            ) {
-                alert("alert")
+        ) {
+            alert("alert")
             return;
         }
         if (user) {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-user/${user._id}`, { ...userInfo},{headers});
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-user/${user._id}`, { ...userInfo }, { withCredentials: true });
                 console.log(data);
                 toast.success("User updated successfully");
                 getAllUsers();
@@ -57,11 +49,7 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         }
         else {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-user`, { ...userInfo },{headers});
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-user`, { ...userInfo }, { withCredentials: true });
                 console.log(data);
                 toast.success("User added successfully");
                 getAllUsers();
@@ -71,10 +59,6 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
             }
         }
     }
-    if(!token){
-        navigate('/admin/login');
-        return;
-      }
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

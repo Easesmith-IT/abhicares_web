@@ -30,10 +30,9 @@ export const Header = () => {
   const userIconRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   // const userId = useSelector((state) => state.user.userId);
-  const userId = localStorage.getItem("token");
+  const userId = localStorage.getItem("userName");
 
   const isUser = userId ? true : false;
 
@@ -43,16 +42,15 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
-      localStorage.removeItem("token");
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
       setIsLogoutModalOpen(false);
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
 
+      navigate("/");
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
       window.location.reload();
-      navigate("/");
 
     } catch (error) {
       console.log(error);

@@ -19,16 +19,11 @@ const Customers = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
-  const token = localStorage.getItem("adUx")
-  const headers = {
-    Authorization: token
-  }
   const navigate = useNavigate()
 
   const getAllUsers = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-user`, { headers });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-user`, { withCredentials:true });
       setAllUsers(data.data);
     } catch (error) {
       console.log(error);
@@ -38,42 +33,9 @@ const Customers = () => {
     }
   };
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getAllUsers();
   }, [])
 
-  // const handleOnChange = async (e, id) => {
-  //   if (e.target.checked) {
-  //     try {
-  //       if (!token) {
-  //         navigate('/');
-  //         return
-  //       }
-  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-user-status/${id}`, { status: true }, { headers });
-  //       toast.success("Seller status updated");
-  //       getAllUsers();
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   else {
-  //     try {
-  //       if (!token) {
-  //         navigate('/');
-  //         return
-  //       }
-  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-user-status/${id}`, { status: false }, { headers });
-  //       toast.success("Seller status updated");
-  //       getAllUsers();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   const handleUpdateModal = (seller) => {
     setUser(seller);
@@ -87,11 +49,7 @@ const Customers = () => {
 
   const handleDelete = async () => {
     try {
-      if (!token) {
-        navigate('/');
-        return
-      }
-      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-user/${user}`, { headers });
+      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-user/${user}`, { withCredentials:true });
       console.log(data);
       toast.success("User deleted successfully");
       getAllUsers();
@@ -105,11 +63,7 @@ const Customers = () => {
     const value = e.target.value;
 
     try {
-      if (!token) {
-        navigate('/');
-        return
-      }
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-user?search=${value}`, { headers });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-user?search=${value}`, { withCredentials:true });
       setAllUsers(data.data);
     } catch (error) {
       console.log(error);
@@ -128,11 +82,6 @@ const Customers = () => {
         // id = null;
       }, time);
     };
-  }
-
-  if (!token) {
-    navigate('/');
-    return;
   }
 
   return (

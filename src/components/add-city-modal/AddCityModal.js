@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classes from './AddCityModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -19,27 +19,19 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         setCityInfo({ ...cityInfo, [name]: value });
     }
     const navigate = useNavigate()
-    const token = localStorage.getItem("adUx")
-    
- 
-    const headers = {
-        Authorization:token
-    }
+
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!cityInfo.city 
+        if (!cityInfo.city
             || !cityInfo.pinCode
             || !cityInfo.state
-            ) {
+        ) {
             return;
         }
         if (city) {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo},{headers});
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo }, { withCredentials: true });
                 console.log(data);
                 toast.success("City updated successfully");
                 getAllCities();
@@ -50,11 +42,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         }
         else {
             try {
-                if(!token){
-                    navigate('/admin/login');
-                    return;
-                  }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-availabe-city  `, { ...cityInfo },{headers});
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-availabe-city  `, { ...cityInfo }, { withCredentials: true });
                 console.log(data);
                 toast.success("City added successfully");
                 getAllCities();
@@ -64,10 +52,6 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
             }
         }
     }
-    if(!token){
-        navigate('/admin/login');
-        return;
-      }
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

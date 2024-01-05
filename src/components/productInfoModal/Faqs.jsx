@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Faqs = () => {
-    const token = localStorage.getItem("token");
     const [allFaqs, setAllFaqs] = useState([]);
 
     const getAllFaqs = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-faq`, { headers: { Authorization: token } });
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-faq`, { withCredentials: true });
             console.log(data);
             setAllFaqs(data.data);
         } catch (error) {

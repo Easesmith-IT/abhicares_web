@@ -20,7 +20,6 @@ const AddAddressModal = ({
 
     const { location,status } = useGeolocation();
 
-  const token = localStorage.getItem("token");
 
   const [showCurrentLocationAdd, setShowCurrentLocationAdd] = useState(false);
 
@@ -52,7 +51,7 @@ const AddAddressModal = ({
         const { data } = await axios.patch(
           `${process.env.REACT_APP_API_URL}/update-user-address/${Data._id}`,
           { ...addressInfo },
-          { headers: { Authorization: token } }
+          { withCredentials:true }
         );
         toast.success("Address updated successfully");
         getAllAddress();
@@ -71,7 +70,7 @@ const AddAddressModal = ({
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/create-user-address`,
           { ...body },
-          { headers: { Authorization: token }, withCredentials: true }
+          { withCredentials: true }
         );
         toast.success("Address created successfully");
         getAllAddress();

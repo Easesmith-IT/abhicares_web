@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import classes from './AddSellerModal.module.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { RxCross2 } from 'react-icons/rx';
 import { IoIosArrowDown } from "react-icons/io";
@@ -68,20 +68,12 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         setAddress({ ...address, [name]: value });
     }
 
-    const token = localStorage.getItem("adUx")
     const navigate = useNavigate()
-   
-    const headers = {
-        Authorization:token
-    }
+
     const getAllCategories = async () => {
 
         try {
-            if(!token){
-                navigate('/admin/login');
-                return;
-              }
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`,{headers})
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
             setAllCategories(data.data);
         } catch (error) {
             console.log(error);
@@ -94,11 +86,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
     const getCategoryServices = async () => {
         try {
-            if(!token){
-                navigate('/admin/login');
-                return;
-              }
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`,{headers});
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`, { withCredentials: true });
             // console.log(data);
             setAllCategoryServices(data.data);
         } catch (error) {
@@ -109,7 +97,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     useEffect(() => {
         getCategoryServices();
     }, [sellerInfo.categoryId])
-  
+
 
 
 
@@ -174,25 +162,17 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             },
             contactPerson
         }
-    console.log(allData);
+        console.log(allData);
 
         if (seller) {
-            if(!token){
-                navigate('/admin/login');
-                return;
-              }
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData,{headers});
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData, { withCredentials: true });
             console.log(data);
             toast.success("Seller updated successfully");
             getAllSellers();
             setIsModalOpen(false);
         }
         else {
-            if(!token){
-                navigate('/admin/login');
-                return;
-              }
-            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData,{headers});
+            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
             console.log(data);
             toast.success("Seller added successfully");
             getAllSellers();
@@ -200,10 +180,6 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         }
     }
 
-    if(!token){
-        navigate('/admin/login');
-        return;
-      }
 
     return (
         <div className={classes.wrapper}>
@@ -265,7 +241,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="categoryId">Category</label>
-                        <select onChange={handleOnChange}  className={classes.input} name="categoryId" id="categoryId">
+                        <select onChange={handleOnChange} className={classes.input} name="categoryId" id="categoryId">
                             <option value={"choose a category"}>choose a category</option>
                             {allCategories?.map((category) => (
                                 <option key={category._id} value={category._id}>{category.name}</option>
@@ -283,7 +259,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                                 {allCategoryServices?.map((service) => (
                                     <div key={service._id} className={classes.d_flex}>
                                         <label htmlFor={service.name}>{service.name}</label>
-                                        <input checked={sellerInfo.services.some((item)=> item.serviceId === service._id)} onChange={handleServiceOnChange} type="checkbox" value={service._id} name={service.name} id={service.name} />
+                                        <input checked={sellerInfo.services.some((item) => item.serviceId === service._id)} onChange={handleServiceOnChange} type="checkbox" value={service._id} name={service.name} id={service.name} />
                                     </div>
                                 ))}
                             </div>

@@ -17,16 +17,12 @@ const Orders = () => {
 
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("adUx");
-    const headers = {
-        Authorization: token,
-    };
 
     const getAllOrders = async () => {
         try {
             const { data } = await axios.get(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
-                { headers }
+                { withCredentials:true }
             );
             setAllOrders(data.data);
             console.log("allOrders",data);
@@ -38,10 +34,6 @@ const Orders = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getAllOrders();
     }, [])
 
@@ -63,7 +55,7 @@ const Orders = () => {
                     month: arr[1],
                     year: arr[0]
                 },
-                { headers }
+                { withCredentials:true }
             );
             if (data.data.length > 0) {
                 setIsModalOpen(true);

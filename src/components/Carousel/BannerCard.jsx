@@ -34,23 +34,24 @@ export const BannerCard = () => {
   const [banners, setBanners] = useState([]);
   // const [isLoading,setIsLoading] = useState(true)
 
-  const fetchBanners = async() => {
+  const fetchBanners = async () => {
     try {
       // setIsLoading(true)
-      console.log('cms url',process.env.REACT_APP_CMS_URL)
-      const response = await axios.get(`${process.env.REACT_APP_CMS_URL}/get-banners`,{
-          params: {
-           heroBanners:true,
-            page: "home-sale-banners",
-            section: "web-homepage",
-          },
-      })
+      console.log('cms url', process.env.REACT_APP_CMS_URL)
+      const response = await axios.get(`${process.env.REACT_APP_CMS_URL}/get-banners`, {
+        params: {
+          heroBanners: true,
+          page: "home-sale-banners",
+          section: "web-homepage",
+        },
+      }, { withCredentials: true }
+      )
 
-      console.log('BANNERS',response)
+      console.log('BANNERS', response)
 
       if (response.status === 200) {
-              setBanners(response.data.banners);
-              // setIsLoading(false)
+        setBanners(response.data.banners);
+        // setIsLoading(false)
       }
       console.log(response)
     } catch (err) {
@@ -61,7 +62,7 @@ export const BannerCard = () => {
 
   useEffect(() => {
     fetchBanners()
-  },[])
+  }, [])
 
   return (
     <div className={classes.wrapper}>
@@ -79,7 +80,7 @@ export const BannerCard = () => {
         itemClass="carousel-item-padding-40-px"
       >
 
-        {banners.length>0 && banners.map((url,index) => (
+        {banners.length > 0 && banners.map((url, index) => (
           <div key={index} className={classes["image-container"]}>
             <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" />
           </div>

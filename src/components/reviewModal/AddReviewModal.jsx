@@ -6,7 +6,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id, getAllReviewsOfUser }) => {
-    const token = localStorage.getItem("token");
+
     const [reviewInfo, setReviewInfo] = useState({
         title: "",
         content: "",
@@ -37,7 +37,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id, getAllRev
             return;
         }
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { headers: { Authorization: token } });
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
             setIsReviewModalOpen(false);
             toast.success("Review added successfully");
             getAllReviewsOfUser();

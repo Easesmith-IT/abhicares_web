@@ -11,7 +11,6 @@ const Product = () => {
   });
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
 
 
 
@@ -83,10 +82,6 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getBannersFromServer();
   }, []);
 

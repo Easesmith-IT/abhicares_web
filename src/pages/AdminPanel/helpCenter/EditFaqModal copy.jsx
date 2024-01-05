@@ -8,8 +8,8 @@ import classes from "../../../components/add-resoulation-modal/AddResoulationMod
 const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
 
   const [faqInfo, setfaqInfo] = useState({
-      ques:faq.ques|| "",
-      ans:faq.ans||"",
+    ques: faq.ques || "",
+    ans: faq.ans || "",
   });
 
   const handleOnChange = (e) => {
@@ -17,25 +17,17 @@ const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
     setfaqInfo({ ...faqInfo, [name]: value });
   };
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx");
 
-  const headers = {
-    Authorization: token,
-  };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (!faqInfo.ques||!faq.ans) {
+    if (!faqInfo.ques || !faq.ans) {
       return;
     }
     try {
-      if (!token) {
-        navigate("/");
-        return;
-      }
       const { data } = await axios.patch(
         `${process.env.REACT_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
         { ...faqInfo },
-        { headers }
+        { withCredentials: true }
       );
       console.log(data);
       toast.success("Faq updated successfully");
@@ -45,10 +37,7 @@ const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
       console.log(error);
     }
   };
-  if (!token) {
-    navigate("/");
-    return;
-  }
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>

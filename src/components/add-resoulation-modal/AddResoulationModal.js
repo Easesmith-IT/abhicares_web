@@ -18,23 +18,15 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
         setResoulationInfo({ ...resoulationInfo, [name]: value });
     }
     const navigate = useNavigate()
-    const token = localStorage.getItem("adUx")
 
 
-    const headers = {
-        Authorization: token
-    }
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!resoulationInfo.resolution) {
             return;
         }
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-help-list/${id}`, { ...resoulationInfo }, { headers });
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-help-list/${id}`, { ...resoulationInfo }, { withCredentials: true });
             console.log(data);
             toast.success("Issue resolved successfully");
             getAllIssues();
@@ -43,10 +35,7 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
             console.log(error);
         }
     }
-    if (!token) {
-        navigate('/');
-        return;
-    }
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

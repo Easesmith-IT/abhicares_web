@@ -8,14 +8,13 @@ import { useNavigate } from 'react-router-dom';
 
 const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
-  const [loading, setLoading] = useState(true)
-  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
 
   const getAllOrders = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders`, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders`, { withCredentials: true });
       console.log(data);
       setAllOrders(data.data);
       setLoading(false);
@@ -25,9 +24,6 @@ const MyBookings = () => {
   }
 
   useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
     getAllOrders();
   }, [])
 

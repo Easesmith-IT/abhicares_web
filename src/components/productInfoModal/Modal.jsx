@@ -19,7 +19,6 @@ import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
-    const token = localStorage.getItem("token");
     const [allProducts, setAllProducts] = useState([]);
     const [allReviews, setAllReviews] = useState([]);
     const [userReviews, setUserReviews] = useState([]);
@@ -69,7 +68,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
 
     const getAllReviewsOfUser = async () => {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { type: isProduct ? "product" : "package" }, { headers: { Authorization: token } });
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { type: isProduct ? "product" : "package" }, { withCredentials: true });
             console.log("user reviews", data);
             setUserReviews(data.data);
         } catch (error) {
@@ -194,7 +193,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                         <BsStarFill color="black" size={15} />
                                         <span className={classes.rating_span}>4.83</span>
                                     </div>
-                                    {token && userReviews.length === 0 && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
+                                    {userReviews.length === 0 && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
                                 </div>
                                 <p className={classes.reviews}>1.2M reviews</p>
 

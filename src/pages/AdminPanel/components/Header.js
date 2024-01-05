@@ -4,15 +4,23 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo .png";
 import classes from "../Shared.module.css";
 import LogoutModal from "../../../components/logoutModal/LogoutModal";
+import axios from "axios";
 
 const Header = (props) => {
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('adUx')
-    navigate('/');
-    return
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/logout-Admin`, { withCredentials: true });
+      console.log("admin logout",data);
+      setIsLogoutModalOpen(false);
+      navigate('/');
+      return
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const handleLogoutModal = () => {

@@ -11,11 +11,10 @@ const initialState = {
     isLoading: true
 }
 
-const token = localStorage.getItem("token");
 
 export const getCartDetails = createAsyncThunk("/cart/details", async () => {
     try {
-        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { headers: { Authorization: token }, withCredentials: true });
+        const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { withCredentials: true });
 
         const response = await res;
         // console.log('cart details', response.data);
@@ -36,7 +35,7 @@ export const addItemToCart = createAsyncThunk("/cart/add-item", async (data) => 
                 // quantity: data.quantity,
                 // userId:data.userId
             }
-            , { headers: { Authorization: token }, withCredentials: true }
+            , { withCredentials: true }
         );
 
         const response = await res;
@@ -72,7 +71,7 @@ export const updateQty = createAsyncThunk(
 
 export const deleteItemFromCart = createAsyncThunk("/cart/remove-item", async (data) => {
     try {
-        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, { type: data.type }, { headers: { Authorization: token }, withCredentials: true });
+        const res = axios.post(`${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`, { type: data.type }, { withCredentials: true });
 
         const response = await res;
         console.log("delete", response.data);
@@ -109,4 +108,4 @@ const cartSlice = createSlice({
 })
 
 export default cartSlice.reducer
-export const {changeCartLoadingState} = cartSlice.actions
+export const { changeCartLoadingState } = cartSlice.actions

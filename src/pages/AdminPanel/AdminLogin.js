@@ -9,32 +9,30 @@ const AdminLogin = () => {
   const userNameRef = useRef();
   const userPasswordRef = useRef();
 
-  const handleAdminLogin = async(e) => {
+  const handleAdminLogin = async (e) => {
     e.preventDefault()
     console.log('inside ')
     const userName = userNameRef.current.value;
     const userPassword = userPasswordRef.current.value;
 
-    const response = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`,{
-        adminId:userName,
-        password:userPassword
-      })
+    const response = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`, {
+      adminId: userName,
+      password: userPassword
+    }, { withCredentials: true })
 
-      if(response.status===500){
-        alert('Something went wrong!')
-        return;
-      }
+    if (response.status === 500) {
+      alert('Something went wrong!')
+      return;
+    }
 
-        if(response.data.token){
-          const token = response.data.token;
-          localStorage.setItem('adUx',token);
-          alert('Logged in successfully');
-          navigate('/admin/dashboard')
-        }
-        else{
-          alert('Incorrect credentials');
-          return;
-        }
+    if (response.data) {
+      alert('Logged in successfully');
+      navigate('/admin/dashboard')
+    }
+    else {
+      alert('Incorrect credentials');
+      return;
+    }
   };
   return (
     <div
@@ -47,7 +45,7 @@ const AdminLogin = () => {
       }}
     >
       <form
-      onSubmit={(e)=>handleAdminLogin(e)}
+        onSubmit={(e) => handleAdminLogin(e)}
         style={{
           padding: "45px",
           width: "50%",
