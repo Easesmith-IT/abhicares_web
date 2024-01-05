@@ -111,15 +111,15 @@ const OrderDetails = () => {
                         </div>
                         <div className={classes.d_flex}>
                             <p>Sub Total :</p>
-                            <p>₹{subTotal}</p>
+                            <p>₹{state.itemTotal}</p>
                         </div>
                         <div className={classes.d_flex}>
                             <p>Tax (18%) :</p>
-                            <p>₹{totalTaxRs}</p>
+                            <p>₹{state.tax}</p>
                         </div>
                         {discount > 0 && <div className={classes.d_flex}>
                             <p>Discount ('{state?.couponId?.name}') :</p>
-                            <p>₹{discount}</p>
+                            <p>₹{state.discount}</p>
                         </div>}
                         <div className={classes.d_flex}>
                             <p>Total Amount :</p>
