@@ -5,8 +5,8 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id }) => {
-    const token = localStorage.getItem("token");
+const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id, getAllReviewsOfUser }) => {
+
     const [reviewInfo, setReviewInfo] = useState({
         title: "",
         content: "",
@@ -37,9 +37,10 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id }) => {
             return;
         }
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { headers: { Authorization: token } });
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
             setIsReviewModalOpen(false);
             toast.success("Review added successfully");
+            getAllReviewsOfUser();
             console.log(data);
         } catch (error) {
             // setIsReviewModalOpen(false);

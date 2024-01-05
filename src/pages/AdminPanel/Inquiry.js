@@ -26,17 +26,11 @@ const Enquiry = () => {
         setIsDeleteModalOpen(!isDeleteModalOpen);
     };
 
-    const token = localStorage.getItem("adUx");
-
-    const headers = {
-        Authorization: token,
-    };
-
 
 
     const handleDelete = async () => {
         try {
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-enquiry/${enquiryId}`, { headers });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-enquiry/${enquiryId}`, { withCredentials:true });
             console.log(data);
             toast.success("Enquiry deleted successfully");
             getAllInquiries();
@@ -48,7 +42,7 @@ const Enquiry = () => {
 
     const getAllInquiries = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-enquiry`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-enquiry`, { withCredentials:true });
             console.log(data);
             setAllInquiries(data.data);
         } catch (error) {
@@ -57,10 +51,6 @@ const Enquiry = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getAllInquiries()
     }, [])
 

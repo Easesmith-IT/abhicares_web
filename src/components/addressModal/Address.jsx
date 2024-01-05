@@ -10,16 +10,12 @@ const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
-  const token = localStorage.getItem("token");
 
   const handleDelete = async () => {
     try {
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/delete-user-address/${data._id}`,
         {
-          headers: {
-            Authorization: token,
-          },
           withCredentials: true,
         }
       );

@@ -10,7 +10,6 @@ import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
 
 const HelpCenter = () => {
-  const token = localStorage.getItem("token");
   const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
   const [isOtherOpen, setIsOtherOpen] = useState(false);
   const [helpCenterInfo, setHelpCenterInfo] = useState({
@@ -58,7 +57,7 @@ const HelpCenter = () => {
       return;
     }
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-help`, { ...helpCenterInfo }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-help`, { ...helpCenterInfo }, { withCredentials: true });
       console.log(data);
       toast.success("Issue submited successfully");
       setHelpCenterInfo({
@@ -74,7 +73,7 @@ const HelpCenter = () => {
 
   const getAllIssues = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-help `, { headers: { Authorization: token } });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-help `, { withCredentials: true });
       console.log("issues", data);
       setAllIssues(data.data);
     } catch (error) {
@@ -83,9 +82,6 @@ const HelpCenter = () => {
   }
 
   useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
     getAllIssues();
   }, [])
 

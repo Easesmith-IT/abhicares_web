@@ -10,19 +10,11 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
     const [allSellers, setAllSellers] = useState([]);
     const navigate = useNavigate()
 
-    const token = localStorage.getItem("adUx")
-    const headers = {
-        Authorization: token
-    }
 
     const getAllSellers = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/in-review-seller`, { headers });
-            console.log("appppp",data);
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/in-review-seller`, { withCredentials: true });
+            console.log("appppp", data);
             setAllSellers(data.data);
         } catch (error) {
             console.log(error);
@@ -31,11 +23,7 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
 
     const handleOnChange = async (id) => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: "active" }, { headers });
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: "active" }, { withCredentials: true });
             console.log(data);
             toast.success("Seller approved");
             getAllSellers();

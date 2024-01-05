@@ -55,13 +55,13 @@ const CheckoutPage = () => {
 
   console.log("location", location);
 
-  const token = localStorage.getItem("token");
+  const userName = localStorage.getItem("userName");
 
   const getAllAddress = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/get-user-address`,
-        { headers: { Authorization: token } }
+        { withCredentials: true }
       );
       setAllAddress(data.data);
       let defaultAddress = data.data.find((add) => add.defaultAddress === true);
@@ -122,7 +122,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { headers: { Authorization: token } });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { withCredentials: true });
       setIsLoading(false);
 
       console.log("cod", data);
@@ -142,13 +142,10 @@ const CheckoutPage = () => {
       // }
       setIsSuccessModalOpen(true);
 
-      // const res = await axios.post(`${process.env.REACT_APP_API_URL}/create-order-booking/${userId}`, info, { headers: { Authorization: token } });
-
-
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message)
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -188,7 +185,7 @@ const CheckoutPage = () => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/get-coupon-details`, { name: offerCode },
-        { headers: { Authorization: token } }
+        { withCredentials: true }
       );
       if (data.data[0].status === "active") {
         setCouponId(data.data[0]._id);
@@ -234,12 +231,12 @@ const CheckoutPage = () => {
 
       const { data: { apiKey } } = await axios.post(
         `${process.env.REACT_APP_API_URL}/get-api-key`, {},
-        { headers: { Authorization: token } }
+        { withCredentials: true }
       );
 
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/create-online-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId },
-        { headers: { Authorization: token } }
+        { withCredentials: true }
       );
       console.log("razor", data);
 
@@ -259,7 +256,7 @@ const CheckoutPage = () => {
           try {
             const res = await axios.post(
               `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id },
-              { headers: { Authorization: token } }
+              { withCredentials: true }
             );
             console.log("handler", res.data);
             if (res.data.success) {
@@ -295,7 +292,7 @@ const CheckoutPage = () => {
         <div className={`${classes.container} ${classes.checkout_container}`}>
           <div className={classes.checkout_container_left}>
             <div className={classes.login_button_container_guest}>
-              {!token && (
+              {!userName && (
                 <>
                   <p className={classes.heading}>Account</p>
                   <p className={classes.p}>
@@ -319,7 +316,7 @@ const CheckoutPage = () => {
                 </div>
               )}
 
-              {token && (
+              {userName && (
                 <button
                   onClick={() => setIsAddressModalOpen(true)}
                   className={`${classes.select_address_btn}`}
@@ -386,31 +383,6 @@ const CheckoutPage = () => {
                   />
                 ))}
               </div>
-              {/* <div className={classes.frequently_added}>
-                <h4 className={classes.frequently_added_heading}>
-                  Frequently added together
-                </h4>
-                <Carousel
-                  responsive={responsive}
-                  arrows={false}
-                  className={classes.carousel}
-                  customButtonGroup={<ButtonGroup />}
-                >
-                  <FrequentlyAddedItems />
-                </Carousel>
-              </div> */}
-
-              {/* <div className={classes.checkbox_wrapper}>
-                <input
-                  className={classes.checkbox}
-                  type="checkbox"
-                  name=""
-                  id=""
-                />
-                <p className={classes.checkbox_p}>
-                  Avoid calling before reaching the location
-                </p>
-              </div> */}
             </div>
 
             <div className={classes.offer_box}>
@@ -439,7 +411,7 @@ const CheckoutPage = () => {
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-                {offerValue > 0 && <div className={classes.payment_summary_div}>
+                {<div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
                 </div>}

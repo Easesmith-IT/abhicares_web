@@ -13,20 +13,10 @@ const Services = () => {
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("adUx")
-
-  const headers = {
-    Authorization: token
-  }
 
   const getAllCategories = async () => {
     try {
-      if (!token) {
-        navigate('/');
-        return;
-      }
-      console.log('url', process.env.REACT_APP_ADMIN_API_URL)
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { headers })
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials:true })
       setAllCategories(data.data);
     } catch (error) {
       console.log(error);
@@ -37,19 +27,10 @@ const Services = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getAllCategories();
   }, [])
 
 
-
-  if (!token) {
-    navigate('/');
-    return;
-  }
 
   return (
     <Wrapper>

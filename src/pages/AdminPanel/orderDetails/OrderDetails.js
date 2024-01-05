@@ -9,26 +9,17 @@ const OrderDetails = () => {
     const { state } = useLocation();
     console.log(state);
     const [totalTaxRs, setTotalTaxRs] = useState(0);
-    const [total, setTotal] = useState(0);
+    const [subTotal, setSubTotal] = useState(0);
     const [discount, setDiscount] = useState(0);
     const navigate = useNavigate();
     const [status, setStatus] = useState(state?.status);
 
-    const token = localStorage.getItem("adUx");
-
-    const headers = {
-        Authorization: token,
-    };
 
     const handleChange = async (e) => {
         setStatus(e.target.value);
         try {
-            if (!token) {
-                navigate('/admin/login');
-                return;
-            }
             const { data } = await axios.post(
-                `${process.env.REACT_APP_ADMIN_API_URL}/change-order-status/${state._id}`, { status: e.target.value }, { headers }
+                `${process.env.REACT_APP_ADMIN_API_URL}/change-order-status/${state._id}`, { status: e.target.value }, { withCredentials: true }
             );
             console.log('status', data);
         } catch (error) {
@@ -37,16 +28,26 @@ const OrderDetails = () => {
     }
 
     useEffect(() => {
-      if (!token) {
-        navigate("/admin/login");
-        return;
-      }
-      setTotalTaxRs((state.orderValue * 18) / 100);
-      setTotal(Number(totalTaxRs) + Number(state.orderValue));
-      if (state.couponId) {
-        setDiscount((state?.orderValue * state?.couponId?.offPercentage) / 100);
-      }
-    }, [state.orderValue, state.couponId, totalTaxRs,navigate,token]);
+        let value = 0;
+        for (const item of state.items) {
+          if (item?.product) {
+            value = value + Number(item.quantity * item.product.offerPrice);
+          }
+          else {
+            value = value + Number(item.quantity * item.package.offerPrice);
+          }
+        }
+        setSubTotal(() => value);
+        const taxRs = (Number(value) * 18) / 100;
+        setTotalTaxRs(taxRs);
+    
+        if (state.couponId) {
+          const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
+          console.log("discount", localDiscount);
+          setDiscount(localDiscount);
+          setSubTotal((prev) => prev - Number(localDiscount));
+        }
+    }, [state.orderValue, state.couponId, totalTaxRs, navigate]);
 
 
     return (
@@ -110,19 +111,19 @@ const OrderDetails = () => {
                         </div>
                         <div className={classes.d_flex}>
                             <p>Sub Total :</p>
-                            <p>₹{state.orderValue}</p>
+                            <p>₹{subTotal}</p>
                         </div>
                         <div className={classes.d_flex}>
                             <p>Tax (18%) :</p>
                             <p>₹{totalTaxRs}</p>
                         </div>
-                        <div className={classes.d_flex}>
+                        {discount > 0 && <div className={classes.d_flex}>
                             <p>Discount ('{state?.couponId?.name}') :</p>
                             <p>₹{discount}</p>
-                        </div>
+                        </div>}
                         <div className={classes.d_flex}>
                             <p>Total Amount :</p>
-                            <p>₹{total - discount}</p>
+                            <p>₹{state.orderValue}</p>
                         </div>
                     </div>
                     <div className={classes.right_div_bottom}>

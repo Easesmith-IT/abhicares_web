@@ -9,18 +9,17 @@ import WebsiteWrapper from '../WebsiteWrapper';
 const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   console.log(state);
   const [invoice, setInvoice] = useState({});
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
   const [totalTaxRs, setTotalTaxRs] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const getOrderInvoice = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
       setInvoice(data.data);
     } catch (error) {
       console.log(error);
@@ -28,7 +27,7 @@ const BookingDetails = () => {
   }
   const handleCancelOrder = async () => {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { headers: { Authorization: token }, withCredentials: true });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { withCredentials: true });
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
     } catch (error) {
@@ -37,14 +36,26 @@ const BookingDetails = () => {
   }
   useEffect(() => {
     getOrderInvoice();
-    setTotalTaxRs((Number(state.orderValue) * 18) / 100);
-    setTotal(Number(totalTaxRs) + Number(state.orderValue));
-    if (state.couponId) {
-      setDiscount(
-        (Number(state.orderValue) * state.couponId.offPercentage) / 100
-      );
+    let value = 0;
+    for (const item of state.items) {
+      if (item?.product) {
+        value = value + Number(item.quantity * item.product.offerPrice);
+      }
+      else {
+        value = value + Number(item.quantity * item.package.offerPrice);
+      }
     }
-  }, [state.orderValue, state.couponId, totalTaxRs]);
+    setSubTotal(() => value);
+    const taxRs = (Number(value) * 18) / 100;
+    setTotalTaxRs(taxRs);
+
+    if (state.couponId) {
+      const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
+      console.log("discount", localDiscount);
+      setDiscount(localDiscount);
+      setSubTotal((prev) => prev - Number(localDiscount));
+    }
+  }, [state.orderValue, state.couponId]);
   return (
     <WebsiteWrapper>
       <section className={classes.booking_details}>
@@ -96,11 +107,10 @@ const BookingDetails = () => {
                   <div>
                     <img
                       className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
-                        item.package
-                          ? item.package.imageUrl[0]
-                          : item.product.imageUrl[0]
-                      }`}
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package
+                        ? item.package.imageUrl[0]
+                        : item.product.imageUrl[0]
+                        }`}
                       alt=""
                     />
                     <small>Type:{item.package ? "Package" : "Product"}</small>
@@ -141,17 +151,17 @@ const BookingDetails = () => {
               <div>
                 <p>Subtotal: </p>
                 <p>Tax(18%): </p>
-                <p>Discount: </p>
+                {discount > 0 && <p>Discount: </p>}
                 <p>
                   <b>Total: </b>
                 </p>
               </div>
               <div>
-                <p>₹{state.orderValue}</p>
+                <p>₹{subTotal}</p>
                 <p> + ₹{totalTaxRs}</p>
-                <p> - ₹{discount}</p>
+                {discount > 0 && <p> - ₹{discount}</p>}
                 <p>
-                  <b>₹{total-discount}</b>
+                  <b>₹{state.orderValue}</b>
                 </p>
               </div>
             </div>

@@ -18,7 +18,6 @@ const Category = () => {
   ]);
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
 
 
   const bannerChangeHandler = (e, bannerName) => {
@@ -201,10 +200,6 @@ const Category = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getBannersFromServer();
   }, []);
 

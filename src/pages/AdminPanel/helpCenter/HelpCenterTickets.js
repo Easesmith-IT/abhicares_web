@@ -21,22 +21,19 @@ const HelpCenterTickets = () => {
   const [allIssues, setAllIssues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState("in-review");
-  const [pageCount, setPageCount] = useState(3);
+  const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("adUx");
-  const headers = {
-    Authorization: token,
-  };
+
 
   const getAllIssues = async () => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list`,
         { status },
-        { headers }
+        { withCredentials: true }
       );
       setPageCount(data.totalPage);
       setAllIssues(data.data);
@@ -48,10 +45,6 @@ const HelpCenterTickets = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
   }, []);
 
   useEffect(() => {
@@ -71,13 +64,9 @@ const HelpCenterTickets = () => {
 
   const handleDelete = async () => {
     try {
-      if (!token) {
-        navigate("/");
-        return;
-      }
       const { data } = await axios.delete(
         `${process.env.REACT_APP_ADMIN_API_URL}/delete-help-list/${issue}`,
-        { headers }
+        { withCredentials: true }
       );
       toast.success("Issue deleted successfully");
       getAllIssues();
@@ -90,7 +79,7 @@ const HelpCenterTickets = () => {
   const handlePageClick = async (page) => {
     setPage(page);
     const { data } = await axios.post(
-      `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list?page=${page}`, { status }, { headers });
+      `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list?page=${page}`, { status }, { withCredentials: true });
     setAllIssues(data.data);
   };
 

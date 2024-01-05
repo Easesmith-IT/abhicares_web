@@ -40,12 +40,6 @@ const ServiceInfoPage = () => {
     const { state } = useLocation();
     const params = useParams();
 
-    const token = localStorage.getItem("adUx")
-
-    const headers = {
-        Authorization: token
-    }
-
     const handleProductInfoModal = (e, product) => {
         e.stopPropagation();
         setProduct(product)
@@ -72,11 +66,7 @@ const ServiceInfoPage = () => {
 
     const getAllProducts = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-service-product/${params?.serviceId}`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-service-product/${params?.serviceId}`, { withCredentials: true });
             console.log(data);
             setAllProducts(data.data);
         } catch (error) {
@@ -88,11 +78,7 @@ const ServiceInfoPage = () => {
     };
     const getAllPackage = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-service-package/${params?.serviceId}`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-service-package/${params?.serviceId}`, { withCredentials: true });
             console.log(data);
             setAllPackages(data.data);
         } catch (error) {
@@ -104,21 +90,13 @@ const ServiceInfoPage = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getAllProducts();
         getAllPackage();
     }, [])
 
     const handleDelete = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-product/${product}`, { headers });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-product/${product}`, { withCredentials: true });
             console.log(product);
             toast.success("Prodct deleted successfully");
             getAllProducts();
@@ -142,11 +120,7 @@ const ServiceInfoPage = () => {
 
     const handlePackageDelete = async () => {
         try {
-            if (!token) {
-                navigate('/');
-                return;
-            }
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-package/${singlePackage}`, { headers });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-package/${singlePackage}`, { withCredentials: true });
             console.log(data);
             toast.success("Package deleted successfully");
             getAllPackage();
@@ -156,10 +130,6 @@ const ServiceInfoPage = () => {
         }
     };
 
-    if (!token) {
-        navigate('/');
-        return;
-    }
 
     return (
         <>
@@ -287,7 +257,7 @@ const ServiceInfoPage = () => {
 
             {isUpdatePackageModalOpen && (
                 <AddPackageModal
-                selectedPackage={selectedPackage}
+                    selectedPackage={selectedPackage}
                     serviceId={params?.serviceId}
                     setIsModalOpen={setIsUpdatePackageModalOpen}
                     getAllPackage={getAllPackage}

@@ -78,9 +78,9 @@ import SellerAssignedOrders from "./pages/AdminPanel/seller-assigned-orders/Sell
 function App() {
   const { location } = useGeolocation();
   const dispatch = useDispatch();
-  (async () => {
-    await dispatch(getCartDetails());
-  })()
+  // (async () => {
+  //   await dispatch(getCartDetails());
+  // })()
   // console.log("APP.JS", location);
 
   return (

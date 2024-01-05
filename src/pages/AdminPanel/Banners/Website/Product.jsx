@@ -10,12 +10,7 @@ const WebProduct = () => {
   });
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
 
-  if(!token){
-    navigate('/admin/login');
-    return;
-  }
 
   const bannerChangeHandler = (e) => {
     const file = e.target.files[0];

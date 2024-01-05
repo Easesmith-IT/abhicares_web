@@ -19,15 +19,11 @@ const SellerAssignedOrders = () => {
     const navigate = useNavigate()
     const { state } = useLocation();
 
-    const token = localStorage.getItem("adUx")
-    const headers = {
-        Authorization: token
-    }
 
 
     const getSellerOrders = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-seller-order-list/${params.partnerId}`, { headers });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-seller-order-list/${params.partnerId}`, { withCredentials: true });
             setSellerOrders(data.sellerOrders);
             console.log("seller orders", data);
         } catch (error) {
@@ -39,10 +35,6 @@ const SellerAssignedOrders = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getSellerOrders();
     }, [])
 
@@ -53,14 +45,10 @@ const SellerAssignedOrders = () => {
             return;
         }
         try {
-            if (!token) {
-                navigate("/admin/login");
-                return;
-            }
             const { data } = await axios.post(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-seller-order-by-status/${params.partnerId}`,
                 { status: e.target.value },
-                { headers }
+                { withCredentials: true }
             );
             setSellerOrders(data.sellerOrders);
             console.log("order by status", data);
@@ -115,7 +103,7 @@ const SellerAssignedOrders = () => {
 
                         <div className={classes["report-body"]}>
                             <div className={classes["report-topic-heading"]}>
-                                <h3 className={classes["t-op"]} style={{marginRight:"60px"}}>Order Id</h3>
+                                <h3 className={classes["t-op"]} style={{ marginRight: "60px" }}>Order Id</h3>
                                 <h3 className={classes["t-op"]}>Order Value</h3>
                                 <h3 className={classes["t-op"]}>Status</h3>
                                 <h3 className={classes["t-op"]}>Details</h3>
@@ -147,7 +135,7 @@ const SellerAssignedOrders = () => {
             </Wrapper>
             {sellerOrderInfoModal &&
                 <SellerOrderInfoModal
-                setSellerOrderInfoModal={setSellerOrderInfoModal}
+                    setSellerOrderInfoModal={setSellerOrderInfoModal}
                     sellerOrder={sellerOrder}
                 />
             }

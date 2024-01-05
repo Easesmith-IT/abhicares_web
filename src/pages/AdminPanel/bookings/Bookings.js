@@ -14,18 +14,14 @@ const Bookings = () => {
 
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("adUx");
-    const headers = {
-        Authorization: token,
-    };
 
     const getAllBookings = async () => {
         try {
             const { data } = await axios.get(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-booking-list`,
-                { headers }
+                { withCredentials: true }
             );
-            
+
             setAllBookings(data.data);
             console.log("allBookings", data);
         } catch (error) {
@@ -36,10 +32,6 @@ const Bookings = () => {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
         getAllBookings();
     }, [])
 

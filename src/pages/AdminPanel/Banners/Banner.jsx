@@ -5,11 +5,7 @@ import classes from './Banner.module.css'
 
 const Banner = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
-  if(!token){
-    navigate('/admin/login');
-    return;
-  }
+  
   return (
     <Wrapper>
       <div className={classes.container}>

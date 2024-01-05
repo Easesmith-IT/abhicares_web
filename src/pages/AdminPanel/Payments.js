@@ -12,13 +12,7 @@ const Payments = () => {
   };
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
-
-
-  if(!token){
-    navigate('/admin/login');
-    return;
-  }
+  
   return (
     <div>
       <Header onClick={toggleMenuHandler} />

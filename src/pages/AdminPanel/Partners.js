@@ -27,15 +27,10 @@ const Partners = () => {
 
   const navigate = useNavigate()
 
-  const token = localStorage.getItem("adUx")
-  const headers = {
-    Authorization: token
-  }
-
 
   const getAllSellers = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { headers });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials:true });
       setAllSellers(data.data);
       console.log(data);
     } catch (error) {
@@ -47,42 +42,10 @@ const Partners = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getAllSellers();
   }, [])
 
 
-  // const handleOnChange = async (e, id) => {
-  //   if (e.target.checked) {
-  //     try {
-  //       if (!token) {
-  //         navigate('/');
-  //         return;
-  //       }
-  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: true }, { headers });
-  //       toast.success("Seller status updated");
-  //       getAllSellers();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   else {
-  //     try {
-  //       if (!token) {
-  //         navigate('/');
-  //         return;
-  //       }
-  //       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: false }, { headers });
-  //       toast.success("Seller status updated");
-  //       getAllSellers();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   const handleUpdateModal = (e, seller) => {
     e.stopPropagation();
@@ -98,7 +61,7 @@ const Partners = () => {
 
   const handleDelete = async () => {
     try {
-      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-seller/${seller}`, { headers });
+      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-seller/${seller}`, { withCredentials:true });
       toast.success("Seller deleted successfully");
       getAllSellers();
       setIsDeleteModalOpen(!isDeleteModalOpen);
@@ -111,7 +74,7 @@ const Partners = () => {
     const value = e.target.value;
 
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { headers });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials:true });
       setAllSellers(data.data);
     } catch (error) {
       console.log(error);

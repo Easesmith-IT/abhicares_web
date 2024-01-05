@@ -19,7 +19,6 @@ const Home = () => {
   ]);
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("adUx")
 
 
   const bannerChangeHandler = (e, bannerName) => {
@@ -79,7 +78,7 @@ const Home = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero
+        formDataHero, { withCredentials: true }
       );
 
       if (response.status === 200) {
@@ -109,7 +108,7 @@ const Home = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero
+        formDataHero, { withCredentials: true }
       );
 
       if (response.status === 200) {
@@ -131,6 +130,7 @@ const Home = () => {
             page: "home-hero-banners",
             section: "app-homepage",
           },
+          withCredentials: true
         }
       );
 
@@ -160,6 +160,7 @@ const Home = () => {
             page: "home-banners",
             section: "app-homepage",
           },
+          withCredentials: true
         }
       );
       console.log('rs 2 bann', response2)
@@ -177,6 +178,7 @@ const Home = () => {
             page: "home-banners",
             section: "app-homepage",
           },
+          withCredentials: true
         }
       );
       const index2 = banners.findIndex((banner) => banner.bannerName === "banner5");
@@ -193,10 +195,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getBannersFromServer();
   }, []);
 

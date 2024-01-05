@@ -10,11 +10,11 @@ import toast from 'react-hot-toast';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
-    
+
     const hasUpperCaseLetters = [...code].every(
-      (char) => char === char.toUpperCase()
+        (char) => char === char.toUpperCase()
     );
-    
+
     if (!hasSpaces && hasUpperCaseLetters) {
         return true;
     }
@@ -37,12 +37,8 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         setOfferInfo({ ...offerInfo, [name]: value });
     }
     const navigate = useNavigate()
-    const token = localStorage.getItem("adUx")
 
 
-    const headers = {
-        Authorization: token
-    }
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!offerInfo.name
@@ -53,11 +49,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         }
         if (offer) {
             try {
-                if (!token) {
-                    navigate('/');
-                    return;
-                }
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon/${offer._id}`, { ...offerInfo, description }, { headers });
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon/${offer._id}`, { ...offerInfo, description }, { withCredentials: true });
                 console.log(data);
                 toast.success("Offer updated successfully");
                 getAllOffers();
@@ -68,16 +60,11 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         }
         else {
             try {
-                if (!token) {
-                    navigate('/');
-                    return;
-                }
-
                 if (!validateCouponCode(offerInfo.name)) {
                     toast.error('Please enter valid coupon code');
                     return;
                 }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description }, { headers });
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description }, { withCredentials: true });
                 console.log(data);
                 toast.success("Offer added successfully");
                 getAllOffers();
@@ -87,10 +74,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             }
         }
     }
-    if (!token) {
-        navigate('/');
-        return;
-    }
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

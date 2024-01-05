@@ -25,16 +25,13 @@ const HelpCenterFaqs = () => {
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("adUx");
-  const headers = {
-    Authorization: token,
-  };
+
 
   const getAllFaqs = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-all-faq`,
-        { headers }
+        { withCredentials:true }
       );
       console.log('faqs', data);
       setallFaqs(data.data);
@@ -45,10 +42,6 @@ const HelpCenterFaqs = () => {
     }
   };
   useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
-      return;
-    }
     getAllFaqs();
   }, []);
 
@@ -61,13 +54,9 @@ const HelpCenterFaqs = () => {
 
   const handleDelete = async () => {
     try {
-      if (!token) {
-        navigate("/");
-        return;
-      }
       const { data } = await axios.delete(
         `${process.env.REACT_APP_ADMIN_API_URL}//delete-faq/${faq}`,
-        { headers }
+        { withCredentials:true }
       );
       toast.success("Issue deleted successfully");
       getAllFaqs();

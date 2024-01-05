@@ -11,11 +11,6 @@ import { IoIosArrowDown } from 'react-icons/io';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
     const navigate = useNavigate()
-    const token = localStorage.getItem("adUx")
-
-    const headers = {
-        Authorization: token
-    }
 
     const [packageInfo, setPackageInfo] = useState({
         name: selectedPackage?.name || "",
@@ -76,11 +71,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
 
         if (selectedPackage) {
             try {
-                if (!token) {
-                    navigate("/");
-                    return;
-                }
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-package/${selectedPackage._id}`, formData, { headers });
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-package/${selectedPackage._id}`, formData, { withCredentials: true });
                 toast.success("Package updated successfully");
                 getAllPackage();
                 setIsModalOpen(false);
@@ -90,11 +81,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         }
         else {
             try {
-                if (!token) {
-                    navigate("/");
-                    return;
-                }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-package`, formData, { headers });
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-package`, formData, { withCredentials: true });
                 toast.success("Package added successfully");
                 getAllPackage();
                 setIsModalOpen(false);
@@ -103,10 +90,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
             }
         }
     }
-    if (!token) {
-        navigate("/");
-        return;
-    }
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>
