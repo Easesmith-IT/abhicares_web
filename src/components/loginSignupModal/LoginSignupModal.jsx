@@ -153,7 +153,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       localStorage.setItem("userPhone", data.userPhone);
       await dispatch(changeUserStatus(data.userName));
       await dispatch(getCartDetails());
-      window.location.reload();
+      // window.location.reload();
       handleOnClose();
 
       setIsLoading(false);

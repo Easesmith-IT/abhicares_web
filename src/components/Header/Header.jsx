@@ -42,14 +42,14 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
-      setIsLogoutModalOpen(false);
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
-
+      
       navigate("/");
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
+      setIsLogoutModalOpen(false);
       window.location.reload();
 
     } catch (error) {

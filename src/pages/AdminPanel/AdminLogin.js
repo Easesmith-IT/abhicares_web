@@ -15,6 +15,10 @@ const AdminLogin = () => {
     const userName = userNameRef.current.value;
     const userPassword = userPasswordRef.current.value;
 
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userPhone");
+
     const response = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`, {
       adminId: userName,
       password: userPassword
