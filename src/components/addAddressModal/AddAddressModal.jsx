@@ -19,7 +19,9 @@ const AddAddressModal = ({
 }) => {
 
 
-    const { location,status } = useGeolocation();
+  const { location, status } = useGeolocation();
+  console.log("status", status);
+      console.log("location", location);
 
 
   const [showCurrentLocationAdd, setShowCurrentLocationAdd] = useState(false);
@@ -31,6 +33,7 @@ const AddAddressModal = ({
     pincode: Data.pincode || "",
     landmark: Data.landmark,
     defaultAddress: Data.defaultAddress || false,
+    city:Data.city || ""
   });
 
   const handleOnChange = (e) => {
@@ -64,10 +67,11 @@ const AddAddressModal = ({
     } else {
         try {
             const geometry = {
-              coordinates: [location.geometry.lat, location.geometry.lng]
-            }
+              coordinates: [location.geometry.lat, location.geometry.lng],
+            };
 
-          const body = { ...addressInfo,location:geometry,city:'Lucknow' };
+          const body = { ...addressInfo, location: geometry, city: location.city };
+          console.log('body',body)
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/create-user-address`,
           { ...body },
@@ -77,13 +81,15 @@ const AddAddressModal = ({
         getAllAddress();
         setIsAddAddressModalOpen(false);
         console.log(data);
-      } catch (error) {
+        } catch (error) {
+          toast.error(error?.response?.data?.message);
         console.log(error);
       }
     }
   };
 
   const handleCurrentLocation = () => {
+
     console.log('on click')
      if (status !== "granted") {
        console.log("inside if");
@@ -129,6 +135,21 @@ const AddAddressModal = ({
                     name="addressLine"
                     id="addressLine"
                     placeholder="Enter address line"
+                  />
+                </div>
+              </div>
+
+              <div className={classes.mt}>
+                <label htmlFor="city">City</label>
+                <div className={classes.input_box}>
+                  <input
+                    className={classes.input}
+                    onChange={handleOnChange}
+                    value={addressInfo.city}
+                    type="text"
+                    name="city"
+                    id="city"
+                    placeholder="Enter city"
                   />
                 </div>
               </div>
@@ -191,7 +212,7 @@ const AddAddressModal = ({
                 className={classes.button}
                 onClick={handleCurrentLocation}
                 disabled={isButtonDisabled}
-                style={{color:status !== "granted"?'grey':'black'}}
+                style={{ color: status !== "granted" ? "grey" : "black" }}
               >
                 <MdMyLocation />
                 {status === "granted"
@@ -215,8 +236,8 @@ const AddAddressModal = ({
   );
 };
 
-// export default AddAddressModal;
+export default AddAddressModal;
 
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-})(AddAddressModal);
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+// })(AddAddressModal);

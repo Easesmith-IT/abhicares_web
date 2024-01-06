@@ -15,8 +15,9 @@ const CurrentLocationAddInfo = ({
         setAddressInfo((prev) => {
             return {
               ...prev,
-              addressLine: location.formatted,
-                pincode:location.components.postcode
+              addressLine: location.formattedAddress,
+              pincode: location.pincode,
+              city: location.city,
             };
         })
         
@@ -36,7 +37,7 @@ const CurrentLocationAddInfo = ({
           <AiOutlineClose size={20} />
         </button>
         <div className={classes.modal}>
-          {location && <p>{location.formatted}</p>}
+          {location && <p>{location.formattedAddress}</p>}
           <button
             type="submit"
             className={classes.button}
@@ -50,8 +51,8 @@ const CurrentLocationAddInfo = ({
   );
 };
 
-// export default CurrentLocationAddInfo
+export default CurrentLocationAddInfo
 
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-})(CurrentLocationAddInfo);
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+// })(CurrentLocationAddInfo);

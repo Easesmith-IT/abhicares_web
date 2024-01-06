@@ -1,7 +1,16 @@
+// useGeolocation.js
 import { useState, useEffect } from "react";
 
+
+
 const useGeolocation = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({
+    geometry: {},
+    formattedAddress: "",
+    city:"",
+    state:"",
+    pincode:"",
+  });
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
@@ -18,6 +27,13 @@ const useGeolocation = () => {
             navigator.geolocation.getCurrentPosition(
               async (position) => {
                 const { latitude, longitude } = position.coords;
+                 setLocation((prev) => {
+                   return {
+                     ...prev,
+                     geometry: { lat: latitude, lng: longitude },
+                   };
+                 });
+                
 
                 // Create a LatLng object for the user's location
                 const userLocation = new window.google.maps.LatLng(
@@ -32,7 +48,31 @@ const useGeolocation = () => {
                   (results, status) => {
                     if (status === "OK" && results[0]) {
                       const formattedAddress = results[0].formatted_address;
-                      setLocation({ formatted: formattedAddress });
+                      
+                      const city = extractAddressComponent(
+                        results,
+                        "locality"
+                      );
+                      const state = extractAddressComponent(
+                        results,
+                        "administrative_area_level_1"
+                      );
+                      const pincode = extractAddressComponent(
+                        results,
+                        "postal_code"
+                      );
+
+                        setLocation((prev) => {
+                          return {
+                            ...prev,
+                            formattedAddress,
+                            city,
+                            state,
+                            pincode,
+                          };
+                        });
+
+                     
                     } else {
                       console.error("Error in geocoding:", status);
                     }
@@ -53,6 +93,12 @@ const useGeolocation = () => {
               navigator.geolocation.getCurrentPosition(
                 async (position) => {
                   const { latitude, longitude } = position.coords;
+                  setLocation((prev) => {
+                    return {
+                      ...prev,
+                      geometry: { lat: latitude, lng: longitude },
+                    };
+                  });
 
                   const userLocation = new window.google.maps.LatLng(
                     latitude,
@@ -63,9 +109,36 @@ const useGeolocation = () => {
                   geocoder.geocode(
                     { location: userLocation },
                     (results, status) => {
+                      console.log("results", results);
                       if (status === "OK" && results[0]) {
                         const formattedAddress = results[0].formatted_address;
-                        setLocation({ formatted: formattedAddress });
+                        const city = extractAddressComponent(
+                          results,
+                          "locality"
+                        );
+                        const state = extractAddressComponent(
+                          results,
+                          "administrative_area_level_1"
+                        );
+                        const pincode = extractAddressComponent(
+                          results,
+                          "postal_code"
+                        );
+
+
+                        setLocation((prev) => {
+                          return {
+                            ...prev,
+                            formattedAddress,
+                            city,
+                              state,
+                              pincode,
+                          };
+                        })
+                        console.log("formattedAddress", formattedAddress);
+                        console.log("city", city);
+                        console.log("state", state);
+                        console.log("pincode", pincode);
                       } else {
                         console.error("Error in geocoding:", status);
                       }
@@ -90,6 +163,18 @@ const useGeolocation = () => {
 
     getLocation();
   }, []);
+
+  const extractAddressComponent = (results, type) => {
+    for (const result of results) {
+      const component = result.address_components.find((component) =>
+        component.types.includes(type)
+      );
+      if (component) {
+        return component.long_name;
+      }
+    }
+    return null;
+  };
 
   return { location, status };
 };

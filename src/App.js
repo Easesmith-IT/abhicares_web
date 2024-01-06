@@ -1,14 +1,8 @@
 
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import { changeUserStatus } from "./store/slices/userSlice";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 
-import { useEffect } from 'react';
-
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
 
 import HomePage from './pages/Home';
 import AboutUs from './pages/aboutUs/AboutUs';
@@ -210,11 +204,9 @@ function App() {
 }
 
 
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-})(App);
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+// })(App);
 
-// export default App;
+export default App;
 
-
-// const userId = useSelector(state => state.user.userId);;

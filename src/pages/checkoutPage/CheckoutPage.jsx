@@ -18,8 +18,6 @@ import loader from "../../assets/rolling-white.gif"
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
-import useGeolocation from "../../hooks/usegelocation";
-import { GoogleApiWrapper } from "google-maps-react";
 import WebsiteWrapper from "../WebsiteWrapper";
 
 const CheckoutPage = () => {
@@ -52,9 +50,7 @@ const CheckoutPage = () => {
   })
   const [totalTaxRs, setTotalTaxRs] = useState(0);
 
-  const { location } = useGeolocation();
 
-  console.log("location", location);
 
   const userName = localStorage.getItem("userName");
 
@@ -482,7 +478,7 @@ console.log("tax",totalTaxRs);
   );
 };
 
-// export default CheckoutPage;
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-})(CheckoutPage);
+export default CheckoutPage;
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+// })(CheckoutPage);

@@ -30,7 +30,7 @@ export const Services = ({ open }) => {
 
   useEffect(() => {
     if (location) {
-      setUserLocation(location.formatted);
+      setUserLocation(location.formattedAddress);
     }
     
 
@@ -254,7 +254,7 @@ export const Services = ({ open }) => {
   );
 };
 
-// export default Services;
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-})(Services);
+export default Services;
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+// })(Services);

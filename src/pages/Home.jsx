@@ -20,7 +20,6 @@ import WebsiteWrapper from "./WebsiteWrapper.jsx";
 export const Home = () => {
   const [category, setCategory] = useState("");
   const [open, setOpen] = useState(false);
-    console.log("google api key home", process.env.GOOGLE_MAP_API_KEY);
 
   const handleOpen = (data) => {
     setCategory(data);
