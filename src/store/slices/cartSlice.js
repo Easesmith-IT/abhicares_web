@@ -17,7 +17,7 @@ export const getCartDetails = createAsyncThunk("/cart/details", async () => {
         const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, { withCredentials: true });
 
         const response = await res;
-        // console.log('cart details', response.data);
+        console.log('cart details', response.data);
         return response.data;
     } catch (error) {
         console.log(error);
