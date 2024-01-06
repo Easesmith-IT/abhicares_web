@@ -188,7 +188,7 @@ const Home = () => {
       console.log("response1", response1);
 
       console.log(response2);
-      console.log(response3);
+      console.log('response3' ,response3);
     } catch (err) {
       console.log(err.message);
     }

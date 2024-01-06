@@ -5,12 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { GoogleApiWrapper } from "google-maps-react";
+
+const AppWithGoogleApi = GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(App);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-       <Provider store={store}>
-    <App />
+    <Provider store={store}>
+      <AppWithGoogleApi />
     </Provider>
   </React.StrictMode>
 );

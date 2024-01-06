@@ -78,17 +78,20 @@ const WebCategory = () => {
 
     try {
       const response1 = await axios.post(
-        "http://localhost:5000/api/content/upload-banners",
-        formDataHero
+        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        formDataHero,
+        { withCredentials: true }
       );
       const response2 = await axios.post(
-        "http://localhost:5000/api/content/upload-banners",
-        formDataBan1
+        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        formDataBan1,
+        { withCredentials: true }
       );
       console.log(response2);
       const response3 = await axios.post(
-        "http://localhost:5000/api/content/upload-banners",
-        formDataBan2
+        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        formDataBan2,
+        { withCredentials: true }
       );
 
       if (response1.status === 200 && response2.status === 200 && response3.status === 200) {

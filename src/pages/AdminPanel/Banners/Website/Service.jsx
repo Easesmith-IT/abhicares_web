@@ -40,8 +40,9 @@ const WebService = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/content/upload-banners",
-        formDataHero
+        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        formDataHero,
+        { withCredentials: true }
       );
       // console.log(response3);
       if (response.status === 200) {

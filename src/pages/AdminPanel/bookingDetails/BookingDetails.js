@@ -101,7 +101,7 @@ const BookingDetails = () => {
                     {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
                   </p>
                   <p>time of appointment: {booking.bookingTime}</p>
-                  {(!booking.sellerId || status==='not-alloted') &&  (
+                  {(!booking.sellerId || status === "not-alloted") && (
                     <button
                       onClick={handlePartnerModal}
                       className={classes.button}
@@ -110,7 +110,7 @@ const BookingDetails = () => {
                     </button>
                   )}
 
-                  {booking.sellerId && status!=='not-alloted' && (
+                  {booking.sellerId && status !== "not-alloted" && (
                     <div className="mt-4">
                       <h5>Assigned to Seller</h5>
                       <p>{booking.sellerId.name}</p>
@@ -139,10 +139,11 @@ const BookingDetails = () => {
                   <div>
                     <img
                       className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${booking.package
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
+                        booking.package
                           ? booking.package.imageUrl[0]
                           : booking.product.imageUrl[0]
-                        }`}
+                      }`}
                       alt="product"
                     />
                     <div>
@@ -173,21 +174,21 @@ const BookingDetails = () => {
                   <p>Descriptions</p>
                   <p>Amounts</p>
                 </div>
-                <div className={classes.d_flex}>
+                {/* <div className={classes.d_flex}>
                   <p>Sub Total :</p>
                   <p>₹{booking.orderValue}</p>
-                </div>
-                <div className={classes.d_flex}>
+                </div> */}
+                {/* <div className={classes.d_flex}>
                   <p>Tax (18%) :</p>
                   <p>₹{totalTaxRs}</p>
-                </div>
+                </div> */}
                 {/* <div className={classes.d_flex}>
                   <p>Discount ('{booking?.couponId?.name}') :</p>
                   <p>₹{discount}</p>
                 </div> */}
                 <div className={classes.d_flex}>
                   <p>Total Amount :</p>
-                  <p>₹{total - discount}</p>
+                  <p>₹{booking.orderValue}</p>
                 </div>
               </div>
               <div className={classes.right_div_bottom}>

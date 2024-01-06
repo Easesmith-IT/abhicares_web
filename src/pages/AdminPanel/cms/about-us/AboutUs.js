@@ -13,7 +13,7 @@ const AboutUs = () => {
         const getAboutUsContent = async () => {
           try {
             const response = await axios.get(
-              "http://localhost:5000/api/content/get-content",
+              `${process.env.REACT_APP_CMS_URL}/get-content`,
               {
                 params: {
                   type: "about-content",
@@ -35,14 +35,14 @@ const AboutUs = () => {
         event.preventDefault();
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/content/update-content",
+            `${process.env.REACT_APP_CMS_URL}/update-content`,
             {
               type: "about-content",
               page: "aboutus",
-                section: "about-us",
-                content:content
+              section: "about-us",
+              content: content,
             }
-            );
+          );
             
             console.log(response)
             if (response.status === 200) {
