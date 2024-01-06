@@ -41,21 +41,22 @@ const BookingDetails = () => {
       if (item?.product) {
         value = value + Number(item.quantity * item.product.offerPrice);
       }
-      else {
+      else if (item?.package) {
         value = value + Number(item.quantity * item.package.offerPrice);
       }
     }
-    setSubTotal(() => value);
     const taxRs = (Number(value) * 18) / 100;
     setTotalTaxRs(taxRs);
+    setSubTotal(() => value);
 
     if (state.couponId) {
-      const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
+      const localDiscount = (Number(value) * Number(state.couponId.offPercentage)) / 100;
       console.log("discount", localDiscount);
       setDiscount(localDiscount);
       setSubTotal((prev) => prev - Number(localDiscount));
     }
   }, [state.orderValue, state.couponId]);
+
   return (
     <WebsiteWrapper>
       <section className={classes.booking_details}>
@@ -151,15 +152,15 @@ const BookingDetails = () => {
               <div>
                 <p>Subtotal: </p>
                 <p>Tax(18%): </p>
-                {discount > 0 && <p>Discount: </p>}
+                {state.discount > 0 && <p>Discount: </p>}
                 <p>
                   <b>Total: </b>
                 </p>
               </div>
               <div>
-                <p>₹{subTotal}</p>
-                <p> + ₹{totalTaxRs}</p>
-                {discount > 0 && <p> - ₹{discount}</p>}
+                <p>₹{state.itemTotal}</p>
+                <p> + ₹{state.tax}</p>
+                {state.discount > 0 && <p> - ₹{state.discount}</p>}
                 <p>
                   <b>₹{state.orderValue}</b>
                 </p>

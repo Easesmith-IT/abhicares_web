@@ -85,6 +85,7 @@ const CheckoutPage = () => {
 
 
   const cart = useSelector((state) => state.cart);
+  console.log("cart", cart);
 
   useEffect(() => {
     if (cart.items.length === 0) {
@@ -123,7 +124,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { withCredentials: true });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { withCredentials: true });
       setIsLoading(false);
 
       console.log("cod", data);
@@ -234,9 +235,9 @@ const CheckoutPage = () => {
         `${process.env.REACT_APP_API_URL}/get-api-key`, {},
         { withCredentials: true }
       );
-
+console.log("tax",totalTaxRs);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-online-order`, { amount: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId },
+        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId },
         { withCredentials: true }
       );
       console.log("razor", data);
