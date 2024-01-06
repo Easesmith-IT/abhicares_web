@@ -19,6 +19,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 import useGeolocation from "../../hooks/usegelocation";
+import { GoogleApiWrapper } from "google-maps-react";
 import WebsiteWrapper from "../WebsiteWrapper";
 
 const CheckoutPage = () => {
@@ -480,4 +481,7 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+// export default CheckoutPage;
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(CheckoutPage);

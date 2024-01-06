@@ -19,6 +19,7 @@ import CheckoutPage from './pages/checkoutPage/CheckoutPage';
 import RegisterAsAProfessional from './pages/registerAsAProfessional/RegisterAsAProfessional';
 import TermsAndConditions from "./pages/termsAndConditions/TermsAndConditions";
 import { Toaster } from "react-hot-toast";
+import { GoogleApiWrapper } from "google-maps-react";
 
 
 import HelpCenter from "./pages/helpCenter/HelpCenter";
@@ -82,6 +83,7 @@ function App() {
   //   await dispatch(getCartDetails());
   // })()
   // console.log("APP.JS", location);
+
 
   return (
     <>
@@ -207,7 +209,12 @@ function App() {
   );
 }
 
-export default App;
+
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(App);
+
+// export default App;
 
 
 // const userId = useSelector(state => state.user.userId);;

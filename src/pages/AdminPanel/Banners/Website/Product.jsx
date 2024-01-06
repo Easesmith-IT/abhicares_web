@@ -37,8 +37,9 @@ const WebProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/content/upload-banners",
-        formData
+        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        formData,
+        { withCredentials: true }
       );
       console.log(response);
     } catch (err) {

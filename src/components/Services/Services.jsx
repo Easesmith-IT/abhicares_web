@@ -13,6 +13,7 @@ import { Grid, Typography } from "@mui/material";
 import Photo from "../../assets/hero_img.png";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { GoogleApiWrapper } from "google-maps-react";
 import Loader from "../loader/Loader";
 import useGeolocation from '../../hooks/usegelocation'
 
@@ -253,4 +254,7 @@ export const Services = ({ open }) => {
   );
 };
 
-export default Services;
+// export default Services;
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(Services);

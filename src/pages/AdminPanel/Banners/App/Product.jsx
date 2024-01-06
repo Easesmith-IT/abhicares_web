@@ -45,7 +45,7 @@ const Product = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero
+        formDataHero, { withCredentials: true }
       );
 
       if (response.status === 200) {

@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import useGeolocation from "../../hooks/usegelocation";
+import { GoogleApiWrapper } from "google-maps-react";
 
 import CurrentLocationAddInfo from "./CurrentLocationAddInfo";
 
@@ -214,4 +215,8 @@ const AddAddressModal = ({
   );
 };
 
-export default AddAddressModal;
+// export default AddAddressModal;
+
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(AddAddressModal);

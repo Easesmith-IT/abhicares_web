@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
         const getAboutUsContent = async () => {
           try {
             const response = await axios.get(
-              "http://localhost:5000/api/content/get-content",
+              `${process.env.REACT_APP_CMS_URL}/get-content`,
               {
                 params: {
                   type: "privacypolicy-content",
@@ -33,7 +33,7 @@ const PrivacyPolicy = () => {
         event.preventDefault();
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/content/update-content",
+            `${process.env.REACT_APP_CMS_URL}/update-content`,
             {
               type: "privacypolicy-content",
               page: "privacypolicy",

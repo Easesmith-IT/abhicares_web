@@ -2,6 +2,7 @@ import React from 'react'
 import { AiOutlineClose } from "react-icons/ai";
 import classes from "./AddAddressModal.module.css";
 import useGeolocation from '../../hooks/usegelocation';
+import { GoogleApiWrapper } from "google-maps-react";
 
 const CurrentLocationAddInfo = ({
   isOpen,
@@ -49,4 +50,8 @@ const CurrentLocationAddInfo = ({
   );
 };
 
-export default CurrentLocationAddInfo
+// export default CurrentLocationAddInfo
+
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
+})(CurrentLocationAddInfo);
