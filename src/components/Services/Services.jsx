@@ -27,9 +27,11 @@ export const Services = ({ open }) => {
   const [userlocation,setUserLocation] = useState(null)
 
   const { location } = useGeolocation();
+  console.log('location',location)
 
   useEffect(() => {
     if (location) {
+      console.log('formatted',location.formattedAddress)
       setUserLocation(location.formattedAddress);
     }
     

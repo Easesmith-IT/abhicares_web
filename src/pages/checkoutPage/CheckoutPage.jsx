@@ -233,7 +233,7 @@ const CheckoutPage = () => {
       );
 console.log("tax",totalTaxRs);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId },
+        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId },
         { withCredentials: true }
       );
       console.log("razor", data);

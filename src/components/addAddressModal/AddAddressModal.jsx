@@ -2,7 +2,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import classes from "./AddAddressModal.module.css";
 
 import { MdMyLocation } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -18,8 +18,8 @@ const AddAddressModal = ({
   Data = "",
 }) => {
 
+    const { location, status } = useGeolocation();
 
-  const { location, status } = useGeolocation();
   console.log("status", status);
       console.log("location", location);
 
@@ -219,6 +219,7 @@ const AddAddressModal = ({
                   ? "Use Current Location"
                   : "Location Disabled"}
               </button>
+              {/* {status !== "granted" && <button onClick={getLocation}>Enable location</button>} */}
               <button type="submit" className={classes.button}>
                 {Data ? "Update" : "Proceed"}
               </button>
