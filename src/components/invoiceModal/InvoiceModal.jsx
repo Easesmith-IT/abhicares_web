@@ -6,9 +6,10 @@ import { FaXmark } from 'react-icons/fa6';
 import html2PDF from 'jspdf-html2canvas';
 import parse from 'html-react-parser';
 import { format } from 'date-fns';
+import LazyImage from '../react-lazyload-image/LazyImage';
 
 const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
-console.log(invoice);
+    console.log(invoice);
     const downloadInvoice = () => {
         html2PDF(document.querySelector("#invoice_box"), {
             jsPDF: {
@@ -27,7 +28,9 @@ console.log(invoice);
                 <div className={classes.invoice_box} id='invoice_box'>
                     <div className={classes.invoice_top}>
                         <div className={classes.invoice_top_left}>
-                            <img className={classes.logo} src={logo} alt="logo" />
+                            <LazyImage>
+                                <img className={classes.logo} src={logo} alt="logo" />
+                            </LazyImage>
                             <div className={classes.info}>
                                 <b>From</b>
                                 <h5 className={classes.h3}>AbhiCares</h5>
@@ -50,10 +53,10 @@ console.log(invoice);
                                 </div>
                             </div>
                             <b>Bill to</b>
-                            <h5 className={classes.h3}>{invoice.user.name}</h5>
-                            <p className={classes.p}>{invoice.user.phone}</p>
+                            <h5 className={classes.h3}>{invoice?.user?.name}</h5>
+                            <p className={classes.p}>{invoice?.user?.phone}</p>
                             {/* <p className={classes.p}>{"state.phone"}</p> */}
-                            <p className={classes.p}>{`${invoice.user.address.addressLine}, ${invoice.user.address.landmark}, ${invoice.user.address.pincode}`}</p>
+                            <p className={classes.p}>{`${invoice?.user?.address?.addressLine}, ${invoice?.user?.address?.landmark}, ${invoice?.user?.address?.pincode}`}</p>
                         </div>
                     </div>
                     <div className={classes.invoice_bottom}>

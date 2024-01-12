@@ -96,8 +96,8 @@ const ServiceInfoPage = () => {
 
     const handleDelete = async () => {
         try {
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-product/${product}`, { withCredentials: true });
             console.log(product);
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-product/${product}`, { withCredentials: true });
             toast.success("Prodct deleted successfully");
             getAllProducts();
             setIsDeleteModalOpen(!isDeleteModalOpen);

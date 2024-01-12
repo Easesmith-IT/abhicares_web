@@ -87,7 +87,10 @@
 
 .d_flex{
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 20px;
 }
 
 .d_flex > div{

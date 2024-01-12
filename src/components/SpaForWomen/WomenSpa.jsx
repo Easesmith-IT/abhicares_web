@@ -6,6 +6,7 @@ import { WomenSalon } from "../../assets/data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LazyImage from "../react-lazyload-image/LazyImage";
 
 
 export const WomenSpa = () => {
@@ -75,14 +76,18 @@ export const WomenSpa = () => {
         {
           allServices.map((item) => (
             <>
-            <div onClick={()=> navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
-              <div className={classes['single-card']}>
-                <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
-              </div>
+              <div onClick={() => navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
+                <div className={classes['single-card']}>
+                  <div className={classes['cardMedia']}>
+                    <LazyImage>
+                      <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" />
+                    </LazyImage>
+                  </div>
+                </div>
 
-            </div>
-            <p className={classes['cardname']}><b>{item.name}</b></p>
-            <p style={{fontSize:'17px'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
+              </div>
+              <p className={classes['cardname']}><b>{item.name}</b></p>
+              <p style={{ fontSize: '17px' }} >Starting From : <span style={{ color: 'green' }}>₹{item.startingPrice}</span></p>
             </>
           ))
         }

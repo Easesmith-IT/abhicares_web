@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 import DeleteModal from "../../components/deleteModal/DeleteModal";
 import Wrapper from "../Wrapper";
 import Loader from "../../components/loader/Loader";
+import { FaEye } from "react-icons/fa6";
+import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
 
 const Customers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,12 +20,14 @@ const Customers = () => {
   const [user, setUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
 
   const navigate = useNavigate()
 
   const getAllUsers = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-user`, { withCredentials:true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-user`, { withCredentials: true });
+      console.log("all users", data);
       setAllUsers(data.data);
     } catch (error) {
       console.log(error);
@@ -42,6 +46,11 @@ const Customers = () => {
     setIsUpdateModalOpen(!isDeleteModalOpen);
   };
 
+  const handleUserInfoModal = (seller) => {
+    setUser(seller);
+    setIsUserInfoModalOpen(!isUserInfoModalOpen);
+  };
+
   const handleDeleteModal = (id) => {
     setUser(id);
     setIsDeleteModalOpen(!isDeleteModalOpen);
@@ -49,7 +58,7 @@ const Customers = () => {
 
   const handleDelete = async () => {
     try {
-      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-user/${user}`, { withCredentials:true });
+      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-user/${user}`, { withCredentials: true });
       console.log(data);
       toast.success("User deleted successfully");
       getAllUsers();
@@ -63,7 +72,7 @@ const Customers = () => {
     const value = e.target.value;
 
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-user?search=${value}`, { withCredentials:true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-user?search=${value}`, { withCredentials: true });
       setAllUsers(data.data);
     } catch (error) {
       console.log(error);
@@ -87,7 +96,6 @@ const Customers = () => {
   return (
     <>
       <Wrapper>
-
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
             <h1 className={classes["recent-Articles"]}>Customers</h1>
@@ -119,7 +127,8 @@ const Customers = () => {
                   <h3 className={classes["t-op-nextlvl"]}>{user.name}</h3>
                   <h3 className={classes["t-op-nextlvl"]}>{user.phone}</h3>
                   <h3 className={`${classes["t-op-nextlvl"]}`}>
-                    <FiEdit onClick={() => handleUpdateModal(user)} cursor={"pointer"} size={20} />
+                    <FaEye onClick={() => handleUserInfoModal(user)} cursor={"pointer"} size={20} />
+                    <FiEdit onClick={() => handleUpdateModal(user)} cursor={"pointer"} className="ml-2" size={20} />
                     <MdDelete onClick={() => handleDeleteModal(user._id)} cursor={"pointer"} size={22} color='red' />
                   </h3>
                 </div>
@@ -128,6 +137,14 @@ const Customers = () => {
           </div>
         </div>
       </Wrapper>
+
+      {isUserInfoModalOpen &&
+        <UserInfoModal
+          setIsUserInfoModalOpen={setIsUserInfoModalOpen}
+          user={user}
+        />
+      }
+
       {isModalOpen &&
         <AddUserModal
           setIsModalOpen={setIsModalOpen}
