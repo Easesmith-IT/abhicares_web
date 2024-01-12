@@ -147,7 +147,8 @@ const useGeolocation = () => {
                   (results, status) => {
                     console.log('results',results)
                     if (status === "OK" && results[0]) {
-                      const formattedAddress = results[0].formatted_address;
+                        const formattedAddress =
+                          getSuitableFormattedAddress(results);
 
                       const city = extractAddressComponent(results, "locality");
                       const state = extractAddressComponent(
@@ -206,7 +207,7 @@ const useGeolocation = () => {
                     (results, status) => {
                       console.log("results", results);
                       if (status === "OK" && results[0]) {
-                        const formattedAddress = results[0].formatted_address;
+                        const formattedAddress = getSuitableFormattedAddress(results);
                         const city = extractAddressComponent(
                           results,
                           "locality"
@@ -269,6 +270,17 @@ const useGeolocation = () => {
     }
     return null;
   };
+
+  const getSuitableFormattedAddress = (results) => {
+     for (const result of results) {
+       if (
+         result.types.includes("street_address") ||
+         result.types.includes("route")
+       )
+         return result.formatted_address;
+     }
+     return results[0].formatted_address;
+  }
 
   return { location, status };
 };
