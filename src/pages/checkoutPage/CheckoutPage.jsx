@@ -19,6 +19,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 import WebsiteWrapper from "../WebsiteWrapper";
+import { BackDropLoader } from "../../components/backdrop-loader/BackDropLoader";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,6 @@ const CheckoutPage = () => {
   const [isShow, setIsShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [address, setAddress] = useState("");
   const [bookingInfo, setBookingInfo] = useState([]);
   const [allAddress, setAllAddress] = useState([]);
@@ -49,6 +49,7 @@ const CheckoutPage = () => {
     bookingTime: "Select time (08:00AM-08:00PM)"
   })
   const [totalTaxRs, setTotalTaxRs] = useState(0);
+  const [isLoader, setIsLoader] = useState(false);
 
 
 
@@ -122,23 +123,7 @@ const CheckoutPage = () => {
       setIsLoading(true);
       const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { withCredentials: true });
       setIsLoading(false);
-
-      console.log("cod", data);
-
-
-      // const { addressLine, pincode, landmark, mobile } = address;
-      // const info = {
-      //   orderId: data?._id,
-      //   userAddress: {
-      //     addressLine,
-      //     pincode,
-      //     landmark,
-      //     mobile
-      //   },
-      //   productDetails: bookingInfo,
-      //   orderValue: data?.orderValue
-      // }
-      setIsSuccessModalOpen(true);
+      navigate("/success");
 
     } catch (error) {
       console.log(error);
@@ -220,6 +205,7 @@ const CheckoutPage = () => {
   };
 
   const handleRazorpayPayment = async () => {
+    setIsLoading(true);
     if (paymentType === "" || paymentType !== "online") {
       toast.error("Select payment method");
       return;
@@ -252,6 +238,7 @@ const CheckoutPage = () => {
           paymentDetails.razorpay_signature = response.razorpay_signature;
 
           try {
+            setIsLoader(true);
             const res = await axios.post(
               `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id },
               { withCredentials: true }
@@ -263,6 +250,9 @@ const CheckoutPage = () => {
           } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message);
+          }
+          finally {
+            setIsLoader(false);
           }
         },
         prefill: {
@@ -278,6 +268,7 @@ const CheckoutPage = () => {
       };
       const razor = new window.Razorpay(options);
       razor.open();
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -287,6 +278,7 @@ const CheckoutPage = () => {
   return (
     <WebsiteWrapper>
       <div>
+        {isLoader && <BackDropLoader />}
         <div className={`${classes.container} ${classes.checkout_container}`}>
           <div className={classes.checkout_container_left}>
             <div className={classes.login_button_container_guest}>
@@ -323,6 +315,7 @@ const CheckoutPage = () => {
                 </button>
               )}
             </div>
+
             {bookingInfo.length !== 0 && (
               <>
                 <div className={classes.bookingWrapper}>
@@ -340,7 +333,7 @@ const CheckoutPage = () => {
                     ))}
                   </div>
                 </div>
-                {address?.defaultAddress &&
+                {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
                   <>
                     <h5 className={classes.select_type_heading}>Select Payment Type</h5>
                     <div className={classes.d_flex}>
@@ -355,26 +348,27 @@ const CheckoutPage = () => {
                     </div>
                   </>
                 }
-                {!address?.defaultAddress &&
-                  <p className="mt-3">Select address to continue</p>
+                {!address?.defaultAddress && bookingInfo.length === cart?.items.length &&
+                  <b className="mt-3" style={{ fontSize: "18px", color: "#CC5500" }}>Select address to continue</b>
                 }
-                <button
-                  onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
-                  className={`${classes.continue_btn}`}
-                >
-                  {isLoading ?
-                    <span className={classes.img_container}>
-                      <img className={classes.img} src={loader} alt="loader" />
-                      Continuing...
-                    </span>
-                    : "Continue"
-                  }
-                </button>
+                {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
+                  <button
+                    onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
+                    className={`${classes.continue_btn}`}
+                  >
+                    {isLoading ?
+                      <span className={classes.img_container}>
+                        <img className={classes.img} src={loader} alt="loader" />
+                        Continuing...
+                      </span>
+                      : "Continue"
+                    }
+                  </button>}
               </>
             )}
 
-            {bookingInfo.length === 0 &&
-              <p className="mt-4">Please select booking date and time to continue.</p>
+            {bookingInfo.length !== cart?.items.length &&
+              <b className="mt-4" style={{ fontSize: "18px", color: "#CC5500" }}>Please select booking date and time to continue.</b>
             }
           </div>
 
@@ -457,23 +451,6 @@ const CheckoutPage = () => {
           getAllAddress={getAllAddress}
           allAddress={allAddress}
         />
-      )}
-
-      {isSuccessModalOpen && (
-        <div className={classes.modal_wrapper}>
-          <div className={classes.modal}>
-            <div>
-              <FaCheckCircle size={80} color="green" />
-            </div>
-            <h5>Your order has been placed.</h5>
-            <button
-              onClick={() => navigate("/my_bookings")}
-              className={classes.button}
-            >
-              Ok
-            </button>
-          </div>
-        </div>
       )}
 
       {isModalOpen &&
