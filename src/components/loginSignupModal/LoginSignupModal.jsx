@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { changeUserStatus } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 import classes from "./LoginSignupModal.module.css";
 import axios from "axios";
 
@@ -13,7 +12,7 @@ import toast from "react-hot-toast";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.user.userId);
+
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
@@ -151,7 +150,6 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       console.log("login otp verification", data);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
-      await dispatch(changeUserStatus(data.userName));
       await dispatch(getCartDetails());
       // window.location.reload();
       handleOnClose();
@@ -184,7 +182,6 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { withCredentials: true }
       );
       console.log("signup otp verification", data);
-      dispatch(changeUserStatus(data.userName));
       await dispatch(getCartDetails());
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);

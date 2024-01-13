@@ -8,15 +8,13 @@ import {
   getCartDetails,
   updateQty,
 } from "../../store/slices/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import DateTimeModal from "../dateTimeModal/DateTimeModal";
 import toast from "react-hot-toast";
 
 const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.cart);
-  const userId = useSelector(state => state.user.userId);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSelectButton, setIsSelectButton] = useState(true);
   const [info, setInfo] = useState({

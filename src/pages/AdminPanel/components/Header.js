@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo .png";
 import classes from "../Shared.module.css";
 import LogoutModal from "../../../components/logoutModal/LogoutModal";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -12,25 +13,51 @@ const Header = (props) => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/logout-Admin`, { withCredentials: true });
-      console.log("admin logout",data);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/logout-Admin`,
+        { withCredentials: true }
+      );
+      console.log("admin logout", data);
       setIsLogoutModalOpen(false);
-      navigate('/');
-      return
-
+      navigate("/");
+      return;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleLogoutModal = () => {
     setIsLogoutModalOpen(true);
-  }
+  };
+
+  const checkTokenExpiration = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/check-token-expiration`,
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.tokenExpired) {
+        toast.error("Your session was expired!");
+        navigate("/admin/login");
+        return;
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkTokenExpiration();
+  }, []);
   return (
     <>
       <header className={classes.header}>
         <div className={classes.logosec}>
-          <div style={{cursor:"pointer"}} onClick={()=>navigate("/")} className={classes.logo}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/")}
+            className={classes.logo}
+          >
             <img src={logo} alt="logo" />
           </div>
           <img
@@ -50,16 +77,18 @@ const Header = (props) => {
               className={classes["nav-img"]}
               alt="logout"
             />
-            <h3 className={classes.title} onClick={handleLogoutModal}>Logout</h3>
+            <h3 className={classes.title} onClick={handleLogoutModal}>
+              Logout
+            </h3>
           </div>
         </div>
       </header>
-      {isLogoutModalOpen &&
+      {isLogoutModalOpen && (
         <LogoutModal
           setIsLogoutModalOpen={setIsLogoutModalOpen}
           handleLogout={handleLogout}
-        />}
-
+        />
+      )}
     </>
   );
 };

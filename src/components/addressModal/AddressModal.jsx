@@ -5,7 +5,6 @@ import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import AddAddressModal from "../addAddressModal/AddAddressModal";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import Address from "./Address";
 
 const AddressModal = ({
@@ -15,7 +14,7 @@ const AddressModal = ({
   getAllAddress,
   allAddress,
 }) => {
-  // const user = useSelector(state => state.user);
+
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
 
   const [temporaryAddress, setTemporaryAddress] = useState("");

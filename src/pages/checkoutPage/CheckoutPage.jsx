@@ -24,7 +24,7 @@ import { BackDropLoader } from "../../components/backdrop-loader/BackDropLoader"
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = useSelector(state => state.user.userId);;
+
 
   const [isShow, setIsShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +82,6 @@ const CheckoutPage = () => {
 
 
   const cart = useSelector((state) => state.cart);
-  console.log("cart", cart);
 
   useEffect(() => {
     if (cart.items.length === 0) {

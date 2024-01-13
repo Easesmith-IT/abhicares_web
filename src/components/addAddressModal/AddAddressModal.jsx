@@ -5,9 +5,9 @@ import { MdMyLocation } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+
 import useGeolocation from "../../hooks/usegelocation";
-import { GoogleApiWrapper } from "google-maps-react";
+
 
 import CurrentLocationAddInfo from "./CurrentLocationAddInfo";
 

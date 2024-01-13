@@ -50,7 +50,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         if (offer) {
             try {
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon/${offer._id}`, { ...offerInfo, description }, { withCredentials: true });
-                console.log(data);
+
                 toast.success("Offer updated successfully");
                 getAllOffers();
                 setIsModalOpen(false);

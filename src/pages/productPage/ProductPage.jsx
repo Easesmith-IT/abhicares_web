@@ -6,13 +6,8 @@ import loader from "../../assets/rolling-white.gif";
 import axios from "axios";
 
 import SubService from "../../components/productPage/SubService";
-import Service from "../../components/productPage/Service";
-import Modal from "../../components/productInfoModal/Modal";
 import CartItem from "../../components/checkout/CartItem";
 
-import { BsStarFill } from "react-icons/bs";
-import { AiOutlinePercentage } from "react-icons/ai";
-import { FiChevronDown } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import Product from "../../components/Product";

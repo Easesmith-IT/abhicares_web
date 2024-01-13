@@ -21,7 +21,6 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     });
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
 
-    console.log("package", selectedPackage);
 
 
 

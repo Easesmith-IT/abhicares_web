@@ -21,7 +21,6 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
     const getImage = (e) => {
         e.preventDefault();
         const uploadedImage = e.target.files;
-        console.log(uploadedImage);
         setProductInfo({ ...productInfo, img: uploadedImage });
     }
 
@@ -60,7 +59,6 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         else {
             try {
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-product`, formData, { withCredentials: true });
-                console.log(data);
                 toast.success("Product added successfully");
                 getAllProducts();
                 setIsModalOpen(false);

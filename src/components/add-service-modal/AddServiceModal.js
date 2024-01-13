@@ -22,11 +22,8 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
   const getImage = (e) => {
     e.preventDefault();
     const uploadedImage = e.target.files[0];
-    console.log(uploadedImage);
     setServiceInfo({ ...serviceInfo, img: uploadedImage });
   }
-
-  console.log(serviceInfo.img);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +49,6 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
     if (service) {
       const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData, { withCredentials: true });
-      console.log(data);
       toast.success("Service updated successfully");
       getCategoryServices();
       setIsModalOpen(false);

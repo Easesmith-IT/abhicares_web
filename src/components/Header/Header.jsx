@@ -11,7 +11,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LoginSignupModal from "../loginSignupModal/LoginSignupModal";
 import { useLocation } from "react-router";
 import { FaUser } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../logoutModal/LogoutModal";
 import logo from "../../assets/White Logo V2-02.png"
@@ -31,7 +31,6 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const userId = useSelector((state) => state.user.userId);
   const userId = localStorage.getItem("userName");
 
   const isUser = userId ? true : false;
@@ -46,7 +45,7 @@ export const Header = () => {
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
 
-      navigate("/");
+      // navigate("/");
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
       setIsLogoutModalOpen(false);

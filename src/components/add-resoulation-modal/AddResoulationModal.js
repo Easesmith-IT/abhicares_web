@@ -8,7 +8,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
-    console.log(id);
     const [resoulationInfo, setResoulationInfo] = useState({
         resolution: "",
     });
@@ -27,7 +26,6 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
         }
         try {
             const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-help-list/${id}`, { ...resoulationInfo }, { withCredentials: true });
-            console.log(data);
             toast.success("Issue resolved successfully");
             getAllIssues();
             setIsModalOpen(false);

@@ -32,7 +32,6 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         if (city) {
             try {
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo }, { withCredentials: true });
-                console.log(data);
                 toast.success("City updated successfully");
                 getAllCities();
                 setIsModalOpen(false);
@@ -43,7 +42,6 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         else {
             try {
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-availabe-city  `, { ...cityInfo }, { withCredentials: true });
-                console.log(data);
                 toast.success("City added successfully");
                 getAllCities();
                 setIsModalOpen(false);

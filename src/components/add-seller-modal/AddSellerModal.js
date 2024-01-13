@@ -162,18 +162,15 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             },
             contactPerson
         }
-        console.log(allData);
 
         if (seller) {
             const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData, { withCredentials: true });
-            console.log(data);
             toast.success("Seller updated successfully");
             getAllSellers();
             setIsModalOpen(false);
         }
         else {
             const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
-            console.log(data);
             toast.success("Seller added successfully");
             getAllSellers();
             setIsModalOpen(false);
