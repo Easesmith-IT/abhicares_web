@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "../loader/Loader";
 import SkeletonCom from "../sekeleton/SkeletonCom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
     const theme = useTheme();
@@ -19,6 +21,7 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
 
     const [allServices, setAllServices] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isImgLoading, setIsImgLoading] = useState(true);
 
     const handleClose = () => {
         onClose();
@@ -74,13 +77,14 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
                                                 <div onClick={() => navigate(`/services/${service._id}`, { state: service.name })} className={classes['category-cards']} >
+                                                {isImgLoading && <Skeleton height={100} width={100} />}
                                                     <div className={classes['image-Box']}>
-                                                        <SkeletonCom
+                                                        {/* <SkeletonCom
                                                             alt={"service"}
                                                             src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
                                                             height={60}
-                                                        />
-                                                        {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /> */}
+                                                        /> */}
+                                                        <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" />
                                                     </div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>

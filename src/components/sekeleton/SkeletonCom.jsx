@@ -8,7 +8,7 @@ const SkeletonCom = ({ height, src, alt, className= "", fun = () => { } }) => {
     return (
         <>
             {isImgLoading && <Skeleton height={height} />}
-            <img  style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} className={className} onClick={fun} src={src} alt={alt} />
+            <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} className={className} onClick={fun} src={src} alt={alt} />
         </>
     )
 }
