@@ -6,7 +6,6 @@ import { FaXmark } from 'react-icons/fa6';
 import html2PDF from 'jspdf-html2canvas';
 import parse from 'html-react-parser';
 import { format } from 'date-fns';
-import LazyImage from '../react-lazyload-image/LazyImage';
 
 const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
     console.log(invoice);
@@ -28,9 +27,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
                 <div className={classes.invoice_box} id='invoice_box'>
                     <div className={classes.invoice_top}>
                         <div className={classes.invoice_top_left}>
-                            <LazyImage>
-                                <img className={classes.logo} src={logo} alt="logo" />
-                            </LazyImage>
+                            <img className={classes.logo} src={logo} alt="logo" />
                             <div className={classes.info}>
                                 <b>From</b>
                                 <h5 className={classes.h3}>AbhiCares</h5>

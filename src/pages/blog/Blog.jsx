@@ -123,7 +123,7 @@ const Blogs = () => {
 
                                         </div>
                                         <div className={classes['view-more-button']}>
-                                            <button className={'btn btn-primary'} style={{ color: "white" }}><Link to={`/blog-category/${categoryId}`}>View More</Link></button>
+                                            <button className={classes.btn}><Link to={`/blog-category/${categoryId}`}>View More</Link></button>
                                         </div>
                                     </div>
                                 </div>

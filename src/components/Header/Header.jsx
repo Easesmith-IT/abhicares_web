@@ -18,7 +18,6 @@ import logo from "../../assets/White Logo V2-02.png"
 import { changeUserStatus } from "../../store/slices/userSlice";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from "axios";
-import LazyImage from "../react-lazyload-image/LazyImage";
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -112,9 +111,7 @@ export const Header = () => {
                 <MenuIcon sx={{ color: "white" }} className="menu-icon" onClick={handleClose} />
               </div>
               <Link to="/" className={classes["LogoContainer"]}>
-                <LazyImage>
-                  <img src={logo} alt="logo" />
-                </LazyImage>
+                <img src={logo} alt="logo" />
               </Link>
             </div>
 
@@ -174,18 +171,14 @@ export const Header = () => {
               <MenuIcon sx={{ color: "white" }} onClick={handleOpen} />
             </div>
             <Link to="/" className={classes["LogoContainer"]}>
-              <LazyImage>
-                <img src={logo} alt="logo" />
-              </LazyImage>
+              <img src={logo} alt="logo" />
             </Link>
           </div>
         )
       ) : (
         <div className={classes["header"]}>
           <Link to="/" className={classes["LogoContainer"]}>
-            <LazyImage>
-              <img src={Logo} alt="logo" />
-            </LazyImage>
+            <img src={Logo} alt="logo" />
           </Link>
           {/* <div className={`${classes.dFlexRow} ${classes.actions}`}>
             <div className={`${classes.dFlexRow} ${classes.location}`}>

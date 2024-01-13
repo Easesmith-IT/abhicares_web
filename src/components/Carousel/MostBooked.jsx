@@ -3,7 +3,6 @@ import 'react-multi-carousel/lib/styles.css';
 import { Banner } from '../../assets/data';
 import classes from './MostBooked.module.css'
 import { Typography } from '@mui/material';
-import LazyImage from '../react-lazyload-image/LazyImage';
 
 export const MostBooked = () => {
 
@@ -49,9 +48,7 @@ export const MostBooked = () => {
         {
           Banner.map((item) => (
             <div key={item.id} className={classes['image-container']}>
-              <LazyImage>
-                <img src={item.url} alt="Banner" />
-              </LazyImage>
+              <img src={item.url} alt="Banner" />
             </div>
           ))
 

@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import Product from "../Product";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
-import LazyImage from "../react-lazyload-image/LazyImage";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     const [allProducts, setAllProducts] = useState([]);
@@ -106,9 +105,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                     <div className={classes.modal}>
                         {Data.imageUrl && <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                             {Data?.imageUrl?.map((image) => (
-                                <LazyImage>
                                 <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt="product" />
-                                </LazyImage>
                             ))}
                         </Carousel>}
                         <div className={classes.modal_body}>

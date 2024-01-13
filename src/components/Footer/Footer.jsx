@@ -6,7 +6,6 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Logo from '../../assets/mainLogo2.png'
 import { Link } from 'react-router-dom';
-import LazyImage from '../react-lazyload-image/LazyImage';
 
 
 export const Footer = () => {
@@ -14,9 +13,7 @@ export const Footer = () => {
         <div className={classes['wrapper']}>
             <div className={classes['main']}>
                 <div className={classes['logo-container']} style={{ marginTop: '20px' }}>
-                    <LazyImage>
-                        <img src={Logo} alt="logo" />
-                    </LazyImage>
+                    <img src={Logo} alt="logo" />
                 </div>
                 <div className={classes['Footer']}>
                     <Grid container spacing={2}>

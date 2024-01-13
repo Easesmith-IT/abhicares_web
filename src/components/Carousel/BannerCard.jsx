@@ -6,7 +6,7 @@ import axios from 'axios';
 import classes from "./Banner.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
-import LazyImage from "../react-lazyload-image/LazyImage";
+import SkeletonCom from "../sekeleton/SkeletonCom";
 
 export const BannerCard = () => {
   const responsive = {
@@ -83,9 +83,12 @@ export const BannerCard = () => {
 
         {banners.length > 0 && banners.map((url, index) => (
           <div key={index} className={classes["image-container"]}>
-            <LazyImage>
-              <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" />
-            </LazyImage>
+            <SkeletonCom
+              alt={"Banner"}
+              src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`}
+              height={200}
+            />
+            {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" /> */}
           </div>
         ))}
 

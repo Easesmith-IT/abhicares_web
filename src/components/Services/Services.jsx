@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import Loader from "../loader/Loader";
 import useGeolocation from '../../hooks/usegelocation'
-import LazyImage from "../react-lazyload-image/LazyImage";
+import SkeletonCom from "../sekeleton/SkeletonCom";
 
 export const Services = ({ open }) => {
   const [isShow, setIsShow] = useState(true);
@@ -146,9 +146,12 @@ export const Services = ({ open }) => {
       <div className={classes["main"]}>
         <div className={classes["right"]}>
           <div className={classes["imagecontainer"]}>
-            <LazyImage>
-              <img src={Photo} alt="This is a " />
-            </LazyImage>
+            <SkeletonCom
+              alt={"home"}
+              src={Photo}
+              height={500}
+            />
+            {/* <img src={Photo} alt="This is a " /> */}
           </div>
         </div>
         <div className={classes["left"]}>
@@ -201,12 +204,15 @@ export const Services = ({ open }) => {
                     key={service._id}
                     className={classes.search_result_item}
                   >
-                    <LazyImage>
-                      <img
-                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
-                        alt="service"
-                      />
-                    </LazyImage>
+                    <SkeletonCom
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                      alt={"service"}
+                      height={60}
+                    />
+                    {/* <img
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                      alt="service"
+                    /> */}
                     <div>
                       <p>{service.name}</p>
                       <p>₹{service.startingPrice}</p>
@@ -240,9 +246,7 @@ export const Services = ({ open }) => {
                       onClick={() => open(category)}
                     >
                       <div className={classes["cardMedia"]}>
-                        <LazyImage>
-                          <img src={category.image} alt="media" />
-                        </LazyImage>
+                        <img src={category.image} alt="media" />
                       </div>
                       <div className={classes["cardAction"]}>
                         <Link to="#">{category.name}</Link>
