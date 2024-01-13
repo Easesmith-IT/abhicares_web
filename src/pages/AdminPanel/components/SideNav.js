@@ -32,14 +32,14 @@ const SideNav = () => {
           <h3 className={classes.title}>Banners</h3>
         </Link>
 
-        <Link
+        {/* <Link
           to="/admin/cms"
           className={`${classes["nav-option"]} ${classes.option2}}`}
         >
           <img src={ServiceIcn} className={classes["nav-img"]} alt="cms" />
 
           <h3 className={classes.title}>CMS</h3>
-        </Link>
+        </Link> */}
         <Link
           to="/admin/orders"
           className={`${classes["nav-option"]} ${classes.option2}}`}

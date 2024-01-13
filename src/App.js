@@ -77,10 +77,10 @@ import BlogsCategory from "./pages/blog/BlogsCategory";
 function App() {
   const { location } = useGeolocation();
   const dispatch = useDispatch();
-  // (async () => {
-  //   await dispatch(getCartDetails());
-  // })()
-  // console.log("APP.JS", location);
+  (async () => {
+    await dispatch(getCartDetails());
+  })()
+
 
 
   return (

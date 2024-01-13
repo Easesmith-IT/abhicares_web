@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import axios from 'axios';
 import logo from "../../assets/logo .png";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 const AdminLogin = () => {
@@ -15,28 +16,35 @@ const AdminLogin = () => {
     const userName = userNameRef.current.value;
     const userPassword = userPasswordRef.current.value;
 
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userPhone");
+    try {
+       const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/logout-user`,
+         { withCredentials: true }
+       );
+       localStorage.removeItem("userName");
+       localStorage.removeItem("userPhone");
 
-    const response = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`, {
-      adminId: userName,
-      password: userPassword
-    }, { withCredentials: true })
+       const response = await axios.post(
+         `${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`,
+         {
+           adminId: userName,
+           password: userPassword,
+         },
+         { withCredentials: true }
+       );
 
-    if (response.status === 500) {
-      alert('Something went wrong!')
-      return;
+         console.log(response)
+       if (response?.data) {
+         alert("Logged in successfully");
+         navigate("/admin/dashboard");
+      } 
+      
+    } catch (err) {
+      console.log(err)
+      toast.error(err?.response?.data?.message)
     }
 
-    if (response.data) {
-      alert('Logged in successfully');
-      navigate('/admin/dashboard')
-    }
-    else {
-      alert('Incorrect credentials');
-      return;
-    }
+   
   };
   return (
     <div

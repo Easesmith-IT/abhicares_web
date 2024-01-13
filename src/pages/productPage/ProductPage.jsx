@@ -83,7 +83,7 @@ const ProductPage = () => {
                         {/* <span className={classes.booking_span}>4.83 (4.0 M bookings)</span> */}
                     </div>
 
-                    <div className={classes.min_lg_hidden}>
+                    {/* <div className={classes.min_lg_hidden}>
                         <div className={classes.offer}>
                             <div className={classes.offer_left_div}>
                                 <div className={classes.offer_img_outer_div}>
@@ -95,7 +95,7 @@ const ProductPage = () => {
                                 <p className={`${classes.offer_left_div_p} ${classes.offer_left_div_first_p}`}>20% of up to INR 350</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className={classes.wrapper}>
                         <div className={classes.selected_service}>
@@ -172,7 +172,7 @@ const ProductPage = () => {
                                 {cart?.items?.length === 0 && <p>No items in your cart</p>}
                                 {/* <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button> */}
                             </div>
-                            <div className={classes.offer_container}>
+                            {/* <div className={classes.offer_container}>
                                 <div className={classes.offer}>
                                     <div className={classes.offer_left_div}>
                                         <div className={classes.offer_img_outer_div}>
@@ -188,7 +188,7 @@ const ProductPage = () => {
                                     View More Offers
                                     <FiChevronDown size={21} />
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
