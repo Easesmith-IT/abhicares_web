@@ -6,6 +6,7 @@ import { WomenSalon } from "../../assets/data";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import LazyImage from "../react-lazyload-image/LazyImage";
 
 
 export const SalonForWomen = () => {
@@ -45,7 +46,7 @@ export const SalonForWomen = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8abe9f3a2d134bee9396`, { withCredentials: true });
-      console.log("salon for women",data);
+      console.log("salon for women", data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {
@@ -77,12 +78,16 @@ export const SalonForWomen = () => {
           allServices.map((item) => (
             <>
 
-            <div key={item._id} onClick={()=> navigate(`services/${item._id}`)} className={classes['single-card']}>
-              
-              <div className={classes['cardMedia']}><img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /></div>
-            </div>
-            <p className={classes['cardname']}><b>{item.name}</b></p>
-            <p style={{fontSize:'1rem'}} >Starting From : <span style={{color:'green'}}>₹{item.startingPrice}</span></p>
+              <div key={item._id} onClick={() => navigate(`services/${item._id}`)} className={classes['single-card']}>
+
+                <div className={classes['cardMedia']}>
+                  <LazyImage>
+                    <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" />
+                  </LazyImage>
+                </div>
+              </div>
+              <p className={classes['cardname']}><b>{item.name}</b></p>
+              <p style={{ fontSize: '1rem' }} >Starting From : <span style={{ color: 'green' }}>₹{item.startingPrice}</span></p>
             </>
           ))
         }

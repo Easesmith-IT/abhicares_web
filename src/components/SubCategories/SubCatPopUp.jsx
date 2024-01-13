@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "../loader/Loader";
+import LazyImage from "../react-lazyload-image/LazyImage";
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
     const theme = useTheme();
@@ -74,7 +75,10 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
                                                 <div onClick={() => navigate(`/services/${service._id}`, { state: service.name })} className={classes['category-cards']} >
                                                     <div className={classes['image-Box']}>
-                                                        <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" /></div>
+                                                        <LazyImage>
+                                                            <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="img" />
+                                                        </LazyImage>
+                                                    </div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>
                                             </Grid>
@@ -102,8 +106,8 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                     </Box>
                 </div>
 
-            </Dialog>
-        </div>
+            </Dialog >
+        </div >
     )
 }
 export default SubCatPopUp

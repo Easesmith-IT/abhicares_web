@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import Loader from "../loader/Loader";
 import useGeolocation from '../../hooks/usegelocation'
+import LazyImage from "../react-lazyload-image/LazyImage";
 
 export const Services = ({ open }) => {
   const [isShow, setIsShow] = useState(true);
@@ -24,17 +25,17 @@ export const Services = ({ open }) => {
   const [allServices, setAllServices] = useState([]);
   const [isMessage, setIsMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userlocation,setUserLocation] = useState(null)
+  const [userlocation, setUserLocation] = useState(null)
 
   const { location } = useGeolocation();
-  console.log('location',location)
+  console.log('location', location)
 
   useEffect(() => {
     if (location) {
-      console.log('formatted',location.formattedAddress)
+      console.log('formatted', location.formattedAddress)
       setUserLocation(location.formattedAddress);
     }
-    
+
 
   }, [location]);
 
@@ -124,7 +125,7 @@ export const Services = ({ open }) => {
       name: "Home care",
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-care.png`,
     },
-   
+
     {
       _id: "656b8ae69f3a2d134bee939a",
       name: "Home repair",
@@ -136,7 +137,7 @@ export const Services = ({ open }) => {
       image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/appliance-repair.png`,
     },
 
-  
+
   ];
 
 
@@ -145,25 +146,27 @@ export const Services = ({ open }) => {
       <div className={classes["main"]}>
         <div className={classes["right"]}>
           <div className={classes["imagecontainer"]}>
-            <img src={Photo} alt="This is a " />
+            <LazyImage>
+              <img src={Photo} alt="This is a " />
+            </LazyImage>
           </div>
         </div>
         <div className={classes["left"]}>
-            <div className={`${styles.location_container}`}>
-              <LocationOnIcon />
-              <div style={{width:'100%'}}>
-                <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  placeholder="Your Location"
-                  className={styles.locationInput}
-                  value={userlocation ? userlocation : "Please Allow Location"}
-                />
-              </div>
+          <div className={`${styles.location_container}`}>
+            <LocationOnIcon />
+            <div style={{ width: '100%' }}>
+              <input
+                type="text"
+                name="location"
+                id="location"
+                placeholder="Your Location"
+                className={styles.locationInput}
+                value={userlocation ? userlocation : "Please Allow Location"}
+              />
             </div>
+          </div>
           <div className={classes["heading"]}>
-            <p style={{fontSize:'2rem'}}>
+            <p style={{ fontSize: '2rem' }}>
               Home services at your doorstep
             </p>
           </div>
@@ -198,10 +201,12 @@ export const Services = ({ open }) => {
                     key={service._id}
                     className={classes.search_result_item}
                   >
-                    <img
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
-                      alt="service"
-                    />
+                    <LazyImage>
+                      <img
+                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                        alt="service"
+                      />
+                    </LazyImage>
                     <div>
                       <p>{service.name}</p>
                       <p>₹{service.startingPrice}</p>
@@ -235,7 +240,9 @@ export const Services = ({ open }) => {
                       onClick={() => open(category)}
                     >
                       <div className={classes["cardMedia"]}>
-                        <img src={category.image} alt="media" />
+                        <LazyImage>
+                          <img src={category.image} alt="media" />
+                        </LazyImage>
                       </div>
                       <div className={classes["cardAction"]}>
                         <Link to="#">{category.name}</Link>

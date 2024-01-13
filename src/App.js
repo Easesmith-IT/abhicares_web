@@ -68,6 +68,10 @@ import ErrorPage from "./pages/ErrorPage";
 import Orders from "./pages/AdminPanel/orders/Orders";
 import SellerAssignedOrders from "./pages/AdminPanel/seller-assigned-orders/SellerAssignedOrders";
 
+import Blog from "./pages/blog/Blog";
+import SingleBlog from "./pages/blog/each-blogs";
+import BlogsCategory from "./pages/blog/BlogsCategory";
+
 
 
 function App() {
@@ -88,6 +92,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
+
+          <Route path="/blog" element={<Blog />} />
+          <Route path='/single-blog/:id' element={<SingleBlog/>}/>
+          <Route path='/blog-category/:id' element={<BlogsCategory/>}/>
 
           <Route path="/termsAndConditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

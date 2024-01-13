@@ -231,7 +231,7 @@ const CheckoutPage = () => {
         `${process.env.REACT_APP_API_URL}/get-api-key`, {},
         { withCredentials: true }
       );
-console.log("tax",totalTaxRs);
+      console.log("tax", totalTaxRs);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId },
         { withCredentials: true }
@@ -340,17 +340,24 @@ console.log("tax",totalTaxRs);
                     ))}
                   </div>
                 </div>
-                <h5 className={classes.select_type_heading}>Select Payment Type</h5>
-                <div className={classes.d_flex}>
-                  <div>
-                    <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="cod" id="cod" />
-                    <label htmlFor="cod">COD</label>
-                  </div>
-                  <div>
-                    <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="online" id="online" />
-                    <label htmlFor="online">Online</label>
-                  </div>
-                </div>
+                {address?.defaultAddress &&
+                  <>
+                    <h5 className={classes.select_type_heading}>Select Payment Type</h5>
+                    <div className={classes.d_flex}>
+                      <div>
+                        <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="cod" id="cod" />
+                        <label htmlFor="cod">COD</label>
+                      </div>
+                      <div>
+                        <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="online" id="online" />
+                        <label htmlFor="online">Online</label>
+                      </div>
+                    </div>
+                  </>
+                }
+                {!address?.defaultAddress &&
+                  <p className="mt-3">Select address to continue</p>
+                }
                 <button
                   onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
                   className={`${classes.continue_btn}`}
@@ -365,6 +372,10 @@ console.log("tax",totalTaxRs);
                 </button>
               </>
             )}
+
+            {bookingInfo.length === 0 &&
+              <p className="mt-4">Please select booking date and time to continue.</p>
+            }
           </div>
 
           <div className={classes.cart_checkout_container}>

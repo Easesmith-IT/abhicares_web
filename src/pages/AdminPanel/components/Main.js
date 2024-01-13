@@ -48,7 +48,7 @@ const Shared = () => {
         </div>
       </div>
 
-      <div className={classes["report-container"]}>
+      {/* <div className={classes["report-container"]}>
         <div className={classes["report-header"]}>
           <h1 className={classes["recent-Articles"]}>Recent Orders</h1>
           <button className={classes.view}>View All</button>
@@ -163,7 +163,7 @@ const Shared = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

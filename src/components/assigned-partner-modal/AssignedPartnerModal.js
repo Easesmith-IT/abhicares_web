@@ -50,7 +50,9 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBo
                     </div>
                 </div>
                 <div className={classes.partner_container}>
-
+                    {allSeller.length === 0&&
+                    <p>No seller found for selected service.</p>
+                    }
                     {allSeller && allSeller.map((seller) => (
                         <div className={classes.partner}>
                             <div className={classes.partner_left}>

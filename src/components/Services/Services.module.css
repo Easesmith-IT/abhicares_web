@@ -1,33 +1,34 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin: 1rem auto;
+  gap: 10px;
+  justify-content: space-around;
+  /* border: 2px solid; */
 
+}
 
-.main{
-   display: flex;
-   flex-direction: row;
-   flex-wrap: nowrap;
-   width: 100%;
-   margin: 1rem auto;
-   gap:10px;
-   justify-content: space-around;
-   /* border: 2px solid; */
-   
+.wrapper {
+  width: 100%;
 }
-.wrapper{
-    width: 100%;
+
+.left {
+  max-width: 35vw;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid; */
+  align-items: center;
+
+  justify-content: center;
+  /* justify-content: space-between; */
+  border-radius: 8px;
+
 }
-.left{
-   max-width: 35vw;
-   display: flex;
-   flex-direction: column; 
-   /* border: 2px solid; */
-   align-items: center;
-   
-    justify-content: center;
-   /* justify-content: space-between; */
-   border-radius: 8px;
-   
-}
-.left>div{
-    padding:1rem;
+
+.left>div {
+  padding: 1rem;
 }
 
 .dFlexRow {
@@ -60,7 +61,7 @@
   width: 100%;
 }
 
-.type_animation{
+.type_animation {
   font-size: 16px;
   position: absolute;
   top: 12px;
@@ -69,7 +70,7 @@
   cursor: text;
 }
 
-.search_result_box{
+.search_result_box {
   background: white;
   padding: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -86,126 +87,141 @@
   gap: 20px;
 }
 
-.search_result_item{
+.search_result_item {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.search_result_item img{
+.search_result_item img {
   width: 90px;
   height: 90px;
   border-radius: 6px;
 }
 
-.container>img{
-    width:100%;
-    height: 100%;
-    object-fit: cover;
+.container>img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.right{
+
+.right {
   /* border: 1px solid rgb(237, 237, 237); */
   border-radius: 12px;
   align-items: center;
   max-width: 60vw;
 }
-.imagecontainer{
-    padding:0.5rem;
-    border-radius: 12px;
-    height: 100%;
+
+.imagecontainer {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 12px;
+  height: 100%;
 }
-.right>div>img{
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
-   border-radius: 12px;
+
+.right> div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 
 }
-.heading>h4{
-   font-weight: 600;
+
+.heading>h4 {
+  font-weight: 600;
 }
-@media(max-width:768px){
-  .heading>h4{
+
+@media(max-width:768px) {
+  .heading>h4 {
     font-size: 20px;
- }
-}
-.services-name{
-
+  }
 }
 
-.services-content{
-   display: flex;
-   flex-direction: column;
-   justify-content: space-between;
-   border: 1px solid rgb(237, 237, 237);
-   border-radius: 12px;
+.services-name {}
+
+.services-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgb(237, 237, 237);
+  border-radius: 12px;
 }
-.services-card>div{
+
+.services-card>div {
   padding: 0.3rem;
 }
-.sub-section>div{
-   padding:10px;
+
+.sub-section>div {
+  padding: 10px;
 }
-.card{
+
+.card {
   max-width: 8rem;
   max-height: 9rem;
   padding: 0.2rem;
   align-items: center;
 
 }
-.card>div{
+
+.card>div {}
+
+.cardMedia {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f5f5f5;
 
 
 }
-.cardMedia{
-    width: 100%;
-   border-radius: 8px;
-   background-color: #f5f5f5;
-   
 
-}
-.cardMedia>img{
+.cardMedia img {
   height: 70px;
   display: flex;
   align-items: 'center';
   width: 60%;
   object-fit: cover;
   margin: 0 auto;
- 
+
 }
 
-.cardAction>a{
+.cardAction>a {
   text-decoration: none;
   color: #0f0f0f;
   font-size: 11px;
   white-space: normal;
 }
-@media(max-width:768){
-  .heading>h4{
+
+@media(max-width:768) {
+  .heading>h4 {
     font-size: 20px;
   }
 }
-@media(max-width:520px){
-  .main{flex-direction: column;
+
+@media(max-width:520px) {
+  .main {
+    flex-direction: column;
 
   }
-  .right{
+
+  .right {
     display: none;
   }
-    .left{
-      max-width: 100%;
-  }
-    .card{
-        width: 100%;
-        
-      }
-     .imagecontainer{
-       width: 100%;
-     } 
-     .cardAction>a{
-      text-decoration: none;
-      font-size: 10px;
-      color: #0f0f0f;
-    }
-}
 
+  .left {
+    max-width: 100%;
+  }
+
+  .card {
+    width: 100%;
+
+  }
+
+  .imagecontainer {
+    width: 100%;
+  }
+
+  .cardAction>a {
+    text-decoration: none;
+    font-size: 10px;
+    color: #0f0f0f;
+  }
+}
