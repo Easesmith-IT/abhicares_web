@@ -12,13 +12,16 @@ import {
 } from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { BiMinus, BiPlus } from 'react-icons/bi';
-import LazyImage from './react-lazyload-image/LazyImage';
+
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 const Product = ({ product, setIsCartLoading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [isImgLoading, setIsImgLoading] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -72,10 +75,9 @@ const Product = ({ product, setIsCartLoading }) => {
 
     return (
         <>
+            {isImgLoading && <Skeleton height={260} />}
             <div className={classes.product}>
-                <LazyImage>
-                    <img className={classes.img} onClick={handleOnclick} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product?.imageUrl[0]}`} alt="product" />
-                </LazyImage>
+                <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} className={classes.img} onClick={handleOnclick} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product?.imageUrl[0]}`} alt="product" />
                 <div className={classes.product_info}>
                     <h5>{product?.name}</h5>
                     <p>{parse(product.description)}</p>
@@ -95,9 +97,7 @@ const Product = ({ product, setIsCartLoading }) => {
                             : <button onClick={handleAddToCart} className={`${classes.addToCartBtn}`}>
                                 {isLoading ?
                                     <div className={loaderClasses.img_container}>
-                                        <LazyImage>
-                                            <img src={loader} alt="loader" />
-                                        </LazyImage>
+                                        <img src={loader} alt="loader" />
                                         Adding...
                                     </div> : "Add"}
                             </button>

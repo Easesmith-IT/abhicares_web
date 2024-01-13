@@ -35,7 +35,7 @@
 .logo-container{
     width: 10rem;
 }
-.logo-container>div>img{
+.logo-container > img{
     height: 100%;
     padding-top: 40px;
     width: 100%;

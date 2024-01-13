@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import InvoiceModal from '../invoiceModal/InvoiceModal'
-import LazyImage from '../react-lazyload-image/LazyImage'
 
 const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
     console.log(order._id);
@@ -49,9 +48,7 @@ const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
                     <div className={classes.product_contaner}>
                         {order?.products?.map((product) => (
                             <div key={product._id} className={classes.product}>
-                                <LazyImage>
-                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="" />
-                                </LazyImage>
+                                <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.product.imageUrl[0]}`} alt="" />
                                 <div className={classes.info}>
                                     <h4>{product?.product?.name}</h4>
                                     <p>Qty: {product?.quantity}</p>

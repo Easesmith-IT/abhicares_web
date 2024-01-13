@@ -1,12 +1,12 @@
 import Carousel from "react-multi-carousel";
 import { Typography } from "@mui/material";
 import "react-multi-carousel/lib/styles.css";
-import classes from './styles.module.css'
+import classes from '../QuickHomeRepairs/HomeRepairs.module.css'
 import { WomenSalon } from "../../assets/data";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import LazyImage from "../react-lazyload-image/LazyImage";
+import SkeletonCom from "../sekeleton/SkeletonCom";
 
 
 export const SalonForWomen = () => {
@@ -81,9 +81,12 @@ export const SalonForWomen = () => {
               <div key={item._id} onClick={() => navigate(`services/${item._id}`)} className={classes['single-card']}>
 
                 <div className={classes['cardMedia']}>
-                  <LazyImage>
-                    <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" />
-                  </LazyImage>
+                  <SkeletonCom
+                    alt={"service"}
+                    src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`}
+                    height={230}
+                  />
+                  {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /> */}
                 </div>
               </div>
               <p className={classes['cardname']}><b>{item.name}</b></p>

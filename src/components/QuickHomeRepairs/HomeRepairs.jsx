@@ -7,7 +7,7 @@ import { HomeRepairsdata } from "../../assets/data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import LazyImage from "../react-lazyload-image/LazyImage";
+import SkeletonCom from "../sekeleton/SkeletonCom";
 
 
 export const HomeRepairs = () => {
@@ -80,9 +80,12 @@ export const HomeRepairs = () => {
               <div onClick={() => navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
-                    <LazyImage>
-                      <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" />
-                    </LazyImage>
+                    <SkeletonCom
+                      alt={"service"}
+                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`}
+                      height={230}
+                    />
+                    {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /> */}
                   </div>
                 </div>
 
