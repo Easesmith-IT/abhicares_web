@@ -17,6 +17,8 @@ import { GoogleApiWrapper } from "google-maps-react";
 import Loader from "../loader/Loader";
 import useGeolocation from '../../hooks/usegelocation'
 import SkeletonCom from "../sekeleton/SkeletonCom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const Services = ({ open }) => {
   const [isShow, setIsShow] = useState(true);
@@ -26,6 +28,8 @@ export const Services = ({ open }) => {
   const [isMessage, setIsMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userlocation, setUserLocation] = useState(null)
+  const [isImgLoading, setIsImgLoading] = useState(true);
+  const [isImgLoading2, setIsImgLoading2] = useState(true);
 
   const { location } = useGeolocation();
   console.log('location', location)
@@ -145,13 +149,9 @@ export const Services = ({ open }) => {
     <div className={classes["wrapper"]}>
       <div className={classes["main"]}>
         <div className={classes["right"]}>
+          {isImgLoading && <Skeleton height={500} width={500} />}
           <div className={classes["imagecontainer"]}>
-            <SkeletonCom
-              alt={"home"}
-              src={Photo}
-              height={500}
-            />
-            {/* <img src={Photo} alt="This is a " /> */}
+            <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={Photo} alt="This is a " />
           </div>
         </div>
         <div className={classes["left"]}>
@@ -199,25 +199,30 @@ export const Services = ({ open }) => {
             {allServices.length !== 0 && (
               <div className={classes.search_result_box}>
                 {allServices?.map((service) => (
-                  <div
-                    onClick={() => navigate(`/services/${service?._id}`)}
-                    key={service._id}
-                    className={classes.search_result_item}
-                  >
-                    <SkeletonCom
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
-                      alt={"service"}
-                      height={60}
-                    />
-                    {/* <img
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
-                      alt="service"
-                    /> */}
-                    <div>
-                      <p>{service.name}</p>
-                      <p>₹{service.startingPrice}</p>
+                  <>
+                    {isImgLoading2 && <Skeleton height={80} width={80} />}
+                    <div
+                      onClick={() => navigate(`/services/${service?._id}`)}
+                      key={service._id}
+                      className={classes.search_result_item}
+                    >
+                      {/* <SkeletonCom
+                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                        alt={"service"}
+                        height={60}
+                      /> */}
+                      <img
+                        style={{ display: !isImgLoading2 ? 'block' : 'none' }}
+                        onLoad={() => setIsImgLoading2(false)}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                        alt="service"
+                      />
+                      <div>
+                        <p>{service.name}</p>
+                        <p>₹{service.startingPrice}</p>
+                      </div>
                     </div>
-                  </div>
+                  </>
                 ))}
               </div>
             )}
@@ -246,7 +251,12 @@ export const Services = ({ open }) => {
                       onClick={() => open(category)}
                     >
                       <div className={classes["cardMedia"]}>
-                        <img src={category.image} alt="media" />
+                      <SkeletonCom
+                        src={category.image}
+                        alt={"category"}
+                        height={60}
+                      />
+                        {/* <img src={category.image} alt="media" /> */}
                       </div>
                       <div className={classes["cardAction"]}>
                         <Link to="#">{category.name}</Link>
