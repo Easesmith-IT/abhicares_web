@@ -126,7 +126,7 @@ ul>li {
 
 ul {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   list-style-type: none;
   text-decoration: none;
 }
@@ -216,6 +216,7 @@ a.nav-link {
 .recent-blogs-wrapper {
   max-width: 1300px;
   margin: 2% auto;
+  padding: 10px;
 }
 
 .blogs-container {
