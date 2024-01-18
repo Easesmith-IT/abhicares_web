@@ -70,56 +70,57 @@ const BookingDetails = () => {
   return (
     <>
       <Wrapper>
-        {booking && (
-          <div className={classes.wrapper}>
-            <div className={classes.left_div}>
-              <div className={classes.info}>
-                <div>
-                  {/* <h4>seller name</h4>
+        <div>
+          {booking && (
+            <div className={classes.wrapper}>
+              <div className={classes.left_div}>
+                <div className={classes.info}>
+                  <div>
+                    {/* <h4>seller name</h4>
                                 <p>seller phone: 1234567890</p> */}
-                  <h4>Update Status</h4>
-                  <select
-                    onChange={handleChange}
-                    value={status}
-                    className={classes.select}
-                    name="status"
-                    id="status"
-                  >
-                    <option value="alloted">Alloted</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="not-alloted">Not Alloted</option>
-                  </select>
-                </div>
-                <div>
-                  <p>
-                    booking date:{" "}
-                    {format(new Date(booking.createdAt), "dd-MM-yyyy")}
-                  </p>
-                  <p>
-                    date of appointment:{" "}
-                    {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
-                  </p>
-                  <p>time of appointment: {booking.bookingTime}</p>
-                  {(!booking.sellerId || status === "not-alloted") && (
-                    <button
-                      onClick={handlePartnerModal}
-                      className={classes.button}
+                    <h4>Update Status</h4>
+                    <select
+                      onChange={handleChange}
+                      value={status}
+                      className={classes.select}
+                      name="status"
+                      id="status"
                     >
-                      Assign to partner
-                    </button>
-                  )}
+                      <option value="alloted">Alloted</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="not-alloted">Not Alloted</option>
+                    </select>
+                  </div>
+                  <div>
+                    <p>
+                      booking date:{" "}
+                      {format(new Date(booking.createdAt), "dd-MM-yyyy")}
+                    </p>
+                    <p>
+                      date of appointment:{" "}
+                      {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
+                    </p>
+                    <p>time of appointment: {booking.bookingTime}</p>
+                    {(!booking.sellerId || status === "not-alloted") && (
+                      <button
+                        onClick={handlePartnerModal}
+                        className={classes.button}
+                      >
+                        Assign to partner
+                      </button>
+                    )}
 
-                  {booking.sellerId && status !== "not-alloted" && (
-                    <div className="mt-4">
-                      <h5>Assigned to Seller</h5>
-                      <p>{booking.sellerId.name}</p>
-                      <p>{booking.sellerId.phone}</p>
-                    </div>
-                  )}
+                    {booking.sellerId && status !== "not-alloted" && (
+                      <div className="mt-4">
+                        <h5>Assigned to Seller</h5>
+                        <p>{booking.sellerId.name}</p>
+                        <p>{booking.sellerId.phone}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              {/* <h5 className={classes.heading}>Packages</h5>
+                {/* <h5 className={classes.heading}>Packages</h5>
                     <div className={classes.container}>
                         <div className={classes.item}>
                             <div>
@@ -133,82 +134,102 @@ const BookingDetails = () => {
                             <p>₹299</p>
                         </div>
                     </div> */}
-              <h5 className={classes.heading}>Products</h5>
-              <div className={classes.container}>
-                <div className={classes.item}>
-                  <div>
-                    <img
-                      className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
-                        booking.package
+                <h5 className={classes.heading}>Products</h5>
+                <div className={classes.container}>
+                  <div className={classes.item}>
+                    <div>
+                      <img
+                        className={classes.img}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${booking.package
                           ? booking.package.imageUrl[0]
                           : booking.product.imageUrl[0]
-                      }`}
-                      alt="product"
-                    />
-                    <div>
-                      <h6>
-                        {booking.package
-                          ? booking.package.name
-                          : booking.product.name}
-                      </h6>
-                      <p>{booking.package ? "Package" : "Product"}</p>
+                          }`}
+                        alt="product"
+                      />
+                      <div>
+                        <h6>
+                          {booking.package
+                            ? booking.package.name
+                            : booking.product.name}
+                        </h6>
+                        <p>{booking.package ? "Package" : "Product"}</p>
+                      </div>
                     </div>
+                    <p>Qty: {booking.quantity}</p>
+                    <p>
+                      ₹
+                      {Number(
+                        booking.package
+                          ? booking.package.offerPrice
+                          : booking.product.offerPrice
+                      ) * Number(booking.quantity)}
+                    </p>
                   </div>
-                  <p>Qty: {booking.quantity}</p>
-                  <p>
-                    ₹
-                    {Number(
-                      booking.package
-                        ? booking.package.offerPrice
-                        : booking.product.offerPrice
-                    ) * Number(booking.quantity)}
-                  </p>
                 </div>
               </div>
-            </div>
-            <div className={classes.right_div}>
-              <div className={classes.right_div_top}>
-                <h5>Booking Summary</h5>
-                <div className={classes.heading}>
-                  <p>Descriptions</p>
-                  <p>Amounts</p>
-                </div>
-                {/* <div className={classes.d_flex}>
+              <div className={classes.right_div}>
+                <div className={classes.right_div_top}>
+                  <h5>Booking Summary</h5>
+                  <div className={classes.heading}>
+                    <p>Descriptions</p>
+                    <p>Amounts</p>
+                  </div>
+                  {/* <div className={classes.d_flex}>
                   <p>Sub Total :</p>
                   <p>₹{booking.orderValue}</p>
                 </div> */}
-                {/* <div className={classes.d_flex}>
+                  {/* <div className={classes.d_flex}>
                   <p>Tax (18%) :</p>
                   <p>₹{totalTaxRs}</p>
                 </div> */}
-                {/* <div className={classes.d_flex}>
+                  {/* <div className={classes.d_flex}>
                   <p>Discount ('{booking?.couponId?.name}') :</p>
                   <p>₹{discount}</p>
                 </div> */}
-                <div className={classes.d_flex}>
-                  <p>Total Amount :</p>
-                  <p>₹{booking.orderValue}</p>
+                  <div className={classes.d_flex}>
+                    <p>Total Amount :</p>
+                    <p>₹{booking.orderValue}</p>
+                  </div>
                 </div>
-              </div>
-              <div className={classes.right_div_bottom}>
-                <h5>Customer Details</h5>
-                <div className={classes.d_flex}>
-                  <p>Customer Name :</p>
-                  <p>{booking?.user?.name}</p>
-                </div>
-                <div className={classes.d_flex}>
-                  <p>Customer Phone :</p>
-                  <p>{booking?.user?.phone}</p>
-                </div>
-                <div className={classes.d_flex}>
-                  <p>Customer Address :</p>
-                  <p>{`${booking.userAddress.addressLine},${booking.userAddress.landmark},${booking.userAddress.pincode}`}</p>
+                <div className={classes.right_div_bottom}>
+                  <h5>Customer Details</h5>
+                  <div className={classes.d_flex}>
+                    <p>Customer Name :</p>
+                    <p>{booking?.user?.name}</p>
+                  </div>
+                  <div className={classes.d_flex}>
+                    <p>Customer Phone :</p>
+                    <p>{booking?.user?.phone}</p>
+                  </div>
+                  <div className={classes.d_flex}>
+                    <p>Customer Address :</p>
+                    <p>{`${booking.userAddress.addressLine},${booking.userAddress.landmark},${booking.userAddress.pincode}`}</p>
+                  </div>
                 </div>
               </div>
             </div>
+          )}
+          <div className={classes.location_container}>
+            <div className={classes.location_container_left}>
+              <h3>Current Location</h3>
+              <p>Lorem ipsum dolor sit amet.</p>
+              <div className={classes.d_flex}>
+                <h6>Distance :</h6>
+                <span>4.8 KM</span>
+              </div>
+              <div className={classes.d_flex}>
+                <h6>Time :</h6>
+                <span>48 min</span>
+              </div>
+            </div>
+            <div className={classes.location_container_right}>
+              <iframe
+                title="location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1779.6251435072468!2d81.01217178855312!3d26.863788036925076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be29384000001%3A0x130b41299ab7c3c1!2sEasesmith!5e0!3m2!1sen!2sin!4v1704691511201!5m2!1sen!2sin"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
           </div>
-        )}
+        </div>
       </Wrapper>
 
       {isPartnerModalOpen && (
