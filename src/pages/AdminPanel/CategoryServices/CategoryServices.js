@@ -43,7 +43,7 @@ const CategoryServices = () => {
     const getCategoryServices = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { withCredentials:true });
-            console.log(data);
+            console.log('services',data);
             setAllCategoryServices(data.data);
         } catch (error) {
             console.log(error);
