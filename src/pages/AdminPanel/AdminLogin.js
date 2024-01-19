@@ -33,7 +33,7 @@ const AdminLogin = () => {
          { withCredentials: true }
        );
 
-         console.log(response)
+      localStorage.setItem('perm',JSON.stringify(response.data.perm))
        if (response?.data) {
          alert("Logged in successfully");
          navigate("/admin/dashboard");

@@ -18,6 +18,7 @@ const Header = (props) => {
         { withCredentials: true }
       );
       console.log("admin logout", data);
+      localStorage.removeItem("perm");
       setIsLogoutModalOpen(false);
       navigate("/");
       return;
@@ -40,6 +41,7 @@ const Header = (props) => {
       console.log(error);
       if (error?.response?.data?.tokenExpired) {
         toast.error("Your session was expired!");
+        localStorage.removeItem("perm");
         navigate("/admin/login");
         return;
       }

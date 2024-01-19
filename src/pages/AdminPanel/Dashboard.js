@@ -21,7 +21,7 @@ const AdminPage = () => {
   const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-recent-orders`,
         { withCredentials: true }
       );
       setAllOrders(data.data);

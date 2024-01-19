@@ -11,26 +11,38 @@ import OffersIcn from "../../../assets/admin-panel/offer-icon.png";
 import classes from "../Shared.module.css";
 
 const SideNav = () => {
+  const permissions = JSON.parse(localStorage.getItem("perm"));
+  // {permissions.dashboard!=='none' && }
   return (
     <nav className={classes.nav}>
       <div className={classes["nav-upper-options"]}>
-        <Link to="/admin/dashboard" className={`${classes["nav-option"]} ${classes.option1}}`}>
-          <img
-            src={DashboardIcn}
-            alt="dashboard"
-            className={classes["nav-img"]}
-          />
-          <h3 className={classes.title}>Dashboard</h3>
-        </Link>
+        {permissions.dashboard !== "none" && (
+          <Link
+            to="/admin/dashboard"
+            className={`${classes["nav-option"]} ${classes.option1}}`}
+          >
+            <img
+              src={DashboardIcn}
+              alt="dashboard"
+              className={classes["nav-img"]}
+            />
+            <h3 className={classes.title}>Dashboard</h3>
+          </Link>
+        )}
 
-        <Link to="/admin/banners" className={`${classes["nav-option"]} ${classes.option1}}`}>
-          <img
-            src={DashboardIcn}
-            alt="banners"
-            className={classes["nav-img"]}
-          />
-          <h3 className={classes.title}>Banners</h3>
-        </Link>
+        {permissions.banners !== "none" && (
+          <Link
+            to="/admin/banners"
+            className={`${classes["nav-option"]} ${classes.option1}}`}
+          >
+            <img
+              src={DashboardIcn}
+              alt="banners"
+              className={classes["nav-img"]}
+            />
+            <h3 className={classes.title}>Banners</h3>
+          </Link>
+        )}
 
         {/* <Link
           to="/admin/cms"
@@ -40,106 +52,140 @@ const SideNav = () => {
 
           <h3 className={classes.title}>CMS</h3>
         </Link> */}
-        <Link
-          to="/admin/orders"
-          className={`${classes["nav-option"]} ${classes.option2}}`}
-        >
-          <img src={ServiceIcn} className={classes["nav-img"]} alt="orders" />
 
-          <h3 className={classes.title}>Orders</h3>
-        </Link>
-        <Link
-          to="/admin/bookings"
-          className={`${classes["nav-option"]} ${classes.option2}}`}
-        >
-          <img src={ServiceIcn} className={classes["nav-img"]} alt="bookings" />
+        {permissions.orders !== "none" && (
+          <Link
+            to="/admin/orders"
+            className={`${classes["nav-option"]} ${classes.option2}}`}
+          >
+            <img src={ServiceIcn} className={classes["nav-img"]} alt="orders" />
 
-          <h3 className={classes.title}>Bookings</h3>
-        </Link>
-        <Link
-          to="/admin/services"
-          className={`${classes["nav-option"]} ${classes.option2}}`}
-        >
-          <img src={ServiceIcn} className={classes["nav-img"]} alt="services" />
+            <h3 className={classes.title}>Orders</h3>
+          </Link>
+        )}
 
-          <h3 className={classes.title}>Services</h3>
-        </Link>
+        {permissions.bookings !== "none" && (
+          <Link
+            to="/admin/bookings"
+            className={`${classes["nav-option"]} ${classes.option2}}`}
+          >
+            <img
+              src={ServiceIcn}
+              className={classes["nav-img"]}
+              alt="bookings"
+            />
 
-        <Link
-          to="/admin/partners"
-          className={`${classes["nav-option"]} ${classes.option3}}`}
-        >
-          <img
-            src={PartnersIcn}
-            alt="Partners"
-            className={classes["nav-img"]}
-          />
-          <h3 className={classes.title}>Partners</h3>
-        </Link>
+            <h3 className={classes.title}>Bookings</h3>
+          </Link>
+        )}
 
-        <Link
-          to="/admin/customers"
-          className={`${classes["nav-option"]} ${classes.option4}}`}
-        >
-          <img
-            src={CustomersIcn}
-            alt="customers"
-            className={classes["nav-img"]}
-          />
-          <h3 className={classes.title}>Customers</h3>
-        </Link>
+        {permissions.services !== "none" && (
+          <Link
+            to="/admin/services"
+            className={`${classes["nav-option"]} ${classes.option2}}`}
+          >
+            <img
+              src={ServiceIcn}
+              className={classes["nav-img"]}
+              alt="services"
+            />
 
-        <Link
-          to="/admin/offers"
-          className={`${classes["nav-option"]} ${classes.option5}}`}
-        >
-          <img src={OffersIcn} alt="offers" className={classes["nav-img"]} />
-          <h3 className={classes.title}>Offers</h3>
-        </Link>
-        <Link
-          to="/admin/available-cities"
-          className={`${classes["nav-option"]} ${classes.option5}}`}
-        >
-          <img src={OffersIcn} alt="offers" className={classes["nav-img"]} />
-          <h3 className={classes.title}>Available Cities</h3>
-        </Link>
+            <h3 className={classes.title}>Services</h3>
+          </Link>
+        )}
 
-        <Link
-          to="/admin/payments"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
-        >
-          <img
-            src={PaymentsIcn}
-            alt="payments"
-            className={classes["nav-img"]}
-          />
+        {permissions.partners !== "none" && (
+          <Link
+            to="/admin/partners"
+            className={`${classes["nav-option"]} ${classes.option3}}`}
+          >
+            <img
+              src={PartnersIcn}
+              alt="Partners"
+              className={classes["nav-img"]}
+            />
+            <h3 className={classes.title}>Partners</h3>
+          </Link>
+        )}
 
-          <h3 className={classes.title}>Payments</h3>
-        </Link>
-        <Link
-          to="/admin/help-center"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
-        >
-          <img
-            src={PaymentsIcn}
-            alt="help-center"
-            className={classes["nav-img"]}
-          />
+        {permissions.customers !== "none" && (
+          <Link
+            to="/admin/customers"
+            className={`${classes["nav-option"]} ${classes.option4}}`}
+          >
+            <img
+              src={CustomersIcn}
+              alt="customers"
+              className={classes["nav-img"]}
+            />
+            <h3 className={classes.title}>Customers</h3>
+          </Link>
+        )}
 
-          <h3 className={classes.title}>Help Center</h3>
-        </Link>
-        <Link
-          to="/admin/enquiries"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
-        >
-          <img
-            src={PaymentsIcn}
-            alt="enquiries"
-            className={classes["nav-img"]}
-          />
+        {permissions.offers !== "none" && (
+          <Link
+            to="/admin/offers"
+            className={`${classes["nav-option"]} ${classes.option5}}`}
+          >
+            <img src={OffersIcn} alt="offers" className={classes["nav-img"]} />
+            <h3 className={classes.title}>Offers</h3>
+          </Link>
+        )}
 
-          <h3 className={classes.title}>Enquiries</h3>
-        </Link>
+        {permissions.availableCities !== "none" && (
+          <Link
+            to="/admin/available-cities"
+            className={`${classes["nav-option"]} ${classes.option5}}`}
+          >
+            <img src={OffersIcn} alt="offers" className={classes["nav-img"]} />
+            <h3 className={classes.title}>Available Cities</h3>
+          </Link>
+        )}
+
+        {permissions.payments !== "none" && (
+          <Link
+            to="/admin/payments"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <img
+              src={PaymentsIcn}
+              alt="payments"
+              className={classes["nav-img"]}
+            />
+
+            <h3 className={classes.title}>Payments</h3>
+          </Link>
+        )}
+
+        {permissions.helpCenter !== "none" && (
+          <Link
+            to="/admin/help-center"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <img
+              src={PaymentsIcn}
+              alt="help-center"
+              className={classes["nav-img"]}
+            />
+
+            <h3 className={classes.title}>Help Center</h3>
+          </Link>
+        )}
+
+        {permissions.enquiry !== "none" && (
+          <Link
+            to="/admin/enquiries"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <img
+              src={PaymentsIcn}
+              alt="enquiries"
+              className={classes["nav-img"]}
+            />
+
+            <h3 className={classes.title}>Enquiries</h3>
+          </Link>
+        )}
       </div>
     </nav>
   );
