@@ -183,20 +183,23 @@ const SideNav = () => {
               className={classes["nav-img"]}
             />
 
-          <h3 className={classes.title}>Enquiries</h3>
-        </Link>
-        <Link
-          to="/admin/settings"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
-        >
-          <img
-            src={PaymentsIcn}
-            alt="settings"
-            className={classes["nav-img"]}
-          />
+            <h3 className={classes.title}>Enquiries</h3>
+          </Link>
+        )}
+        {permissions.settings !== "none" && (
+          <Link
+            to="/admin/settings"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <img
+              src={PaymentsIcn}
+              alt="settings"
+              className={classes["nav-img"]}
+            />
 
-          <h3 className={classes.title}>Settings</h3>
-        </Link>
+            <h3 className={classes.title}>Settings</h3>
+          </Link>
+        )}
       </div>
     </nav>
   );
