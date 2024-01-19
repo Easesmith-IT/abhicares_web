@@ -71,6 +71,7 @@ import SellerAssignedOrders from "./pages/AdminPanel/seller-assigned-orders/Sell
 import Blog from "./pages/blog/Blog";
 import SingleBlog from "./pages/blog/each-blogs";
 import BlogsCategory from "./pages/blog/BlogsCategory";
+import Settings from "./pages/AdminPanel/settings/Settings";
 
 
 
@@ -182,6 +183,7 @@ function App() {
           <Route path="/admin/customers" element={<Customers />} />
           <Route path="/admin/services" element={<Services />} />
           <Route path="/admin/payments" element={<Payments />} />
+          <Route path="/admin/settings" element={<Settings />} />
 
           <Route
             path="/admin/services/:categoryId"

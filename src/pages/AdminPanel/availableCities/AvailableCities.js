@@ -43,7 +43,7 @@ const AvailableCities = () => {
 
     const handleUpdateModal = (city) => {
         setCity(city);
-        setIsUpdateModalOpen(!isDeleteModalOpen);
+        setIsUpdateModalOpen(!isUpdateModalOpen);
     };
 
     const handleDeleteModal = (id) => {
