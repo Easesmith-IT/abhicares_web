@@ -37,7 +37,7 @@
     gap: 10px;
 }
 
-.report-container {
+.reportContainer {
     max-width: 700px;
     min-height: 300px;
     width: 100%;
@@ -49,11 +49,11 @@
     padding: 0px 20px 20px 20px;
 }
 
-.flex .report-container:first-child {
+.flex .reportContainer:first-child {
     max-width: 650px;
 }
 
-.flex .report-container:last-child {
+.flex .reportContainer:last-child {
     padding: 20px;
 }
 
@@ -139,7 +139,7 @@
         flex-direction: column;
     }
 
-    .report-container {
+    .reportContainer {
         /* max-width: 1100px; */
     }
 }

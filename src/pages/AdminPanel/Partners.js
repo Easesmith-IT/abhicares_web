@@ -13,6 +13,7 @@ import Wrapper from "../Wrapper";
 import SellerInfoModal from "../../components/seller-info-modal/SellerOrderInfoModal";
 import Loader from "../../components/loader/Loader";
 import UnapprovedSellerModal from "../../components/unapproved-seller-modal/UnapprovedSellerModal";
+import useAuthorization from "../../hooks/useAuthorization";
 
 const Partners = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,11 +27,12 @@ const Partners = () => {
 
 
   const navigate = useNavigate()
+  const { checkAuthorization } = useAuthorization();
 
 
   const getAllSellers = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials:true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
       setAllSellers(data.data);
       console.log(data);
     } catch (error) {
@@ -61,12 +63,14 @@ const Partners = () => {
 
   const handleDelete = async () => {
     try {
-      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-seller/${seller}`, { withCredentials:true });
+      const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-seller/${seller}`, { withCredentials: true });
       toast.success("Seller deleted successfully");
       getAllSellers();
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {
       console.log(error);
+      setIsDeleteModalOpen(false);
+      checkAuthorization(error);
     }
   };
 
@@ -74,7 +78,7 @@ const Partners = () => {
     const value = e.target.value;
 
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials:true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials: true });
       setAllSellers(data.data);
     } catch (error) {
       console.log(error);

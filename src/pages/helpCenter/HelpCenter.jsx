@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { AiOutlineClose } from 'react-icons/ai';
 import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../components/loader/Loader';
 
 const HelpCenter = () => {
   const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
@@ -21,6 +22,7 @@ const HelpCenter = () => {
   const [issue, setIssue] = useState({});
   const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleView = (data) => {
     setIssue(data);
@@ -78,6 +80,9 @@ const HelpCenter = () => {
       setAllIssues(data.data);
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -149,20 +154,24 @@ const HelpCenter = () => {
           </div>
           <Faqs />
           <h3 className={classes.h3}>All issues</h3>
-          <div className={classes.issues_container}>
-            <div className={classes.issue}>
-              <p>Date</p>
-              <p>Status</p>
-              <p>View</p>
-            </div>
-            {allIssues?.map((issue) => (
-              <div key={issue._id} className={classes.issue}>
-                <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
-                <p className={issue.status === "in-review" ? classes.in_review : classes.solved}>{issue.status}</p>
-                <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+          {!isLoading && allIssues?.length === 0 && <p>No issues found</p>}
+
+          {isLoading && allIssues?.length === 0 && <Loader />}
+          {allIssues.length > 0 &&
+            <div className={classes.issues_container}>
+              <div className={classes.issue}>
+                <p>Date</p>
+                <p>Status</p>
+                <p>View</p>
               </div>
-            ))}
-          </div>
+              {allIssues?.map((issue) => (
+                <div key={issue._id} className={classes.issue}>
+                  <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
+                  <p className={issue.status === "in-review" ? classes.in_review : classes.solved}>{issue.status}</p>
+                  <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+                </div>
+              ))}
+            </div>}
         </section>
       </WebsiteWrapper>
 
@@ -180,8 +189,9 @@ const HelpCenter = () => {
               <AiOutlineClose size={20} />
             </button>
             <div className={classes.modal}>
-              <p>{issue.issue}</p>
+              <b>{issue.issue}</b>
               {issue.resolution && <p>{issue.resolution}</p>}
+              {!issue.resolution && <p>No resolution found.</p>}
             </div>
           </div>
         </div>

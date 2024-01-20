@@ -43,8 +43,9 @@ const MyBookings = () => {
           && <Loader />
         }
         <div className={classes.bookings_container}>
-          {allOrders?.map((order) => (
+          {allOrders?.map((order,index) => (
             <Order
+            index={index}
               key={order._id}
               order={order}
             />

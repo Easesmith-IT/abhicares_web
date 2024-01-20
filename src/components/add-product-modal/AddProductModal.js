@@ -7,8 +7,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
+    const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(product?.description || "");
     const [productInfo, setProductInfo] = useState({
         name: product?.name || "",
@@ -54,6 +56,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
         else {
@@ -64,6 +68,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
     }

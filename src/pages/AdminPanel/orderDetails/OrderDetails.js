@@ -4,6 +4,8 @@ import classes from './OrderDetails.module.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
+import useAuthorization from '../../../hooks/useAuthorization';
+import toast from 'react-hot-toast';
 
 const OrderDetails = () => {
     const { state } = useLocation();
@@ -14,38 +16,43 @@ const OrderDetails = () => {
     const navigate = useNavigate();
     const [status, setStatus] = useState(state?.status);
 
+    const { checkAuthorization } = useAuthorization();
+
 
     const handleChange = async (e) => {
-        setStatus(e.target.value);
+        setStatus(() => e.target.value);
         try {
             const { data } = await axios.post(
                 `${process.env.REACT_APP_ADMIN_API_URL}/change-order-status/${state._id}`, { status: e.target.value }, { withCredentials: true }
             );
             console.log('status', data);
+            toast.success("Order status changed successfully");
         } catch (error) {
             console.log(error);
+            setStatus(() => state?.status);
+            checkAuthorization(error);
         }
     }
 
     useEffect(() => {
         let value = 0;
         for (const item of state.items) {
-          if (item?.product) {
-            value = value + Number(item.quantity * item.product.offerPrice);
-          }
-          else {
-            value = value + Number(item.quantity * item.package.offerPrice);
-          }
+            if (item?.product) {
+                value = value + Number(item.quantity * item.product.offerPrice);
+            }
+            else {
+                value = value + Number(item.quantity * item.package.offerPrice);
+            }
         }
         setSubTotal(() => value);
         const taxRs = (Number(value) * 18) / 100;
         setTotalTaxRs(taxRs);
-    
+
         if (state.couponId) {
-          const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
-          console.log("discount", localDiscount);
-          setDiscount(localDiscount);
-          setSubTotal((prev) => prev - Number(localDiscount));
+            const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
+            console.log("discount", localDiscount);
+            setDiscount(localDiscount);
+            setSubTotal((prev) => prev - Number(localDiscount));
         }
     }, [state.orderValue, state.couponId, totalTaxRs, navigate]);
 

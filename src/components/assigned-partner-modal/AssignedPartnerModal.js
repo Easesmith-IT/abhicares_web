@@ -6,11 +6,15 @@ import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
+import Loader from '../loader/Loader';
 
 const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBooking }) => {
     const [allSeller, setAllSeller] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate()
+    const { checkAuthorization } = useAuthorization();
 
     const getAllSeller = async () => {
         try {
@@ -19,6 +23,8 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBo
             console.log("seller to assign", data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -36,6 +42,8 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBo
             setIsModalOpen(false);
         } catch (error) {
             console.log(error);
+            setIsModalOpen(false);
+            checkAuthorization(error);
         }
     }
 
@@ -50,8 +58,13 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBo
                     </div>
                 </div>
                 <div className={classes.partner_container}>
-                    {allSeller.length === 0&&
-                    <p>No seller found for selected service.</p>
+                    {!isLoading && allSeller.length === 0 &&
+                        <p>No seller found for selected service.</p>
+                    }
+
+                    {isLoading
+                        && allSeller.length === 0
+                        && <Loader />
                     }
                     {allSeller && allSeller.map((seller) => (
                         <div className={classes.partner}>

@@ -7,6 +7,8 @@ import { MdDelete } from 'react-icons/md';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import SeoModal from '../../../components/seo-modal/SeoModal';
+import useAuthorization from '../../../hooks/useAuthorization';
+import Loader from '../../../components/loader/Loader';
 
 const Settings = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +18,8 @@ const Settings = () => {
     const [subAdmin, setSubadmin] = useState({});
     const [allSubadmins, setAllSubadmins] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { checkAuthorization } = useAuthorization();
 
     const handleUpdateModal = (data) => {
         setSubadmin(data);
@@ -34,6 +38,8 @@ const Settings = () => {
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsModalOpen(false);
+            checkAuthorization(error);
         }
     };
 
@@ -45,6 +51,9 @@ const Settings = () => {
         } catch (error) {
             console.log(error);
         }
+        finally{
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -53,33 +62,41 @@ const Settings = () => {
 
 
     return (
-        <Wrapper>
-            <div className={classes.settings}>
-                <div className={classes.heading_container}>
-                    <h1>Settings</h1>
-                    <div className={classes.btn_wrapper}>
-                        <button onClick={() => setIsSeoModalOpen(true)} className={classes.button}>Manage SEO</button>
-                        <button onClick={() => setIsModalOpen(true)} className={classes.button}>Add Subadmin</button>
+        <>
+            <Wrapper>
+                <div className={classes.settings}>
+                    <div className={classes.heading_container}>
+                        <h1>Settings</h1>
+                        <div className={classes.btn_wrapper}>
+                            <button onClick={() => setIsSeoModalOpen(true)} className={classes.button}>Manage SEO</button>
+                            <button onClick={() => setIsModalOpen(true)} className={classes.button}>Add Subadmin</button>
+                        </div>
+                    </div>
+
+                    {isLoading && allSubadmins.length === 0 &&
+                        <Loader />}
+                    <div className={classes.container}>
+                        {!isLoading && allSubadmins.length === 0 &&
+                            <p>No subAdmins found</p>}
+
+
+                        {allSubadmins?.map((subadmin) => (
+                            <div key={subadmin._id} className={classes.item}>
+                                <div className={classes.left}>
+                                    <p>Name: {subadmin.name}</p>
+                                    <p>Username: {subadmin.adminId}</p>
+                                    <p>Role: {subadmin.role}</p>
+                                    <p>Status: {subadmin.status ? "Active" : "InActive"}</p>
+                                </div>
+                                <div className={classes.right}>
+                                    <FiEdit onClick={() => handleUpdateModal(subadmin)} cursor={"pointer"} size={20} />
+                                    <MdDelete onClick={() => handleDeleteModal("")} cursor={"pointer"} size={22} color='red' />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-
-                <div className={classes.container}>
-                    {allSubadmins?.map((subadmin) => (
-                        <div key={subadmin._id} className={classes.item}>
-                            <div className={classes.left}>
-                                <p>Name: {subadmin.name}</p>
-                                <p>Username: {subadmin.adminId}</p>
-                                <p>Role: {subadmin.role}</p>
-                                <p>Status: {subadmin.status ? "Active" : "InActive"}</p>
-                            </div>
-                            <div className={classes.right}>
-                                <FiEdit onClick={() => handleUpdateModal(subadmin)} cursor={"pointer"} size={20} />
-                                <MdDelete onClick={() => handleDeleteModal("")} cursor={"pointer"} size={22} color='red' />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            </Wrapper>
 
             {isSeoModalOpen &&
                 <SeoModal
@@ -107,7 +124,8 @@ const Settings = () => {
                     setIsModalOpen={setIsUpdateModalOpen}
                 />
             } */}
-        </Wrapper>
+        </>
+
     )
 }
 

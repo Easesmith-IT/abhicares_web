@@ -204,14 +204,13 @@ const CheckoutPage = () => {
   };
 
   const handleRazorpayPayment = async () => {
-    setIsLoading(true);
     if (paymentType === "" || paymentType !== "online") {
       toast.error("Select payment method");
       return;
     }
-
+    
     try {
-
+      setIsLoading(true);
       const { data: { apiKey } } = await axios.post(
         `${process.env.REACT_APP_API_URL}/get-api-key`, {},
         { withCredentials: true }
@@ -350,6 +349,7 @@ const CheckoutPage = () => {
                 {!address?.defaultAddress && bookingInfo.length === cart?.items.length &&
                   <b className="mt-3" style={{ fontSize: "18px", color: "#CC5500" }}>Select address to continue</b>
                 }
+                
                 {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
                   <button
                     onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
@@ -366,7 +366,7 @@ const CheckoutPage = () => {
               </>
             )}
 
-            {bookingInfo.length !== cart?.items.length &&
+            {bookingInfo.length !== cart?.items.length && userName &&
               <b className="mt-4" style={{ fontSize: "18px", color: "#CC5500" }}>Please select booking date and time to continue.</b>
             }
           </div>

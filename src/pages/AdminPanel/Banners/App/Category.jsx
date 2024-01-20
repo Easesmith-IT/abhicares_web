@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
+import useAuthorization from "../../../../hooks/useAuthorization";
 
 const Category = () => {
+  const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
     { bannerName: "hero-banner1", file: null, preview: null },
     { bannerName: "hero-banner2", file: null, preview: null },
@@ -87,6 +89,7 @@ const Category = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
 
@@ -117,6 +120,7 @@ const Category = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
 

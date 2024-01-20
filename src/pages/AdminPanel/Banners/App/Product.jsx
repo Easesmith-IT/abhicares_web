@@ -4,8 +4,10 @@ import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
+import useAuthorization from "../../../../hooks/useAuthorization";
 
 const Product = () => {
+  const { checkAuthorization } = useAuthorization();
   const [image, setImage] = useState({
     file: null, preview: null,
   });
@@ -53,6 +55,7 @@ const Product = () => {
         toast.success("Updated successfully!");
       }
     } catch (err) {
+      checkAuthorization(err);
       console.log("ERROR", err.message);
     }
   };

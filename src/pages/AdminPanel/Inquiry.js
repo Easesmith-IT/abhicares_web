@@ -11,8 +11,10 @@ import Loader from '../../components/loader/Loader';
 
 import { MdDelete } from 'react-icons/md';
 import Wrapper from '../Wrapper';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const Enquiry = () => {
+    const { checkAuthorization } = useAuthorization();
     const navigate = useNavigate();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -30,19 +32,21 @@ const Enquiry = () => {
 
     const handleDelete = async () => {
         try {
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-enquiry/${enquiryId}`, { withCredentials:true });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-enquiry/${enquiryId}`, { withCredentials: true });
             console.log(data);
             toast.success("Enquiry deleted successfully");
             getAllInquiries();
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 
     const getAllInquiries = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-enquiry`, { withCredentials:true });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-enquiry`, { withCredentials: true });
             console.log(data);
             setAllInquiries(data.data);
         } catch (error) {

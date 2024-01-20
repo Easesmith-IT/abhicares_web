@@ -8,6 +8,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../../components/loader/Loader';
 import SellerOrderInfoModal from '../../../components/seller-info-modal/SellerOrderInfoModal';
 import { RiWalletLine } from "react-icons/ri";
+import WalletViewModal from '../../../components/wallet-view-modal/WalletViewModal';
+import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 
 const SellerAssignedOrders = () => {
     const [sellerOrders, setSellerOrders] = useState([]);
@@ -15,6 +17,7 @@ const SellerAssignedOrders = () => {
     const [status, setStatus] = useState("");
     const [sellerOrder, setSellerOrder] = useState({})
     const [sellerOrderInfoModal, setSellerOrderInfoModal] = useState(false);
+    const [isViewWalletModalOpen, setIsViewWalletModalOpen] = useState(false);
 
     const params = useParams()
     const navigate = useNavigate()
@@ -25,13 +28,12 @@ const SellerAssignedOrders = () => {
     const getSellerOrders = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-seller-order-list/${params.partnerId}`, { withCredentials: true });
+            setIsLoading(false);
             setSellerOrders(data.sellerOrders);
             console.log("seller orders", data);
         } catch (error) {
-            console.log(error);
-        }
-        finally {
             setIsLoading(false);
+            console.log(error);
         }
     };
 
@@ -86,7 +88,7 @@ const SellerAssignedOrders = () => {
                     </div>
 
                     <div className={sellerAssignedOrdersClasses.flex} style={{ marginBottom: "30px" }}>
-                        <div className={sellerAssignedOrdersClasses["report-container"]}>
+                        <div className={sellerAssignedOrdersClasses["reportContainer"]}>
                             <div className={classes["report-header"]}>
                                 <h1 className={classes["recent-Articles"]}>Seller Assigned Orders</h1>
                                 <select
@@ -110,10 +112,8 @@ const SellerAssignedOrders = () => {
                                     <h3 className={classes["t-op"]}>Status</h3>
                                     <h3 className={classes["t-op"]}>Details</h3>
                                 </div>
-                                {isLoading
-                                    && sellerOrders.length === 0
-                                    && <Loader />
-                                }
+                                {isLoading && <Loader />}
+
                                 <div className={classes.items}>
                                     {!isLoading
                                         && sellerOrders.length === 0
@@ -133,7 +133,7 @@ const SellerAssignedOrders = () => {
                             </div>
 
                         </div>
-                        <div className={sellerAssignedOrdersClasses["report-container"]}>
+                        <div className={sellerAssignedOrdersClasses["reportContainer"]}>
                             <div className={sellerAssignedOrdersClasses.d_flex}>
                                 <div className={sellerAssignedOrdersClasses.left}>
                                     <h3 className={sellerAssignedOrdersClasses.h3}><RiWalletLine size={50} /> Wallet</h3>
@@ -143,19 +143,12 @@ const SellerAssignedOrders = () => {
                                     </div>
                                 </div>
                                 <div className={sellerAssignedOrdersClasses.right}>
-                                    <button className={sellerAssignedOrdersClasses.button}>View Wallet</button>
+                                    <button onClick={() => setIsViewWalletModalOpen(true)} className={sellerAssignedOrdersClasses.button}>View Wallet</button>
                                 </div>
                             </div>
                             <button className={sellerAssignedOrdersClasses.cash_btn}>Cashout Request</button>
                             <div className={sellerAssignedOrdersClasses.tran_contianer}>
-                                <div className={sellerAssignedOrdersClasses.card}>
-                                    <div>
-                                        <h6>123456</h6>
-                                        <p>Date : 18/01/2024</p>
-                                    </div>
-                                    <div>₹ 4000</div>
-                                    <button className={sellerAssignedOrdersClasses.update_btn}>Update</button>
-                                </div>
+                                {/* <CashOutReq /> */}
                             </div>
 
                         </div>
@@ -167,6 +160,12 @@ const SellerAssignedOrders = () => {
                 <SellerOrderInfoModal
                     setSellerOrderInfoModal={setSellerOrderInfoModal}
                     sellerOrder={sellerOrder}
+                />
+            }
+
+            {isViewWalletModalOpen &&
+                <WalletViewModal
+                    setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                 />
             }
         </>

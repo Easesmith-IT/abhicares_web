@@ -38,6 +38,10 @@
     padding: 15px;
 
 }
+.login_button_container_guest .p{
+    width: 100%;
+
+}
 .login_button_container {
     max-width: 550px;
     width: 100%;

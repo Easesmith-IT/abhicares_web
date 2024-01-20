@@ -4,6 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import toast from "react-hot-toast";
 import classes from "../../../components/add-resoulation-modal/AddResoulationModal.module.css";
+import useAuthorization from '../../../hooks/useAuthorization';
 
 const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
 
@@ -11,6 +12,8 @@ const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
     ques: faq.ques || "",
     ans: faq.ans || "",
   });
+
+  const { checkAuthorization } = useAuthorization();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +38,8 @@ const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
+      setIsModalOpen(false);
+      checkAuthorization(error);
     }
   };
 
