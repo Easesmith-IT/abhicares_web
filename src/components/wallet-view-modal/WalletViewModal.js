@@ -9,27 +9,14 @@ import toast from 'react-hot-toast';
 import CashOutReq from '../cash-out-req/CashOutReq';
 import Loader from '../loader/Loader';
 
-const WalletViewModal = ({ setIsViewWalletModalOpen }) => {
+const WalletViewModal = ({ setIsViewWalletModalOpen,id,getSellerWallet }) => {
     const [cashOutRequests, setCashOutRequests] = useState([]);
-    const [wallet, setWallet] = useState("");
+    
     const [isLoading, setIsLoading] = useState(true);
     const params = useParams();
 
-    const getSellerWallet = async () => {
-        try {
-            const { data } = await axios.get(
-                `${process.env.REACT_APP_ADMIN_API_URL}/get-seller-wallet/${params?.partnerId}`, { withCredentials: true }
-            );
-            if (data.wallet._id) {
-                getCashOutRequests(data.wallet._id);
-            }
-            console.log("wallet", data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
-    const getCashOutRequests = async (id) => {
+    const getCashOutRequests = async () => {
         try {
             const { data } = await axios.get(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-seller-wallet-cashout-requests/${id}`, { withCredentials: true }
@@ -45,7 +32,7 @@ const WalletViewModal = ({ setIsViewWalletModalOpen }) => {
     };
 
     useEffect(() => {
-        getSellerWallet();
+        getCashOutRequests();
     }, [])
 
 
