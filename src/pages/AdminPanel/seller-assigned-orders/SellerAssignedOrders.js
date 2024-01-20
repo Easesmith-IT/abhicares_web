@@ -18,6 +18,8 @@ const SellerAssignedOrders = () => {
     const [sellerOrder, setSellerOrder] = useState({})
     const [sellerOrderInfoModal, setSellerOrderInfoModal] = useState(false);
     const [isViewWalletModalOpen, setIsViewWalletModalOpen] = useState(false);
+    const [wallet, setWallet] = useState("");
+    const [cashOutRequests, setCashOutRequests] = useState([]);
 
     const params = useParams()
     const navigate = useNavigate()
@@ -36,12 +38,43 @@ const SellerAssignedOrders = () => {
             console.log(error);
         }
     };
+    const getSellerWallet = async () => {
+        try {
+            const { data } = await axios.get(
+                `${process.env.REACT_APP_ADMIN_API_URL}/get-seller-wallet/${params?.partnerId}`, { withCredentials: true }
+            );
+            if (data.wallet._id) {
+                getCashOutRequests(data.wallet._id);
+                setWallet(data.wallet);
+            }
+            console.log("wallet", data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getCashOutRequests = async (id) => {
+        try {
+            const { data } = await axios.get(
+                `${process.env.REACT_APP_ADMIN_API_URL}/get-seller-wallet-recent-cashout-requests/${id}`, { withCredentials: true }
+            );
+            setCashOutRequests(data.cashouts);
+            console.log("cash req", data);
+        } catch (error) {
+            console.log(error);
+        }
+        finally {
+            // setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         getSellerOrders();
+        getSellerWallet();
     }, [])
 
     const handleChange = async (e) => {
+        setIsLoading(true);
         setStatus(e.target.value);
         if (e.target.value === "") {
             getSellerOrders();
@@ -53,9 +86,11 @@ const SellerAssignedOrders = () => {
                 { status: e.target.value },
                 { withCredentials: true }
             );
+            setIsLoading(false);
             setSellerOrders(data.sellerOrders);
             console.log("order by status", data);
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
         }
     };
@@ -139,7 +174,7 @@ const SellerAssignedOrders = () => {
                                     <h3 className={sellerAssignedOrdersClasses.h3}><RiWalletLine size={50} /> Wallet</h3>
                                     <div className={sellerAssignedOrdersClasses.d_flex}>
                                         <h4>Balance</h4>
-                                        <p>₹ 4000</p>
+                                        <p>₹ {wallet?.balance}</p>
                                     </div>
                                 </div>
                                 <div className={sellerAssignedOrdersClasses.right}>
@@ -148,7 +183,15 @@ const SellerAssignedOrders = () => {
                             </div>
                             <button className={sellerAssignedOrdersClasses.cash_btn}>Cashout Request</button>
                             <div className={sellerAssignedOrdersClasses.tran_contianer}>
-                                {/* <CashOutReq /> */}
+                                {
+                                    cashOutRequests?.map((item) => (
+                                        <CashOutReq
+                                            key={item._id}
+                                            item={item}
+                                            getSellerWallet={getSellerWallet}
+                                        />
+                                    ))
+                                }
                             </div>
 
                         </div>
@@ -166,6 +209,8 @@ const SellerAssignedOrders = () => {
             {isViewWalletModalOpen &&
                 <WalletViewModal
                     setIsViewWalletModalOpen={setIsViewWalletModalOpen}
+                    getSellerWallet={getSellerWallet}
+                    id={wallet?._id}
                 />
             }
         </>

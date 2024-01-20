@@ -15,7 +15,7 @@ const CashOutReq = ({ item = "", getSellerWallet }) => {
                 </div>
                 <div>
                     <h6>₹ {item?.value}</h6>
-                    <p>Status : {item?.status}</p>
+                    <p className={item.status === "cancelled" ? classes.red : item.status === "completed" ? classes.green : classes.blue}>{item?.status}</p>
                 </div>
                 <button onClick={() => setIsUpdateModalOpen(true)} className={classes.update_btn}>Update</button>
             </div>
