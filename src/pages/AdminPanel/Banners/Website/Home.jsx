@@ -5,8 +5,10 @@ import Wrapper from "../../../Wrapper";
 import DummyImage from "../../../../assets/dummy.png";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
+import useAuthorization from "../../../../hooks/useAuthorization";
 
 const WebHome = () => {
+  const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
     { bannerName: "banner1", file: null, preview: null },
     { bannerName: "banner2", file: null, preview: null },
@@ -63,6 +65,7 @@ const WebHome = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   }
 

@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
+    const { checkAuthorization } = useAuthorization();
     const [cityInfo, setCityInfo] = useState({
         city: city?.city || "",
         state: city?.state || "",
@@ -36,6 +38,8 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                 getAllCities();
                 setIsModalOpen(false);
             } catch (error) {
+                setIsModalOpen(false);
+                checkAuthorization(error);
                 console.log(error);
             }
         }
@@ -46,6 +50,8 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                 getAllCities();
                 setIsModalOpen(false);
             } catch (error) {
+                setIsModalOpen(false);
+                checkAuthorization(error);
                 console.log(error);
             }
         }

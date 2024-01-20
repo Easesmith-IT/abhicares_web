@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
     const [resoulationInfo, setResoulationInfo] = useState({
         resolution: "",
     });
+    const { checkAuthorization } = useAuthorization();
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -31,6 +33,8 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
             setIsModalOpen(false);
         } catch (error) {
             console.log(error);
+            setIsModalOpen(false);
+            checkAuthorization(error);
         }
     }
 

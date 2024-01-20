@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import Wrapper from "../../../Wrapper";
 import toast from "react-hot-toast";
 import classes from "../Banner.module.css";
+import useAuthorization from "../../../../hooks/useAuthorization";
+
 const Service = () => {
+  const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
     { bannerName: "hero-banner1", file: null, preview: null },
     { bannerName: "hero-banner2", file: null, preview: null },
@@ -59,6 +62,7 @@ const Service = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
 

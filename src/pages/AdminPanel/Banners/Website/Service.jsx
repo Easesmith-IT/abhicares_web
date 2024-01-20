@@ -3,7 +3,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
+import useAuthorization from "../../../../hooks/useAuthorization";
 const WebService = () => {
+  const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
     { bannerName: "banner1", file: null, preview: null },
     { bannerName: "banner2", file: null, preview: null },
@@ -50,6 +52,7 @@ const WebService = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
   return (

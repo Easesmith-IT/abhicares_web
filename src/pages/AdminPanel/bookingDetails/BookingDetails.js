@@ -6,10 +6,12 @@ import axios from "axios";
 import { format } from "date-fns";
 import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
 import MapComponent from "./Map";
+import useAuthorization from "../../../hooks/useAuthorization";
 
 const BookingDetails = () => {
   // const { state } = useLocation();
   // console.log(state);
+  const { checkAuthorization } = useAuthorization();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [totalTaxRs, setTotalTaxRs] = useState(0);
@@ -37,7 +39,7 @@ const BookingDetails = () => {
   };
 
   const handleChange = async (e) => {
-    setStatus(e.target.value);
+    setStatus(() => e.target.value);
     try {
       const { data } = await axios.patch(
         `${process.env.REACT_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
@@ -48,6 +50,8 @@ const BookingDetails = () => {
       getBooking();
     } catch (error) {
       console.log(error);
+      setStatus(() => booking?.status);
+      checkAuthorization(error);
     }
   };
 
@@ -90,6 +94,7 @@ const BookingDetails = () => {
                       name="status"
                       id="status"
                     >
+                      <option value="">Select</option>
                       <option value="alloted">Alloted</option>
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>

@@ -7,8 +7,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategoryServices }) => {
+  const { checkAuthorization } = useAuthorization();
   const [description, setDescription] = useState(service?.description || "");
   const [serviceInfo, setServiceInfo] = useState({
     name: service?.name || "",
@@ -48,16 +50,26 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     formData.append("categoryId", categoryId);
 
     if (service) {
-      const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData, { withCredentials: true });
-      toast.success("Service updated successfully");
-      getCategoryServices();
-      setIsModalOpen(false);
+      try {
+        const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-service/${service._id}`, formData, { withCredentials: true });
+        toast.success("Service updated successfully");
+        getCategoryServices();
+        setIsModalOpen(false);
+      } catch (error) {
+        setIsModalOpen(false);
+        checkAuthorization(error);
+      }
     }
     else {
-      const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-service`, formData, { withCredentials: true });
-      toast.success("Service added successfully");
-      getCategoryServices();
-      setIsModalOpen(false);
+      try {
+        const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-service`, formData, { withCredentials: true });
+        toast.success("Service added successfully");
+        getCategoryServices();
+        setIsModalOpen(false);
+      } catch (error) {
+        setIsModalOpen(false);
+        checkAuthorization(error);
+      }
     }
   }
 

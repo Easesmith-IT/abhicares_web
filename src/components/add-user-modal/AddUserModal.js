@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
-    console.log(user);
+    const { checkAuthorization } = useAuthorization();
     const [userInfo, setUserInfo] = useState({
         name: user?.name || "",
         phone: user?.phone || "",
@@ -45,6 +46,8 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
         else {
@@ -56,6 +59,8 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
     }

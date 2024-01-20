@@ -31,7 +31,7 @@
   padding: 0 30px;
   background-color: var(--background-color1);
   position: fixed;
-  /* z-index: 10; */
+  z-index: 10;
   box-shadow: 1px 1px 15px rgba(161, 182, 253, 0.825);
   display: flex;
   justify-content: space-between;
@@ -315,17 +315,17 @@
   color: #5500cb;
 }
 
-.d_flex{
+.d_flex {
   display: flex;
   gap: 10px;
 }
 
-.d_flex input{
+.d_flex input {
   border-radius: 6px;
   padding: 4px 10px;
 }
 
-.d_flex button{
+.d_flex button {
   border: none;
   cursor: pointer;
   outline: none;
@@ -353,7 +353,7 @@
   padding: 20px;
 }
 
-.report-body table{
+.report-body table {
   width: 100%;
   /* overflow-x: scroll; */
 }
@@ -384,13 +384,13 @@
   cursor: default;
 }
 
-.button{
+.button {
   background: transparent;
   outline: none;
   border: none;
 }
 
-.button:hover{
+.button:hover {
   text-decoration: underline;
 }
 
@@ -402,7 +402,7 @@
 
 
 .item1 .t-op-nextlvl:last-child,
-.item1 .t-op-nextlvl:nth-child(5){
+.item1 .t-op-nextlvl:nth-child(5) {
   display: flex;
   gap: 4px;
   align-items: center;
@@ -655,7 +655,7 @@
   margin: 15px;
 }
 
-.input{
+.input {
   padding: 6px;
   max-width: 300px;
   width: 100%;
@@ -730,4 +730,11 @@
 .icon_container {
   display: flex;
   gap: 7px;
+}
+
+
+ul.pagination {
+  display: flex !important;
+  justify-content: center !important;
+  flex-direction: row !important;
 }

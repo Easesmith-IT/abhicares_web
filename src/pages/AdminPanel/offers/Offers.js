@@ -15,6 +15,7 @@ import Loader from '../../../components/loader/Loader'
 import Wrapper from '../../Wrapper'
 import DeleteModal from '../../../components/deleteModal/DeleteModal'
 import AddOfferModal from '../../../components/add-offer-modal/AddOfferModal'
+import useAuthorization from '../../../hooks/useAuthorization'
 
 const Offers = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,12 +25,12 @@ const Offers = () => {
     const [allOffers, setAllOffers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const navigate = useNavigate();
+    const { checkAuthorization } = useAuthorization();
 
 
     const getAllOffers = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-coupons`, { withCredentials:true });
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-coupons`, { withCredentials: true });
             console.log(data);
             setAllOffers(data.data);
         } catch (error) {
@@ -40,7 +41,7 @@ const Offers = () => {
         }
     };
     useEffect(() => {
-       getAllOffers();
+        getAllOffers();
     }, [])
 
 
@@ -56,12 +57,14 @@ const Offers = () => {
 
     const handleDelete = async () => {
         try {
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-coupon/${offer}`, { withCredentials:true });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-coupon/${offer}`, { withCredentials: true });
             toast.success("Offer deleted successfully");
             getAllOffers();
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 

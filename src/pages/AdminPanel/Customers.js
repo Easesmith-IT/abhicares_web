@@ -12,6 +12,7 @@ import Wrapper from "../Wrapper";
 import Loader from "../../components/loader/Loader";
 import { FaEye } from "react-icons/fa6";
 import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
+import useAuthorization from "../../hooks/useAuthorization";
 
 const Customers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ const Customers = () => {
   const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
 
   const navigate = useNavigate()
+  const { checkAuthorization } = useAuthorization();
 
   const getAllUsers = async () => {
     try {
@@ -65,6 +67,8 @@ const Customers = () => {
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {
       console.log(error);
+      setIsDeleteModalOpen(false);
+      checkAuthorization(error);
     }
   };
 

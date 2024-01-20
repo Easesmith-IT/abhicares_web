@@ -7,23 +7,25 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
-
+    
     const hasUpperCaseLetters = [...code].every(
         (char) => char === char.toUpperCase()
-    );
-
-    if (!hasSpaces && hasUpperCaseLetters) {
-        return true;
+        );
+        
+        if (!hasSpaces && hasUpperCaseLetters) {
+            return true;
+        }
+        
+        return false;
+        
     }
-
-    return false;
-
-}
-
-const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
+    
+    const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
+    const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(offer?.description || "");
     const [offerInfo, setOfferInfo] = useState({
         name: offer?.name || "",
@@ -56,6 +58,8 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
         else {
@@ -70,6 +74,8 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                 getAllOffers();
                 setIsModalOpen(false);
             } catch (error) {
+                setIsModalOpen(false);
+                checkAuthorization(error);
                 console.log(error);
             }
         }

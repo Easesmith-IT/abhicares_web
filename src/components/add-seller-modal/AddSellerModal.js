@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { RxCross2 } from 'react-icons/rx';
 import { IoIosArrowDown } from "react-icons/io";
+import useAuthorization from '../../hooks/useAuthorization';
 
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
+    const { checkAuthorization } = useAuthorization();
+
     const [sellerInfo, setSellerInfo] = useState({
         name: seller?.name || "",
         legalName: seller?.legalName || "",
@@ -164,16 +167,28 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         }
 
         if (seller) {
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData, { withCredentials: true });
-            toast.success("Seller updated successfully");
-            getAllSellers();
-            setIsModalOpen(false);
+            try {
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData, { withCredentials: true });
+                toast.success("Seller updated successfully");
+                getAllSellers();
+                setIsModalOpen(false);
+            } catch (error) {
+                console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
+            }
         }
         else {
-            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
-            toast.success("Seller added successfully");
-            getAllSellers();
-            setIsModalOpen(false);
+            try {
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
+                toast.success("Seller added successfully");
+                getAllSellers();
+                setIsModalOpen(false);
+            } catch (error) {
+                console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
+            }
         }
     }
 

@@ -11,8 +11,9 @@ import AddResoulationModal from '../../../components/add-resoulation-modal/AddRe
 import DeleteModal from '../../../components/deleteModal/DeleteModal';
 import { format } from 'date-fns';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import useAuthorization from '../../../hooks/useAuthorization';
 
 const HelpCenterTickets = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +25,7 @@ const HelpCenterTickets = () => {
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
 
-  const navigate = useNavigate();
+  const { checkAuthorization } = useAuthorization();
 
 
 
@@ -44,8 +45,7 @@ const HelpCenterTickets = () => {
     }
   };
 
-  useEffect(() => {
-  }, []);
+
 
   useEffect(() => {
     getAllIssues();
@@ -73,6 +73,8 @@ const HelpCenterTickets = () => {
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {
       console.log(error);
+      setIsDeleteModalOpen(false);
+      checkAuthorization(error);
     }
   };
 

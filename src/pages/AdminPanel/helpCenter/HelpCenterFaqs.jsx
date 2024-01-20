@@ -14,6 +14,7 @@ import DeleteModal from "../../../components/deleteModal/DeleteModal";
 import { FiEdit } from "react-icons/fi";
 import { format } from "date-fns";
 import EditFaqModal from "./EditFaqModal";
+import useAuthorization from "../../../hooks/useAuthorization";
 
 const HelpCenterFaqs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,15 +24,14 @@ const HelpCenterFaqs = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateFaqModalOpen, setIsCreateFaqModalOpen] = useState(false);
 
-  const navigate = useNavigate();
-
+  const { checkAuthorization } = useAuthorization();
 
 
   const getAllFaqs = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-all-faq`,
-        { withCredentials:true }
+        { withCredentials: true }
       );
       console.log('faqs', data);
       setallFaqs(data.data);
@@ -56,13 +56,15 @@ const HelpCenterFaqs = () => {
     try {
       const { data } = await axios.delete(
         `${process.env.REACT_APP_ADMIN_API_URL}//delete-faq/${faq}`,
-        { withCredentials:true }
+        { withCredentials: true }
       );
       toast.success("Issue deleted successfully");
       getAllFaqs();
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {
       console.log(error);
+      setIsDeleteModalOpen(false);
+      checkAuthorization(error);
     }
   };
 

@@ -43,6 +43,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       message: null,
       from: null
     });
+    setOtp("");
   }
 
   const handleOnChange = (e) => {

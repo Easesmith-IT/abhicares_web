@@ -41,7 +41,7 @@ const AddressModal = ({
       >
         <div className={classes.modal_wrapper}>
           <button
-            onClick={() => setIsAddressModalOpen()}
+            onClick={() => setIsAddressModalOpen(false)}
             className={classes.modal_close}
           >
             <AiOutlineClose size={20} />

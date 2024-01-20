@@ -1,0 +1,34 @@
+import { useState } from 'react'
+import classes from './CashOutReq.module.css'
+import UpdateCashoutReqModal from '../update-cashoutReq-modal/UpdateCashoutReqModal';
+import { format } from 'date-fns';
+
+const CashOutReq = ({ item = "", getSellerWallet }) => {
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+    return (
+        <>
+            <div className={classes.card}>
+                <div>
+                    <h6>{item?._id}</h6>
+                    <p>Date : {item.createdAt && format(new Date(item?.createdAt), "dd-MM-yyyy")}</p>
+                </div>
+                <div>
+                    <h6>₹ {item?.value}</h6>
+                    <p>Status : {item?.status}</p>
+                </div>
+                <button onClick={() => setIsUpdateModalOpen(true)} className={classes.update_btn}>Update</button>
+            </div>
+
+            {isUpdateModalOpen &&
+                <UpdateCashoutReqModal
+                    setIsUpdateModalOpen={setIsUpdateModalOpen}
+                    cashOutReq={item}
+                    getSellerWallet={getSellerWallet}
+                />
+            }
+        </>
+    )
+}
+
+export default CashOutReq

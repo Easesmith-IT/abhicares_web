@@ -14,6 +14,7 @@ import Loader from '../../../components/loader/Loader';
 import { MdDelete } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import Wrapper from '../../Wrapper';
+import useAuthorization from '../../../hooks/useAuthorization';
 
 const CategoryServices = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +27,7 @@ const CategoryServices = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const params = useParams();
-
+    const { checkAuthorization } = useAuthorization();
 
 
     const handleUpdateModal = (e, service) => {
@@ -44,6 +45,7 @@ const CategoryServices = () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { withCredentials:true });
             console.log('services',data);
+
             setAllCategoryServices(data.data);
         } catch (error) {
             console.log(error);
@@ -61,13 +63,14 @@ const CategoryServices = () => {
 
     const handleDelete = async () => {
         try {
-
-            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-service/${service}`, { withCredentials:true });
+            const { data } = await axios.delete(`${process.env.REACT_APP_ADMIN_API_URL}/delete-service/${service}`, { withCredentials: true });
             toast.success("Service deleted successfully");
             getCategoryServices();
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 

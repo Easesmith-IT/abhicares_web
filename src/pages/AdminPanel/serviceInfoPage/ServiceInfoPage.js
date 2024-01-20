@@ -18,6 +18,7 @@ import { MdDelete } from 'react-icons/md';
 import { FiEdit } from 'react-icons/fi';
 import AddPackageModal from '../../../components/add-package-modal/AddPackageModal';
 import Wrapper from '../../Wrapper';
+import useAuthorization from '../../../hooks/useAuthorization';
 
 const ServiceInfoPage = () => {
     const navigate = useNavigate()
@@ -39,6 +40,7 @@ const ServiceInfoPage = () => {
 
     const { state } = useLocation();
     const params = useParams();
+    const { checkAuthorization } = useAuthorization();
 
     const handleProductInfoModal = (e, product) => {
         e.stopPropagation();
@@ -103,6 +105,8 @@ const ServiceInfoPage = () => {
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 
@@ -127,6 +131,8 @@ const ServiceInfoPage = () => {
             setIsPackageDeleteModalOpen(!isPackageDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsPackageDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 
