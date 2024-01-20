@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
     const [allSellers, setAllSellers] = useState([]);
     const navigate = useNavigate()
+    const { checkAuthorization } = useAuthorization();
 
 
     const getAllSellers = async () => {
@@ -29,6 +31,8 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
             getAllSellers();
         } catch (error) {
             console.log(error);
+            setIsUnapprovedSellerModalOpen(false);
+            checkAuthorization(error);
         }
     }
 

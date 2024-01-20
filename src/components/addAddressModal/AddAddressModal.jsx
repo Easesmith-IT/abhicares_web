@@ -18,10 +18,10 @@ const AddAddressModal = ({
   Data = "",
 }) => {
 
-    const { location, status } = useGeolocation();
+  const { location, status } = useGeolocation();
 
   console.log("status", status);
-      console.log("location", location);
+  console.log("location", location);
 
 
   const [showCurrentLocationAdd, setShowCurrentLocationAdd] = useState(false);
@@ -33,7 +33,7 @@ const AddAddressModal = ({
     pincode: Data.pincode || "",
     landmark: Data.landmark,
     defaultAddress: Data.defaultAddress || false,
-    city:Data.city || ""
+    city: Data.city || ""
   });
 
   const handleOnChange = (e) => {
@@ -41,8 +41,7 @@ const AddAddressModal = ({
     setAddressInfo({ ...addressInfo, [name]: value });
   };
 
-    const handleOnSubmit = async (e) => {
-      console.log('-------')
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (
       !addressInfo.addressLine ||
@@ -55,7 +54,7 @@ const AddAddressModal = ({
         const { data } = await axios.patch(
           `${process.env.REACT_APP_API_URL}/update-user-address/${Data._id}`,
           { ...addressInfo },
-          { withCredentials:true }
+          { withCredentials: true }
         );
         toast.success("Address updated successfully");
         getAllAddress();
@@ -65,13 +64,13 @@ const AddAddressModal = ({
         console.log(error);
       }
     } else {
-        try {
-            const geometry = {
-              coordinates: [location.geometry.lat, location.geometry.lng],
-            };
+      try {
+        const geometry = {
+          coordinates: [location.geometry.lat, location.geometry.lng],
+        };
 
-          const body = { ...addressInfo, location: geometry, city: location.city };
-          console.log('body',body)
+        const body = { ...addressInfo, location: geometry, city: location.city };
+        console.log('body', body)
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/create-user-address`,
           { ...body },
@@ -81,8 +80,8 @@ const AddAddressModal = ({
         getAllAddress();
         setIsAddAddressModalOpen(false);
         console.log(data);
-        } catch (error) {
-          toast.error(error?.response?.data?.message);
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
         console.log(error);
       }
     }
@@ -90,29 +89,27 @@ const AddAddressModal = ({
 
   const handleCurrentLocation = () => {
 
-    console.log('on click')
-     if (status !== "granted") {
-       console.log("inside if");
-       setIsButtonDisabled(true);
-     } else {
-       console.log("inside else");
-           setShowCurrentLocationAdd(true);
-       setIsButtonDisabled(false);
-     }
+    if (status !== "granted") {
+      console.log("inside if");
+      setIsButtonDisabled(true);
+    } else {
+      console.log("inside else");
+      setShowCurrentLocationAdd(true);
+      setIsButtonDisabled(false);
+    }
   };
 
   const closeCurrentLocationAddModal = () => {
     setShowCurrentLocationAdd(false);
   };
 
- 
+
 
   return (
     <>
       <div
-        className={`${classes.modal_overlay} ${
-          isOpen ? classes.modal_open : classes.modal_close
-        }`}
+        className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close
+          }`}
       >
         <div className={classes.modal_wrapper}>
           <button
@@ -209,6 +206,7 @@ const AddAddressModal = ({
                 </select>
               </div>
               <button
+                type="button"
                 className={classes.button}
                 onClick={handleCurrentLocation}
                 disabled={isButtonDisabled}

@@ -1,0 +1,19 @@
+.card {
+    /* width: 100%; */
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card .update_btn {
+    border: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgb(43, 122, 226);
+    color: white;
+    font-weight: 600;
+}

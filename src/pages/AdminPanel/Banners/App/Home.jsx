@@ -5,8 +5,10 @@ import Wrapper from "../../../Wrapper";
 import DummyImage from "../../../../assets/dummy.png";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
+import useAuthorization from "../../../../hooks/useAuthorization";
 
 const Home = () => {
+  const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
     { bannerName: "hero-banner1", file: null, preview: null },
     { bannerName: "hero-banner2", file: null, preview: null },
@@ -87,6 +89,7 @@ const Home = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
 
@@ -117,6 +120,7 @@ const Home = () => {
       }
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   }
 
@@ -188,7 +192,7 @@ const Home = () => {
       console.log("response1", response1);
 
       console.log(response2);
-      console.log('response3' ,response3);
+      console.log('response3', response3);
     } catch (err) {
       console.log(err.message);
     }

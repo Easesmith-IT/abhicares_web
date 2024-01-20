@@ -13,6 +13,7 @@ import Wrapper from '../../Wrapper'
 import AddCityModal from '../../../components/add-city-modal/AddCityModal'
 import toast from 'react-hot-toast'
 import DeleteModal from '../../../components/deleteModal/DeleteModal'
+import useAuthorization from '../../../hooks/useAuthorization'
 
 const AvailableCities = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ const AvailableCities = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate()
+    const { checkAuthorization } = useAuthorization();
 
     const getAllCities = async () => {
         try {
@@ -59,6 +61,8 @@ const AvailableCities = () => {
             setIsDeleteModalOpen(!isDeleteModalOpen);
         } catch (error) {
             console.log(error);
+            setIsDeleteModalOpen(false);
+            checkAuthorization(error);
         }
     };
 

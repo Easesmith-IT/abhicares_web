@@ -8,9 +8,11 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { IoIosArrowDown } from 'react-icons/io';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
     const navigate = useNavigate()
+    const { checkAuthorization } = useAuthorization();
 
     const [packageInfo, setPackageInfo] = useState({
         name: selectedPackage?.name || "",
@@ -75,6 +77,8 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                 getAllPackage();
                 setIsModalOpen(false);
             } catch (error) {
+                setIsModalOpen(false);
+                checkAuthorization(error);
                 console.log(error);
             }
         }
@@ -85,6 +89,8 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                 getAllPackage();
                 setIsModalOpen(false);
             } catch (error) {
+                setIsModalOpen(false);
+                checkAuthorization(error);
                 console.log(error);
             }
         }

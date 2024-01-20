@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const SeoModal = ({ setIsModalOpen, subAdmin }) => {
     const [description, setDescription] = useState("");
@@ -14,7 +15,7 @@ const SeoModal = ({ setIsModalOpen, subAdmin }) => {
         desc: "",
     });
 
-
+    const { checkAuthorization } = useAuthorization();
 
     const handleSelectChange = async (e) => {
         const { value } = e.target;
@@ -35,12 +36,12 @@ const SeoModal = ({ setIsModalOpen, subAdmin }) => {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        console.log("page",info.page);
+        console.log("page", info.page);
         if (!info.title || !info.desc) {
             return;
         }
         try {
-            const res = await axios.patch(`${process.env.REACT_APP_CMS_URL}/update-seo-by-page`, { page:info.page,seoDescription: info.desc, seoTitle: info.title }, { withCredentials: true });
+            const res = await axios.patch(`${process.env.REACT_APP_CMS_URL}/update-seo-by-page`, { page: info.page, seoDescription: info.desc, seoTitle: info.title }, { withCredentials: true });
             console.log("update seo", res.data);
             if (res.status === 200) {
                 toast.success("Seo updated successfully");
@@ -48,6 +49,8 @@ const SeoModal = ({ setIsModalOpen, subAdmin }) => {
             }
         } catch (error) {
             console.log(error);
+            setIsModalOpen(false);
+            checkAuthorization(error);
         }
     }
 

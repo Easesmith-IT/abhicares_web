@@ -1,7 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 import HomePage from './pages/Home';
@@ -72,6 +72,8 @@ import Blog from "./pages/blog/Blog";
 import SingleBlog from "./pages/blog/each-blogs";
 import BlogsCategory from "./pages/blog/BlogsCategory";
 import Settings from "./pages/AdminPanel/settings/Settings";
+import UnautorizedModal from "./components/unautorized-modal/UnautorizedModal";
+import PrivateRoute from "./components/private-route/PrivateRoute";
 
 
 
@@ -82,10 +84,15 @@ function App() {
     await dispatch(getCartDetails());
   })()
 
+  const { isOpen } = useSelector((state) => state.auth);
 
 
   return (
     <>
+
+      {isOpen &&
+        <UnautorizedModal />
+      }
 
       <Router>
         {/* <Header /> */}
@@ -95,8 +102,8 @@ function App() {
           <Route path="/contactUs" element={<ContactUs />} />
 
           <Route path="/blog" element={<Blog />} />
-          <Route path='/single-blog/:id' element={<SingleBlog/>}/>
-          <Route path='/blog-category/:id' element={<BlogsCategory/>}/>
+          <Route path='/single-blog/:id' element={<SingleBlog />} />
+          <Route path='/blog-category/:id' element={<BlogsCategory />} />
 
           <Route path="/termsAndConditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -117,92 +124,94 @@ function App() {
           {/* Admin Panel Routes */}
 
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" exact element={<Dashboard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin/dashboard" exact element={<Dashboard />} />
 
-          <Route path="/admin/banners" exact element={<Banner />} />
-          <Route path="/admin/banners/app" exact element={<AppBanner />} />
-          <Route path="/admin/banners/app/home" exact element={<Home />} />
-          <Route
-            path="/admin/banners/app/category"
-            exact
-            element={<Category />}
-          />
-          <Route
-            path="/admin/banners/app/service"
-            exact
-            element={<Service />}
-          />
-          <Route
-            path="/admin/banners/app/product"
-            exact
-            element={<Product />}
-          />
+            <Route path="/admin/banners" exact element={<Banner />} />
+            <Route path="/admin/banners/app" exact element={<AppBanner />} />
+            <Route path="/admin/banners/app/home" exact element={<Home />} />
+            <Route
+              path="/admin/banners/app/category"
+              exact
+              element={<Category />}
+            />
+            <Route
+              path="/admin/banners/app/service"
+              exact
+              element={<Service />}
+            />
+            <Route
+              path="/admin/banners/app/product"
+              exact
+              element={<Product />}
+            />
 
-          <Route path="/admin/banners/web" exact element={<WebsiteBanner />} />
-          <Route path="/admin/banners/web/home" exact element={<WebHome />} />
-          <Route
-            path="/admin/banners/web/category"
-            exact
-            element={<WebCategory />}
-          />
-          <Route
-            path="/admin/banners/web/service"
-            exact
-            element={<WebService />}
-          />
-          <Route
-            path="/admin/banners/web/product"
-            exact
-            element={<WebProduct />}
-          />
+            <Route path="/admin/banners/web" exact element={<WebsiteBanner />} />
+            <Route path="/admin/banners/web/home" exact element={<WebHome />} />
+            <Route
+              path="/admin/banners/web/category"
+              exact
+              element={<WebCategory />}
+            />
+            <Route
+              path="/admin/banners/web/service"
+              exact
+              element={<WebService />}
+            />
+            <Route
+              path="/admin/banners/web/product"
+              exact
+              element={<WebProduct />}
+            />
 
-          <Route path="/admin/cms" exact element={<Cms />} />
-          <Route
-            path="/admin/cms/privacy-policy"
-            exact
-            element={<AdminPrivacyPolicy />}
-          />
-          <Route path="/admin/cms/about-us" exact element={<AdminAboutUs />} />
-          <Route path="/admin/cms/contact-us" exact element={<AdminContactUs />} />
+            <Route path="/admin/cms" exact element={<Cms />} />
+            <Route
+              path="/admin/cms/privacy-policy"
+              exact
+              element={<AdminPrivacyPolicy />}
+            />
+            <Route path="/admin/cms/about-us" exact element={<AdminAboutUs />} />
+            <Route path="/admin/cms/contact-us" exact element={<AdminContactUs />} />
 
-          <Route
-            path="/admin/banners/website"
-            exact
-            element={<WebsiteBanner />}
-          />
+            <Route
+              path="/admin/banners/website"
+              exact
+              element={<WebsiteBanner />}
+            />
 
-          <Route path="/admin/bookings" element={<Bookings />} />
-          <Route path="/admin/bookings/:id" element={<AdminBookings />} />
+            <Route path="/admin/bookings" element={<Bookings />} />
+            <Route path="/admin/bookings/:id" element={<AdminBookings />} />
 
-          <Route path="/admin/orders" element={<Orders />} />
-          <Route path="/admin/orders/:id" element={<AdminOrders />} />
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/orders/:id" element={<AdminOrders />} />
 
-          <Route path="/admin/partners" element={<Partners />} />
-          <Route path="/admin/partners/:partnerId" element={<SellerAssignedOrders />} />
+            <Route path="/admin/partners" element={<Partners />} />
+            <Route path="/admin/partners/:partnerId" element={<SellerAssignedOrders />} />
 
-          <Route path="/admin/customers" element={<Customers />} />
-          <Route path="/admin/services" element={<Services />} />
-          <Route path="/admin/payments" element={<Payments />} />
-          <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/customers" element={<Customers />} />
+            <Route path="/admin/services" element={<Services />} />
+            <Route path="/admin/payments" element={<Payments />} />
+            <Route path="/admin/settings" element={<Settings />} />
 
-          <Route
-            path="/admin/services/:categoryId"
-            element={<CategoryServices />}
-          />
-          <Route
-            path="/admin/services/:categoryId/product/:serviceId"
-            element={<ServiceInfoPage />}
-          />
+            <Route
+              path="/admin/services/:categoryId"
+              element={<CategoryServices />}
+            />
+            <Route
+              path="/admin/services/:categoryId/product/:serviceId"
+              element={<ServiceInfoPage />}
+            />
 
-          <Route path="/admin/enquiries" element={<Enquiry />} />
-          <Route path="/admin/offers" element={<Offers />} />
-          <Route path="/admin/available-cities" element={<AvailableCities />} />
-          <Route path="/admin/help-center" element={<AdminHelpCenter />} />
-          <Route path="/admin/help-center/faqs" element={<HelpCenterFaqs />} />
-          <Route
-            path="/admin/help-center/tickets"
-            element={<HelpCenterTickets />}
-          />
+            <Route path="/admin/enquiries" element={<Enquiry />} />
+            <Route path="/admin/offers" element={<Offers />} />
+            <Route path="/admin/available-cities" element={<AvailableCities />} />
+            <Route path="/admin/help-center" element={<AdminHelpCenter />} />
+            <Route path="/admin/help-center/faqs" element={<HelpCenterFaqs />} />
+            <Route
+              path="/admin/help-center/tickets"
+              element={<HelpCenterTickets />}
+            />
+          </Route>
 
           <Route path="/*" element={<ErrorPage />} />
 

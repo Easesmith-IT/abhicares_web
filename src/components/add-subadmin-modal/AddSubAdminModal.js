@@ -3,6 +3,7 @@ import classes from './AddSubAdminModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import useAuthorization from '../../hooks/useAuthorization';
 
 const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     const [info, setInfo] = useState({
@@ -11,6 +12,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
         role: subAdmin?.role || "",
         adminId: subAdmin?.adminId || ""
     });
+
+    const { checkAuthorization } = useAuthorization();
 
 
     const [permissions, setPermissions] = useState({
@@ -44,6 +47,19 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
             || !info.name
             || !info.password
             || !info.role
+            || !permissions.dashboard
+            || !permissions.banners
+            || !permissions.orders
+            || !permissions.bookings
+            || !permissions.services
+            || !permissions.partners
+            || !permissions.customers
+            || !permissions.offers
+            || !permissions.availableCities
+            || !permissions.payments
+            || !permissions.enquiry
+            || !permissions.helpCenter
+            || !permissions.settings
         ) {
             return;
         }
@@ -55,6 +71,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                 getSubadmins();
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
         else {
@@ -65,6 +83,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                 getSubadmins();
             } catch (error) {
                 console.log(error);
+                setIsModalOpen(false);
+                checkAuthorization(error);
             }
         }
     }

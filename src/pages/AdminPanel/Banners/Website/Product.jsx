@@ -3,10 +3,12 @@ import axios from "axios";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import { useState } from "react";
+import useAuthorization from "../../../../hooks/useAuthorization";
 
 const WebProduct = () => {
+  const { checkAuthorization } = useAuthorization();
   const [image, setImage] = useState({
-      file: null, preview: null,
+    file: null, preview: null,
   });
 
   const navigate = useNavigate();
@@ -24,15 +26,15 @@ const WebProduct = () => {
   };
 
   const uploadImages = async () => {
- 
+
     const formData = new FormData();
     formData.append("type", "product-banner");
     formData.append("page", "product");
     formData.append("section", "app-productpage");
     formData.append("no_of_images", "single");
     formData.append("img", image.file)
-    
-    console.log('imgfile',image.file)
+
+    console.log('imgfile', image.file)
 
 
     try {
@@ -44,6 +46,7 @@ const WebProduct = () => {
       console.log(response);
     } catch (err) {
       console.log("ERROR", err.message);
+      checkAuthorization(err);
     }
   };
 
