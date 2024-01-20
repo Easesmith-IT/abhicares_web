@@ -35,6 +35,7 @@ const ProductPage = () => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-product/${params.serviceId}`);
+            console.log('services',data)
             setAllProducts(data.data);
         } catch (error) {
             console.log(error);
@@ -64,7 +65,7 @@ const ProductPage = () => {
         })()
     }, [])
 
-    console.log("cart",cart);
+    // console.log("cart",cart);
 
     return (
         <WebsiteWrapper>

@@ -18,7 +18,7 @@ export const getCartDetails = createAsyncThunk("/cart/details", async () => {
     });
 
     const response = await res;
-    console.log("cart details", response.data);
+    // console.log("cart details", response.data);
     return response.data;
   } catch (error) {
     if (error?.response?.data?.tokenExpired) {
