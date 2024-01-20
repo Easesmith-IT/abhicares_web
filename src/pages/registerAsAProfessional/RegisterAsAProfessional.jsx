@@ -1,10 +1,10 @@
 import axios from "axios";
 import classes from "./RegisterAsAProfessional.module.css";
 import ProfessionalImg from '../../assets/professional_img.png'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import WebsiteWrapper from "../WebsiteWrapper";
-
+import { Helmet } from "react-helmet";
 const RegisterAsAProfessional = () => {
     const [registrationInfo, setRegistrationInfo] = useState({
         name: "",
@@ -14,6 +14,26 @@ const RegisterAsAProfessional = () => {
         state: ""
 
     });
+
+      const [seoData, setSeoData] = useState({
+    title: "",
+    description: "",
+  });
+  const getSeoForSellerPage = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_CMS_URL}/get-seo-by-page-user-side?page=register-as-professional`
+      );
+      const { seoTitle, seoDescription } = data?.seo;
+      setSeoData({ title: seoTitle, description: seoDescription });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSeoForSellerPage();
+  }, []);
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -45,10 +65,14 @@ const RegisterAsAProfessional = () => {
             console.log(error);
         }
     };
-    console.log(registrationInfo);
+
 
     return (
         <WebsiteWrapper>
+                  <Helmet>
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
+      </Helmet>
             <div>
                 <div className={classes.hero_section}>
                     <div className={classes.container}>

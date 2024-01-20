@@ -133,10 +133,10 @@ h6 {
 
 
 .location_container{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* flex-wrap: wrap; */
+    /* gap: 20px; */
     width: 95%;
     margin: 0 auto;
     margin-block: 30px;
@@ -155,37 +155,19 @@ h6 {
     font-size: 18px;
 }
 
-.location_container .location_container_right > iframe{
-    width: 700px;
-    height: 300px;
-    border-radius: 6px;
-}
 
 
-@media screen and (max-width:890px) {
-    .location_container .location_container_right > iframe{
-        width: 600px;
-        height: 300px;
-    }
-}
+
+
 
 @media screen and (max-width:620px) {
-    .location_container .location_container_right > iframe{
-        width: 500px;
-        height: 300px;
-    }
+   
 }
 
 @media screen and (max-width:525px) {
-    .location_container .location_container_right > iframe{
-        width: 430px;
-        height: 260px;
-    }
+ 
 }
 
 @media screen and (max-width:450px) {
-    .location_container .location_container_right > iframe{
-        width: 350px;
-        height: 220px;
-    }
+
 }

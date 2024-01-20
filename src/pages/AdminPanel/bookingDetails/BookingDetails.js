@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
+import MapComponent from "./Map";
 
 const BookingDetails = () => {
   // const { state } = useLocation();
@@ -25,6 +26,7 @@ const BookingDetails = () => {
         `${process.env.REACT_APP_ADMIN_API_URL}/get-booking-details/${id}`,
         { withCredentials: true }
       );
+
 
       setBooking(data.bookingDetails);
       setStatus(data.bookingDetails.status);
@@ -67,6 +69,8 @@ const BookingDetails = () => {
     setIsPartnerModalOpen(true);
   };
 
+      const latitude = 0.1;
+      const longitude = 10.23;
   return (
     <>
       <Wrapper>
@@ -140,10 +144,11 @@ const BookingDetails = () => {
                     <div>
                       <img
                         className={classes.img}
-                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${booking.package
-                          ? booking.package.imageUrl[0]
-                          : booking.product.imageUrl[0]
-                          }`}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
+                          booking.package
+                            ? booking.package.imageUrl[0]
+                            : booking.product.imageUrl[0]
+                        }`}
                         alt="product"
                       />
                       <div>
@@ -223,10 +228,14 @@ const BookingDetails = () => {
               </div>
             </div>
             <div className={classes.location_container_right}>
-              <iframe
+              {/* <iframe
                 title="location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1779.6251435072468!2d81.01217178855312!3d26.863788036925076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be29384000001%3A0x130b41299ab7c3c1!2sEasesmith!5e0!3m2!1sen!2sin!4v1704691511201!5m2!1sen!2sin"
-                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1779.6251435072468!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be29384000001%3A0x130b41299ab7c3c1!2sEasesmith!5e0!3m2!1sen!2sin!4v1704691511201!5m2!1sen!2sin`}
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe> */}
+              <MapComponent/>
             </div>
           </div>
         </div>
