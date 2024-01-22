@@ -352,7 +352,7 @@ const CheckoutPage = () => {
                   <b className="mt-3" style={{ fontSize: "18px", color: "#CC5500" }}>Select address to continue</b>
                 }
 
-                {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
+                {(address?.defaultAddress || address) && bookingInfo.length === cart?.items.length &&
                   <button
                     onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}
                     className={`${classes.continue_btn}`}

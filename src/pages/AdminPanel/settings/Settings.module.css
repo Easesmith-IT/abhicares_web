@@ -1,21 +1,21 @@
-.settings{
+.settings {
     width: 100%;
     padding: 20px;
 }
 
-.heading_container{
+.heading_container {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.btn_wrapper{
+.btn_wrapper {
     display: flex;
     gap: 10px;
 }
 
-.button{
+.button {
     padding: 4px 10px;
     border: none;
     border-radius: 6px;
@@ -23,14 +23,14 @@
     color: white;
 }
 
-.container{
+.container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 30px;
 }
 
-.item{
+.item {
     max-width: 290px;
     width: 100%;
     border: 1px solid #ccc;
@@ -41,7 +41,21 @@
     align-items: flex-start;
 }
 
-.item .right{
+.item .right {
     display: flex;
     gap: 10px;
+}
+
+.status {
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.active {
+    background: green;
+    color: white;
+}
+
+.inactive {
+    background: #de6210;
 }

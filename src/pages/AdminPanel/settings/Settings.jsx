@@ -51,7 +51,7 @@ const Settings = () => {
         } catch (error) {
             console.log(error);
         }
-        finally{
+        finally {
             setIsLoading(false);
         }
     };
@@ -86,7 +86,7 @@ const Settings = () => {
                                     <p>Name: {subadmin.name}</p>
                                     <p>Username: {subadmin.adminId}</p>
                                     <p>Role: {subadmin.role}</p>
-                                    <p>Status: {subadmin.status ? "Active" : "InActive"}</p>
+                                    <p >Status: <span className={`${classes.status} ${subadmin.status ? classes.active : classes.inactive}`}>{subadmin.status ? "Active" : "InActive"}</span></p>
                                 </div>
                                 <div className={classes.right}>
                                     <FiEdit onClick={() => handleUpdateModal(subadmin)} cursor={"pointer"} size={20} />
