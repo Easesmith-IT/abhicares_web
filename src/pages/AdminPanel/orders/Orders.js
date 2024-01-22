@@ -22,10 +22,10 @@ const Orders = () => {
         try {
             const { data } = await axios.get(
                 `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
-                { withCredentials:true }
+                { withCredentials: true }
             );
             setAllOrders(data.data);
-            console.log("allOrders",data);
+            console.log("allOrders", data);
         } catch (error) {
             console.log(error);
         } finally {
@@ -55,7 +55,7 @@ const Orders = () => {
                     month: arr[1],
                     year: arr[0]
                 },
-                { withCredentials:true }
+                { withCredentials: true }
             );
             if (data.data.length > 0) {
                 setIsModalOpen(true);
@@ -96,7 +96,7 @@ const Orders = () => {
                             {allOrders?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
                                     <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
-                                    <h3 className={`${classes["t-op-nextlvl"]}`}>{order.status}</h3>
+                                    <h3 className={`${classes["t-op-nextlvl"]} ${classes.status} ${order.status === "Cancelled" ? classes.Cancelled : order.status === "Completed" ? classes.Completed : order.status === "pending" ? classes.pending : classes.OutOfDelivery}`}>{order.status}</h3>
                                     <h3 className={`${classes["t-op-nextlvl"]}`}>{order.orderValue}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>
                                         <button onClick={() => navigate(`/admin/Orders/${order._id}`, { state: order })} className={classes.button}>View Details</button>

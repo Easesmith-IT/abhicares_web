@@ -46,6 +46,7 @@ const Blogs = () => {
                 const postsPromises = categoriesResponse.data.map(async (category) => {
                     const postsResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/posts?categories=${category.id}`);
 
+                    console.log("res",postsResponse);
                     const postsWithMediaPromises = postsResponse.data.map(async (post) => {
                         if (post.featured_media) {
                             const featuredMediaResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${post.featured_media}`);

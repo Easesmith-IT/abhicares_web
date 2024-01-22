@@ -11,20 +11,20 @@ import useAuthorization from '../../hooks/useAuthorization';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
-    
+
     const hasUpperCaseLetters = [...code].every(
         (char) => char === char.toUpperCase()
-        );
-        
-        if (!hasSpaces && hasUpperCaseLetters) {
-            return true;
-        }
-        
-        return false;
-        
+    );
+
+    if (!hasSpaces && hasUpperCaseLetters) {
+        return true;
     }
-    
-    const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
+
+    return false;
+
+}
+
+const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(offer?.description || "");
     const [offerInfo, setOfferInfo] = useState({
@@ -105,9 +105,9 @@ const validateCouponCode = (code) => {
                     </div> */}
                     {offer && <div className={classes.input_container}>
                         <label htmlFor="status">Status</label>
-                        <select className={classes.input} name="status" id="status">
-                            <option value="true">Active</option>
-                            <option value="false">InActive</option>
+                        <select className={classes.input} onChange={handleOnChange} value={offerInfo.status} name="status" id="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">InActive</option>
                         </select>
                     </div>}
                     <div className={classes.input_container}>

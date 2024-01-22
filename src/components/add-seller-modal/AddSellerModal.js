@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { RxCross2 } from 'react-icons/rx';
 import { IoIosArrowDown } from "react-icons/io";
 import useAuthorization from '../../hooks/useAuthorization';
+import { MdClose } from "react-icons/md";
 
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
@@ -18,8 +19,9 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         gstNumber: seller?.gstNumber || "",
         phone: seller?.phone || "",
         password: seller?.password || "",
-        categoryId: seller?.categoryId || "",
+        categoryId: seller?.categoryId?._id || "",
         services: seller?.services || [],
+        status: seller?.status
     });
 
     const [address, setAddress] = useState({
@@ -44,15 +46,21 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
 
 
-    const handleServiceOnChange = (e) => {
+    const handleServiceOnChange = (e, name) => {
         const { value, checked } = e.target;
         if (checked) {
-            setSellerInfo({ ...sellerInfo, services: [...sellerInfo.services, { serviceId: value }] })
+            setSellerInfo({ ...sellerInfo, services: [...sellerInfo.services, { serviceId: value, name }] })
         }
         else {
-            const filtered = sellerInfo.services.filter((service) => service !== value);
+            const filtered = sellerInfo.services.filter((service) => service.serviceId._id !== value);
             setSellerInfo({ ...sellerInfo, services: filtered })
         }
+    }
+
+    const handleRemoveService = (id) => {
+        console.log("id", id);
+        const filtered = sellerInfo.services.filter((service) => service.serviceId._id !== id);
+        setSellerInfo({ ...sellerInfo, services: filtered })
     }
 
     const handleContactPersonOnChange = (e) => {
@@ -90,7 +98,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const getCategoryServices = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`, { withCredentials: true });
-            // console.log(data);
+            console.log("allCategoryServices", data.data);
             setAllCategoryServices(data.data);
         } catch (error) {
             console.log(error);
@@ -103,7 +111,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
 
 
-
+    console.log("seller state", sellerInfo);
 
     const handleLocationClick = () => {
         if (navigator.geolocation) {
@@ -160,6 +168,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                 pincode: address.pincode,
                 addressLine: address.addressLine,
                 location: {
+                    type:"Point",
                     coordinates: [coordinates.latitude, coordinates.longitude]
                 }
             },
@@ -252,8 +261,16 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                         <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.email} type="email" name="email" id="email" />
                     </div>
                     <div className={classes.input_container}>
+                        <label htmlFor="status">Status</label>
+                        <select onChange={handleOnChange} value={sellerInfo.status} className={classes.input} name="status" id="status">
+                            <option value="">Select</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">In Active</option>
+                        </select>
+                    </div>
+                    <div className={classes.input_container}>
                         <label htmlFor="categoryId">Category</label>
-                        <select onChange={handleOnChange} className={classes.input} name="categoryId" id="categoryId">
+                        <select onChange={handleOnChange} value={sellerInfo.categoryId} className={classes.input} name="categoryId" id="categoryId">
                             <option value={"choose a category"}>choose a category</option>
                             {allCategories?.map((category) => (
                                 <option key={category._id} value={category._id}>{category.name}</option>
@@ -271,19 +288,27 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                                 {allCategoryServices?.map((service) => (
                                     <div key={service._id} className={classes.d_flex}>
                                         <label htmlFor={service.name}>{service.name}</label>
-                                        <input checked={sellerInfo.services.some((item) => item.serviceId === service._id)} onChange={handleServiceOnChange} type="checkbox" value={service._id} name={service.name} id={service.name} />
+                                        <input checked={sellerInfo.services.some((item) => item?.serviceId?._id ? item.serviceId._id === service._id : item.serviceId === service._id)} onChange={(e) => handleServiceOnChange(e, service.name)} type="checkbox" value={service._id} name={service.name} id={service.name} />
                                     </div>
                                 ))}
                             </div>
                         }
+                        <div className={classes.service_container}>
+                            {sellerInfo.services.length > 0 && sellerInfo.services.map((item) => (
+                                <span key={item.name} className={classes.service}>
+                                    {item?.name ? item.name : item.serviceId.name}
+                                    <MdClose cursor={"pointer"} size={20} onClick={() => handleRemoveService(item.serviceId._id)} />
+                                </span>
+                            ))}
+                        </div>
                     </div>}
                     <div className={classes.input_container}>
                         <label htmlFor="latitude">Latitude</label>
-                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.latitude} type="text" name="latitude" id="latitude" />
+                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.latitude} type="number" name="latitude" id="latitude" />
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="longitude">Longitude</label>
-                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.longitude} type="text" name="longitude" id="longitude" />
+                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.longitude} type="number" name="longitude" id="longitude" />
                     </div>
                     {/* <button type='button' className={classes.button} onClick={handleLocationClick}>Get Location</button> */}
 

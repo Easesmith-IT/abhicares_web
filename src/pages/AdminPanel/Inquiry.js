@@ -20,6 +20,7 @@ const Enquiry = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [allInquiries, setAllInquiries] = useState([]);
     const [enquiryId, setEnquiryId] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
 
     const handleDeleteModal = (e, id) => {
@@ -51,6 +52,8 @@ const Enquiry = () => {
             setAllInquiries(data.data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -78,6 +81,15 @@ const Enquiry = () => {
                         </div>
 
                         <div className={classes.items}>
+                            {!isLoading
+                                && allInquiries.length === 0
+                                && <p>No inquiries found</p>
+                            }
+
+                            {isLoading
+                                && allInquiries.length === 0
+                                && <Loader />
+                            }
                             {allInquiries?.map((inquiry) => (
                                 <div key={inquiry._id} className={classes.item1}>
                                     <h3 className={classes["t-op-nextlvl"]}>{inquiry.name}</h3>

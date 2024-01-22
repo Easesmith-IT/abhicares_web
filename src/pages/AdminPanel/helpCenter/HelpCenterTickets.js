@@ -36,6 +36,7 @@ const HelpCenterTickets = () => {
         { status },
         { withCredentials: true }
       );
+      console.log("issues",data);
       setPageCount(data.totalPage);
       setAllIssues(data.data);
     } catch (error) {

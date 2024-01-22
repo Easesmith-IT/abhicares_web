@@ -126,7 +126,7 @@
 
 .recent-blogs-wrapper ul {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   list-style-type: none;
   text-decoration: none;
 }

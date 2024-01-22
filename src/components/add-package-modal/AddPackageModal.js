@@ -20,16 +20,39 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         offerPrice: selectedPackage?.offerPrice || "",
         img: selectedPackage?.imageUrl || [],
         products: selectedPackage?.products || [],
+        previewImages: []
     });
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
+    const [isImgPrev, setIsImgPrev] = useState(selectedPackage ? false : true)
 
 
 
 
     const getImage = (e) => {
         e.preventDefault();
-        const uploadedImage = e.target.files;
-        setPackageInfo({ ...packageInfo, img: uploadedImage });
+        setIsImgPrev(() => true);
+        const uploadedImage = Array.from(e.target.files);
+        if (uploadedImage.length > 3) {
+            toast.error("Cannot upload files more than 3");
+            e.target.value = null;
+            return;
+        }
+
+        const readFile = (img) => {
+            return new Promise((resolve) => {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(img);
+                fileReader.addEventListener("load", function () {
+                    resolve({ img: this.result });
+                });
+            });
+        };
+
+        Promise.all(uploadedImage.map(img => readFile(img)))
+            .then(images => {
+                setPackageInfo((prev) => ({ ...prev, previewImages: [...packageInfo.previewImages, ...images] }));
+                setPackageInfo((prev) => ({ ...prev, img: uploadedImage }));
+            });
     }
 
     const handleOnChange = (e) => {
@@ -136,9 +159,21 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                         }
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="img">image</label>
+                        <label htmlFor="img">Image</label>
                         <input onChange={getImage} multiple type="file" name="img" id="img" />
                     </div>
+                    {isImgPrev &&
+                        <div className={classes.img_cotainer}>
+                            {packageInfo?.previewImages?.map((item, index) => (
+                                <img key={index} width={190} height={150} src={item.img} alt="product" />
+                            ))}
+                        </div>}
+                    {!isImgPrev &&
+                        <div className={classes.img_cotainer}>
+                            {packageInfo?.img?.map((img, index) => (
+                                <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                            ))}
+                        </div>}
                     <div className={classes.button_wrapper}>
                         <button className={classes.button}>{selectedPackage ? "Update" : "Add"}</button>
                     </div>
