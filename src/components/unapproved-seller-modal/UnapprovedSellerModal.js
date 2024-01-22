@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import Loader from '../loader/Loader';
 
 const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
     const [allSellers, setAllSellers] = useState([]);
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
+    const [isLoading, setIsLoading] = useState(true);
 
 
     const getAllSellers = async () => {
@@ -20,6 +22,8 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
             setAllSellers(data.data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -49,23 +53,31 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
                         <RxCross2 onClick={() => setIsUnapprovedSellerModalOpen(false)} cursor={"pointer"} size={26} />
                     </div>
                 </div>
-                <div className={classes["report-body"]}>
-                    <div className={classes["report-topic-heading"]}>
-                        <h3 className={classes["t-op"]}>Seller Name</h3>
-                        <h3 className={classes["t-op"]}>Service</h3>
-                        <h3 className={classes["t-op"]}>Category</h3>
-                        <h3 className={classes["t-op"]}>Phone</h3>
-                        <h3 className={classes["t-op"]}>Approve</h3>
+                <div className={unapprovedSellerModalClasses["report-body"]}>
+                    <div className={unapprovedSellerModalClasses["report-topic-heading"]}>
+                        <h3 className={classes["t-op"]} style={{ width: "150px" }}>Seller Name</h3>
+                        <h3 className={classes["t-op"]} style={{ width: "200px" }}>Service</h3>
+                        <h3 className={classes["t-op"]} style={{ width: "150px" }}>Category</h3>
+                        <h3 className={classes["t-op"]} style={{ width: "150px" }}>Phone</h3>
+                        <h3 className={classes["t-op"]} style={{ width: "150px" }}>Approve</h3>
                     </div>
 
                     <div className={classes.items}>
+                        {!isLoading && allSellers.length === 0 &&
+                            <p>No unapproved seller found.</p>
+                        }
+
+                        {isLoading
+                            && allSellers.length === 0
+                            && <Loader />
+                        }
                         {allSellers?.map((seller) => (
-                            <div key={seller._id} className={classes.item1}>
-                                <h3 className={classes["t-op-nextlvl"]}>{seller.name}</h3>
-                                <h3 className={`${classes["t-op-nextlvl"]}`}>service</h3>
-                                <h3 className={`${classes["t-op-nextlvl"]}`}>category</h3>
-                                <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.phone}</h3>
-                                <h3 className={`${classes["t-op-nextlvl"]}`}>
+                            <div key={seller._id} className={unapprovedSellerModalClasses.item1}>
+                                <h3 className={classes["t-op-nextlvl"]} style={{ width: "150px" }}>{seller.name}</h3>
+                                <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "200px" }}>{seller.services.map((service) => service.name).join(", ")}</h3>
+                                <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>{seller.category}</h3>
+                                <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>{seller.phone}</h3>
+                                <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>
                                     {seller.status === "in-review" ?
                                         <button onClick={() => handleOnChange(seller._id)} className={unapprovedSellerModalClasses.button}>Approve</button>
                                         : <p>Approved</p>

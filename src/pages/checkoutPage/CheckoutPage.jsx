@@ -62,12 +62,14 @@ const CheckoutPage = () => {
         { withCredentials: true }
       );
       setAllAddress(data.data);
-      let defaultAddress = data.data.find((add) => add.defaultAddress === true);
+      if (!address) {
+        let defaultAddress = data.data.find((add) => add.defaultAddress === true);
 
-      if (!defaultAddress) {
-        defaultAddress = data.data[data.data.length - 1];
+        if (!defaultAddress) {
+          defaultAddress = data.data[data.data.length - 1];
+        }
+        setAddress(defaultAddress);
       }
-      setAddress(defaultAddress);
     } catch (error) {
       console.log(error);
     }
@@ -208,7 +210,7 @@ const CheckoutPage = () => {
       toast.error("Select payment method");
       return;
     }
-    
+
     try {
       setIsLoading(true);
       const { data: { apiKey } } = await axios.post(
@@ -331,7 +333,7 @@ const CheckoutPage = () => {
                     ))}
                   </div>
                 </div>
-                {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
+                {(address?.defaultAddress || address) && bookingInfo.length === cart?.items.length &&
                   <>
                     <h5 className={classes.select_type_heading}>Select Payment Type</h5>
                     <div className={classes.d_flex}>
@@ -346,10 +348,10 @@ const CheckoutPage = () => {
                     </div>
                   </>
                 }
-                {!address?.defaultAddress && bookingInfo.length === cart?.items.length &&
+                {!address?.defaultAddress && !address && bookingInfo.length === cart?.items.length &&
                   <b className="mt-3" style={{ fontSize: "18px", color: "#CC5500" }}>Select address to continue</b>
                 }
-                
+
                 {address?.defaultAddress && bookingInfo.length === cart?.items.length &&
                   <button
                     onClick={paymentType === "cod" ? handleCodOrder : handleRazorpayPayment}

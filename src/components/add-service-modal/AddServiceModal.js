@@ -18,13 +18,17 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     img: service?.img || "",
     appHomepage: service?.appHomepage || false,
     webHomepage: service?.webHomepage || false,
-    // totalProducts: service?.totalProducts || ""
+    previewImage: ""
   });
 
   const getImage = (e) => {
     e.preventDefault();
     const uploadedImage = e.target.files[0];
-    setServiceInfo({ ...serviceInfo, img: uploadedImage });
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(uploadedImage);
+    fileReader.addEventListener("load", function () {
+      setServiceInfo({ ...serviceInfo, img: uploadedImage, previewImage: this.result })
+    });
   }
 
   const handleOnChange = (e) => {
@@ -119,13 +123,15 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
             />
           </div>
           <div className={classes.input_container}>
-            <label htmlFor="imageUrl">imageUrl</label>
+            <label htmlFor="imageUrl">Image</label>
             <input
               onChange={getImage}
               type="file"
               name="imageUrl"
               id="imageUrl"
             />
+            {serviceInfo.previewImage && <img width={200} height={150} src={serviceInfo.previewImage} alt="service" />}
+            {service.imageUrl && <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="service" />}
           </div>
           <div className={classes.input_container}>
             <label htmlFor="appHomepage">App Homepage</label>

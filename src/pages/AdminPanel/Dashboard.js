@@ -40,7 +40,7 @@ const AdminPage = () => {
 
   return (
     <Wrapper>
-      <div>
+      <div style={{ width: "100%" }}>
         <Main />
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>

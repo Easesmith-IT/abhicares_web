@@ -60,30 +60,6 @@ const UserAddressModal = ({ setIsModalOpen, userId }) => {
                             </div>
                         </div>
                     ))}
-                    {allAddresses && allAddresses.map((address) => (
-                        <div className={classes.address}>
-                            <div className={classes.partner_left}>
-                                <p><b>Address Line:</b> {address.addressLine}</p>
-                                <p><b>Landmark:</b> {address.landmark}</p>
-                                <p><b>City:</b> {address.city}</p>
-                                <p><b>Pincode:</b> {address.pincode}</p>
-                                <p><b>Default Address:</b> {`${address.defaultAddress}`}</p>
-                                <p><b>Co-ordinates:</b> {`${address.location.coordinates[0]}, ${address.location.coordinates[1]}`}</p>
-                            </div>
-                        </div>
-                    ))}
-                    {allAddresses && allAddresses.map((address) => (
-                        <div className={classes.address}>
-                            <div className={classes.partner_left}>
-                                <p><b>Address Line:</b> {address.addressLine}</p>
-                                <p><b>Landmark:</b> {address.landmark}</p>
-                                <p><b>City:</b> {address.city}</p>
-                                <p><b>Pincode:</b> {address.pincode}</p>
-                                <p><b>Default Address:</b> {`${address.defaultAddress}`}</p>
-                                <p><b>Co-ordinates:</b> {`${address.location.coordinates[0]}, ${address.location.coordinates[1]}`}</p>
-                            </div>
-                        </div>
-                    ))}
                 </div>
             </div>
         </div>
