@@ -4,7 +4,7 @@ import classes from "./ProductPage.module.css";
 import loaderClasses from "../../components/loader/Loader.module.css";
 import loader from "../../assets/rolling-white.gif";
 import axios from "axios";
-import { Helmet } from "react-helmet";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import SubService from "../../components/productPage/SubService";
 import CartItem from "../../components/checkout/CartItem";
 
@@ -84,6 +84,7 @@ const ProductPage = () => {
   // console.log("cart",cart);
 
   return (
+    <HelmetProvider>
     <WebsiteWrapper>
       <Helmet>
         <title>{seoData.title}</title>
@@ -213,7 +214,8 @@ const ProductPage = () => {
           </div>
         </div>
       </section>
-    </WebsiteWrapper>
+      </WebsiteWrapper>
+      </HelmetProvider>
   );
 };
 

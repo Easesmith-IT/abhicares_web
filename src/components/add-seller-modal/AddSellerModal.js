@@ -11,14 +11,14 @@ import useAuthorization from '../../hooks/useAuthorization';
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const { checkAuthorization } = useAuthorization();
-
+console.log('seller',seller)
     const [sellerInfo, setSellerInfo] = useState({
         name: seller?.name || "",
         legalName: seller?.legalName || "",
         gstNumber: seller?.gstNumber || "",
         phone: seller?.phone || "",
         password: seller?.password || "",
-        categoryId: seller?.categoryId || "",
+        categoryId: seller?.categoryId._id || "",
         services: seller?.services || [],
     });
 
@@ -77,6 +77,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+            console.log('categories',data.data)
             setAllCategories(data.data);
         } catch (error) {
             console.log(error);
@@ -89,6 +90,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
     const getCategoryServices = async () => {
         try {
+            console.log(sellerInfo);
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`, { withCredentials: true });
             // console.log(data);
             setAllCategoryServices(data.data);
@@ -194,106 +196,234 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.modal}>
-                <div className={classes.heading_container}>
-                    <h4>{seller ? "Update" : "Add"} Seller</h4>
-                    <div className={classes.d_flex}>
-                        <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
-                    </div>
-                </div>
-                <form onSubmit={handleOnSubmit} className={classes.form}>
-                    <div className={classes.input_container}>
-                        <label htmlFor="name">Name</label>
-                        <input className={classes.input} onChange={handleOnChange} value={sellerInfo.name} type="text" name="name" id="name" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="legalName">Legal Name</label>
-                        <input className={classes.input} onChange={handleOnChange} value={sellerInfo.legalName} type="text" name="legalName" id="legalName" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="gstNumber">GST Number</label>
-                        <input className={classes.input} onChange={handleOnChange} value={sellerInfo.gstNumber} type="text" name="gstNumber" id="gstNumber" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="phone">Phone</label>
-                        <input className={classes.input} onChange={handleOnChange} value={sellerInfo.phone} type="text" name="phone" id="phone" />
-                    </div>
-                    {!seller && <div className={classes.input_container}>
-                        <label htmlFor="password">Password</label>
-                        <input className={classes.input} onChange={handleOnChange} value={sellerInfo.password} type="password" name="password" id="password" />
-                    </div>}
-                    <div className={classes.input_container}>
-                        <label htmlFor="state">State</label>
-                        <input className={classes.input} onChange={handleOnChange} value={address.state} type="text" name="state" id="state" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="city">City</label>
-                        <input className={classes.input} onChange={handleOnChange} value={address.city} type="text" name="city" id="city" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="addressLine">Address Line</label>
-                        <input className={classes.input} onChange={handleOnChange} value={address.addressLine} type="text" name="addressLine" id="addressLine" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="pincode">Pincode</label>
-                        <input className={classes.input} onChange={handleOnChange} value={address.pincode} type="text" name="pincode" id="pincode" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="name">Contact Person Name</label>
-                        <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.name} type="text" name="name" id="name" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="phone">Contact Person Phone</label>
-                        <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.phone} type="text" name="phone" id="phone" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="email">Contact Person Email</label>
-                        <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.email} type="email" name="email" id="email" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="categoryId">Category</label>
-                        <select onChange={handleOnChange} className={classes.input} name="categoryId" id="categoryId">
-                            <option value={"choose a category"}>choose a category</option>
-                            {allCategories?.map((category) => (
-                                <option key={category._id} value={category._id}>{category.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    {sellerInfo.categoryId && <div className={classes.input_container}>
-                        <label htmlFor="servicesId">Services</label>
-                        <div onClick={() => setIsMultiSelectOpen(!isMultiSelectOpen)} className={`${classes.input} ${classes.d_flex}`}>
-                            select service
-                            <IoIosArrowDown />
-                        </div>
-                        {isMultiSelectOpen &&
-                            <div className={classes.multi_select}>
-                                {allCategoryServices?.map((service) => (
-                                    <div key={service._id} className={classes.d_flex}>
-                                        <label htmlFor={service.name}>{service.name}</label>
-                                        <input checked={sellerInfo.services.some((item) => item.serviceId === service._id)} onChange={handleServiceOnChange} type="checkbox" value={service._id} name={service.name} id={service.name} />
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                    </div>}
-                    <div className={classes.input_container}>
-                        <label htmlFor="latitude">Latitude</label>
-                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.latitude} type="text" name="latitude" id="latitude" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="longitude">Longitude</label>
-                        <input className={classes.input} onChange={handleLocationOnChange} value={coordinates.longitude} type="text" name="longitude" id="longitude" />
-                    </div>
-                    {/* <button type='button' className={classes.button} onClick={handleLocationClick}>Get Location</button> */}
-
-                    <div className={classes.button_wrapper}>
-                        <button type='submit' className={classes.button}>{seller ? "Update" : "Add"}</button>
-                    </div>
-                </form>
+      <div className={classes.wrapper}>
+        <div className={classes.modal}>
+          <div className={classes.heading_container}>
+            <h4>{seller ? "Update" : "Add"} Seller</h4>
+            <div className={classes.d_flex}>
+              <RxCross2
+                onClick={() => setIsModalOpen(false)}
+                cursor={"pointer"}
+                size={26}
+              />
             </div>
+          </div>
+          <form onSubmit={handleOnSubmit} className={classes.form}>
+            <div className={classes.input_container}>
+              <label htmlFor="name">Name</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={sellerInfo.name}
+                type="text"
+                name="name"
+                id="name"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="legalName">Legal Name</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={sellerInfo.legalName}
+                type="text"
+                name="legalName"
+                id="legalName"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="gstNumber">GST Number</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={sellerInfo.gstNumber}
+                type="text"
+                name="gstNumber"
+                id="gstNumber"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="phone">Phone</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={sellerInfo.phone}
+                type="text"
+                name="phone"
+                id="phone"
+              />
+            </div>
+            {!seller && (
+              <div className={classes.input_container}>
+                <label htmlFor="password">Password</label>
+                <input
+                  className={classes.input}
+                  onChange={handleOnChange}
+                  value={sellerInfo.password}
+                  type="password"
+                  name="password"
+                  id="password"
+                />
+              </div>
+            )}
+            <div className={classes.input_container}>
+              <label htmlFor="state">State</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={address.state}
+                type="text"
+                name="state"
+                id="state"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="city">City</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={address.city}
+                type="text"
+                name="city"
+                id="city"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="addressLine">Address Line</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={address.addressLine}
+                type="text"
+                name="addressLine"
+                id="addressLine"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="pincode">Pincode</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={address.pincode}
+                type="text"
+                name="pincode"
+                id="pincode"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="name">Contact Person Name</label>
+              <input
+                className={classes.input}
+                onChange={handleContactPersonOnChange}
+                value={contactPerson.name}
+                type="text"
+                name="name"
+                id="name"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="phone">Contact Person Phone</label>
+              <input
+                className={classes.input}
+                onChange={handleContactPersonOnChange}
+                value={contactPerson.phone}
+                type="text"
+                name="phone"
+                id="phone"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="email">Contact Person Email</label>
+              <input
+                className={classes.input}
+                onChange={handleContactPersonOnChange}
+                value={contactPerson.email}
+                type="email"
+                name="email"
+                id="email"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="categoryId">Category</label>
+              <select
+                onChange={handleOnChange}
+                className={classes.input}
+                name="categoryId"
+                id="categoryId"
+                value={sellerInfo.categoryId}
+              >
+                <option value={"choose a category"}>choose a category</option>
+                {allCategories?.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {sellerInfo.categoryId && (
+              <div className={classes.input_container}>
+                <label htmlFor="servicesId">Services</label>
+                <div
+                  onClick={() => setIsMultiSelectOpen(!isMultiSelectOpen)}
+                  className={`${classes.input} ${classes.d_flex}`}
+                >
+                  select service
+                  <IoIosArrowDown />
+                </div>
+                {isMultiSelectOpen && (
+                  <div className={classes.multi_select}>
+                    {allCategoryServices?.map((service) => (
+                      <div key={service._id} className={classes.d_flex}>
+                        <label htmlFor={service.name}>{service.name}</label>
+                        <input
+                          checked={sellerInfo.services.some(
+                            (item) => item.serviceId === service._id
+                          )}
+                          onChange={handleServiceOnChange}
+                          type="checkbox"
+                          value={service._id}
+                          name={service.name}
+                          id={service.name}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            <div className={classes.input_container}>
+              <label htmlFor="latitude">Latitude</label>
+              <input
+                className={classes.input}
+                onChange={handleLocationOnChange}
+                value={coordinates.latitude}
+                type="text"
+                name="latitude"
+                id="latitude"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="longitude">Longitude</label>
+              <input
+                className={classes.input}
+                onChange={handleLocationOnChange}
+                value={coordinates.longitude}
+                type="text"
+                name="longitude"
+                id="longitude"
+              />
+            </div>
+            {/* <button type='button' className={classes.button} onClick={handleLocationClick}>Get Location</button> */}
+
+            <div className={classes.button_wrapper}>
+              <button type="submit" className={classes.button}>
+                {seller ? "Update" : "Add"}
+              </button>
+            </div>
+          </form>
         </div>
-    )
+      </div>
+    );
 }
 
 export default AddSellerModal

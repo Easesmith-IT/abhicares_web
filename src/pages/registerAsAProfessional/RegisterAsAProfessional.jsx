@@ -4,7 +4,7 @@ import ProfessionalImg from '../../assets/professional_img.png'
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import WebsiteWrapper from "../WebsiteWrapper";
-import { Helmet } from "react-helmet";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 const RegisterAsAProfessional = () => {
     const [registrationInfo, setRegistrationInfo] = useState({
         name: "",
@@ -68,6 +68,7 @@ const RegisterAsAProfessional = () => {
 
 
     return (
+        <HelmetProvider>
         <WebsiteWrapper>
                   <Helmet>
         <title>{seoData.title}</title>
@@ -126,7 +127,8 @@ const RegisterAsAProfessional = () => {
                     </div>
                 </div>
             </div>
-        </WebsiteWrapper>
+            </WebsiteWrapper>
+            </HelmetProvider>
     );
 };
 

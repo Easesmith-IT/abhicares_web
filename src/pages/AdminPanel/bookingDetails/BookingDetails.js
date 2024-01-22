@@ -73,8 +73,7 @@ const BookingDetails = () => {
     setIsPartnerModalOpen(true);
   };
 
-      const latitude = 0.1;
-      const longitude = 10.23;
+
   return (
     <>
       <Wrapper>
@@ -240,7 +239,12 @@ const BookingDetails = () => {
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
               ></iframe> */}
-              <MapComponent/>
+             {booking && <MapComponent
+                location={{
+                  user: booking.userAddress?.location?.coordinates,
+                  seller: booking.currentLocation?.location,
+                }}
+              />}
             </div>
           </div>
         </div>

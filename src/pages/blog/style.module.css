@@ -125,8 +125,9 @@
 }
 
 .recent-blogs-wrapper ul {
+  /* border: 2px solid; */
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   list-style-type: none;
   text-decoration: none;
 }

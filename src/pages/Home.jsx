@@ -8,7 +8,7 @@ import SpaForMen from "../components/SpaForMen/SpaForMen.jsx";
 import HomeRepairs from "../components/QuickHomeRepairs/HomeRepairs.jsx";
 import classes from "./Home.module.css";
 import SubCatPopUp from "../components/SubCategories/SubCatPopUp.jsx";
-import { Helmet } from "react-helmet";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import axios from "axios";
 // import Footer from "../components/Footer/Footer.jsx";
 // import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -51,6 +51,7 @@ export const Home = () => {
   }, []);
 
   return (
+    <HelmetProvider>
     <WebsiteWrapper>
       <Helmet>
         <title>{seoData.title}</title>
@@ -76,7 +77,8 @@ export const Home = () => {
           </div>
         </div>
       </div>
-    </WebsiteWrapper>
+      </WebsiteWrapper>
+      </HelmetProvider>
   );
 };
 export default Home;

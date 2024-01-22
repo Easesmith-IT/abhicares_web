@@ -5,7 +5,7 @@ import RecImg2 from "../../assets/recongized-by/rec-by-2.png";
 import RecImg3 from "../../assets/recongized-by/rec-by-3.png";
 import RecImg4 from "../../assets/recongized-by/rec-by-4.png";
 import RecImg5 from "../../assets/recongized-by/rec-by-5.png";
-import { Helmet } from "react-helmet";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import classes from "./AboutUs.module.css";
 
 import WebsiteWrapper from "../WebsiteWrapper";
@@ -32,6 +32,7 @@ const AboutUs = () => {
   }, []);
 
   return (
+    <HelmetProvider>
     <WebsiteWrapper>
       <Helmet>
         <title>{seoData.title}</title>
@@ -151,7 +152,8 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-    </WebsiteWrapper>
+      </WebsiteWrapper>
+      </HelmetProvider>
   );
 };
 

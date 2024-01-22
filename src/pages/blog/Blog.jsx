@@ -2,7 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import Carousel from "react-multi-carousel";
-import { Helmet } from "react-helmet";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import "react-multi-carousel/lib/styles.css";
 import { useState, useEffect } from 'react';
 import RecentBlogs from '../../components/RecentBlogs';
@@ -110,11 +110,12 @@ const Blogs = () => {
 
 
     return (
+        // <HelmetProvider>
         <WebsiteWrapper>
-                  <Helmet>
+                  {/* <Helmet>
         <title>{seoData.title}</title>
         <meta name="description" content={seoData.description} />
-      </Helmet>
+      </Helmet> */}
             <div className={classes["wrapper"]}>
                 <RecentBlogs />
                 <div className={classes['recent-blogs-wrapper']}>
@@ -158,7 +159,8 @@ const Blogs = () => {
                 </div>
 
             </div>
-        </WebsiteWrapper>
+            </WebsiteWrapper>
+            // </HelmetProvider>
     )
 }
 
