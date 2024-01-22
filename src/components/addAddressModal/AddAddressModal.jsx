@@ -36,6 +36,8 @@ const AddAddressModal = ({
     city: Data.city || ""
   });
 
+  const [message, setMessage] = useState("")
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setAddressInfo({ ...addressInfo, [name]: value });
@@ -45,10 +47,14 @@ const AddAddressModal = ({
     e.preventDefault();
     if (
       !addressInfo.addressLine ||
-      !addressInfo.pincode
+      !addressInfo.pincode ||
+      !addressInfo.city ||
+      !addressInfo.landmark
     ) {
+      setMessage("All fields are required.");
       return;
     }
+    setMessage("");
     if (Data) {
       try {
         const { data } = await axios.patch(
@@ -81,7 +87,7 @@ const AddAddressModal = ({
         setIsAddAddressModalOpen(false);
         console.log(data);
       } catch (error) {
-        toast.error(error?.response?.data?.message);
+        setMessage(error?.response?.data?.message);
         console.log(error);
       }
     }
@@ -217,6 +223,7 @@ const AddAddressModal = ({
                   ? "Use Current Location"
                   : "Location Disabled"}
               </button>
+              {message && <p style={{color:"red",marginTop:"10px"}}>*{message}</p>}
               {/* {status !== "granted" && <button onClick={getLocation}>Enable location</button>} */}
               <button type="submit" className={classes.button}>
                 {Data ? "Update" : "Proceed"}

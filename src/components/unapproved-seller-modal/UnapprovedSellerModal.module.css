@@ -11,8 +11,10 @@
     justify-content: center;
 }
 
-.modal{
-    max-width: 950px;
+.modal {
+    max-width: 850px;
+    background: red;
+    overflow-x: hidden;
     width: 80%;
     /* height: 80vh; */
     /* overflow: auto; */
@@ -21,33 +23,51 @@
     background: white;
 }
 
-.heading_container{
+.heading_container {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.contianer{
+.contianer {
     margin-top: 20px;
 }
 
-.contianer p{
+.contianer p {
     margin-bottom: 10px;
 }
 
-.contianer > div{
+.contianer>div {
     display: flex;
     gap: 20px;
 }
 
-.mt{
+.mt {
     margin-top: 20px;
 }
 
-.button{
+.button {
     border: none;
     border-radius: 6px;
     color: #fff;
     background: #000;
     padding: 4px 10px;
+}
+
+.report-body {
+    margin-top: 10px;
+    /* overflow: auto; */
+}
+
+.report-topic-heading,
+.item1 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+@media screen and (max-width:1000px) {
+    .modal {
+        overflow-x: auto;
+    }
 }

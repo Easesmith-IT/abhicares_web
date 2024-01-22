@@ -85,3 +85,9 @@
     background: #4b49ac;
     color: white;
 }
+
+.img_cotainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}

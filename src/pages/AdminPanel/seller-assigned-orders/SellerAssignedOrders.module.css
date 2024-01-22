@@ -32,6 +32,15 @@
     border-radius: 30px;
 }
 
+.active {
+    background: green;
+    color: white;
+}
+
+.inactive {
+    background: rgb(222, 16, 16);
+}
+
 .flex {
     display: flex;
     gap: 10px;

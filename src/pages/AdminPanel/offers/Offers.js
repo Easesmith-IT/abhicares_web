@@ -96,7 +96,7 @@ const Offers = () => {
                                     <div className={offersClasses.d_flex}>
                                         {/* <p>{format(new Date(offer.date), "dd-MM-yyyy")}</p> */}
                                         <p>{offer.offPercentage}%</p>
-                                        <p>{offer.status}</p>
+                                        <p className={`${classes.status} ${offer.status === "active" ? classes.active : classes.inactive}`}>{offer.status}</p>
                                     </div>
                                     <p className={offersClasses.p}>{parse(offer.description)}</p>
                                 </div>

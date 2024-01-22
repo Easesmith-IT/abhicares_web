@@ -65,7 +65,7 @@
     z-index: 5;
 }
 
-.d_flex label{
+.d_flex label {
     width: 100%;
 }
 
@@ -85,4 +85,23 @@
     border-radius: 6px;
     background: #4b49ac;
     color: white;
+}
+
+
+
+.service_container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.service {
+    background: #4b49ac;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }

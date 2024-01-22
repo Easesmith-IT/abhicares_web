@@ -14,8 +14,6 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
     const [userInfo, setUserInfo] = useState({
         name: user?.name || "",
         phone: user?.phone || "",
-        password: "",
-        gender: user?.gender || "",
         status: user?.status || true
     });
 
@@ -30,8 +28,6 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         e.preventDefault();
         if (!userInfo.name
             || !userInfo.phone
-            || !userInfo.password
-            || !userInfo.gender
             || !userInfo.status
         ) {
             alert("alert")
@@ -81,14 +77,6 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="phone">Phone</label>
                         <input className={classes.input} onChange={handleOnChange} value={userInfo.phone} type="number" name="phone" id="phone" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="password">Password</label>
-                        <input className={classes.input} onChange={handleOnChange} value={userInfo.password} type="password" name="password" id="password" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="gender">Gender</label>
-                        <input className={classes.input} onChange={handleOnChange} value={userInfo.gender} type="text" name="gender" id="gender" />
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="status">Status</label>

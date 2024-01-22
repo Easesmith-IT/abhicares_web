@@ -4,14 +4,16 @@ import { RxCross2 } from 'react-icons/rx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     const [info, setInfo] = useState({
         name: subAdmin?.name || "",
-        password: "",
+        password: subAdmin?.password || "",
         role: subAdmin?.role || "",
         adminId: subAdmin?.adminId || ""
     });
+    const [isPasswordHide, setIsPasswordHide] = useState(true);
 
     const { checkAuthorization } = useAuthorization();
 
@@ -35,6 +37,10 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     const handleOnChange = (e) => {
         const { name, value } = e.target;
         setInfo({ ...info, [name]: value });
+    };
+
+    const handlePasswordShowHide = () => {
+        setIsPasswordHide(!isPasswordHide);
     };
 
     const handlePermissionChange = (key, value) => {
@@ -89,8 +95,6 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
         }
     }
 
-    console.log("permissions", permissions);
-    console.log("info", info);
 
 
     return (
@@ -111,10 +115,11 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                         <label htmlFor="name">Name</label>
                         <input className={classes.input} onChange={handleOnChange} value={info.name} type="text" name="name" id="name" placeholder="enter your name" />
                     </div>
-                    <div className={classes.input_container}>
+                    {!subAdmin && <div className={classes.input_container}>
                         <label htmlFor="password">Password</label>
-                        <input className={classes.input} onChange={handleOnChange} value={info.password} type="password" name="password" id="password" placeholder="enter your password" />
-                    </div>
+                        <input className={classes.input} onChange={handleOnChange} value={info.password} type={isPasswordHide ? "password" : "text"} name="password" id="password" placeholder="enter your password" />
+                        {isPasswordHide ? <FaEyeSlash className={classes.icon} onClick={handlePasswordShowHide} /> : <FaEye className={classes.icon} onClick={handlePasswordShowHide} />}
+                    </div>}
                     <div className={classes.input_container}>
                         <label htmlFor="role">Role</label>
                         <select
@@ -141,8 +146,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                                                     handlePermissionChange(key, 'read')
                                                 }
                                                 type="radio"
-                                                name={key}
-                                                id={key}
+                                                name={`${key}-read`}
+                                                id={`${key}-read`}
                                                 value={permissions[key]}
                                                 checked={permissions[key] === 'read'}
                                             />
@@ -154,8 +159,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                                                     handlePermissionChange(key, 'write')
                                                 }
                                                 type="radio"
-                                                name={key}
-                                                id={key}
+                                                name={`${key}-write`}
+                                                id={`${key}-write`}
                                                 value={permissions[key]}
                                                 checked={permissions[key] === 'write'}
                                             />
@@ -167,8 +172,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                                                     handlePermissionChange(key, 'none')
                                                 }
                                                 type="radio"
-                                                name={key}
-                                                id={key}
+                                                name={`${key}-none`}
+                                                id={`${key}-none`}
                                                 value={permissions[key]}
                                                 checked={permissions[key] === 'none'}
                                             />

@@ -160,9 +160,9 @@
   min-height: 91vh;
   width: 250px;
   background-color: var(--background-color2);
-  position: absolute;
-  top: 0px;
-  left: 00;
+  /* position: sticky;
+  top: 190px; */
+  /* left: 00; */
   box-shadow: 1px 1px 10px rgba(198, 189, 248, 0.825);
   display: flex;
   flex-direction: column;
@@ -178,6 +178,9 @@
   overflow-y: scroll;
   overflow-x: hidden;
   transition: all 0.5s ease-in-out;
+  position: sticky;
+  top: 70px;
+  left: 0;
 }
 
 .navcontainer::-webkit-scrollbar {
@@ -398,6 +401,43 @@
   font-size: 14px;
   letter-spacing: 0px;
   font-weight: 600;
+}
+
+.status {
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.Cancelled {
+  background: #de6210;
+}
+
+.Completed {
+  background: green;
+  color: white;
+}
+
+.alloted {
+  background: rgb(69, 204, 83);
+  color: white;
+}
+
+.pending {
+  background: rgb(255, 230, 0);
+}
+
+.OutOfDelivery {
+  background: rgb(95, 95, 255);
+  color: white;
+}
+
+.active {
+  background: green;
+  color: white;
+}
+
+.inactive {
+  background: #de6210;
 }
 
 

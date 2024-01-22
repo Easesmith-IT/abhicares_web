@@ -17,14 +17,40 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         price: product?.price || "",
         offerPrice: product?.offerPrice || "",
         img: product?.imageUrl || ["https://www.shutterstock.com/image-photo/interior-hotel-bathroom-260nw-283653278.jpg"],
+        previewImages: []
     });
+    const [isImgPrev, setIsImgPrev] = useState(product ? false : true)
 
 
     const getImage = (e) => {
         e.preventDefault();
-        const uploadedImage = e.target.files;
-        setProductInfo({ ...productInfo, img: uploadedImage });
+        setIsImgPrev(() => true);
+        const uploadedImage = Array.from(e.target.files);
+        if (uploadedImage.length > 3) {
+            toast.error("Cannot upload files more than 3");
+            e.target.value = null;
+            return;
+        }
+
+        const readFile = (img) => {
+            return new Promise((resolve) => {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(img);
+                fileReader.addEventListener("load", function () {
+                    resolve({ img: this.result });
+                });
+            });
+        };
+
+        Promise.all(uploadedImage.map(img => readFile(img)))
+            .then(images => {
+                setProductInfo((prev) => ({ ...prev, previewImages: [...productInfo.previewImages, ...images] }));
+                setProductInfo((prev) => ({ ...prev, img: uploadedImage }));
+            });
     }
+
+    console.log("state", isImgPrev);
+    console.log("img prev", productInfo);
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -101,9 +127,21 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                         <ReactQuill theme="snow" value={description} onChange={setDescription} />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="img">image</label>
-                        <input onChange={getImage} multiple type="file" name="img" id="img" />
+                        <label htmlFor="img">Image</label>
+                        <input onChange={getImage} multiple={2} type="file" name="img" id="img" />
                     </div>
+                    {isImgPrev &&
+                        <div className={classes.img_cotainer}>
+                            {productInfo?.previewImages?.map((item, index) => (
+                                <img key={index} width={190} height={150} src={item.img} alt="product" />
+                            ))}
+                        </div>}
+                    {!isImgPrev &&
+                        <div className={classes.img_cotainer}>
+                            {productInfo?.img?.map((img, index) => (
+                                <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                            ))}
+                        </div>}
                     <div className={classes.button_wrapper}>
                         <button className={classes.button}>{product ? "Update" : "Add"}</button>
                     </div>

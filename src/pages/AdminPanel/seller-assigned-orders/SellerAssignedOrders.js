@@ -112,7 +112,7 @@ const SellerAssignedOrders = () => {
                             <p><b>Gst Number:</b> {state.gstNumber}</p>
                             <p><b>Phone</b>: {state.phone}</p>
                             <p><b>Legal Name:</b> {state.legalName}</p>
-                            <p><b>Status:</b> {state.status ? "Active" : "InActive"}</p>
+                            <p><b>Status:</b> <span className={`${classes.status} ${state.status === "active" ? sellerAssignedOrdersClasses.active : sellerAssignedOrdersClasses.inactive}`}>{state.status}</span></p>
                             <p><b>Address:</b> {`${state.address.addressLine}, ${state.address.city}, ${state.address.state}, ${state.address.pincode}`}</p>
                             <p className={classes.mt}><b>Contact Person Email:</b> <span style={{ textDecoration: "underline" }}>{state.contactPerson.email}</span></p>
                             <p><b>Contact Person Name:</b> {state.contactPerson.name}</p>
