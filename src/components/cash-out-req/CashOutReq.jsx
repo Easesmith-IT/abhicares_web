@@ -3,7 +3,7 @@ import classes from './CashOutReq.module.css'
 import UpdateCashoutReqModal from '../update-cashoutReq-modal/UpdateCashoutReqModal';
 import { format } from 'date-fns';
 
-const CashOutReq = ({ item = "", getSellerWallet }) => {
+const CashOutReq = ({ item = "", getSellerWallet,setIsViewWalletModalOpen }) => {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
     return (
@@ -24,7 +24,8 @@ const CashOutReq = ({ item = "", getSellerWallet }) => {
                 <UpdateCashoutReqModal
                     setIsUpdateModalOpen={setIsUpdateModalOpen}
                     cashOutReq={item}
-                    getSellerWallet={getSellerWallet}
+                getSellerWallet={getSellerWallet}
+                setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                 />
             }
         </>

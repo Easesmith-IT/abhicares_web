@@ -38,36 +38,35 @@ const WalletViewModal = ({ setIsViewWalletModalOpen,id,getSellerWallet }) => {
 
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.modal}>
-                <div className={classes.heading_container}>
-                    <h4>Wallet</h4>
-                    <div className={classes.d_flex}>
-                        <RxCross2 onClick={() => setIsViewWalletModalOpen(false)} cursor={"pointer"} size={26} />
-                    </div>
-                </div>
-                {isLoading
-                    && cashOutRequests.length === 0
-                    && <Loader />
-                }
-                {!isLoading
-                    && cashOutRequests.length === 0
-                    && <p>No cashOut Requests found</p>
-                }
-                <div className={classes.tran_contianer}>
-                    {
-                        cashOutRequests?.map((item) => (
-                            <CashOutReq
-                                key={item._id}
-                                item={item}
-                                getSellerWallet={getSellerWallet}
-                            />
-                        ))
-                    }
-                </div>
+      <div className={classes.wrapper}>
+        <div className={classes.modal}>
+          <div className={classes.heading_container}>
+            <h4>Wallet</h4>
+            <div className={classes.d_flex}>
+              <RxCross2
+                onClick={() => setIsViewWalletModalOpen(false)}
+                cursor={"pointer"}
+                size={26}
+              />
             </div>
+          </div>
+          {isLoading && cashOutRequests.length === 0 && <Loader />}
+          {!isLoading && cashOutRequests.length === 0 && (
+            <p>No cashOut Requests found</p>
+          )}
+          <div className={classes.tran_contianer}>
+            {cashOutRequests?.map((item) => (
+              <CashOutReq
+                key={item._id}
+                item={item}
+                getSellerWallet={getSellerWallet}
+                setIsViewWalletModalOpen={setIsViewWalletModalOpen}
+              />
+            ))}
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 
 export default WalletViewModal

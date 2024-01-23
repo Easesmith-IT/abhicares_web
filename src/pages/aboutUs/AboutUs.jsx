@@ -1,25 +1,43 @@
-import LeaderCard from "../../components/leaderCard/LeaderCard";
-import { company } from "../../data/company";
-import { investers } from "../../data/invester";
-import { leaders } from "../../data/leader";
-
-import RecImg1 from '../../assets/recongized-by/rec-by-1.jpg'
-import RecImg2 from '../../assets/recongized-by/rec-by-2.png'
-import RecImg3 from '../../assets/recongized-by/rec-by-3.png'
-import RecImg4 from '../../assets/recongized-by/rec-by-4.png'
-import RecImg5 from '../../assets/recongized-by/rec-by-5.png'
-
+import { useState, useEffect } from "react";
+import axios from "axios";
+import RecImg1 from "../../assets/recongized-by/rec-by-1.jpg";
+import RecImg2 from "../../assets/recongized-by/rec-by-2.png";
+import RecImg3 from "../../assets/recongized-by/rec-by-3.png";
+import RecImg4 from "../../assets/recongized-by/rec-by-4.png";
+import RecImg5 from "../../assets/recongized-by/rec-by-5.png";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import classes from "./AboutUs.module.css";
 
 import WebsiteWrapper from "../WebsiteWrapper";
 
-import { useNavigate } from "react-router";
-
-
 const AboutUs = () => {
-  
+  const [seoData, setSeoData] = useState({
+    title: "",
+    description: "",
+  });
+  const getSeoForAboutPage = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_CMS_URL}/get-seo-by-page-user-side?page=about-us`
+      );
+      const { seoTitle, seoDescription } = data?.seo;
+      setSeoData({ title: seoTitle, description: seoDescription });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSeoForAboutPage();
+  }, []);
+
   return (
+    <HelmetProvider>
     <WebsiteWrapper>
+      <Helmet>
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
+      </Helmet>
       <section className={classes.about_section}>
         <div className={classes.heading_div}>
           <h1 className={classes.heading}>AboutUs</h1>
@@ -134,7 +152,8 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-    </WebsiteWrapper>
+      </WebsiteWrapper>
+      </HelmetProvider>
   );
 };
 

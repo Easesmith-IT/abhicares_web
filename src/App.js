@@ -12,7 +12,7 @@ import ProductPage from './pages/productPage/ProductPage';
 import CheckoutPage from './pages/checkoutPage/CheckoutPage';
 import RegisterAsAProfessional from './pages/registerAsAProfessional/RegisterAsAProfessional';
 import TermsAndConditions from "./pages/termsAndConditions/TermsAndConditions";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 import { GoogleApiWrapper } from "google-maps-react";
 
 
@@ -217,7 +217,7 @@ function App() {
 
         </Routes>
       </Router>
-      <Toaster />
+      {/* <Toaster /> */}
     </>
   );
 }

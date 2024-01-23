@@ -2,6 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import Carousel from "react-multi-carousel";
+import { Helmet,HelmetProvider  } from "react-helmet-async";
 import "react-multi-carousel/lib/styles.css";
 import { useState, useEffect } from 'react';
 import RecentBlogs from '../../components/RecentBlogs';
@@ -77,6 +78,26 @@ const Blogs = () => {
         fetchData();
     }, []);
 
+      const [seoData, setSeoData] = useState({
+    title: "",
+    description: "",
+  });
+  const getSeoForAboutPage = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_CMS_URL}/get-seo-by-page-user-side?page=blogs`
+      );
+      const { seoTitle, seoDescription } = data?.seo;
+      setSeoData({ title: seoTitle, description: seoDescription });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSeoForAboutPage();
+  }, []);
+
     if (loading) {
         return (
             <WebsiteWrapper>
@@ -90,7 +111,12 @@ const Blogs = () => {
 
 
     return (
+        // <HelmetProvider>
         <WebsiteWrapper>
+                  {/* <Helmet>
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
+      </Helmet> */}
             <div className={classes["wrapper"]}>
                 <RecentBlogs />
                 <div className={classes['recent-blogs-wrapper']}>
@@ -134,7 +160,8 @@ const Blogs = () => {
                 </div>
 
             </div>
-        </WebsiteWrapper>
+            </WebsiteWrapper>
+            // </HelmetProvider>
     )
 }
 

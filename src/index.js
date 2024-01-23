@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { GoogleApiWrapper } from "google-maps-react";
+import { Toaster } from "react-hot-toast";
 
 const AppWithGoogleApi = GoogleApiWrapper({
   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
@@ -16,6 +17,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AppWithGoogleApi />
+      <Toaster />
     </Provider>
   </React.StrictMode>
 );

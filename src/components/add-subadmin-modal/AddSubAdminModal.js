@@ -136,7 +136,7 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="">permissions</label>
                         <div>
-                            {Object.keys(permissions).map((key) => (
+                            {Object.keys(permissions).map((key,index) => (
                                 <div key={key} className={classes.permission}>
                                     <p>{key}</p>
                                     <div className={classes.d_flex}>

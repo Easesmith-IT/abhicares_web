@@ -12,7 +12,7 @@ import { MdClose } from "react-icons/md";
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const { checkAuthorization } = useAuthorization();
-
+console.log('seller',seller)
     const [sellerInfo, setSellerInfo] = useState({
         name: seller?.name || "",
         legalName: seller?.legalName || "",
@@ -85,6 +85,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+            console.log('categories',data.data)
             setAllCategories(data.data);
         } catch (error) {
             console.log(error);
@@ -97,6 +98,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
     const getCategoryServices = async () => {
         try {
+            console.log(sellerInfo);
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`, { withCredentials: true });
             console.log("allCategoryServices", data.data);
             setAllCategoryServices(data.data);
@@ -313,13 +315,15 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                     </div>
                     {/* <button type='button' className={classes.button} onClick={handleLocationClick}>Get Location</button> */}
 
-                    <div className={classes.button_wrapper}>
-                        <button type='submit' className={classes.button}>{seller ? "Update" : "Add"}</button>
-                    </div>
-                </form>
+            <div className={classes.button_wrapper}>
+              <button type="submit" className={classes.button}>
+                {seller ? "Update" : "Add"}
+              </button>
             </div>
+          </form>
         </div>
-    )
+      </div>
+    );
 }
 
 export default AddSellerModal
