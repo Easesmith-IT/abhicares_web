@@ -44,13 +44,11 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
         Promise.all(uploadedImage.map(img => readFile(img)))
             .then(images => {
-                setProductInfo((prev) => ({ ...prev, previewImages: [...productInfo.previewImages, ...images] }));
+                setProductInfo((prev) => ({ ...prev, previewImages: [...images] }));
                 setProductInfo((prev) => ({ ...prev, img: uploadedImage }));
             });
     }
 
-    console.log("state", isImgPrev);
-    console.log("img prev", productInfo);
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
