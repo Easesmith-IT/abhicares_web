@@ -41,6 +41,7 @@ const ServiceInfoPage = () => {
     const { state } = useLocation();
     const params = useParams();
     const { checkAuthorization } = useAuthorization();
+    console.log("state", state);
 
     const handleProductInfoModal = (e, product) => {
         e.stopPropagation();
@@ -146,7 +147,7 @@ const ServiceInfoPage = () => {
                         <h4>{state.name}</h4>
                         <div>
                             <p>Starting Price: ₹{state.startingPrice}</p>
-                            <p>Total Products: {state.totalProducts}</p>
+                            {/* <p>Total Products: {state.totalProducts}</p> */}
                         </div>
                         <p>{parse(state.description)}</p>
                     </div>

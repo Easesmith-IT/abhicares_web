@@ -3,6 +3,7 @@ import classes from '../../pages/AdminPanel/Shared.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { format } from 'date-fns';
 import { useRef } from 'react';
+import html2PDF from 'jspdf-html2canvas';
 
 const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
 
@@ -17,16 +18,16 @@ const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
         { phone: order.user.phone },
     ])
 
-    console.log("monthlyOrders", monthlyOrders);
-    console.log("orders", data);
 
-    const _export = useRef(null);
-    const excelExport = () => {
-        if (_export.current !== null) {
-            _export.current.save();
-        }
-    };
-
+    const downloadInvoice = () => {
+        html2PDF(document.querySelector("#table"), {
+            jsPDF: {
+                format: 'a4',
+            },
+            imageType: 'image/jpeg',
+            output: './pdf/generate.pdf'
+        });
+    }
 
     return (
         <div className={monthlyOrderModalClasses.wrapper}>
@@ -38,33 +39,34 @@ const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
                     </div>
                 </div>
                 <div className={classes["report-body"]}>
-                    <table className=''>
-                        <thead>
-                            <tr>
-                                <th style={{ textAlign: "center" }}>OrderId</th>
-                                <th style={{ textAlign: "center" }}>Order Date</th>
-                                <th style={{ textAlign: "center" }}>Total Value</th>
-                                <th style={{ textAlign: "center" }}>Order Time</th>
-                                <th style={{ textAlign: "center" }}>User Name</th>
-                                <th style={{ textAlign: "center" }}>User Mobile</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {monthlyOrders.map((order) => (
+                    <div id='table' className={monthlyOrderModalClasses.table_wrapper}>
+                        <table border={"2px"} className={monthlyOrderModalClasses.table}>
+                            <thead>
                                 <tr>
-                                    <td style={{ width: "210px" }}>{order._id}</td>
-                                    <td style={{ width: "160px" }}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</td>
-                                    <td>{order.orderValue}</td>
-                                    <td>{format(new Date(order.createdAt), "hh.mm aaaaa'm'")}</td>
-                                    <td>{order.user.name}</td>
-                                    <td>{order.user.phone}</td>
+                                    <th>OrderId</th>
+                                    <th>Order Date</th>
+                                    <th>Total Value</th>
+                                    <th>Order Time</th>
+                                    <th>User Name</th>
+                                    <th>User Mobile</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    {/* <Spreadsheet data={data} columnLabels={["OrderId", "Order Date", "Order Quantity", "Total Value", "Order Time", "User Name", "User Mobile"]} /> */}
+                            </thead>
+                            <tbody>
+                                {monthlyOrders.map((order) => (
+                                    <tr>
+                                        <td style={{ width: "210px",paddingInline:"10px" }}>{order._id}</td>
+                                        <td style={{ width: "160px" }}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</td>
+                                        <td>{order.orderValue}</td>
+                                        <td>{format(new Date(order.createdAt), "hh.mm aaaaa'm'")}</td>
+                                        <td>{order.user.name}</td>
+                                        <td>{order.user.phone}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <div className={monthlyOrderModalClasses.btn_container}>
-                        <button className={monthlyOrderModalClasses.button} onClick={excelExport}>Download</button>
+                        <button className={monthlyOrderModalClasses.button} onClick={downloadInvoice}>Download</button>
                     </div>
                 </div>
             </div>

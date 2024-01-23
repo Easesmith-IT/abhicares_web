@@ -31,7 +31,7 @@ const Order = ({ order, index }) => {
             <p style={{color:'grey'}}>#{order._id}</p>
             {/* <p>{`${order.products[0].product.name}, ${order.products[1] && order.products[1].product.name}, ...`}</p> */}
             <p>{format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
-            <p>Qty: 1</p>
+            <p>Order Value : ₹{order.orderValue}</p>
           </div>
         </div>
         <hr />

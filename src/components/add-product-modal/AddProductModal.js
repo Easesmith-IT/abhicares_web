@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import classes from './AddProductModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import { MdClose } from 'react-icons/md';
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
     const { checkAuthorization } = useAuthorization();
@@ -22,6 +23,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
     const [isImgPrev, setIsImgPrev] = useState(product ? false : true)
 
 
+    const useid = useId();
+
     const getImage = (e) => {
         e.preventDefault();
         setIsImgPrev(() => true);
@@ -32,28 +35,46 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
             return;
         }
 
-        const readFile = (img) => {
+        const readFile = (img, i) => {
             return new Promise((resolve) => {
                 const fileReader = new FileReader();
                 fileReader.readAsDataURL(img);
                 fileReader.addEventListener("load", function () {
-                    resolve({ img: this.result });
+                    resolve({ img: this.result, id: i });
                 });
             });
         };
 
-        Promise.all(uploadedImage.map(img => readFile(img)))
+        Promise.all(uploadedImage.map((img, i) => readFile(img, i)))
             .then(images => {
                 setProductInfo((prev) => ({ ...prev, previewImages: [...images] }));
                 setProductInfo((prev) => ({ ...prev, img: uploadedImage }));
             });
     }
 
+    console.log("prev state", productInfo.previewImages);
+
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
         setProductInfo({ ...productInfo, [name]: value });
     }
+
+    const handleSelectImgDelete = (index, id) => {
+        let imgArr = [...productInfo.img].filter((_, i) => i !== index);
+        let prevImgArr = [...productInfo.previewImages].filter((item) => item.id !== id);
+        console.log("prev", prevImgArr);
+        console.log("db", imgArr);
+
+        setProductInfo({ ...productInfo, img: imgArr, previewImage: prevImgArr });
+    }
+
+    const handleDbImgDelete = (Img) => {
+        let arr = [...productInfo.img].filter((item) => item !== Img);
+
+        setProductInfo({ ...productInfo, img: arr });
+    }
+
     const navigate = useNavigate()
 
     const handleOnSubmit = async (e) => {
@@ -131,13 +152,19 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                     {isImgPrev &&
                         <div className={classes.img_cotainer}>
                             {productInfo?.previewImages?.map((item, index) => (
-                                <img key={index} width={190} height={150} src={item.img} alt="product" />
+                                <div key={index}>
+                                    <img width={190} height={150} src={item.img} alt="product" />
+                                    <MdClose onClick={() => handleSelectImgDelete(index, item.id)} className={classes.icon} />
+                                </div>
                             ))}
                         </div>}
                     {!isImgPrev &&
                         <div className={classes.img_cotainer}>
                             {productInfo?.img?.map((img, index) => (
-                                <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                                <div key={index}>
+                                    <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                                    <MdClose onClick={() => handleDbImgDelete(img)} className={classes.icon} />
+                                </div>
                             ))}
                         </div>}
                     <div className={classes.button_wrapper}>
