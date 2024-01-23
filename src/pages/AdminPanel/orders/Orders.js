@@ -57,9 +57,9 @@ const Orders = () => {
                 },
                 { withCredentials: true }
             );
-            if (data.data.length > 0) {
+            // if (data.data.length > 0) {
                 setIsModalOpen(true);
-            }
+            // }
             setMonthlyOrders(data.data);
             console.log('orders-month', data);
         } catch (error) {

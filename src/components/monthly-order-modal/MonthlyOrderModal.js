@@ -38,37 +38,40 @@ const MonthlyOrderModal = ({ setIsModalOpen, monthlyOrders }) => {
                         <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
                     </div>
                 </div>
-                <div className={classes["report-body"]}>
-                    <div id='table' className={monthlyOrderModalClasses.table_wrapper}>
-                        <table border={"2px"} className={monthlyOrderModalClasses.table}>
-                            <thead>
-                                <tr>
-                                    <th>OrderId</th>
-                                    <th>Order Date</th>
-                                    <th>Total Value</th>
-                                    <th>Order Time</th>
-                                    <th>User Name</th>
-                                    <th>User Mobile</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {monthlyOrders.map((order) => (
+                {monthlyOrders.length === 0 && <p style={{padding:"0px 0px 20px 20px"}}>No orders found.</p>}
+
+                {monthlyOrders.length > 0 &&
+                    <div className={classes["report-body"]}>
+                        <div id='table' className={monthlyOrderModalClasses.table_wrapper}>
+                            <table border={"2px"} className={monthlyOrderModalClasses.table}>
+                                <thead>
                                     <tr>
-                                        <td style={{ width: "210px",paddingInline:"10px" }}>{order._id}</td>
-                                        <td style={{ width: "160px" }}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</td>
-                                        <td>{order.orderValue}</td>
-                                        <td>{format(new Date(order.createdAt), "hh.mm aaaaa'm'")}</td>
-                                        <td>{order.user.name}</td>
-                                        <td>{order.user.phone}</td>
+                                        <th>OrderId</th>
+                                        <th>Order Date</th>
+                                        <th>Total Value</th>
+                                        <th>Order Time</th>
+                                        <th>User Name</th>
+                                        <th>User Mobile</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className={monthlyOrderModalClasses.btn_container}>
-                        <button className={monthlyOrderModalClasses.button} onClick={downloadInvoice}>Download</button>
-                    </div>
-                </div>
+                                </thead>
+                                <tbody>
+                                    {monthlyOrders.map((order) => (
+                                        <tr>
+                                            <td style={{ width: "210px", paddingInline: "10px" }}>{order._id}</td>
+                                            <td style={{ width: "160px" }}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</td>
+                                            <td>{order.orderValue}</td>
+                                            <td>{format(new Date(order.createdAt), "hh.mm aaaaa'm'")}</td>
+                                            <td>{order.user.name}</td>
+                                            <td>{order.user.phone}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className={monthlyOrderModalClasses.btn_container}>
+                            <button className={monthlyOrderModalClasses.button} onClick={downloadInvoice}>Download</button>
+                        </div>
+                    </div>}
             </div>
         </div>
     )

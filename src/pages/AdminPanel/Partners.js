@@ -34,7 +34,7 @@ const Partners = () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
       setAllSellers(data.data);
-      console.log("seller",data);
+      console.log("seller", data);
     } catch (error) {
       console.log(error);
     }
@@ -79,6 +79,7 @@ const Partners = () => {
 
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials: true });
+      console.log("search", data);
       setAllSellers(data.data);
     } catch (error) {
       console.log(error);

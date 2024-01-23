@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import classes from './AddProductModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -17,13 +17,18 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         name: product?.name || "",
         price: product?.price || "",
         offerPrice: product?.offerPrice || "",
-        img: product?.imageUrl || ["https://www.shutterstock.com/image-photo/interior-hotel-bathroom-260nw-283653278.jpg"],
+        img: product?.imageUrl || [],
         previewImages: []
     });
     const [isImgPrev, setIsImgPrev] = useState(product ? false : true)
+    const fileInputRef = useRef(null);
 
 
-    const useid = useId();
+    const generateTwoDigitID = () => {
+        const randomID = Math.floor(Math.random() * 90) + 10;
+
+        return randomID;
+    }
 
     const getImage = (e) => {
         e.preventDefault();
@@ -35,17 +40,17 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
             return;
         }
 
-        const readFile = (img, i) => {
+        const readFile = (img) => {
             return new Promise((resolve) => {
                 const fileReader = new FileReader();
                 fileReader.readAsDataURL(img);
                 fileReader.addEventListener("load", function () {
-                    resolve({ img: this.result, id: i });
+                    resolve({ img: this.result, id: generateTwoDigitID() });
                 });
             });
         };
 
-        Promise.all(uploadedImage.map((img, i) => readFile(img, i)))
+        Promise.all(uploadedImage.map((img) => readFile(img)))
             .then(images => {
                 setProductInfo((prev) => ({ ...prev, previewImages: [...images] }));
                 setProductInfo((prev) => ({ ...prev, img: uploadedImage }));
@@ -53,6 +58,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
     }
 
     console.log("prev state", productInfo.previewImages);
+    console.log("img state", productInfo.img);
 
 
     const handleOnChange = (e) => {
@@ -61,12 +67,16 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
     }
 
     const handleSelectImgDelete = (index, id) => {
+        console.log("id", id);
         let imgArr = [...productInfo.img].filter((_, i) => i !== index);
         let prevImgArr = [...productInfo.previewImages].filter((item) => item.id !== id);
         console.log("prev", prevImgArr);
         console.log("db", imgArr);
+        if (fileInputRef.current && prevImgArr.length === 0) {
+            fileInputRef.current.value = null;
+        }
 
-        setProductInfo({ ...productInfo, img: imgArr, previewImage: prevImgArr });
+        setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr });
     }
 
     const handleDbImgDelete = (Img) => {
@@ -79,7 +89,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!productInfo.name || !productInfo.price || !productInfo.offerPrice || !productInfo.img || !description) {
+        if (!productInfo.name || !productInfo.price || !productInfo.offerPrice || productInfo.img.length === 0 || !description) {
+            toast.error("All the fields are required");
             return;
         }
         const formData = new FormData();
@@ -147,7 +158,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="img">Image</label>
-                        <input onChange={getImage} multiple={2} type="file" name="img" id="img" />
+                        <input ref={fileInputRef} onChange={getImage} multiple={2} type="file" name="img" id="img" />
                     </div>
                     {isImgPrev &&
                         <div className={classes.img_cotainer}>

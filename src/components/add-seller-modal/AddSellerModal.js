@@ -191,6 +191,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             try {
                 const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
                 toast.success("Seller added successfully");
+                console.log("add seller",data);
                 getAllSellers();
                 setIsModalOpen(false);
             } catch (error) {
@@ -265,7 +266,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                         <select onChange={handleOnChange} value={sellerInfo.status} className={classes.input} name="status" id="status">
                             <option value="">Select</option>
                             <option value="active">Active</option>
-                            <option value="inactive">In Active</option>
+                            <option value="in-review">In Review</option>
                         </select>
                     </div>
                     <div className={classes.input_container}>

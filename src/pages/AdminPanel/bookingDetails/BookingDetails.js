@@ -6,6 +6,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
 import useAuthorization from "../../../hooks/useAuthorization";
+import toast from "react-hot-toast";
 
 const BookingDetails = () => {
   // const { state } = useLocation();
@@ -44,6 +45,7 @@ const BookingDetails = () => {
         { status: e.target.value },
         { withCredentials: true }
       );
+      toast.success("Booking status changed successfully");
       console.log("status", data);
       getBooking();
     } catch (error) {
@@ -200,11 +202,11 @@ const BookingDetails = () => {
                   <h5>Customer Details</h5>
                   <div className={classes.d_flex}>
                     <p>Customer Name :</p>
-                    <p>{booking?.user?.name}</p>
+                    <p>{booking?.userId?.name}</p>
                   </div>
                   <div className={classes.d_flex}>
                     <p>Customer Phone :</p>
-                    <p>{booking?.user?.phone}</p>
+                    <p>{booking?.userId?.phone}</p>
                   </div>
                   <div className={classes.d_flex}>
                     <p>Customer Address :</p>
