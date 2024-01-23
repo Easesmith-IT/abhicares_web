@@ -4,7 +4,7 @@ import classes from "./ProductPage.module.css";
 import loaderClasses from "../../components/loader/Loader.module.css";
 import loader from "../../assets/rolling-white.gif";
 import axios from "axios";
-import { Helmet,HelmetProvider  } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import SubService from "../../components/productPage/SubService";
 import CartItem from "../../components/checkout/CartItem";
 
@@ -85,22 +85,22 @@ const ProductPage = () => {
 
   return (
     <HelmetProvider>
-    <WebsiteWrapper>
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-      </Helmet>
-      <section className={classes.product_page}>
-        <div className={classes.container}>
-          <h1 className={classes.heading}>{state}</h1>
-          <div className={classes.booking}>
-            {/* <div className={classes.star_container}>
+      <WebsiteWrapper>
+        <Helmet>
+          <title>{seoData.title}</title>
+          <meta name="description" content={seoData.description} />
+        </Helmet>
+        <section className={classes.product_page}>
+          <div className={classes.container}>
+            <h1 className={classes.heading}>{state}</h1>
+            <div className={classes.booking}>
+              {/* <div className={classes.star_container}>
                             <BsStarFill color="white" size={15} />
                         </div> */}
-            {/* <span className={classes.booking_span}>4.83 (4.0 M bookings)</span> */}
-          </div>
+              {/* <span className={classes.booking_span}>4.83 (4.0 M bookings)</span> */}
+            </div>
 
-          {/* <div className={classes.min_lg_hidden}>
+            {/* <div className={classes.min_lg_hidden}>
                         <div className={classes.offer}>
                             <div className={classes.offer_left_div}>
                                 <div className={classes.offer_img_outer_div}>
@@ -114,86 +114,86 @@ const ProductPage = () => {
                         </div>
                     </div> */}
 
-          <div className={classes.wrapper}>
-            <div className={classes.selected_service}>
-              <div>
-                <h2 className={classes.selected_service_h2}>
-                  Bestseller Packages
-                </h2>
-                <div className={classes.sub_services_container}>
-                  {!isPackageLoading && allPackages?.length === 0 && (
-                    <p>No packages found</p>
+            <div className={classes.wrapper}>
+              <div className={classes.selected_service}>
+                <div>
+                  <h2 className={classes.selected_service_h2}>
+                    Bestseller Packages
+                  </h2>
+                  <div className={classes.sub_services_container}>
+                    {!isPackageLoading && allPackages?.length === 0 && (
+                      <p>No packages found</p>
+                    )}
+
+                    {isPackageLoading && allPackages?.length === 0 && <Loader />}
+
+                    {allPackages?.map((singlePackage) => (
+                      <SubService
+                        key={singlePackage._id}
+                        singlePackage={singlePackage}
+                        serviceId={params?.serviceId}
+                        setIsCartLoading={setIsCartLoading}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className={classes.products_cotainer}>
+                  <h2>Products</h2>
+                  {!isProductLoading && allProducts?.length === 0 && (
+                    <p>No products found</p>
                   )}
 
-                  {isPackageLoading && allPackages?.length === 0 && <Loader />}
+                  {isProductLoading && allProducts?.length === 0 && <Loader />}
 
-                  {allPackages?.map((singlePackage) => (
-                    <SubService
-                      key={singlePackage._id}
-                      singlePackage={singlePackage}
-                      serviceId={params?.serviceId}
+                  {allProducts?.map((product) => (
+                    <Product
+                      product={product}
                       setIsCartLoading={setIsCartLoading}
                     />
                   ))}
                 </div>
               </div>
-              <div className={classes.products_cotainer}>
-                <h2>Products</h2>
-                {!isProductLoading && allProducts?.length === 0 && (
-                  <p>No products found</p>
-                )}
 
-                {isProductLoading && allProducts?.length === 0 && <Loader />}
-
-                {allProducts?.map((product) => (
-                  <Product
-                    product={product}
-                    setIsCartLoading={setIsCartLoading}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className={classes.sm_cart}>
-              <span className={classes.sm_cart_span}>₹{cart.totalPrice}</span>
               {cart?.items?.length !== 0 && (
-                <button
-                  onClick={() => navigate("/checkout")}
-                  className={`${classes.button} ${classes.view_cart_button}`}
-                >
-                  View Cart
-                </button>
-              )}
-            </div>
-            <div
-              className={`${classes.right_section} ${classes.max_lg_hidden}`}
-            >
-              <div className={classes.cart_detail_box}>
-                {cart?.items?.length !== 0 && (
+                <div className={classes.sm_cart}>
+                  <span className={classes.sm_cart_span}>₹{cart.totalPrice}</span>
                   <button
                     onClick={() => navigate("/checkout")}
                     className={`${classes.button} ${classes.view_cart_button}`}
                   >
-                    <span>₹{cart.totalPrice}</span>
-                    <span>
-                      {isCartLoading ? (
-                        <div className={loaderClasses.img_container}>
-                          <img src={loader} alt="loader" />
-                          Loading
-                        </div>
-                      ) : (
-                        "View Cart"
-                      )}
-                    </span>
+                    View Cart
                   </button>
-                )}
-                {cart?.items?.map((item) => (
-                  <CartItem key={item._id} item={item} />
-                ))}
-                {cart?.items?.length === 0 && <p>No items in your cart</p>}
-                {/* <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button> */}
-              </div>
-              {/* <div className={classes.offer_container}>
+                </div>
+              )}
+              <div
+                className={`${classes.right_section} ${classes.max_lg_hidden}`}
+              >
+                <div className={classes.cart_detail_box}>
+                  {cart?.items?.length !== 0 && (
+                    <button
+                      onClick={() => navigate("/checkout")}
+                      className={`${classes.button} ${classes.view_cart_button}`}
+                    >
+                      <span>₹{cart.totalPrice}</span>
+                      <span>
+                        {isCartLoading ? (
+                          <div className={loaderClasses.img_container}>
+                            <img src={loader} alt="loader" />
+                            Loading
+                          </div>
+                        ) : (
+                          "View Cart"
+                        )}
+                      </span>
+                    </button>
+                  )}
+                  {cart?.items?.map((item) => (
+                    <CartItem key={item._id} item={item} />
+                  ))}
+                  {cart?.items?.length === 0 && <p>No items in your cart</p>}
+                  {/* <button className={`${classes.button} ${classes.right_section_common_button}`}>Edit</button> */}
+                </div>
+                {/* <div className={classes.offer_container}>
                                 <div className={classes.offer}>
                                     <div className={classes.offer_left_div}>
                                         <div className={classes.offer_img_outer_div}>
@@ -210,12 +210,12 @@ const ProductPage = () => {
                                     <FiChevronDown size={21} />
                                 </button>
                             </div> */}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       </WebsiteWrapper>
-      </HelmetProvider>
+    </HelmetProvider>
   );
 };
 

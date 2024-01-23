@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import classes from './AddPackageModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -25,9 +25,13 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     });
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
     const [isImgPrev, setIsImgPrev] = useState(selectedPackage ? false : true)
+    const fileInputRef = useRef(null);
 
 
-
+    const generateTwoDigitID = () => {
+        const randomID = Math.floor(Math.random() * 90) + 10;
+        return randomID;
+    }
 
     const getImage = (e) => {
         e.preventDefault();
@@ -44,7 +48,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                 const fileReader = new FileReader();
                 fileReader.readAsDataURL(img);
                 fileReader.addEventListener("load", function () {
-                    resolve({ img: this.result });
+                    resolve({ img: this.result, id: generateTwoDigitID() });
                 });
             });
         };
@@ -61,13 +65,15 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         setPackageInfo({ ...packageInfo, [name]: value });
     }
 
-    const handleSelectImgDelete = (index, Img) => {
+    const handleSelectImgDelete = (index, id) => {
         let imgArr = [...packageInfo.img].filter((_, i) => i !== index);
-        let prevImgArr = [...packageInfo.previewImages].filter((item) => item.img !== Img);
-        console.log("prev",prevImgArr);
-        console.log("db",imgArr);
+        let prevImgArr = [...packageInfo.previewImages].filter((item) => item.id !== id);
 
-        setPackageInfo({ ...packageInfo, previewImage: prevImgArr });
+        if (fileInputRef.current && prevImgArr.length === 0) {
+            fileInputRef.current.value = null;
+        }
+
+        setPackageInfo({ ...packageInfo, img: imgArr, previewImages: prevImgArr });
     }
 
     const handleDbImgDelete = (Img) => {
@@ -76,15 +82,21 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         setPackageInfo({ ...packageInfo, img: arr });
     }
 
-    const handleProductOnChange = (e) => {
+    const handleProductOnChange = (e, name) => {
         const { value, checked } = e.target;
         if (checked) {
-            setPackageInfo({ ...packageInfo, products: [...packageInfo.products, { productId: value }] })
+            setPackageInfo({ ...packageInfo, products: [...packageInfo.products, { productId: value, name }] })
         }
         else {
             const filtered = packageInfo.products.filter((product) => product.productId !== value);
             setPackageInfo({ ...packageInfo, products: filtered })
         }
+    }
+
+    const handleRemoveProduct = (id) => {
+        console.log("id", id);
+        const filtered = packageInfo.products.filter((product) => product.productId._id !== id);
+        setPackageInfo({ ...packageInfo, products: filtered })
     }
 
 
@@ -94,8 +106,10 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
             !packageInfo.name
             || !packageInfo.price
             || !packageInfo.offerPrice
-            || !packageInfo.img
+            || packageInfo.img.length === 0
+            || packageInfo.products.length === 0
         ) {
+            toast.error("All the fields are required");
             return;
         }
         const formData = new FormData();
@@ -135,6 +149,8 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         }
     }
 
+    console.log("package", packageInfo);
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>
@@ -168,23 +184,31 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                                 {allProducts?.map((product) => (
                                     <div key={product._id} className={classes.d_flex}>
                                         <label htmlFor={product.name}>{product.name}</label>
-                                        <input checked={packageInfo.products.some((item) => item.productId === product._id)} onChange={handleProductOnChange} type="checkbox" value={product._id} name={product.name} id={product.name} />
+                                        <input checked={packageInfo.products.some((item) => item.productId === product._id)} onChange={(e) => handleProductOnChange(e, product?.name)} type="checkbox" value={product._id} name={product.name} id={product.name} />
                                     </div>
                                 ))}
                             </div>
                         }
+                        <div className={classes.product_container}>
+                            {packageInfo.products.length > 0 && packageInfo.products.map((item) => (
+                                <span key={item.name} className={classes.product}>
+                                    {item?.name? item.name: item.productId.name}
+                                    <MdClose cursor={"pointer"} size={20} onClick={() => handleRemoveProduct(item.productId._id)} />
+                                </span>
+                            ))}
+                        </div>
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="img">Image</label>
-                        <input onChange={getImage} multiple type="file" name="img" id="img" />
+                        <input ref={fileInputRef} onChange={getImage} multiple type="file" name="img" id="img" />
                     </div>
                     {isImgPrev &&
                         <div className={classes.img_cotainer}>
                             {packageInfo?.previewImages?.map((item, index) => (
                                 <div key={index}>
-                                <img width={190} height={150} src={item.img} alt="package" />
-                                <MdClose onClick={() => handleSelectImgDelete(index, item.img)} className={classes.icon} />
-                            </div>
+                                    <img width={190} height={150} src={item.img} alt="package" />
+                                    <MdClose onClick={() => handleSelectImgDelete(index, item.id)} className={classes.icon} />
+                                </div>
                             ))}
                         </div>}
                     {!isImgPrev &&

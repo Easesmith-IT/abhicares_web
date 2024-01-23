@@ -18,6 +18,7 @@ const Services = () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials:true })
       setAllCategories(data.data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

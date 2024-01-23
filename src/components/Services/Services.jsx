@@ -86,6 +86,7 @@ export const Services = ({ open }) => {
     if (searchInput === "") {
       setIsShow(true);
       setAllServices([]);
+      setIsMessage(false)
     } else {
       setAllServices([]);
       setIsShow(false);

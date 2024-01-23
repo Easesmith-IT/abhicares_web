@@ -46,6 +46,7 @@ const HelpCenter = () => {
     if (!helpCenterInfo.others) {
       return;
     }
+    setHelpCenterInfo({ ...helpCenterInfo, issue: "" });
     setIsMultiSelectOpen(false);
     setIsOtherOpen(false);
   }
@@ -53,7 +54,8 @@ const HelpCenter = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!helpCenterInfo.description
-      || !helpCenterInfo.issue
+      || (helpCenterInfo.issue && !helpCenterInfo.issue )
+      || (helpCenterInfo.others && !helpCenterInfo.others )
     ) {
       toast.error("Please fill all fields");
       return;
