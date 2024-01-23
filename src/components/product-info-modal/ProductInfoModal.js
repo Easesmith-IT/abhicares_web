@@ -7,24 +7,19 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 const ProductInfoModal = ({ setIsInfoModalOpen, product, isPackage }) => {
     const responsive = {
         superLargeDesktop: {
-
             breakpoint: { max: 4000, min: 3000 },
-            items: 5
+            items: 1
         },
         desktop: {
             breakpoint: { max: 3000, min: 1024 },
-            items: 4
+            items: 1
         },
         tablet: {
-            breakpoint: { max: 1024, min: 768 },
-            items: 3,
+            breakpoint: { max: 1024, min: 550 },
+            items: 1
         },
         mobile: {
-            breakpoint: { max: 520, min: 0 },
-            items: 2
-        },
-        largemobile: {
-            breakpoint: { max: 520, min: 0 },
+            breakpoint: { max: 550, min: 0 },
             items: 1
         }
     };
@@ -48,7 +43,7 @@ const ProductInfoModal = ({ setIsInfoModalOpen, product, isPackage }) => {
                 </div>
                 <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                     {product?.imageUrl?.map((image) => (
-                        <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt="img" />
+                        <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt={isPackage ? "Package" : "Product"} />
                     ))}
                 </Carousel>
                 <div className={classes.contianer}>
