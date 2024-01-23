@@ -70,21 +70,13 @@ const BookingDetails = () => {
         //  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${sourceCoordinates}&destinations=${destinationCoordinates}&key=AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I`;
         const apiUrl = `${process.env.REACT_APP_ADMIN_API_URL}/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`;
         const res = await axios.get(apiUrl);
-        console.log("map data dis", res.data.rows[0].elements[0].distance.text);
-        console.log("map data dur", res.data.rows[0].elements[0].duration.text);
-        console.log(apiUrl);
+
         setMapData({
-          distance: res.data.rows[0].elements[0].distance.text,
-          time: res.data.rows[0].elements[0].duration.text,
+          distance: res?.data?.rows[0]?.elements[0]?.distance?.text,
+          time: res?.data?.rows[0]?.elements[0]?.duration?.text,
         });
-
-        console.log(sourceCoordinates, destinationCoordinates);
       }
-      // const sourceCoordinates = "26.820608,80.8747008";
 
-      // setBooking(data.bookingDetails);
-      // setStatus(data.bookingDetails.status);
-      // console.log("booking", data);
     } catch (error) {
       console.log(error);
     }
@@ -168,20 +160,7 @@ const BookingDetails = () => {
                     )}
                   </div>
                 </div>
-                {/* <h5 className={classes.heading}>Packages</h5>
-                    <div className={classes.container}>
-                        <div className={classes.item}>
-                            <div>
-                                <img className={classes.img} src="https://dashui.codescandy.com/dashuipro/assets/images/ecommerce/product-2.jpg" alt="product" />
-                                <div>
-                                    <h6>package name</h6>
-                                    <p>category</p>
-                                </div>
-                            </div>
-                            <p>Qty: 2</p>
-                            <p>₹299</p>
-                        </div>
-                    </div> */}
+
                 <h5 className={classes.heading}>Products</h5>
                 <div className={classes.container}>
                   <div className={classes.item}>
@@ -258,37 +237,34 @@ const BookingDetails = () => {
               </div>
             </div>
           )}
-          <div className={classes.location_container}>
-            <div className={classes.location_container_left}>
-              <h3>Current Location</h3>
-              <p>Service Man is on the way...</p>
-              <div className={classes.d_flex}>
-                <h6>Distance :</h6>
-                <span>{mapData.distance !== "" && mapData.distance}</span>
+          {booking && (
+            <div
+              className={classes.location_container}
+            >
+              <div>
+                <h3>Current Location</h3>
+                <p>Service Man is on the way...</p>
+                <div className={classes.d_flex}>
+                  <h6>Distance :</h6>
+                  <span>{mapData.distance !== "" && mapData.distance}</span>
+                </div>
+                <div className={classes.d_flex}>
+                  <h6>Time :</h6>
+                  <span>{mapData.time !== "" && mapData.time}</span>
+                </div>
               </div>
-              <div className={classes.d_flex}>
-                <h6>Time :</h6>
-                <span>{mapData.time !== "" && mapData.time}</span>
-              </div>
-            </div>
-            <div className={classes.location_container_right}>
-              {/* <iframe
-                title="location"
-                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1779.6251435072468!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be29384000001%3A0x130b41299ab7c3c1!2sEasesmith!5e0!3m2!1sen!2sin!4v1704691511201!5m2!1sen!2sin`}
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe> */}
-              {booking && (
+              <div>
                 <MapContainer
+                  sellerStatus={booking.currentLocation?.status}
+                  bookingStatus={booking.status}
                   location={{
                     user: booking.userAddress?.location?.coordinates,
                     seller: booking.currentLocation?.location,
                   }}
                 />
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Wrapper>
 
