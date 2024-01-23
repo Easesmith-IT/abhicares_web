@@ -50,7 +50,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
 
         Promise.all(uploadedImage.map(img => readFile(img)))
             .then(images => {
-                setPackageInfo((prev) => ({ ...prev, previewImages: [...packageInfo.previewImages, ...images] }));
+                setPackageInfo((prev) => ({ ...prev, previewImages: [...images] }));
                 setPackageInfo((prev) => ({ ...prev, img: uploadedImage }));
             });
     }
