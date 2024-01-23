@@ -9,6 +9,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { IoIosArrowDown } from 'react-icons/io';
 import useAuthorization from '../../hooks/useAuthorization';
+import { MdClose } from 'react-icons/md';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
     const navigate = useNavigate()
@@ -58,6 +59,21 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     const handleOnChange = (e) => {
         const { name, value } = e.target;
         setPackageInfo({ ...packageInfo, [name]: value });
+    }
+
+    const handleSelectImgDelete = (index, Img) => {
+        let imgArr = [...packageInfo.img].filter((_, i) => i !== index);
+        let prevImgArr = [...packageInfo.previewImages].filter((item) => item.img !== Img);
+        console.log("prev",prevImgArr);
+        console.log("db",imgArr);
+
+        setPackageInfo({ ...packageInfo, previewImage: prevImgArr });
+    }
+
+    const handleDbImgDelete = (Img) => {
+        let arr = [...packageInfo.img].filter((item) => item !== Img);
+
+        setPackageInfo({ ...packageInfo, img: arr });
     }
 
     const handleProductOnChange = (e) => {
@@ -165,13 +181,19 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                     {isImgPrev &&
                         <div className={classes.img_cotainer}>
                             {packageInfo?.previewImages?.map((item, index) => (
-                                <img key={index} width={190} height={150} src={item.img} alt="product" />
+                                <div key={index}>
+                                <img width={190} height={150} src={item.img} alt="package" />
+                                <MdClose onClick={() => handleSelectImgDelete(index, item.img)} className={classes.icon} />
+                            </div>
                             ))}
                         </div>}
                     {!isImgPrev &&
                         <div className={classes.img_cotainer}>
                             {packageInfo?.img?.map((img, index) => (
-                                <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                                <div key={index}>
+                                    <img width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="package" />
+                                    <MdClose onClick={() => handleDbImgDelete(img)} className={classes.icon} />
+                                </div>
                             ))}
                         </div>}
                     <div className={classes.button_wrapper}>
