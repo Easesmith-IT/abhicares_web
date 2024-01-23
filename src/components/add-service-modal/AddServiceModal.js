@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import classes from './AddServiceModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -21,6 +21,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     webHomepage: service?.webHomepage || false,
     previewImage: ""
   });
+  const fileInputRef = useRef(null);
 
   const getImage = (e) => {
     e.preventDefault();
@@ -38,6 +39,9 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
   }
 
   const handleSelectImgDelete = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
     setServiceInfo({ ...serviceInfo, img: "", previewImage: "" });
   }
 
@@ -135,6 +139,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
           <div className={classes.input_container}>
             <label htmlFor="imageUrl">Image</label>
             <input
+              ref={fileInputRef}
               onChange={getImage}
               type="file"
               name="imageUrl"

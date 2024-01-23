@@ -14,6 +14,7 @@ import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 const SellerAssignedOrders = () => {
     const [sellerOrders, setSellerOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCashReqLoading, setCashReqIsLoading] = useState(true);
     const [status, setStatus] = useState("");
     const [sellerOrder, setSellerOrder] = useState({})
     const [sellerOrderInfoModal, setSellerOrderInfoModal] = useState(false);
@@ -64,7 +65,7 @@ const SellerAssignedOrders = () => {
             console.log(error);
         }
         finally {
-            // setIsLoading(false);
+            setCashReqIsLoading(false);
         }
     };
 
@@ -183,6 +184,14 @@ const SellerAssignedOrders = () => {
                             </div>
                             <button className={sellerAssignedOrdersClasses.cash_btn}>Cashout Request</button>
                             <div className={sellerAssignedOrdersClasses.tran_contianer}>
+                                {isCashReqLoading
+                                    && cashOutRequests.length === 0
+                                    && <Loader />
+                                }
+                                {!isCashReqLoading
+                                    && cashOutRequests.length === 0
+                                    && <p>No cashOut Requests found</p>
+                                }
                                 {
                                     cashOutRequests?.map((item) => (
                                         <CashOutReq
