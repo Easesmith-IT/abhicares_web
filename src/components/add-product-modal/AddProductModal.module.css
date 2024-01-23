@@ -68,3 +68,16 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
+.img_cotainer>div {
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-size: 24px;
+    cursor: pointer;
+    color: red;
+}

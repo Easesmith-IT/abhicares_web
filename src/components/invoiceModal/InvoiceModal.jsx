@@ -87,11 +87,11 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
                             <div className={classes.invoice_bottom_calculation_left}>
                                 <div className={classes.d_flex}>
                                     <b>Subtotal:</b>
-                                    <p>₹ {invoice.orderValue}</p>
+                                    <p>₹ {invoice.itemTotal}</p>
                                 </div>
                                 <div className={classes.d_flex}>
-                                    <b>Tax Rate:</b>
-                                    <p>{0} %</p>
+                                    <b>Tax Rate (18%):</b>
+                                    <p>₹{state.tax}</p>
                                 </div>
                                 <div className={classes.d_flex}>
                                     <b>Total:</b>

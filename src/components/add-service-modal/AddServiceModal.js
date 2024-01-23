@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import { MdClose } from "react-icons/md";
 
 const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategoryServices }) => {
   const { checkAuthorization } = useAuthorization();
@@ -15,7 +16,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
   const [serviceInfo, setServiceInfo] = useState({
     name: service?.name || "",
     startingPrice: service?.startingPrice || "",
-    img: service?.img || "",
+    img: service?.imageUrl || "",
     appHomepage: service?.appHomepage || false,
     webHomepage: service?.webHomepage || false,
     previewImage: ""
@@ -35,6 +36,15 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     const { name, value } = e.target;
     setServiceInfo({ ...serviceInfo, [name]: value });
   }
+
+  const handleSelectImgDelete = () => {
+    setServiceInfo({ ...serviceInfo, img: "", previewImage: "" });
+  }
+
+  const handleDbImgDelete = () => {
+    setServiceInfo({ ...serviceInfo, img: "", previewImage: "" });
+  }
+
 
   const navigate = useNavigate()
 
@@ -130,8 +140,16 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
               name="imageUrl"
               id="imageUrl"
             />
-            {serviceInfo.previewImage && <img width={200} height={150} src={serviceInfo.previewImage} alt="service" />}
-            {service.imageUrl && <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`} alt="service" />}
+            {serviceInfo.previewImage &&
+              <div className={classes.img_container}>
+                <img width={200} height={150} src={serviceInfo.previewImage} alt="service" />
+                <MdClose onClick={handleSelectImgDelete} className={classes.icon} />
+              </div>}
+            {!serviceInfo.previewImage && serviceInfo.img &&
+              <div className={classes.img_container}>
+                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${serviceInfo.img}`} alt="service" />
+                <MdClose onClick={handleDbImgDelete} className={classes.icon} />
+              </div>}
           </div>
           <div className={classes.input_container}>
             <label htmlFor="appHomepage">App Homepage</label>
