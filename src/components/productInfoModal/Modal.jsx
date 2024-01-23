@@ -26,6 +26,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
 
+
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -157,6 +158,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     <Product
                                         key={product._id}
                                         product={product}
+                                        flag={false}
                                     />
                                 ))}
                             </div>}

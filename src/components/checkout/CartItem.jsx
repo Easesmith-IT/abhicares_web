@@ -66,7 +66,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   };
 
 
-  console.log(item.type, item?.quantity);
+  // console.log(item.type, item?.quantity);
   // console.log(item.type, item?.quantity * item.type === "product" ? item.productId.offerPrice : item?.packageId?.offerPrice);
 
   return (
