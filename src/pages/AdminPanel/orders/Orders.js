@@ -1,121 +1,197 @@
-import axios from 'axios';
-import Wrapper from '../../Wrapper'
-// import classes from './Bookings.module.css'
+import axios from "axios";
+import Wrapper from "../../Wrapper";
 import classes from "../Shared.module.css";
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Loader from '../../../components/loader/Loader';
-import { format } from 'date-fns';
-import MonthlyOrderModal from '../../../components/monthly-order-modal/MonthlyOrderModal';
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { FaSearch } from "react-icons/fa";
+import Loader from "../../../components/loader/Loader";
+import { format } from "date-fns";
+import MonthlyOrderModal from "../../../components/monthly-order-modal/MonthlyOrderModal";
 
 const Orders = () => {
-    const [allOrders, setAllOrders] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
-    const [dateYearInfo, setDateYearInfo] = useState("");
-    const [monthlyOrders, setMonthlyOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [dateYearInfo, setDateYearInfo] = useState("");
+  const [monthlyOrders, setMonthlyOrders] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchMessage,setSearchMessage] = useState(null)
 
-    const navigate = useNavigate();
+  const searchRef = useRef();
 
+  const navigate = useNavigate();
 
-    const getAllOrders = async () => {
-        try {
-            const { data } = await axios.get(
-                `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
-                { withCredentials: true }
-            );
-            setAllOrders(data.data);
-            console.log("allOrders", data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getAllOrders();
-    }, [])
-
-
-    const handleOnChange = (e) => {
-        console.log("month-year", e.target.value);
-        setDateYearInfo(e.target.value);
+  const getAllOrders = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-orders`,
+        { withCredentials: true }
+      );
+      setAllOrders(data.data);
+      console.log("allOrders", data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    const handleOnSubmit = async () => {
-        if (!dateYearInfo) {
-            return;
-        }
-        try {
-            const arr = dateYearInfo.split("-");
-            const { data } = await axios.post(
-                `${process.env.REACT_APP_ADMIN_API_URL}/get-monthly-orders`,
-                {
-                    month: arr[1],
-                    year: arr[0]
-                },
-                { withCredentials: true }
-            );
-            // if (data.data.length > 0) {
-                setIsModalOpen(true);
-            // }
-            setMonthlyOrders(data.data);
-            console.log('orders-month', data);
-        } catch (error) {
-            console.log(error);
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
+  const getOrderById = async () => {
+    try {
+      const orderId = searchRef.current.value;
+        if (!orderId) {
+            getAllOrders();
+           return; 
+        } 
+        
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-order-by-id?orderId=${orderId}`,
+        { withCredentials: true }
+        );
+        
+        console.log('orderbyid',data)
+      setAllOrders([data.data]);
+    } catch (error) {
+        console.log(error);
+        if (error?.response?.status === 404) {
+            // setSearchMessage('No order found')
+             setAllOrders([]);
         }
     }
+  };
 
+  const handleOnChange = (e) => {
+    setDateYearInfo(e.target.value);
+  };
 
-    return (
-        <>
-            <Wrapper>
-                <div className={classes["report-container"]}>
-                    <div className={classes["report-header"]}>
-                        <h1 className={classes["recent-Articles"]}>Orders</h1>
-                        <div className={classes.d_flex}>
-                            <input onChange={handleOnChange} type="month" name="month" id="month" />
-                            <button onClick={handleOnSubmit}>Submit</button>
-                        </div>
-                    </div>
+  const handleOnSubmit = async () => {
+    if (!dateYearInfo) {
+      return;
+    }
+    try {
+      const arr = dateYearInfo.split("-");
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-monthly-orders`,
+        {
+          month: arr[1],
+          year: arr[0],
+        },
+        { withCredentials: true }
+      );
+      // if (data.data.length > 0) {
+      setIsModalOpen(true);
+      // }
+      setMonthlyOrders(data.data);
+      console.log("orders-month", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-                    <div className={classes["report-body"]}>
-                        <div className={classes["report-topic-heading"]}>
-                            <h3 className={classes["t-op"]}>Order Date</h3>
-                            <h3 className={`${classes["t-op"]}`}>Status</h3>
-                            <h3 className={`${classes["t-op"]}`}>Order Value</h3>
-                            <h3 className={classes["t-op"]}>Details</h3>
-                        </div>
+  return (
+    <>
+      <Wrapper>
+        <div className={classes["report-container"]}>
+          <div className={classes["report-header"]}>
+            <h1 className={classes["recent-Articles"]}>Orders</h1>
+            <div className="d-flex" style={{ position: "relative" }}>
+              <input
+                ref={searchRef}
+                // className={classes.input}
+                style={{
+                  width: "300px",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                }}
+                type="text"
+                placeholder="search order by id"
+              />
+              <FaSearch
+                onClick={getOrderById}
+                style={{
+                  position: "absolute",
+                  right: "8px",
+                  top: "10px",
+                  cursor: "pointer",
+                }}
+              />
+            </div>
 
-                        <div className={classes.items}>
-                            {!isLoading && allOrders?.length === 0 && <p>No orders found</p>}
+            <div className={classes.d_flex}>
+              <input
+                onChange={handleOnChange}
+                type="month"
+                name="month"
+                id="month"
+              />
+              <button onClick={handleOnSubmit}>Download</button>
+            </div>
+          </div>
 
-                            {isLoading && allOrders?.length === 0 && <Loader />}
+          <div className={classes["report-body"]}>
+            <div className={classes["report-topic-heading"]}>
+              <h3 className={classes["t-op"]}>Order Date</h3>
+              <h3 className={`${classes["t-op"]}`}>Status</h3>
+              <h3 className={`${classes["t-op"]}`}>Order Value</h3>
+              <h3 className={classes["t-op"]}>Details</h3>
+            </div>
 
-                            {allOrders?.map((order, i) => (
-                                <div key={i} className={`${classes.item1} ${classes.cursor}`}>
-                                    <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
-                                    <h3 className={`${classes["t-op-nextlvl"]} ${classes.status} ${order.status === "Cancelled" ? classes.Cancelled : order.status === "Completed" ? classes.Completed : order.status === "pending" ? classes.pending : classes.OutOfDelivery}`}>{order.status}</h3>
-                                    <h3 className={`${classes["t-op-nextlvl"]}`}>{order.orderValue}</h3>
-                                    <h3 className={classes["t-op-nextlvl"]}>
-                                        <button onClick={() => navigate(`/admin/Orders/${order._id}`, { state: order })} className={classes.button}>View Details</button>
-                                    </h3>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+            <div className={classes.items}>
+              {!isLoading && allOrders?.length === 0 && <p>No orders found</p>}
+
+              {isLoading && allOrders?.length === 0 && <Loader />}
+
+              {allOrders?.map((order, i) => (
+                <div key={i} className={`${classes.item1} ${classes.cursor}`}>
+                  <h3 className={classes["t-op-nextlvl"]}>
+                    {format(new Date(order.createdAt), "dd-MM-yyyy")}
+                  </h3>
+                  <h3
+                    className={`${classes["t-op-nextlvl"]} ${classes.status} ${
+                      order.status === "Cancelled"
+                        ? classes.Cancelled
+                        : order.status === "Completed"
+                        ? classes.Completed
+                        : order.status === "pending"
+                        ? classes.pending
+                        : classes.OutOfDelivery
+                    }`}
+                  >
+                    {order.status}
+                  </h3>
+                  <h3 className={`${classes["t-op-nextlvl"]}`}>
+                    {order.orderValue}
+                  </h3>
+                  <h3 className={classes["t-op-nextlvl"]}>
+                    <button
+                      onClick={() =>
+                        navigate(`/admin/Orders/${order._id}`, {
+                          state: order,
+                        })
+                      }
+                      className={classes.button}
+                    >
+                      View Details
+                    </button>
+                  </h3>
                 </div>
-            </Wrapper >
+              ))}
+            </div>
+          </div>
+        </div>
+      </Wrapper>
 
-            {isModalOpen &&
-                <MonthlyOrderModal
-                    setIsModalOpen={setIsModalOpen}
-                    monthlyOrders={monthlyOrders}
-                />
-            }
-        </>
-    )
-}
+      {isModalOpen && (
+        <MonthlyOrderModal
+          setIsModalOpen={setIsModalOpen}
+          monthlyOrders={monthlyOrders}
+        />
+      )}
+    </>
+  );
+};
 
-export default Orders
+export default Orders;

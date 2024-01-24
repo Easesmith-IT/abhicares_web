@@ -3,12 +3,9 @@ import classes from './SeoModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import useAuthorization from '../../hooks/useAuthorization';
 
 const SeoModal = ({ setIsModalOpen, subAdmin }) => {
-    const [description, setDescription] = useState("");
     const [info, setInfo] = useState({
         title: "",
         page: "",

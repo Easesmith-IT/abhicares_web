@@ -138,7 +138,7 @@ const ProductPage = () => {
                   </div>
                 </div>
                 <div className={classes.products_cotainer}>
-                  <h2>Products</h2>
+                  <h2>Services</h2>
                   {!isProductLoading && allProducts?.length === 0 && (
                     <p>No products found</p>
                   )}

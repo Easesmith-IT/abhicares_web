@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import UpdatePwd from '../update-password-modal/UpdatePwd';
 
 const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     const [info, setInfo] = useState({
@@ -14,6 +15,7 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
         adminId: subAdmin?.adminId || ""
     });
     const [isPasswordHide, setIsPasswordHide] = useState(true);
+     const [updatePwdModal, setUpdatePwdModal] = useState(false);
 
     const { checkAuthorization } = useAuthorization();
 
@@ -98,100 +100,146 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
 
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.modal}>
-                <div className={classes.heading_container}>
-                    <h4>{subAdmin ? "Update" : "Add"} Sub Admin</h4>
-                    <div className={classes.d_flex}>
-                        <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
-                    </div>
-                </div>
-                <form onSubmit={handleOnSubmit} className={classes.form}>
-                    <div className={classes.input_container}>
-                        <label htmlFor="adminId">User Name</label>
-                        <input className={classes.input} onChange={handleOnChange} value={info.adminId} type="text" name="adminId" id="adminId" placeholder="enter your username" />
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="name">Name</label>
-                        <input className={classes.input} onChange={handleOnChange} value={info.name} type="text" name="name" id="name" placeholder="enter your name" />
-                    </div>
-                    {!subAdmin && <div className={classes.input_container}>
-                        <label htmlFor="password">Password</label>
-                        <input className={classes.input} onChange={handleOnChange} value={info.password} type={isPasswordHide ? "password" : "text"} name="password" id="password" placeholder="enter your password" />
-                        {isPasswordHide ? <FaEyeSlash className={classes.icon} onClick={handlePasswordShowHide} /> : <FaEye className={classes.icon} onClick={handlePasswordShowHide} />}
-                    </div>}
-                    <div className={classes.input_container}>
-                        <label htmlFor="role">Role</label>
-                        <select
-                            className={classes.input}
-                            name="role"
-                            value={info.role}
-                            onChange={handleOnChange}
-                        >
-                            <option value="">Select</option>
-                            <option value="subAdmin">Sub Admin</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <div className={classes.input_container}>
-                        <label htmlFor="">permissions</label>
-                        <div>
-                            {Object.keys(permissions).map((key,index) => (
-                                <div key={key} className={classes.permission}>
-                                    <p>{key}</p>
-                                    <div className={classes.d_flex}>
-                                        <div className={classes.d_flex}>
-                                            <input
-                                                onChange={(e) =>
-                                                    handlePermissionChange(key, 'read')
-                                                }
-                                                type="radio"
-                                                name={`${key}-read`}
-                                                id={`${key}-read`}
-                                                value={permissions[key]}
-                                                checked={permissions[key] === 'read'}
-                                            />
-                                            <span>read</span>
-                                        </div>
-                                        <div className={classes.d_flex}>
-                                            <input
-                                                onChange={(e) =>
-                                                    handlePermissionChange(key, 'write')
-                                                }
-                                                type="radio"
-                                                name={`${key}-write`}
-                                                id={`${key}-write`}
-                                                value={permissions[key]}
-                                                checked={permissions[key] === 'write'}
-                                            />
-                                            <span>write</span>
-                                        </div>
-                                        <div className={classes.d_flex}>
-                                            <input
-                                                onChange={(e) =>
-                                                    handlePermissionChange(key, 'none')
-                                                }
-                                                type="radio"
-                                                name={`${key}-none`}
-                                                id={`${key}-none`}
-                                                value={permissions[key]}
-                                                checked={permissions[key] === 'none'}
-                                            />
-                                            <span>none</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            ))}
-                        </div>
-                    </div>
-                    <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{subAdmin ? "Update" : "Add"}</button>
-                    </div>
-                </form>
+      <div className={classes.wrapper}>
+        <div className={classes.modal}>
+          <div className={classes.heading_container}>
+            <h4>{subAdmin ? "Update" : "Add"} Sub Admin</h4>
+            <div className={classes.d_flex}>
+              <RxCross2
+                onClick={() => setIsModalOpen(false)}
+                cursor={"pointer"}
+                size={26}
+              />
             </div>
+          </div>
+          <form className={classes.form}>
+            <div className={classes.input_container}>
+              <label htmlFor="adminId">User Name</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={info.adminId}
+                type="text"
+                name="adminId"
+                id="adminId"
+                placeholder="enter your username"
+              />
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="name">Name</label>
+              <input
+                className={classes.input}
+                onChange={handleOnChange}
+                value={info.name}
+                type="text"
+                name="name"
+                id="name"
+                placeholder="enter your name"
+              />
+            </div>
+            {!subAdmin && (
+              <div className={classes.input_container}>
+                <label htmlFor="password">Password</label>
+                <input
+                  className={classes.input}
+                  onChange={handleOnChange}
+                  value={info.password}
+                  type={isPasswordHide ? "password" : "text"}
+                  name="password"
+                  id="password"
+                  placeholder="enter your password"
+                />
+                {isPasswordHide ? (
+                  <FaEyeSlash
+                    className={classes.icon}
+                    onClick={handlePasswordShowHide}
+                  />
+                ) : (
+                  <FaEye
+                    className={classes.icon}
+                    onClick={handlePasswordShowHide}
+                  />
+                )}
+              </div>
+            )}
+            <div className={classes.input_container}>
+              <label htmlFor="role">Role</label>
+              <select
+                className={classes.input}
+                name="role"
+                value={info.role}
+                onChange={handleOnChange}
+              >
+                <option value="">Select</option>
+                <option value="subAdmin">Sub Admin</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div className={classes.input_container}>
+              <label htmlFor="">permissions</label>
+              <div>
+                {Object.keys(permissions).map((key, index) => (
+                  <div key={key} className={classes.permission}>
+                    <p>{key}</p>
+                    <div className={classes.d_flex}>
+                      <div className={classes.d_flex}>
+                        <input
+                          onChange={(e) => handlePermissionChange(key, "read")}
+                          type="radio"
+                          name={`${key}-read`}
+                          id={`${key}-read`}
+                          value={permissions[key]}
+                          checked={permissions[key] === "read"}
+                        />
+                        <span>read</span>
+                      </div>
+                      <div className={classes.d_flex}>
+                        <input
+                          onChange={(e) => handlePermissionChange(key, "write")}
+                          type="radio"
+                          name={`${key}-write`}
+                          id={`${key}-write`}
+                          value={permissions[key]}
+                          checked={permissions[key] === "write"}
+                        />
+                        <span>write</span>
+                      </div>
+                      <div className={classes.d_flex}>
+                        <input
+                          onChange={(e) => handlePermissionChange(key, "none")}
+                          type="radio"
+                          name={`${key}-none`}
+                          id={`${key}-none`}
+                          value={permissions[key]}
+                          checked={permissions[key] === "none"}
+                        />
+                        <span>none</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={classes.button_wrapper}>
+              {subAdmin && (
+                <button
+                  className={classes.button}
+                                onClick={(e) => { e.preventDefault(); setUpdatePwdModal(true)}}
+                >
+                  Update Password
+                </button>
+              )}
+              <button className={classes.button} onClick={handleOnSubmit}>
+                {subAdmin ? "Update" : "Add"}
+              </button>
+            </div>
+          </form>
         </div>
-    )
+        {updatePwdModal && (
+                <UpdatePwd setIsModalOpen={setUpdatePwdModal} adminId={subAdmin?.adminId} />
+        )}
+      </div>
+    );
 }
 
 export default AddSubAdminModal

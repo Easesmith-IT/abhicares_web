@@ -45,7 +45,7 @@ export const HomeRepairs = () => {
 
   const getServiceProducts = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-category-services/656b8b0a9f3a2d134bee93a0`, { withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8b0a9f3a2d134bee93a0`, { withCredentials: true });
       // console.log(data);
       setAllServiceProducts(data.data);
       // setLoading(false);
@@ -77,7 +77,7 @@ export const HomeRepairs = () => {
         {
           allServiceProducts.map((item) => (
             <>
-              <div onClick={() => navigate(`/services/${item._id}`)} className={classes['card']} key={item._id}>
+              <div onClick={() => navigate(`services/${item.serviceId}`)} className={classes['card']} key={item._id}>
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
                     <SkeletonCom
@@ -91,7 +91,7 @@ export const HomeRepairs = () => {
 
               </div>
               <p className={classes['cardname']}><b>{item.name}</b></p>
-              <p style={{ fontSize: '17px' }} >Starting From : <span style={{ color: 'green' }}>₹{item.startingPrice}</span></p>
+              <p style={{ fontSize: '17px' }} >Starting From : <span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
             </>
           ))
         }

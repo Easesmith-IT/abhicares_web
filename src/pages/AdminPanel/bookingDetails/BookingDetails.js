@@ -44,12 +44,14 @@ const BookingDetails = () => {
     }
   };
 
-  const handleChange = async (e) => {
-    setStatus(() => e.target.value);
+  const updateStatus = async () => {
+
+    if(status==='')return
+    
     try {
       const { data } = await axios.patch(
         `${process.env.REACT_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
-        { status: e.target.value },
+        { status: status },
         { withCredentials: true }
       );
       toast.success("Booking status changed successfully");
@@ -61,6 +63,7 @@ const BookingDetails = () => {
       checkAuthorization(error);
     }
   };
+
 
   const getDistanceAndTimeBetweenTwoPoints = async () => {
     try {
@@ -121,8 +124,8 @@ const BookingDetails = () => {
                                 <p>seller phone: 1234567890</p> */}
                     <h4>Update Status</h4>
                     <select
-                      onChange={handleChange}
                       value={status}
+                      onChange={(e)=>  setStatus(() => e.target.value)}
                       className={classes.select}
                       name="status"
                       id="status"
@@ -133,6 +136,14 @@ const BookingDetails = () => {
                       <option value="cancelled">Cancelled</option>
                       <option value="not-alloted">Not Alloted</option>
                     </select>
+
+                    <button
+                      onClick={updateStatus}
+                      className={classes.button}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      Update
+                    </button>
                   </div>
                   <div>
                     <p>
@@ -240,9 +251,7 @@ const BookingDetails = () => {
             </div>
           )}
           {booking && (
-            <div
-              className={classes.location_container}
-            >
+            <div className={classes.location_container}>
               <div>
                 <h3>Current Location</h3>
                 <p>Service Man is on the way...</p>
