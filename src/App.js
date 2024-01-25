@@ -74,6 +74,7 @@ import BlogsCategory from "./pages/blog/BlogsCategory";
 import Settings from "./pages/AdminPanel/settings/Settings";
 import UnautorizedModal from "./components/unautorized-modal/UnautorizedModal";
 import PrivateRoute from "./components/private-route/PrivateRoute";
+import WhyUs from "./pages/whyus/WhyUs";
 
 
 
@@ -89,10 +90,7 @@ function App() {
 
   return (
     <>
-
-      {isOpen &&
-        <UnautorizedModal />
-      }
+      {isOpen && <UnautorizedModal />}
 
       <Router>
         {/* <Header /> */}
@@ -100,16 +98,23 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/why-us" element={<WhyUs />} />
 
           <Route path="/blog" element={<Blog />} />
-          <Route path='/single-blog/:id' element={<SingleBlog />} />
-          <Route path='/blog-category/:id' element={<BlogsCategory />} />
+          <Route path="/single-blog/:id" element={<SingleBlog />} />
+          <Route path="/blog-category/:id" element={<BlogsCategory />} />
 
           <Route path="/termsAndConditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/antiDiscriminationPolicy" element={<AntiDiscriminationPolicy />} />
+          <Route
+            path="/antiDiscriminationPolicy"
+            element={<AntiDiscriminationPolicy />}
+          />
 
-          <Route path="/registerAsProfessionals" element={<RegisterAsAProfessional />} />
+          <Route
+            path="/registerAsProfessionals"
+            element={<RegisterAsAProfessional />}
+          />
 
           <Route path="/services/:serviceId" element={<ProductPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
@@ -119,7 +124,6 @@ function App() {
           <Route path="/my_bookings/:id" element={<BookingDetails />} />
 
           <Route path="/success" element={<SuccessPage />} />
-
 
           {/* Admin Panel Routes */}
 
@@ -146,7 +150,11 @@ function App() {
               element={<Product />}
             />
 
-            <Route path="/admin/banners/web" exact element={<WebsiteBanner />} />
+            <Route
+              path="/admin/banners/web"
+              exact
+              element={<WebsiteBanner />}
+            />
             <Route path="/admin/banners/web/home" exact element={<WebHome />} />
             <Route
               path="/admin/banners/web/category"
@@ -170,8 +178,16 @@ function App() {
               exact
               element={<AdminPrivacyPolicy />}
             />
-            <Route path="/admin/cms/about-us" exact element={<AdminAboutUs />} />
-            <Route path="/admin/cms/contact-us" exact element={<AdminContactUs />} />
+            <Route
+              path="/admin/cms/about-us"
+              exact
+              element={<AdminAboutUs />}
+            />
+            <Route
+              path="/admin/cms/contact-us"
+              exact
+              element={<AdminContactUs />}
+            />
 
             <Route
               path="/admin/banners/website"
@@ -186,7 +202,10 @@ function App() {
             <Route path="/admin/orders/:id" element={<AdminOrders />} />
 
             <Route path="/admin/partners" element={<Partners />} />
-            <Route path="/admin/partners/:partnerId" element={<SellerAssignedOrders />} />
+            <Route
+              path="/admin/partners/:partnerId"
+              element={<SellerAssignedOrders />}
+            />
 
             <Route path="/admin/customers" element={<Customers />} />
             <Route path="/admin/services" element={<Services />} />
@@ -204,9 +223,15 @@ function App() {
 
             <Route path="/admin/enquiries" element={<Enquiry />} />
             <Route path="/admin/offers" element={<Offers />} />
-            <Route path="/admin/available-cities" element={<AvailableCities />} />
+            <Route
+              path="/admin/available-cities"
+              element={<AvailableCities />}
+            />
             <Route path="/admin/help-center" element={<AdminHelpCenter />} />
-            <Route path="/admin/help-center/faqs" element={<HelpCenterFaqs />} />
+            <Route
+              path="/admin/help-center/faqs"
+              element={<HelpCenterFaqs />}
+            />
             <Route
               path="/admin/help-center/tickets"
               element={<HelpCenterTickets />}
@@ -214,7 +239,6 @@ function App() {
           </Route>
 
           <Route path="/*" element={<ErrorPage />} />
-
         </Routes>
       </Router>
       {/* <Toaster /> */}

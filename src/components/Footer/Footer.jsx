@@ -23,6 +23,10 @@ export const Footer = () => {
                                 <div className={classes['footer-content']}>
                                     <p className={classes.p}><Link to="/aboutUs">About Us</Link></p>
                                 </div>
+
+                                 <div className={classes['footer-content']}>
+                                    <p className={classes.p}><Link to="/why-us">Why Us</Link></p>
+                                </div>
                                 <div className={classes['footer-content']}>
                                     <p className={classes.p}><Link to="/termsAndConditions">Terms and conditions</Link></p>
                                 </div>
