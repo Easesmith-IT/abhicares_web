@@ -12,7 +12,6 @@ import SkeletonCom from "../sekeleton/SkeletonCom";
 
 export const SpaForMen = () => {
   const navigate = useNavigate();
-
   const [allServices, setAllServices] = useState([]);
 
   const responsive = {

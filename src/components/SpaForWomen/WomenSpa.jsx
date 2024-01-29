@@ -77,6 +77,8 @@ export const WomenSpa = () => {
           allServices.map((item) => (
             <>
               <div onClick={() => navigate(`services/${item.serviceId}`)} className={classes['card']} key={item._id}>
+
+              
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
                     <SkeletonCom
