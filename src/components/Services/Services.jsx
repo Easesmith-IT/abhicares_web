@@ -156,7 +156,7 @@ export const Services = ({ open }) => {
           </div>
         </div>
         <div className={classes["left"]}>
-          <div className={`${styles.location_container}`}>
+          {/* <div className={`${styles.location_container}`}>
             <LocationOnIcon />
             <div style={{ width: '100%' }}>
               <input
@@ -168,11 +168,11 @@ export const Services = ({ open }) => {
                 value={userlocation ? userlocation : "Please Allow Location"}
               />
             </div>
-          </div>
+          </div> */}
           <div className={classes["heading"]}>
-            <p style={{ fontSize: '2rem' }}>
+            <h4>
               Home services at your doorstep
-            </p>
+            </h4>
           </div>
           <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
             <div>
@@ -244,7 +244,7 @@ export const Services = ({ open }) => {
               )}
 
               {isLoading && allCategories.length === 0 && <Loader />}
-              <Grid container>
+              <Grid container flex rowGap={3}>
                 {data.map((category) => (
                   <Grid key={category._id} item xs={4} sm={4} md={4} lg={4}>
                     <div
@@ -260,7 +260,7 @@ export const Services = ({ open }) => {
                         {/* <img src={category.image} alt="media" /> */}
                       </div>
                       <div className={classes["cardAction"]}>
-                        <Link to="#">{category.name}</Link>
+                        <p className={classes.link}>{category.name}</p>
                       </div>
                     </div>
                   </Grid>
