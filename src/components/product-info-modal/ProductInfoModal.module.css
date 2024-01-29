@@ -12,10 +12,10 @@
 }
 
 .modal {
-    max-width: 650px;
+    max-width: 500px;
     width: 100%;
-    /* height: 80vh; */
-    /* overflow: auto; */
+    max-height: 80vh;
+    overflow: auto;
     padding: 20px;
     border-radius: 6px;
     background: white;
@@ -93,4 +93,47 @@
 
 .carousel_button:hover {
     background-color: rgb(202, 202, 202);
+}
+
+.h3{
+    margin-top: 20px;
+}
+
+.products_cotainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product{
+    max-width: 340px;
+    padding: 20px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.product img {
+    width: 100%;
+    /* height: 190px; */
+    object-fit: contain;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.price_cotainer{
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.price_time_container .price:first-child,
+.product .price:first-child{
+    font-size: 14px;
+    text-decoration: line-through;
+    color: gray;
+}
+
+.price_time_container .price:last-child,
+.product .price:last-child{
+    font-size: 16px;
+    font-weight: 600;
 }

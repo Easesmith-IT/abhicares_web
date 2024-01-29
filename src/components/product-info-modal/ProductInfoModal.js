@@ -54,6 +54,27 @@ const ProductInfoModal = ({ setIsInfoModalOpen, product, isPackage }) => {
                         <span>₹{product?.offerPrice}</span>
                     </div>
                 </div>
+                {isPackage &&
+                    <>
+                        <h3 className={classes.h3}>Products</h3>
+                        <div className={classes.products_cotainer}>
+                            {product.products.map((item) => (
+                                <div className={classes.product}>
+                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.productId?.imageUrl[0]}`} alt="product" />
+                                    <div className={classes.product_info}>
+                                        <h5>{item?.productId?.name}</h5>
+                                        <p>{parse(item?.productId?.description)}</p>
+                                        <div className={classes.d_flex}>
+                                            <div className={classes.price_cotainer}>
+                                                <p className={classes.price}>₹{item?.productId?.price}</p>
+                                                <p className={classes.price}>₹{item?.productId?.offerPrice}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>}
             </div>
         </div>
     )
