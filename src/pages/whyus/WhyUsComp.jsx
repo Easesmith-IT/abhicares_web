@@ -11,10 +11,10 @@ import gurantee from "../../assets/why-us/gurantee.png"
 const WhyUsComp = () => {
     return (
         <div
-            className={`feat bg-gray pt-5 pb-5`}
+            className={`feat bg-gray ${classes.whyUs}`}
         >
-            <div className={`container`}>
-                <div className={`row`}>
+            <div className={``}>
+                <div className={`${classes.card_container}`}>
                     <div
                         className={`${classes["section-head"]} col-sm-12`}
                     >
@@ -22,14 +22,14 @@ const WhyUsComp = () => {
                             <span className={classes.span}>Why Choose</span> Us?
                         </h4>
                         {/* <p>
-                When you choose us, you'll feel the benefit of 10 years'
-                experience of Web Development. Because we know the digital world
-                and we know that how to handle it. With working knowledge of
-                online, SEO and social media.
-              </p> */}
+                            When you choose us, you'll feel the benefit of 10 years'
+                            experience of Web Development. Because we know the digital world
+                            and we know that how to handle it. With working knowledge of
+                            online, SEO and social media.
+                        </p> */}
                     </div>
 
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
@@ -39,14 +39,12 @@ const WhyUsComp = () => {
                             </span>
                             <h6>Professionals at your doorstep</h6>
                             <p>
-                                AbhiCares brings you the Professionals in Darbhanga, Bihar at
-                                your home. All professionals are background verified. They go
-                                through a number of security checks before they are brought on
-                                board
+                                We bring the Professionals in Darbhanga, Bihar at your home. All our professionals background is verified. They go through security checks before they are brought on board.
+
                             </p>
                         </div>
                     </div>
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
@@ -61,7 +59,7 @@ const WhyUsComp = () => {
                             </p>
                         </div>
                     </div>
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
@@ -75,13 +73,13 @@ const WhyUsComp = () => {
 
                         </div>
                     </div>
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
                                 className={`${classes["icon"]} ${classes["feature_box_col_one"]} ${classes["span"]}`}
                             >
-                            <img src={rework} alt="Re-work Assurance" />
+                                <img src={rework} alt="Re-work Assurance" />
                             </span>
                             <h6>Re-work Assurance</h6>
                             <p>
@@ -92,13 +90,13 @@ const WhyUsComp = () => {
                             </p>
                         </div>
                     </div>
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
                                 className={`${classes["icon"]} ${classes["feature_box_col_one"]} ${classes["span"]}`}
                             >
-                            <img src={customerCentric} alt="Customer centric" />
+                                <img src={customerCentric} alt="Customer centric" />
                                 <i className={`${classes["fa"]} ${classes["fa-globe"]}`}></i>
                             </span>
                             <h6>Customer Centric</h6>
@@ -108,7 +106,7 @@ const WhyUsComp = () => {
                             </p>
                         </div>
                     </div>
-                    <div className={`col-lg-4 col-sm-6`}>
+                    <div>
                         <div className={classes.item}>
                             {" "}
                             <span
@@ -118,11 +116,7 @@ const WhyUsComp = () => {
                             </span>
                             <h6>Professional Support</h6>
                             <p>
-                                Want to get in touch with us directly to express a concern or
-                                have some queries that need immediate responses? Chat with us,
-                                write us an email or even call us to get through to our
-                                round-the- clock support team that's already ready to go that
-                                extra mile for your happiness.
+                                Get in touch with us directly, Chat with us, write an email or call our round-the-clock support team that's already ready to go that extra mile for your happiness.
                             </p>
                         </div>
                     </div>

@@ -23,7 +23,7 @@ export const HomeRepairs = () => {
     },
     desktop: {
       breakpoint: { max: 3000, min: 1400 },
-      items: 3
+      items: 4
     },
     laptop: {
       breakpoint: { max: 1399, min: 1024 },

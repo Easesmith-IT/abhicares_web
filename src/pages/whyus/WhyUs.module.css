@@ -1,3 +1,7 @@
+.whyUs {
+    padding: 80px 0;
+}
+
 .span {
     display: inline-block;
     text-decoration: none;
@@ -80,11 +84,23 @@ p.awesome_line {
     color: #712be2;
 }
 
+.card_container{
+    /* max-width: 1300px; */
+    /* margin: 0 auto; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
 .item {
     background: #fff;
     text-align: center;
     padding: 30px 25px;
-    height: 400px;
+    margin: 10px;
+    height: 370px;
+    max-width: 350px;
+    width: 100%;
     -webkit-box-shadow: 0 0px 25px rgba(0, 0, 0, 0.07);
     box-shadow: 0 0px 25px rgba(0, 0, 0, 0.07);
     border-radius: 20px;
@@ -104,7 +120,8 @@ p.awesome_line {
 }
 
 .item:hover {
-    background: black;
+    background: #FFE3FF;
+    color: black;
     box-shadow: 0 8px 20px 0px rgba(0, 0, 0, 0.2);
     -webkit-transition: all .5s ease 0;
     transition: all .5s ease 0;
@@ -122,7 +139,7 @@ p.awesome_line {
 
 .item:hover h6,
 .item:hover p {
-    color: #fff;
+    color: #000;
     -webkit-transition: all .5s ease 0;
     transition: all .5s ease 0;
     transition: all 0.5s ease 0s;
@@ -270,6 +287,12 @@ p.awesome_line {
     }
 }
 
+@media (min-width:600px) and (max-width:770px) {
+    .item {
+        max-width: 700px;
+    }
+}
+
 @media (min-width:600px) and (max-width:800px) {
     .item {
         height: 550px;
@@ -285,5 +308,16 @@ p.awesome_line {
 @media (min-width:1201px) and (max-width:1400px) {
     .item {
         height: 480px;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .whyUs{
+        padding: 20px 0;
+    }
+
+    .section-head {
+        margin-bottom: 20px;
     }
 }

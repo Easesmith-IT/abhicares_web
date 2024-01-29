@@ -57,7 +57,7 @@ const Header = (props) => {
         <div className={classes.logosec}>
           <div
             style={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/admin/dashboard")}
             className={classes.logo}
           >
             <img src={logo} alt="logo" />
