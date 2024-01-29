@@ -8,7 +8,7 @@ import SpaForMen from "../components/SpaForMen/SpaForMen.jsx";
 import HomeRepairs from "../components/QuickHomeRepairs/HomeRepairs.jsx";
 import classes from "./Home.module.css";
 import SubCatPopUp from "../components/SubCategories/SubCatPopUp.jsx";
-import { Helmet,HelmetProvider  } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import axios from "axios";
 // import Footer from "../components/Footer/Footer.jsx";
 // import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -17,6 +17,8 @@ import axios from "axios";
 
 import { useEffect, useState } from "react";
 import WebsiteWrapper from "./WebsiteWrapper.jsx";
+import HomeCare from "../components/home-care/HomeCare.jsx";
+import WhyUsComp from "./whyus/WhyUsComp.jsx";
 
 export const Home = () => {
   const [category, setCategory] = useState("");
@@ -52,33 +54,35 @@ export const Home = () => {
 
   return (
     <HelmetProvider>
-    <WebsiteWrapper>
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-      </Helmet>
-      <div className={classes["wrapper"]}>
-        <div className={classes["body-wrapper"]}>
-          <div className={classes["body"]}>
-            <Services onClick={handleOpen} open={handleOpen} />
-            {open && (
-              <SubCatPopUp
-                category={category}
-                open={open}
-                onClose={handleClose}
-              />
-            )}
-            <BannerCard />
-            {/* <MostBooked/> */}
-            <SalonForWomen />
-            <WomenSpa />
-            <HomeRepairs />
-            <SpaForMen />
+      <WebsiteWrapper>
+        <Helmet>
+          <title>{seoData.title}</title>
+          <meta name="description" content={seoData.description} />
+        </Helmet>
+        <div className={classes["wrapper"]}>
+          <div className={classes["body-wrapper"]}>
+            <div className={classes["body"]}>
+              <Services onClick={handleOpen} open={handleOpen} />
+              {open && (
+                <SubCatPopUp
+                  category={category}
+                  open={open}
+                  onClose={handleClose}
+                />
+              )}
+              <BannerCard />
+              {/* <MostBooked/> */}
+              <HomeCare />
+              {/* <SalonForWomen /> */}
+              <WomenSpa />
+              <HomeRepairs />
+              <SpaForMen />
+            </div>
+            <WhyUsComp />
           </div>
         </div>
-      </div>
       </WebsiteWrapper>
-      </HelmetProvider>
+    </HelmetProvider>
   );
 };
 export default Home;
