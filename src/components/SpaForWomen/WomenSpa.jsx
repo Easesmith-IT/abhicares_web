@@ -45,7 +45,7 @@ export const WomenSpa = () => {
   const getServices = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8ad29f3a2d134bee9398`, { withCredentials: true });
-      console.log("woment spa",data);
+      console.log("woment spa", data);
       setAllServices(data.data);
       // setLoading(false);
     } catch (error) {
@@ -78,7 +78,7 @@ export const WomenSpa = () => {
             <>
               <div onClick={() => navigate(`services/${item.serviceId}`)} className={classes['card']} key={item._id}>
 
-              
+
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
                     <SkeletonCom
@@ -92,7 +92,7 @@ export const WomenSpa = () => {
 
               </div>
               <p className={classes['cardname']}><b>{item.name}</b></p>
-              <p style={{ fontSize: '17px' }} >Starting From : <span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
+              <p className={classes.price}><span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
             </>
           ))
         }

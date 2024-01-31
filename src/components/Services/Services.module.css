@@ -251,4 +251,8 @@
     color: #0f0f0f;
     /* line-height: 0px; */
   }
+
+  .services-content {
+    margin-inline: 20px;
+  }
 }
