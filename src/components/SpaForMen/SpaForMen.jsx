@@ -91,7 +91,7 @@ export const SpaForMen = () => {
 
               </div>
               <p className={classes['cardname']}><b>{item.name}</b></p>
-              <p style={{ fontSize: '17px' }} >Starting From : <span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
+              <p className={classes.price}><span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
             </>
 
 

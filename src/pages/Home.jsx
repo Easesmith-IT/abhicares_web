@@ -3,9 +3,9 @@ import Services from "../components/Services/Services";
 import BannerCard from "../components/Carousel/BannerCard";
 // import MostBooked from "../components/Carousel/MostBooked";
 import SalonForWomen from "../components/SalonForWomen/SalonForWomen.jsx";
-import WomenSpa from "../components/SpaForWomen/WomenSpa.jsx";
-import SpaForMen from "../components/SpaForMen/SpaForMen.jsx";
-import HomeRepairs from "../components/QuickHomeRepairs/HomeRepairs.jsx";
+import MakeupMehandi from "../components/SpaForWomen/WomenSpa.jsx";
+import ApplianceRepair from "../components/SpaForMen/SpaForMen.jsx";
+import MensSalonMassage from "../components/QuickHomeRepairs/HomeRepairs.jsx";
 import classes from "./Home.module.css";
 import SubCatPopUp from "../components/SubCategories/SubCatPopUp.jsx";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -74,9 +74,9 @@ export const Home = () => {
               {/* <MostBooked/> */}
               <HomeCare />
               {/* <SalonForWomen /> */}
-              <WomenSpa />
-              <HomeRepairs />
-              <SpaForMen />
+              <MakeupMehandi />
+              <MensSalonMassage />
+              <ApplianceRepair />
             </div>
             <WhyUsComp />
           </div>

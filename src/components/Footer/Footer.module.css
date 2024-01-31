@@ -44,6 +44,7 @@
 .download>div>a>img{
     width: 7rem;
     object-fit: cover;  
+    margin-top: 20px;
 }
 .heading{
     padding: 1rem 0.2rem;
@@ -69,7 +70,9 @@ a>svg{
 }
 .sub-footer div{
     font-size: 13px;
-    padding-bottom: 1rem;
+    text-align: center;
+    padding: 20px;
+    padding-bottom: 30px;
 }
 
 .section>div.div{

@@ -102,84 +102,11 @@ export const Header = () => {
 
   return (
     <>
-      {innerWidth <= 768 ? (
-        toggle ? (
-          <div className={toggle ? "open mobilenav" : ""}>
-            <div>
-              <div>
-                <MenuIcon sx={{ color: "white" }} className="menu-icon" onClick={handleClose} />
-              </div>
-              <Link to="/" className={classes["LogoContainer"]}>
-                <img src={logo} alt="logo" />
-              </Link>
-            </div>
-
-            <div>
-              {/* <div><LocationOnIcon /></div>
-              <div><KeyboardArrowDownIcon /></div> */}
-              {!isUser && (
-                <div className={classes["button-container"]}>
-                  <Button
-                    onClick={handleOnclick}
-                    style={{
-                      backgroundColor: "white",
-                      color: "black"
-                    }}
-                    variant="contained"
-                  >
-                    Login
-                  </Button>
-                </div>
-              )}
-              {isUser && (
-                <div
-                  ref={userIconRef}
-                  onClick={() => setIsUserModalOpen(!isUserModalOpen)}
-                  className={classes.icon_container}
-                >
-                  <FaUser size={20} color="#B0B0B0" />
-                </div>
-              )}
-              {isUserModalOpen && (
-                <div ref={ref} className={classes.info}>
-                  <Link
-                    onClick={() => setIsUserModalOpen(false)}
-                    to={"/help_center"}
-                    className={classes.p}
-                  >
-                    Help Center
-                  </Link>
-                  <Link
-                    onClick={() => setIsUserModalOpen(false)}
-                    to={"/my_bookings"}
-                    className={classes.p}
-                  >
-                    My Bookings
-                  </Link>
-                  <p onClick={handleLogoutModal} className={classes.p}>
-                    Log out
-                  </p>
-                </div>
-              )}
-            </div>
-
-          </div>
-        ) : (
-          <div className={classes["container"]}>
-            <div>
-              <MenuIcon sx={{ color: "white" }} onClick={handleOpen} />
-            </div>
-            <Link to="/" className={classes["LogoContainer"]}>
-              <img src={logo} alt="logo" />
-            </Link>
-          </div>
-        )
-      ) : (
-        <div className={classes["header"]}>
-          <Link to="/" className={classes["LogoContainer"]}>
-            <img src={Logo} alt="logo" />
-          </Link>
-          {/* <div className={`${classes.dFlexRow} ${classes.actions}`}>
+      <div className={classes["header"]}>
+        <Link to="/" className={classes["LogoContainer"]}>
+          <img src={Logo} alt="logo" />
+        </Link>
+        {/* <div className={`${classes.dFlexRow} ${classes.actions}`}>
             <div className={`${classes.dFlexRow} ${classes.location}`}>
               <div>
                 <LocationOnIcon />
@@ -189,52 +116,51 @@ export const Header = () => {
               </div>
             </div>
           </div> */}
-          {!isUser && (
-            <div className={classes["button-container"]}>
-              <Button
-                onClick={handleOnclick}
-                style={{
-                  backgroundColor: "white",
-                  color: "black"
-                }}
-                variant="contained"
-              >
-                Login
-              </Button>
-            </div>
-          )}
-          {isUser && (
-            <div
-              ref={userIconRef}
-              onClick={() => setIsUserModalOpen(!isUserModalOpen)}
-              className={classes.icon_container}
+        {!isUser && (
+          <div className={classes["button-container"]}>
+            <Button
+              onClick={handleOnclick}
+              style={{
+                backgroundColor: "white",
+                color: "black"
+              }}
+              variant="contained"
             >
-              <FaUser size={20} color="#B0B0B0" />
-            </div>
-          )}
-          {isUserModalOpen && (
-            <div ref={ref} className={classes.info}>
-              <Link
-                onClick={() => setIsUserModalOpen(false)}
-                to={"/help_center"}
-                className={classes.p}
-              >
-                Help Center
-              </Link>
-              <Link
-                onClick={() => setIsUserModalOpen(false)}
-                to={"/my_bookings"}
-                className={classes.p}
-              >
-                My Bookings
-              </Link>
-              <p onClick={handleLogoutModal} className={classes.p}>
-                Log out
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+              Login
+            </Button>
+          </div>
+        )}
+        {isUser && (
+          <div
+            ref={userIconRef}
+            onClick={() => setIsUserModalOpen(!isUserModalOpen)}
+            className={classes.icon_container}
+          >
+            <FaUser size={20} color="#B0B0B0" />
+          </div>
+        )}
+        {isUserModalOpen && (
+          <div ref={ref} className={classes.info}>
+            <Link
+              onClick={() => setIsUserModalOpen(false)}
+              to={"/help_center"}
+              className={classes.p}
+            >
+              Help Center
+            </Link>
+            <Link
+              onClick={() => setIsUserModalOpen(false)}
+              to={"/my_bookings"}
+              className={classes.p}
+            >
+              My Bookings
+            </Link>
+            <p onClick={handleLogoutModal} className={classes.p}>
+              Log out
+            </p>
+          </div>
+        )}
+      </div>
 
       <LoginSignupModal isOpen={isOpen} handleOnclick={handleOnclick} />
       {isLogoutModalOpen && (
