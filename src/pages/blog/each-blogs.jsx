@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import RecentBlogs from "../../components/RecentBlogs";
+import BlogSideBar from '../../components/BlogSidebar'
 import classes from './style.module.css'
 import WebsiteWrapper from "../WebsiteWrapper";
 
@@ -13,12 +13,19 @@ const SingleBlog = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const PostId = id;
-
+   
+  const width= window.innerWidth;
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/posts/${PostId}`);
-        setPost(response.data);
+        const featuredImageId = response.data.featured_media;
+        const imageResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${featuredImageId}`);
+        const featuredImageUrl = imageResponse.data.source_url;
+        setPost({
+          ...response.data,
+          featuredImageUrl: featuredImageUrl
+        });
       } catch (error) {
         setError(error);
       } finally {
@@ -49,11 +56,16 @@ const SingleBlog = () => {
 
   return (
     <WebsiteWrapper>
-      <div className={classes['recent-blogs-wrapper']}>
+      <div className={classes["featured-image"]}>
+          <img src={post.featuredImageUrl} alt='image' />
+        </div>
+      <div className={classes['each-blog-container-wrapper']}>
+      <div className={classes['recent-blogs-wrapper']} style={{margin:width<520?"0.2rem 0.4rem":''}}>
         <h2>{post.title.rendered}</h2>
         <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
       </div>
-      <RecentBlogs />
+      <BlogSideBar />
+      </div>
     </WebsiteWrapper>
   )
 }
