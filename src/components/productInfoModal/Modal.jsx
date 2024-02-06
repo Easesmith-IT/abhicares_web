@@ -77,11 +77,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
         }
     };
 
+    console.log("user reviews",userReviews);
+
     const getAllReviews = async () => {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`, { type: isProduct ? "product" : "package" });
-            console.log("reviews", data);
-            setAllReviews(data.data);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
+            console.log("get reviwes reviews", data);
+            setAllReviews(data.reviews);
         } catch (error) {
             console.log(error);
         }
@@ -91,7 +93,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     useEffect(() => {
         !isProduct && getAllProducts();
         getAllReviews();
-        getAllReviewsOfUser();
+        // getAllReviewsOfUser();
     }, [])
 
 
@@ -203,13 +205,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     <SpecificStarRating />
                                 </div>
                                 <div className={classes.customer_reviews_container}>
-                                    {userReviews?.map((review) => (
+                                    {/* {userReviews?.map((review) => (
                                         <CustomerReview
                                             key={review._id}
                                             review={review}
                                             isUser={true}
                                         />
-                                    ))}
+                                    ))} */}
 
                                     {allReviews?.map((review) => (
                                         <CustomerReview
@@ -224,7 +226,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     isReviewModalOpen={isReviewModalOpen}
                                     setIsReviewModalOpen={setIsReviewModalOpen}
                                     id={Data._id}
-                                    getAllReviewsOfUser={getAllReviewsOfUser}
+                                    getAllReviewsOfUser={getAllReviews}
                                 />
                             }
                         </div>
