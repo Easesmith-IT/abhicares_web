@@ -1,16 +1,25 @@
-.service_info{
-    margin-top: 20px;
-    padding: 20px;
+.service_info {
+  margin-top: 20px;
+  padding: 20px;
 }
 
-.service_info > div{
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
+.button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #6765e3;
+  color: white;
+  margin-top: 10px;
 }
 
-.heading_container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.service_info > div {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.heading_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
