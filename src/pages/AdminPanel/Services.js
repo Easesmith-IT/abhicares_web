@@ -57,7 +57,7 @@ const Services = () => {
             <div key={category._id} onClick={() => navigate(`/admin/services/${category._id}`, { state: { categoryName: category.name } })} className={classes.card}>
               <div>
                 <h5>{category.name}</h5>
-                <p>Total Services : {category.totalServices}</p>
+                {/* <p>Total Services : {category.totalServices}</p> */}
               </div>
             </div>
           ))}

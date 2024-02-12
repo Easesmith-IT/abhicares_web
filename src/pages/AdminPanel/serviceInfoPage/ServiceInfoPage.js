@@ -155,7 +155,8 @@ const ServiceInfoPage = () => {
       <Wrapper>
         <div className={classes["services-wrapper"]}>
           <div className={serviceInfoPageClasses.service_info}>
-            <h4>{state.name}</h4>
+            <h3>Services</h3>
+            <h6>{state.name}</h6>
             <div>
               <p>Starting Price: ₹{state.startingPrice}</p>
               {/* <p>Total Products: {state.totalProducts}</p> */}
