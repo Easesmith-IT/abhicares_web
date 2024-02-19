@@ -118,7 +118,7 @@
 
 .main-container {
   display: flex;
-  width: 100vw;
+  width: 100%;
   position: relative;
   top: 70px;
   z-index: 1;
@@ -683,9 +683,10 @@
 /* Services styling goes here */
 
 .services-wrapper {
-  width: 95%;
+  width: 90%;
   /* border: 3px solid black; */
   overflow: hidden;
+  padding: 10px;
 }
 
 .services-header {

@@ -16,7 +16,7 @@ import { BiMinus, BiPlus } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const Product = ({ product, setIsCartLoading, flag = true }) => {
+const Product = ({ product, setIsCartLoading, flag = true, features }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [productInCart, setProductInCart] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -132,6 +132,7 @@ const Product = ({ product, setIsCartLoading, flag = true }) => {
           isOpen={isOpen}
           handleOnclick={handleOnclick}
           Data={product}
+          features={features}
         />
       )}
     </>
