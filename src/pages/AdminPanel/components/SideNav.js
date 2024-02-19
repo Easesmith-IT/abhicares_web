@@ -90,7 +90,7 @@ const SideNav = () => {
               alt="services"
             />
 
-            <h3 className={classes.title}>Services</h3>
+            <h3 className={classes.title}>Categories</h3>
           </Link>
         )}
 
