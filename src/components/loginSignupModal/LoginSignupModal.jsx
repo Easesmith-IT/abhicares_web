@@ -24,6 +24,8 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     from: null
   });
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [otp, setOtp] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isLoginOtp, setIsLoginOtp] = useState(false);
@@ -82,12 +84,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/signup-otp  `,
+        `${process.env.REACT_APP_API_URL}/signup-otp`,
         { ...loginSignupInfo },
         { withCredentials: true }
       );
       setIsLoading(false);
       console.log(data);
+      setSuccessMessage(data?.message)
       // setLoginSignupInfo({
       //   name: "",
       //   phone: "",
@@ -117,6 +120,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { withCredentials: true }
       );
       console.log("login", data);
+      setSuccessMessage(data?.message)
       setIsLoading(false);
       setIsLoginOtp(true);
       // setLoginSignupInfo({
@@ -131,6 +135,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   };
 
   const handleOtpVerification = async () => {
+    setSuccessMessage("");
     if (!otp) {
       setError({ message: "Enter otp", from: 'login otp verification' });
       return;
@@ -160,11 +165,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setOtp("");
     } catch (error) {
       setIsLoading(false);
+      setError({ message: error?.response?.data?.message, from: 'login otp verification' });
       console.log(error);
     }
   };
 
   const handleSignupOtpVerification = async () => {
+    setSuccessMessage("");
     if (!otp) {
       setError({ message: "Enter otp", from: 'signup otp verification' });
       return;
@@ -178,7 +185,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/verify-signup `,
+        `${process.env.REACT_APP_API_URL}/verify-signup`,
         { enteredOTP: otp, phone: loginSignupInfo.phone },
         { withCredentials: true }
       );
@@ -193,6 +200,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoginOtp(false);
       setOtp("");
     } catch (error) {
+      setError({ message: error?.response?.data?.message, from: 'signup otp verification' });
       setIsLoading(false);
       console.log(error);
     }
@@ -288,6 +296,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
           {isLoginOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
+              {!isLoading && error.from === 'login otp verification' && (
+                <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+              )}
+
+              {successMessage && (
+                <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>
+              )}
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
@@ -296,6 +311,9 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   type="number"
                   placeholder="Enter Otp"
                 />
+              </div>
+              <div className={classes.btn_wrapper}>
+                <button onClick={handleLogin} className={classes.link}>Resend OTP</button>
               </div>
               <button
                 onClick={handleOtpVerification}
@@ -315,6 +333,14 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
           {isSignupOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
+              {!isLoading && error.from === 'signup otp verification' && (
+                <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+              )}
+
+              {successMessage && (
+                <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>
+              )}
+
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
@@ -323,6 +349,9 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   type="number"
                   placeholder="Enter Otp"
                 />
+              </div>
+              <div className={classes.btn_wrapper}>
+                <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>
               </div>
               <button
                 onClick={handleSignupOtpVerification}
