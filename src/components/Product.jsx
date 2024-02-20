@@ -43,7 +43,8 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
     setProductInCart(filtered);
   }, [getCartDetails, cart]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
     setIsLoading(true);
     if (flag) {
       setIsCartLoading(true);
@@ -57,7 +58,8 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
     }
   };
 
-  const handleOnPlusClick = async () => {
+  const handleOnPlusClick = async (e) => {
+    e.stopPropagation();
     setIsLoading(true);
     await dispatch(
       addItemToCart({ id: productInCart?.productId?._id, type: "product" })
@@ -66,7 +68,8 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
     setIsLoading(false);
   };
 
-  const handleOnMinusClick = async () => {
+  const handleOnMinusClick = async (e) => {
+    e.stopPropagation();
     setIsLoading(true);
     await dispatch(
       deleteItemFromCart({
@@ -81,12 +84,11 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
   return (
     <>
       {isImgLoading && <Skeleton height={260} />}
-      <div className={classes.product}>
+      <div className={classes.product} onClick={handleOnclick}>
         <img
           style={{ display: !isImgLoading ? "block" : "none" }}
           onLoad={() => setIsImgLoading(false)}
           className={classes.img}
-          onClick={handleOnclick}
           src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product?.imageUrl[0]}`}
           alt="product"
         />

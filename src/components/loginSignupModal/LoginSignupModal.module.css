@@ -78,12 +78,28 @@
     cursor: pointer;
 }
 
+
+.btn_wrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.btn_wrapper .link{
+    background: transparent;
+    border: none;
+    /* width: 160px; */
+    color: #2e63ff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
 .button{
+    margin-top: 10px;
     width: 100%;
     border: none;
     outline: none;
     padding: 15px;
-    margin-top: 30px;
     border-radius: 6px;
     background: #000;
     color: white;

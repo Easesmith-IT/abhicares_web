@@ -18,20 +18,21 @@ const Order = ({ order, index }) => {
       <div onClick={handleOnclick} className={classes.order}>
         <div className={classes.order_top}>
           <div>
-            {order.items.map((item,index) => (
+            {order.items.map((item, index) => (
               <img key={index}
                 className={classes.img}
-                src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] :item?.package?.imageUrl[0]}`}
+                src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] : item?.package?.imageUrl[0]}`}
                 alt=""
               />
             ))}
           </div>
 
           <div className={classes.info}>
-            <p style={{color:'grey'}}>#{order._id}</p>
-            {/* <p>{`${order.products[0].product.name}, ${order.products[1] && order.products[1].product.name}, ...`}</p> */}
-            <p>{format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
-            <p>Order Value : ₹{order.orderValue}</p>
+            <p style={{ color: 'grey' }}>#{order._id}</p>
+            <div className={classes.info_row}>
+              <p>Date : {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
+              <p>Order Value : ₹{order.orderValue}</p>
+            </div>
           </div>
         </div>
         <hr />
