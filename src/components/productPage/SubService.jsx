@@ -11,7 +11,7 @@ import {
     deleteItemFromCart,
     getCartDetails,
 } from "../../store/slices/cartSlice";
-const SubService = ({ singlePackage, serviceId,setIsCartLoading }) => {
+const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
@@ -125,6 +125,7 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading }) => {
                 handleOnclick={handleOnclick}
                 Data={singlePackage}
                 serviceId={serviceId}
+                features={features}
             />}
         </>
     );

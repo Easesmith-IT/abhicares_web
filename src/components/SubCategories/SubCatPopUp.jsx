@@ -76,8 +76,8 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                     {
                                         allServices.map((service) => (
                                             <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
-                                                <div onClick={() => navigate(`/services/${service._id}`, { state: service.name })} className={classes['category-cards']} >
-                                                {isImgLoading && <Skeleton height={100} width={100} />}
+                                                <div onClick={() => navigate(`/services/${service._id}`, { state: { name: service.name, features: service.features } })} className={classes['category-cards']} >
+                                                    {isImgLoading && <Skeleton height={100} width={100} />}
                                                     <div className={classes['image-Box']}>
                                                         {/* <SkeletonCom
                                                             alt={"service"}

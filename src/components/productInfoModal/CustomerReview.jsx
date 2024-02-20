@@ -29,7 +29,7 @@ const CustomerReview = ({ review, isUser = false }) => {
                         <span className={classes.rating_star_num}>{review.rating}</span>
                     </div>
                     <div className={classes.d_flex}>
-                        <MdModeEdit onClick={() => { }} cursor={"pointer"} color="black" size={15} />
+                        <MdModeEdit onClick={() => setIsUpdateReviewModalOpen(true)} cursor={"pointer"} color="black" size={15} />
                         <MdDelete cursor={"pointer"} color="black" size={15} />
                     </div>
                 </div>

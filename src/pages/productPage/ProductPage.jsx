@@ -92,7 +92,7 @@ const ProductPage = () => {
         </Helmet>
         <section className={classes.product_page}>
           <div className={classes.container}>
-            <h1 className={classes.heading}>{state}</h1>
+            <h1 className={classes.heading}>{state?.name}</h1>
             <div className={classes.booking}>
               {/* <div className={classes.star_container}>
                             <BsStarFill color="white" size={15} />
@@ -133,6 +133,7 @@ const ProductPage = () => {
                         singlePackage={singlePackage}
                         serviceId={params?.serviceId}
                         setIsCartLoading={setIsCartLoading}
+                        features={state.features}
                       />
                     ))}
                   </div>
@@ -149,6 +150,7 @@ const ProductPage = () => {
                     <Product
                       product={product}
                       setIsCartLoading={setIsCartLoading}
+                      features={state.features}
                     />
                   ))}
                 </div>

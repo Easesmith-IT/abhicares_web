@@ -167,13 +167,13 @@ p {
     color: gray;
 }
 
-.price_cotainer{
+.price_cotainer {
     display: flex;
     gap: 6px;
     margin-top: 10px;
 }
 
-.price_time_container .price:first-child{
+.price_time_container .price:first-child {
     font-size: 14px;
     text-decoration: line-through;
     color: gray;
@@ -209,11 +209,11 @@ p {
 }
 
 
-.products_cotainer{
+.products_cotainer {
     padding: 20px;
 }
 
-.product{
+.product {
     max-width: 340px;
     padding: 20px;
     border-bottom: 1px solid #dcdcdc;
@@ -227,21 +227,21 @@ p {
     cursor: pointer;
 }
 
-.price_cotainer{
+.price_cotainer {
     display: flex;
     gap: 6px;
     margin-top: 10px;
 }
 
 .price_time_container .price:first-child,
-.product .price:first-child{
+.product .price:first-child {
     font-size: 14px;
     text-decoration: line-through;
     color: gray;
 }
 
 .price_time_container .price:last-child,
-.product .price:last-child{
+.product .price:last-child {
     font-size: 16px;
 }
 
@@ -323,7 +323,7 @@ p {
     margin-bottom: 10px;
 }
 
-.faq_li_border_top{
+.faq_li_border_top {
     border-top: 1px solid #d6d6d6;
 }
 
@@ -359,63 +359,63 @@ p {
     transition: all .5s cubic-bezier(1, 0, 1, 0);
 }
 
-.brands_img{
+.brands_img {
     width: 100%;
 }
 
-.customer_reviews_section{
+.customer_reviews_section {
     padding: 20px;
 }
 
-.customer_reviews_h3{
+.customer_reviews_h3 {
     font-size: 26px;
     font-weight: 600;
 }
 
-.d_flex{
+.d_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
 }
 
-.customer_reviews_section .rating{
+.customer_reviews_section .rating {
     font-size: 26px;
     font-weight: 600;
 }
 
-.customer_reviews_section .rating .rating_span{
+.customer_reviews_section .rating .rating_span {
     color: black;
 }
 
-.reviews{
+.reviews {
     font-size: 14px;
     color: #545454;
     margin-top: -6px;
 }
 
-.rating_stars_container{
+.rating_stars_container {
     margin-top: 20px;
 }
 
-.specific_star_rating_div{
+.specific_star_rating_div {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.rating_staricon_num_container{
+.rating_staricon_num_container {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.rating_star_num{
+.rating_star_num {
     font-size: 13px;
     font-weight: 500;
 }
 
-.rating_line{
+.rating_line {
     height: 4px;
     max-width: 350px;
     margin-inline: 10px;
@@ -425,7 +425,7 @@ p {
     overflow: hidden;
 }
 
-.rating_line::before{
+.rating_line::before {
     content: "";
     height: 4px;
     width: 350px;
@@ -435,59 +435,60 @@ p {
     background-color: black;
 }
 
-.specific_star_rating_total{
+.specific_star_rating_total {
     font-size: 14px;
     color: #838383;
 }
 
-.customer_reviews_container{
+.customer_reviews_container {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-.customer_review{
+.customer_review {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 }
 
-.customer_info{
+.customer_info {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.customer_img{
+.customer_img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
 
-.customer_name, .review_date{
+.customer_name,
+.review_date {
     font-size: 14px;
     font-weight: 600;
 }
 
-.review_date{
+.review_date {
     font-weight: 400;
     color: #5c5c5c;
 }
 
-.h5{
+.h5 {
     margin-top: 10px;
     margin-bottom: 5px;
     font-size: 14px;
 }
 
-.customer_review_p{
+.customer_review_p {
     font-size: 12px;
     color: #5c5c5c;
 
 }
 
-.customer_review_right .rating_staricon_num_container{
+.customer_review_right .rating_staricon_num_container {
     margin-top: 3px;
 }
 
@@ -497,3 +498,35 @@ p {
     }
 }
 
+.features_container {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feature {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    gap: 30px;
+}
+
+.feature .feature_img {
+    width: 130px;
+    height: 80px;
+    border-radius: 10px;
+}
+
+.feature .feature_img>img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.feature .feature_content {
+    max-width: 580px;
+    width: 100%;
+}

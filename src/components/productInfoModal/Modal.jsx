@@ -18,14 +18,14 @@ import Product from "../Product";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
 
-const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
+const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
     const [allProducts, setAllProducts] = useState([]);
     const [allReviews, setAllReviews] = useState([]);
     const [userReviews, setUserReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-
+    console.log("modal open", Data);
 
     const responsive = {
         superLargeDesktop: {
@@ -77,11 +77,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
         }
     };
 
+    console.log("user reviews", userReviews);
+
     const getAllReviews = async () => {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}`, { type: isProduct ? "product" : "package" });
-            console.log("reviews", data);
-            setAllReviews(data.data);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
+            console.log("get reviwes reviews", data);
+            setAllReviews(data.reviews);
         } catch (error) {
             console.log(error);
         }
@@ -91,7 +93,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
     useEffect(() => {
         !isProduct && getAllProducts();
         getAllReviews();
-        getAllReviewsOfUser();
+        // getAllReviewsOfUser();
     }, [])
 
 
@@ -113,7 +115,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                             <div className={classes.border_bottom}>
                                 <div className={classes.modal_header}>
                                     <div className={classes.modal_header_left}>
-                                        <h4 className={classes.modal_header_left_h4}>{Data.name}</h4>
+                                        <h3 className={classes.modal_header_left_h4}>{Data.name}</h3>
                                         <div className={classes.rating}>
                                             <BsStarFill color="gray" size={11} />
                                             <span className={classes.rating_span}>4.83 (1.2M)</span>
@@ -148,20 +150,22 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                 && <p>No product found</p>
                             }
 
-                            {!isProduct && isLoading
-                                && allProducts.length === 0
-                                && <Loader />
-                            }
                             {!isProduct && <div className={classes.products_cotainer}>
-                                <h2>Products</h2>
+                                <h4>Products</h4>
                                 {allProducts?.map((product) => (
                                     <Product
                                         key={product._id}
                                         product={product}
                                         flag={false}
+                                        features={features}
                                     />
                                 ))}
                             </div>}
+
+                            {!isProduct && isLoading
+                                && allProducts.length === 0
+                                && <Loader />
+                            }
 
                             {/* <div className={classes.border_bottom}>
                                 <HowItWorks />
@@ -189,7 +193,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                             </div> */}
 
                             <div className={classes.customer_reviews_section}>
-                                <h3 className={classes.customer_reviews_h3}>Customer reviews</h3>
+                                <h4>Customer reviews</h4>
                                 <div className={classes.d_flex}>
                                     <div className={classes.rating}>
                                         <BsStarFill color="black" size={15} />
@@ -203,13 +207,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                     <SpecificStarRating />
                                 </div>
                                 <div className={classes.customer_reviews_container}>
-                                    {userReviews?.map((review) => (
+                                    {/* {userReviews?.map((review) => (
                                         <CustomerReview
                                             key={review._id}
                                             review={review}
                                             isUser={true}
                                         />
-                                    ))}
+                                    ))} */}
 
                                     {allReviews?.map((review) => (
                                         <CustomerReview
@@ -218,13 +222,27 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct }) => {
                                         />
                                     ))}
                                 </div>
+                                <div className={classes.features_container}>
+                                    <h4>Included</h4>
+                                    {features?.map((feature) => (
+                                        <div className={classes.feature}>
+                                            <div className={classes.feature_img}>
+                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${feature?.image}`} alt="feature" />
+                                            </div>
+                                            <div className={classes.feature_content}>
+                                                <h5>{feature?.title}</h5>
+                                                <p>{feature?.description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             {isReviewModalOpen &&
                                 <ReviewModal
                                     isReviewModalOpen={isReviewModalOpen}
                                     setIsReviewModalOpen={setIsReviewModalOpen}
                                     id={Data._id}
-                                    getAllReviewsOfUser={getAllReviewsOfUser}
+                                    getAllReviewsOfUser={getAllReviews}
                                 />
                             }
                         </div>

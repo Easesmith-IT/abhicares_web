@@ -19,20 +19,19 @@ import AddPackageModal from "../../../components/add-package-modal/AddPackageMod
 import Wrapper from "../../Wrapper";
 import useAuthorization from "../../../hooks/useAuthorization";
 import AddIconModal from "../../../components/add-icon-modal/AddIconModal";
+import FeaturesModal from "../../../components/feature-modal/FeaturesModal";
 
 const ServiceInfoPage = () => {
   const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-     const [isUploadIcnModal, setIsUploadIcnModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploadIcnModal, setIsUploadIcnModal] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isPackageInfoModalOpen, setIsPackageInfoModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isPackageDeleteModalOpen, setIsPackageDeleteModalOpen] =
-    useState(false);
+  const [isPackageDeleteModalOpen, setIsPackageDeleteModalOpen] = useState(false);
   const [isPackageModalOpen, setIsPackageModalOpen] = useState(false);
-  const [isUpdatePackageModalOpen, setIsUpdatePackageModalOpen] =
-    useState(false);
+  const [isUpdatePackageModalOpen, setIsUpdatePackageModalOpen] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [allPackages, setAllPackages] = useState([]);
   const [product, setProduct] = useState({});
@@ -40,11 +39,13 @@ const ServiceInfoPage = () => {
   const [singlePackage, setSinglePackage] = useState("");
   const [isPackageLoading, setIsPackageLoading] = useState(true);
   const [isProductLoading, setIsProductLoading] = useState(true);
+  const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+  const [isServiceDetailLoading, setIsServiceDetailLoading] = useState(true);
+  const [serviceDetail, setServiceDetail] = useState("");
 
   const { state } = useLocation();
   const params = useParams();
   const { checkAuthorization } = useAuthorization();
-  console.log("state", state);
 
   const handleProductInfoModal = (e, product) => {
     e.stopPropagation();
@@ -70,13 +71,27 @@ const ServiceInfoPage = () => {
     setIsUpdatePackageModalOpen(!isUpdatePackageModalOpen);
   };
 
+  const getServiceDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-service-details/${params?.serviceId}`,
+        { withCredentials: true }
+      );
+      console.log("service details", data);
+      setServiceDetail(data?.service);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsServiceDetailLoading(false);
+    }
+  };
+
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_ADMIN_API_URL}/get-service-product/${params?.serviceId}`,
         { withCredentials: true }
       );
-      console.log(data);
       setAllProducts(data.data);
     } catch (error) {
       console.log(error);
@@ -84,6 +99,7 @@ const ServiceInfoPage = () => {
       setIsProductLoading(false);
     }
   };
+
   const getAllPackage = async () => {
     try {
       const { data } = await axios.get(
@@ -102,6 +118,7 @@ const ServiceInfoPage = () => {
   useEffect(() => {
     getAllProducts();
     getAllPackage();
+    getServiceDetails();
   }, []);
 
   const handleDelete = async () => {
@@ -111,7 +128,7 @@ const ServiceInfoPage = () => {
         `${process.env.REACT_APP_ADMIN_API_URL}/delete-product/${product}`,
         { withCredentials: true }
       );
-      toast.success("Prodct deleted successfully");
+      toast.success("Product deleted successfully");
       getAllProducts();
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {
@@ -154,21 +171,27 @@ const ServiceInfoPage = () => {
     <>
       <Wrapper>
         <div className={classes["services-wrapper"]}>
-          <div className={serviceInfoPageClasses.service_info}>
-            <h3>Services</h3>
-            <h6>{state.name}</h6>
-            <div>
-              <p>Starting Price: ₹{state.startingPrice}</p>
-              {/* <p>Total Products: {state.totalProducts}</p> */}
+          <div className={serviceInfoPageClasses.service_info_wrapper}>
+            <div className={serviceInfoPageClasses.service_info}>
+              {/* <h3>Services</h3> */}
+              <h5>{serviceDetail?.name}</h5>
+              <div>
+                <p>Starting Price: ₹{serviceDetail?.startingPrice}</p>
+              </div>
+              <p>{serviceDetail?.description && parse(serviceDetail?.description)}</p>
+              {!serviceDetail?.icon && <button
+                className={serviceInfoPageClasses.button}
+                onClick={() => setIsUploadIcnModal(true)}
+              >
+                Upload Icon
+              </button>}
             </div>
-            <p>{parse(state.description)}</p>
-           {!state.icon && <button
+            <button
               className={serviceInfoPageClasses.button}
-              onClick={() => setIsUploadIcnModal(true)}
-            >
-              Upload Icon
-            </button>}
+              onClick={() => setIsFeatureModalOpen(true)}
+            >Update Features</button>
           </div>
+
           <div className={classes["services-header"]}>
             <h4>Products</h4>
             <button
@@ -301,8 +324,9 @@ const ServiceInfoPage = () => {
 
       {isUploadIcnModal && (
         <AddIconModal
-          setIsUploadIcnModal={setIsUploadIcnModal}
-                  serviceId={state._id}
+          setIsModalOpen={setIsUploadIcnModal}
+          serviceId={serviceDetail?._id}
+          getServiceDetails={getServiceDetails}
         />
       )}
 
@@ -335,6 +359,15 @@ const ServiceInfoPage = () => {
         <DeleteModal
           setState={setIsPackageDeleteModalOpen}
           handleDelete={handlePackageDelete}
+        />
+      )}
+
+      {isFeatureModalOpen && (
+        <FeaturesModal
+          setIsModalOpen={setIsFeatureModalOpen}
+          allFeatures={serviceDetail?.features}
+          getServiceDetails={getServiceDetails}
+          serviceId={serviceDetail?._id}
         />
       )}
     </>
