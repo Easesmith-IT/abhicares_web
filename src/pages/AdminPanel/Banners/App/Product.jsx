@@ -5,6 +5,7 @@ import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import UpdateBannerModal from "../../../../components/update-banner-modal/UpdateBannerModal";
 
 const Product = () => {
   const { checkAuthorization } = useAuthorization();
@@ -15,6 +16,13 @@ const Product = () => {
   const navigate = useNavigate();
 
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState({
+    img: "",
+    type: "",
+    page: "",
+    section: ""
+  });
 
 
   const bannerChangeHandler = (e) => {
@@ -30,34 +38,14 @@ const Product = () => {
 
   const uploadImages = async () => {
 
-    const formDataHero = new FormData();
     if (image.file === null) {
-      alert("Please select the images");
+      toast.error("Please select the image");
       return;
     }
 
-    formDataHero.append("img", image.file);
+    setData({ img: image.file, type: "product-banner", page: "product-banners", section: "app-productpage" })
 
-
-    formDataHero.append("type", "product-banner");
-
-    formDataHero.append("page", "product-banners");
-    formDataHero.append("section", "app-productpage");
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero, { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        getBannersFromServer();
-        toast.success("Updated successfully!");
-      }
-    } catch (err) {
-      checkAuthorization(err);
-      console.log("ERROR", err.message);
-    }
+    setIsModalOpen(true);
   };
 
   const getBannersFromServer = async () => {
@@ -76,7 +64,7 @@ const Product = () => {
       );
 
       setImage({
-        file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response.data.banners}`
+        file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response.data.banners.image}`
       })
       console.log("response1", response);
     } catch (err) {
@@ -90,31 +78,41 @@ const Product = () => {
 
 
   return (
-    <Wrapper>
-      <div className={classes.otherBanners}>
-        <div className={classes.bannerContainer}>
-          <h4>Product Banner</h4>
-          {image.preview && (
-            <img src={image.preview} alt="banner" />
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(event) => bannerChangeHandler(event)}
-            className="mb-2"
-          />
+    <>
+      <Wrapper>
+        <div className={classes.otherBanners}>
+          <div className={classes.bannerContainer}>
+            <h4>Product Banner</h4>
+            {image.preview && (
+              <img src={image.preview} alt="banner" />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => bannerChangeHandler(event)}
+              className="mb-2"
+            />
+          </div>
+          <div className="d-flex justify-content-end mx-5 mt-4">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={uploadImages}
+            >
+              Update
+            </button>
+          </div>
         </div>
-        <div className="d-flex justify-content-end mx-5 mt-4">
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={uploadImages}
-          >
-            Update
-          </button>
-        </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+
+      {isModalOpen &&
+        <UpdateBannerModal
+          getBannersFromServer={getBannersFromServer}
+          setIsModalOpen={setIsModalOpen}
+          data={data}
+        />
+      }
+    </>
   );
 };
 

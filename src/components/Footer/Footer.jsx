@@ -7,6 +7,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Logo from '../../assets/mainLogo2.png'
 import { Link } from 'react-router-dom';
 
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
+
 
 export const Footer = () => {
     return (
@@ -24,7 +27,7 @@ export const Footer = () => {
                                     <p className={classes.p}><Link to="/aboutUs">About Us</Link></p>
                                 </div>
 
-                                 <div className={classes['footer-content']}>
+                                <div className={classes['footer-content']}>
                                     <p className={classes.p}><Link to="/why-us">Why Us</Link></p>
                                 </div>
                                 <div className={classes['footer-content']}>
@@ -82,6 +85,27 @@ export const Footer = () => {
 
                         </Grid>
                     </Grid>
+                </div>
+                <div className={classes.help_wrapper}>
+                    <div className={classes.help}>Need Help?</div>
+                    <div className={classes.bg_white}>
+                        <a href="tel:+9090767601">
+                            <FaPhoneAlt />
+                            9090-7676-01
+                        </a>
+                    </div>
+                    <div className={classes.bg_white}>
+                        <a href="https://wa.me/919090767601?text=Hello%20there" target='_blank'>
+                            <FaWhatsapp size={22} />
+                            9090-7676-01
+                        </a>
+                    </div>
+                    <div className={classes.bg_white}>
+                        <a href="mailto:Support@Abhicares.com">
+                            <IoMdMail size={22} />
+                            Support@Abhicares.com
+                        </a>
+                    </div>
                 </div>
                 <div className={classes['sub-footer']}>
                     <div>© Copyright 2023 AzadKart Pvt. Ltd. All rights reserved.</div>

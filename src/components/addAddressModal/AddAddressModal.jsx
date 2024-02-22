@@ -10,6 +10,7 @@ import useGeolocation from "../../hooks/usegelocation";
 
 
 import CurrentLocationAddInfo from "./CurrentLocationAddInfo";
+import { GoogleApiWrapper } from "google-maps-react";
 
 const AddAddressModal = ({
   isOpen,
@@ -242,8 +243,8 @@ const AddAddressModal = ({
   );
 };
 
-export default AddAddressModal;
+// export default AddAddressModal;
 
-// export default GoogleApiWrapper({
-//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-// })(AddAddressModal);
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+})(AddAddressModal);

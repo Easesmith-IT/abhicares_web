@@ -77,7 +77,7 @@ export const HomeRepairs = () => {
         {
           allServiceProducts.map((item) => (
             <>
-              <div onClick={() => navigate(`services/${item.serviceId}`)} className={classes['card']} key={item._id}>
+              <div onClick={() => navigate(`services/${item.serviceId}`,{ state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes['card']} key={item._id}>
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
                     <SkeletonCom

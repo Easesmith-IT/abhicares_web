@@ -301,7 +301,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               )}
 
               {successMessage && (
-                <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>
+                <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
               )}
               <div className={classes.input_box}>
                 <input
@@ -338,7 +338,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               )}
 
               {successMessage && (
-                <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>
+                <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
               )}
 
               <div className={classes.input_box}>
