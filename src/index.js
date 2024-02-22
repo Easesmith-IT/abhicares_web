@@ -16,7 +16,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppWithGoogleApi />
+      {/* <AppWithGoogleApi /> */}
+      <App />
       <Toaster />
     </Provider>
   </React.StrictMode>

@@ -6,6 +6,7 @@ import DummyImage from "../../../../assets/dummy.png";
 import classes from "../Banner.module.css";
 import toast from "react-hot-toast";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import UpdateBannerModal from "../../../../components/update-banner-modal/UpdateBannerModal";
 
 const Home = () => {
   const { checkAuthorization } = useAuthorization();
@@ -19,6 +20,14 @@ const Home = () => {
     { bannerName: "banner4", file: null, preview: null },
     { bannerName: "banner5", file: null, preview: null },
   ]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState({
+    img: "",
+    type: "",
+    page: "",
+    section: ""
+  });
 
   const navigate = useNavigate();
 
@@ -63,65 +72,28 @@ const Home = () => {
     const formDataHero = new FormData();
     const t = type === "banner1" ? 0 : 1;
 
-
     if (banners[t].file === null) {
-      alert("Please select the images");
+      toast.error("Please select the image");
       return;
     }
 
-    formDataHero.append("img", banners[t].file);
+    setData({ img: banners[t].file, type: type, page: "home-banners", section: "app-homepage" })
 
-
-    formDataHero.append("type", type);
-
-    formDataHero.append("page", "home-banners");
-    formDataHero.append("section", "app-homepage");
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero, { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        getBannersFromServer();
-        toast.success("Updated successfully!");
-      }
-    } catch (err) {
-      console.log("ERROR", err.message);
-      checkAuthorization(err);
-    }
+    setIsModalOpen(true);
   };
 
   const uploadHeroImages = async (type) => {
     console.log(type)
-    const formDataHero = new FormData();
     let filtered = images.find((image) => image.bannerName === type);
 
-    if (filtered.file === null) {
+    if (!filtered.file) {
       toast.error("Please select the image");
       return;
     }
-    formDataHero.append("img", filtered.file);
-    formDataHero.append("type", type);
 
-    formDataHero.append("page", "home-hero-banners");
-    formDataHero.append("section", "app-homepage");
+    setData({ img: filtered.file, type: type, page: "home-hero-banners", section: "app-homepage" })
 
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero, { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        getBannersFromServer();
-        toast.success("Updated successfully!");
-      }
-    } catch (err) {
-      console.log("ERROR", err.message);
-      checkAuthorization(err);
-    }
+    setIsModalOpen(true);
   }
 
   const getBannersFromServer = async () => {
@@ -140,7 +112,7 @@ const Home = () => {
 
       const imgInstance = [...images];
       for (let i = 0; i < response1.data.banners.length; i++) {
-        const img = response1.data.banners[i];
+        const img = response1.data.banners[i].image;
         const bannerName = `hero-banner${i + 1}`;
         const index = images.findIndex(
           (banner) => banner.bannerName === bannerName
@@ -149,7 +121,7 @@ const Home = () => {
         if (index !== -1) {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
-            file: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
+            file: "",
             preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
           });
         }
@@ -171,7 +143,7 @@ const Home = () => {
 
       const instance = [...banners];
       const index = banners.findIndex((banner) => banner.bannerName === "banner4");
-      instance.splice(index, 1, { bannerName: "banner4", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response2.data.banners}` })
+      instance.splice(index, 1, { bannerName: "banner4", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response2.data.banners.image}` })
       setBanners(() => instance);
 
       const response3 = await axios.get(
@@ -186,7 +158,7 @@ const Home = () => {
         }
       );
       const index2 = banners.findIndex((banner) => banner.bannerName === "banner5");
-      instance.splice(index2, 1, { bannerName: "banner5", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response3.data.banners}` })
+      instance.splice(index2, 1, { bannerName: "banner5", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response3.data.banners.image}` })
       setBanners(() => instance);
 
       console.log("response1", response1);
@@ -205,77 +177,87 @@ const Home = () => {
 
 
   return (
-    <Wrapper>
-      <div>
-        <div className="my-3 mx-5 d-flex justify-content-between">
-          <h3>Hero Banners(3)</h3>
-        </div>
-        <div className={classes.imagesContainer}>
-          {images &&
-            images.map((img, index) => (
-              <div key={index} className={classes.imageWrapper}>
-                {img.bannerName && img.preview && (
-                  <img
-                    src={img.preview}
-                    alt={`i${index + 1}`}
-                  />
-                )}
-                <input
-                  type="file"
-                  name={img.bannerName}
-                  accept="image/*"
-                  onChange={(event) =>
-                    imageChangeHandler(event, img.bannerName)
-                  }
-                  className="mb-2"
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
-                >
-                  Update
-                </button>
-              </div>
-            ))}
-        </div>
-
-        <div className={classes.otherBanners}>
-          {banners &&
-            banners.map((banner, index) => (
-              <div key={index} className={classes.bannerContainer}>
-                <h4>{`Banner ${index + 1}`}</h4>
-
-                {banner.bannerName && banner.preview && (
-                  <img
-                    src={banner.preview}
-                    alt={`banner${index + 1}`}
-                  />
-                )}
-                <div className={classes.bannerFooter}>
+    <>
+      <Wrapper>
+        <div>
+          <div className="my-3 mx-5 d-flex justify-content-between">
+            <h3>Hero Banners(3)</h3>
+          </div>
+          <div className={classes.imagesContainer}>
+            {images &&
+              images.map((img, index) => (
+                <div key={index} className={classes.imageWrapper}>
+                  {img.bannerName && img.preview && (
+                    <img
+                      src={img.preview}
+                      alt={`i${index + 1}`}
+                    />
+                  )}
                   <input
                     type="file"
-                    name={banner.bannerName}
+                    name={img.bannerName}
                     accept="image/*"
                     onChange={(event) =>
-                      bannerChangeHandler(event, banner.bannerName)
+                      imageChangeHandler(event, img.bannerName)
                     }
                     className="mb-2"
                   />
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => uploadImages(`banner${index + 1}`)}
+                    onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
                   >
                     Update
                   </button>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
+
+          <div className={classes.otherBanners}>
+            {banners &&
+              banners.map((banner, index) => (
+                <div key={index} className={classes.bannerContainer}>
+                  <h4>{`Banner ${index + 1}`}</h4>
+
+                  {banner.bannerName && banner.preview && (
+                    <img
+                      src={banner.preview}
+                      alt={`banner${index + 1}`}
+                    />
+                  )}
+                  <div className={classes.bannerFooter}>
+                    <input
+                      type="file"
+                      name={banner.bannerName}
+                      accept="image/*"
+                      onChange={(event) =>
+                        bannerChangeHandler(event, banner.bannerName)
+                      }
+                      className="mb-2"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => uploadImages(`banner${index + 1}`)}
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+          <div className="d-flex justify-content-end mx-5 mt-4"></div>
         </div>
-        <div className="d-flex justify-content-end mx-5 mt-4"></div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+      
+      {isModalOpen &&
+        <UpdateBannerModal
+          getBannersFromServer={getBannersFromServer}
+          setIsModalOpen={setIsModalOpen}
+          data={data}
+        />
+      }
+    </>
   );
 };
 

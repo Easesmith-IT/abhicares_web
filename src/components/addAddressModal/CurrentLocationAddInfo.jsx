@@ -51,8 +51,8 @@ const CurrentLocationAddInfo = ({
   );
 };
 
-export default CurrentLocationAddInfo
+// export default CurrentLocationAddInfo
 
-// export default GoogleApiWrapper({
-//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-// })(CurrentLocationAddInfo);
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+})(CurrentLocationAddInfo);

@@ -93,3 +93,49 @@ a>svg{
     }
 }
 
+
+.help_wrapper{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    background: black;
+    border-radius: 50px;
+    padding: 15px 30px;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.help_wrapper .bg_white a{
+    padding: 10px 20px;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    gap:  10px;
+    align-items: center;
+    color: black;
+}
+
+@media screen and (max-width:494px) {
+    .help{
+        display: none;
+    }
+
+    .help_wrapper{
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width:463px) {
+    .bg_white a{
+        width: 100%;
+        padding-inline: 5px;
+    }
+
+    .help_wrapper{
+        padding-inline: 15px;
+        border-radius: 20px;
+    }
+
+}
+
