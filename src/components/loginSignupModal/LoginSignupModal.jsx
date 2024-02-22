@@ -307,6 +307,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                 <input
                   onChange={(e) => setOtp(e.target.value)}
                   value={otp}
+                  maxLength={6}
                   className={classes.input}
                   type="number"
                   placeholder="Enter Otp"

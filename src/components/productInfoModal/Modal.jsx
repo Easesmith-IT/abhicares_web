@@ -223,7 +223,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
                                     ))}
                                 </div>
                                 <div className={classes.features_container}>
-                                    <h4>Included</h4>
+                                    <h4>We Offer</h4>
                                     {features?.map((feature) => (
                                         <div className={classes.feature}>
                                             <div className={classes.feature_img}>
