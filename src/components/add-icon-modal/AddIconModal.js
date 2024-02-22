@@ -74,7 +74,7 @@ const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
                             </div>}
                         {!iconInfo.iconPrev && iconInfo.icon &&
                             <div className={classes.img_container}>
-                                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${iconInfo.icon}`} alt="feature" />
+                                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${iconInfo.icon}`} alt="feature" />
                                 {/* <MdClose onClick={handleDbImgDelete} className={classes.icon} /> */}
                             </div>}
                     </div>

@@ -89,7 +89,7 @@ const Service = () => {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
             file: null,
-            preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
+            preview: `${process.env.REACT_APP_IMAGE_URL}/${img}`,
           });
         }
       }

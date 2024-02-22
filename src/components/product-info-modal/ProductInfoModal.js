@@ -43,7 +43,7 @@ const ProductInfoModal = ({ setIsInfoModalOpen, product, isPackage }) => {
                 </div>
                 <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                     {product?.imageUrl?.map((image) => (
-                        <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt={isPackage ? "Package" : "Product"} />
+                        <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/${image}`} alt={isPackage ? "Package" : "Product"} />
                     ))}
                 </Carousel>
                 <div className={classes.contianer}>
@@ -60,7 +60,7 @@ const ProductInfoModal = ({ setIsInfoModalOpen, product, isPackage }) => {
                         <div className={classes.products_cotainer}>
                             {product.products.map((item) => (
                                 <div className={classes.product}>
-                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.productId?.imageUrl[0]}`} alt="product" />
+                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/${item?.productId?.imageUrl[0]}`} alt="product" />
                                     <div className={classes.product_info}>
                                         <h5>{item?.productId?.name}</h5>
                                         <p>{parse(item?.productId?.description)}</p>

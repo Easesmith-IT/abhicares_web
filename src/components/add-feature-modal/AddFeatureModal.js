@@ -126,7 +126,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
                             </div>}
                         {!featureInfo.previewImage && featureInfo.img &&
                             <div className={classes.img_container}>
-                                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${featureInfo.img}`} alt="feature" />
+                                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${featureInfo.img}`} alt="feature" />
                                 {/* <MdClose onClick={handleDbImgDelete} className={classes.icon} /> */}
                             </div>}
                     </div>

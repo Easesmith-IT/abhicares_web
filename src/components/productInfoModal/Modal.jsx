@@ -108,7 +108,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
                     <div className={classes.modal}>
                         {Data.imageUrl && <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                             {Data?.imageUrl?.map((image) => (
-                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${image}`} alt="product" />
+                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/${image}`} alt="product" />
                             ))}
                         </Carousel>}
                         <div className={classes.modal_body}>
@@ -227,7 +227,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
                                     {features?.map((feature) => (
                                         <div className={classes.feature}>
                                             <div className={classes.feature_img}>
-                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${feature?.image}`} alt="feature" />
+                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/${feature?.image}`} alt="feature" />
                                             </div>
                                             <div className={classes.feature_content}>
                                                 <h5>{feature?.title}</h5>

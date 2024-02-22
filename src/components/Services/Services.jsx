@@ -113,33 +113,33 @@ export const Services = ({ open }) => {
     {
       _id: "656b8afa9f3a2d134bee939e",
       name: "Women's Salon & Spa",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/women-salon.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/women-salon.png`,
     },
     {
       _id: "656b8ad29f3a2d134bee9398",
       name: "Makeup & Mehandi",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/makeup-mehndi.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/makeup-mehndi.png`,
     },
     {
       _id: "656b8b0a9f3a2d134bee93a0",
       name: "Men's Salon & Massage",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/mens-salon.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/mens-salon.png`,
     },
     {
       _id: "656b8abe9f3a2d134bee9396",
       name: "Home care",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-care.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/home-care.png`,
     },
 
     {
       _id: "656b8ae69f3a2d134bee939a",
       name: "Home repair",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/home-repair.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/home-repair.png`,
     },
     {
       _id: "656b8af29f3a2d134bee939c",
       name: "Appliance repair",
-      image: `${process.env.REACT_APP_IMAGE_URL}/uploads/categories/appliance-repair.png`,
+      image: `${process.env.REACT_APP_IMAGE_URL}/categories/appliance-repair.png`,
     },
 
 
@@ -208,14 +208,14 @@ export const Services = ({ open }) => {
                       className={classes.search_result_item}
                     >
                       {/* <SkeletonCom
-                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/${service.imageUrl}`}
                         alt={"service"}
                         height={60}
                       /> */}
                       <img
                         style={{ display: !isImgLoading2 ? 'block' : 'none' }}
                         onLoad={() => setIsImgLoading2(false)}
-                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/${service.imageUrl}`}
                         alt="service"
                       />
                       <div>

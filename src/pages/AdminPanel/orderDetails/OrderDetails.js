@@ -98,7 +98,7 @@ const OrderDetails = () => {
                         {state.items?.map((item, i) => (
                             <div key={i} className={classes.item}>
                                 <div>
-                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="product" />
+                                    <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/${item.package ? item.package.imageUrl[0] : item.product.imageUrl[0]}`} alt="product" />
                                     <div>
                                         <h6>{item.package ? item.package.name : item.product.name}</h6>
                                         <p>{item.package ? "Package" : "Product"}</p>

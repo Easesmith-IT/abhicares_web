@@ -215,7 +215,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                         <div className={classes.img_cotainer}>
                             {packageInfo?.img?.map((img, index) => (
                                 <div key={index}>
-                                    <img width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="package" />
+                                    <img width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${img}`} alt="package" />
                                     <MdClose onClick={() => handleDbImgDelete(img)} className={classes.icon} />
                                 </div>
                             ))}

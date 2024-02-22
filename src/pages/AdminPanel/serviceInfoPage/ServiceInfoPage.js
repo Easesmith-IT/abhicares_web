@@ -215,7 +215,7 @@ const ServiceInfoPage = () => {
                 className={classes.card}
               >
                 <img
-                  src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${product.imageUrl[0]}`}
+                  src={`${process.env.REACT_APP_IMAGE_URL}/${product.imageUrl[0]}`}
                   alt="product"
                 />
                 <div>
@@ -260,7 +260,7 @@ const ServiceInfoPage = () => {
                 className={classes.card}
               >
                 <img
-                  src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${singlePackage.imageUrl[0]}`}
+                  src={`${process.env.REACT_APP_IMAGE_URL}/${singlePackage.imageUrl[0]}`}
                   alt="package"
                 />
                 <div>

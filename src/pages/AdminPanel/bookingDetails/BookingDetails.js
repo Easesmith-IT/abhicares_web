@@ -180,7 +180,7 @@ const BookingDetails = () => {
                     <div>
                       <img
                         className={classes.img}
-                        src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
+                        src={`${process.env.REACT_APP_IMAGE_URL}/${
                           booking.package
                             ? booking.package.imageUrl[0]
                             : booking.product.imageUrl[0]

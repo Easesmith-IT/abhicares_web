@@ -44,7 +44,7 @@ const SellerOrderInfoModal = ({ setSellerOrderInfoModal, sellerOrder }) => {
               <div>
                 <img
                   className={classes.img}
-                  src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${
+                  src={`${process.env.REACT_APP_IMAGE_URL}/${
                     flag
                       ? sellerOrder?.package?.imageUrl[0]
                       : sellerOrder?.product?.imageUrl[0]

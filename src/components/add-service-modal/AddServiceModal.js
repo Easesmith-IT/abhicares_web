@@ -152,7 +152,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
               </div>}
             {!serviceInfo.previewImage && serviceInfo.img &&
               <div className={classes.img_container}>
-                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${serviceInfo.img}`} alt="service" />
+                <img width={200} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${serviceInfo.img}`} alt="service" />
                 <MdClose onClick={handleDbImgDelete} className={classes.icon} />
               </div>}
           </div>

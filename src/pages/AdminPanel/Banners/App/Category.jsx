@@ -123,7 +123,7 @@ const Category = () => {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
             file: null,
-            preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
+            preview: `${process.env.REACT_APP_IMAGE_URL}/${img}`,
           });
         }
       }
@@ -148,7 +148,7 @@ const Category = () => {
       instance.splice(index, 1, {
         bannerName: "banner4",
         file: null,
-        preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response2.data.banners.image}`,
+        preview: `${process.env.REACT_APP_IMAGE_URL}/${response2.data.banners.image}`,
       });
       setBanners(() => instance);
 
@@ -169,7 +169,7 @@ const Category = () => {
       instance.splice(index2, 1, {
         bannerName: "banner5",
         file: null,
-        preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response3.data.banners.image}`,
+        preview: `${process.env.REACT_APP_IMAGE_URL}/${response3.data.banners.image}`,
       });
       setBanners(() => instance);
     } catch (err) {

@@ -84,7 +84,7 @@ const WebHome = () => {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
             file: "",
-            preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
+            preview: `${process.env.REACT_APP_IMAGE_URL}/${img}`,
           });
         }
       }

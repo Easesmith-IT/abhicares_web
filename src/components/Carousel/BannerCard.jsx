@@ -87,10 +87,10 @@ export const BannerCard = () => {
           <div key={index} onClick={() => navigate(`/services/${item?.serviceId?._id}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes["image-container"]}>
             <SkeletonCom
               alt={"Banner"}
-              src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.image}`}
+              src={`${process.env.REACT_APP_IMAGE_URL}/${item?.image}`}
               height={200}
             />
-            {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" /> */}
+            {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${url}`} alt="Banner" /> */}
           </div>
         ))}
 

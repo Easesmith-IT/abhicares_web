@@ -111,7 +111,7 @@ const CategoryServices = () => {
                   className={classes.card}
                 >
                   <img
-                    src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${service.imageUrl}`}
+                    src={`${process.env.REACT_APP_IMAGE_URL}/${service.imageUrl}`}
                     alt="product"
                   />
                   <div>

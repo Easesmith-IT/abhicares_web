@@ -173,7 +173,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                         <div className={classes.img_cotainer}>
                             {productInfo?.img?.map((img, index) => (
                                 <div key={index}>
-                                    <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`} alt="product" />
+                                    <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${img}`} alt="product" />
                                     <MdClose onClick={() => handleDbImgDelete(img)} className={classes.icon} />
                                 </div>
                             ))}

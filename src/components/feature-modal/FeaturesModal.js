@@ -69,7 +69,7 @@ const FeaturesModal = ({ setIsModalOpen, allFeatures = [], getServiceDetails, se
                             <div className={classes.feature}>
                                 <div className={classes.feature_wrapper}>
                                     <div className={classes.feature_img}>
-                                        <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${feature?.image}`} alt="feature" />
+                                        <img src={`${process.env.REACT_APP_IMAGE_URL}/${feature?.image}`} alt="feature" />
                                     </div>
                                     <div className={classes.feature_content}>
                                         <h5>{feature?.title}</h5>

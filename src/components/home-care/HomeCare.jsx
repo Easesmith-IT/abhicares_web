@@ -80,10 +80,10 @@ const HomeCare = () => {
                                     <div className={classes['cardMedia']}>
                                         <SkeletonCom
                                             alt={"service"}
-                                            src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`}
+                                            src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
                                             height={230}
                                         />
-                                        {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item.imageUrl}`} alt="service" /> */}
+                                        {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
                                     </div>
                                 </div>
 

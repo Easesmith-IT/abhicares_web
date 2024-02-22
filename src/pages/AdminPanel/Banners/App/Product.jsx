@@ -64,7 +64,7 @@ const Product = () => {
       );
 
       setImage({
-        file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${response.data.banners.image}`
+        file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/${response.data.banners.image}`
       })
       console.log("response1", response);
     } catch (err) {
