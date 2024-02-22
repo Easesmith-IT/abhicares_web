@@ -100,7 +100,7 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
                             className={`${classes.addToCartBtn}`}>{isLoading ?
                                 <div className={loaderClasses.img_container}>
                                     <img src={loader} alt="loader" />
-                                    Adding...
+                                    {/* Adding... */}
                                 </div>: "Add"}</button>
                         }
 

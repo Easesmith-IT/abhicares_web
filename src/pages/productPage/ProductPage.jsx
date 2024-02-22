@@ -133,7 +133,7 @@ const ProductPage = () => {
                         singlePackage={singlePackage}
                         serviceId={params?.serviceId}
                         setIsCartLoading={setIsCartLoading}
-                        features={state.features}
+                        features={state?.features}
                       />
                     ))}
                   </div>

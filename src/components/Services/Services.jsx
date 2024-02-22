@@ -252,11 +252,11 @@ export const Services = ({ open }) => {
                       onClick={() => open(category)}
                     >
                       <div className={classes["cardMedia"]}>
-                      <SkeletonCom
-                        src={category.image}
-                        alt={"category"}
-                        height={60}
-                      />
+                        <SkeletonCom
+                          src={category.image}
+                          alt={"category"}
+                          height={60}
+                        />
                         {/* <img src={category.image} alt="media" /> */}
                       </div>
                       <div className={classes["cardAction"]}>
@@ -278,7 +278,7 @@ export const Services = ({ open }) => {
   );
 };
 
-export default Services;
-// export default GoogleApiWrapper({
-//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-// })(Services);
+// export default Services;
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+})(Services);

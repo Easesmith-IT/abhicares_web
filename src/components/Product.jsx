@@ -118,7 +118,7 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
                 {isLoading ? (
                   <div className={loaderClasses.img_container}>
                     <img src={loader} alt="loader" />
-                    Adding...
+                    {/* Adding... */}
                   </div>
                 ) : (
                   "Add"

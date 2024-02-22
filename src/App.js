@@ -86,7 +86,7 @@ function App() {
   })()
 
   const { isOpen } = useSelector((state) => state.auth);
-
+console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
 
   return (
     <>
@@ -247,9 +247,9 @@ function App() {
 }
 
 
-// export default GoogleApiWrapper({
-//   apiKey: "AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I",
-// })(App);
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+})(App);
 
-export default App;
+// export default App;
 

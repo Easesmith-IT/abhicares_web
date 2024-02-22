@@ -7,6 +7,7 @@ import classes from "./Banner.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import SkeletonCom from "../sekeleton/SkeletonCom";
+import { useNavigate } from "react-router-dom";
 
 export const BannerCard = () => {
   const responsive = {
@@ -33,6 +34,7 @@ export const BannerCard = () => {
   };
 
   const [banners, setBanners] = useState([]);
+  const navigate = useNavigate();
   // const [isLoading,setIsLoading] = useState(true)
 
   const fetchBanners = async () => {
@@ -81,11 +83,11 @@ export const BannerCard = () => {
         itemClass="carousel-item-padding-40-px"
       >
 
-        {banners.length > 0 && banners.map((url, index) => (
-          <div key={index} className={classes["image-container"]}>
+        {banners.length > 0 && banners.map((item, index) => (
+          <div key={index} onClick={() => navigate(`/services/${item?.serviceId?._id}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes["image-container"]}>
             <SkeletonCom
               alt={"Banner"}
-              src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`}
+              src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${item?.image}`}
               height={200}
             />
             {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/uploads/${url}`} alt="Banner" /> */}

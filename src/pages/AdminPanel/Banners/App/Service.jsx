@@ -5,6 +5,7 @@ import Wrapper from "../../../Wrapper";
 import toast from "react-hot-toast";
 import classes from "../Banner.module.css";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import UpdateBannerModal from "../../../../components/update-banner-modal/UpdateBannerModal";
 
 const Service = () => {
   const { checkAuthorization } = useAuthorization();
@@ -13,6 +14,14 @@ const Service = () => {
     { bannerName: "hero-banner2", file: null, preview: null },
     { bannerName: "hero-banner3", file: null, preview: null },
   ]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState({
+    img: "",
+    type: "",
+    page: "",
+    section: ""
+  });
 
   const navigate = useNavigate();
 
@@ -50,20 +59,9 @@ const Service = () => {
     formDataHero.append("page", "service-banners");
     formDataHero.append("section", "app-servicepage");
 
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
-        formDataHero, { withCredentials: true }
-      );
+    setData({ img: filtered.file, type: type, page: "service-banners", section: "app-servicepage" })
 
-      if (response.status === 200) {
-        getBannersFromServer();
-        toast.success("Updated successfully!");
-      }
-    } catch (err) {
-      console.log("ERROR", err.message);
-      checkAuthorization(err);
-    }
+    setIsModalOpen(true);
   };
 
   const getBannersFromServer = async () => {
@@ -81,7 +79,7 @@ const Service = () => {
 
       const imgInstance = [...images];
       for (let i = 0; i < response1.data.banners.length; i++) {
-        const img = response1.data.banners[i];
+        const img = response1.data.banners[i].image;
         const bannerName = `hero-banner${i + 1}`;
         const index = images.findIndex(
           (banner) => banner.bannerName === bannerName
@@ -90,7 +88,7 @@ const Service = () => {
         if (index !== -1) {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
-            file: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
+            file: null,
             preview: `${process.env.REACT_APP_IMAGE_URL}/uploads/${img}`,
           });
         }
@@ -107,40 +105,49 @@ const Service = () => {
 
 
   return (
-    <Wrapper>
-      <div>
-        <div className="my-3 mx-5 d-flex justify-content-between">
-          <h3>Service Banners(3)</h3>
-        </div>
-        <div className={classes.imagesContainer}>
-          {images &&
-            images.map((img, index) => (
-              <div key={index} className={classes.imageWrapper}>
-                {img.bannerName && img.preview && (
-                  <img src={img.preview} alt={`i${index + 1}`} />
-                )}
-                <input
-                  type="file"
-                  name={img.bannerName}
-                  accept="image/*"
-                  onChange={(event) =>
-                    imageChangeHandler(event, img.bannerName)
-                  }
-                  className="mb-2"
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
-                >
-                  Update
-                </button>
-              </div>
-            ))}
-        </div>
+    <>
+      <Wrapper>
+        <div>
+          <div className="my-3 mx-5 d-flex justify-content-between">
+            <h3>Service Banners(3)</h3>
+          </div>
+          <div className={classes.imagesContainer}>
+            {images &&
+              images.map((img, index) => (
+                <div key={index} className={classes.imageWrapper}>
+                  {img.bannerName && img.preview && (
+                    <img src={img.preview} alt={`i${index + 1}`} />
+                  )}
+                  <input
+                    type="file"
+                    name={img.bannerName}
+                    accept="image/*"
+                    onChange={(event) =>
+                      imageChangeHandler(event, img.bannerName)
+                    }
+                    className="mb-2"
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => uploadHeroImages(`hero-banner${index + 1}`)}
+                  >
+                    Update
+                  </button>
+                </div>
+              ))}
+          </div>
 
-      </div>
-    </Wrapper>
+        </div>
+      </Wrapper>
+      {isModalOpen &&
+        <UpdateBannerModal
+          getBannersFromServer={getBannersFromServer}
+          setIsModalOpen={setIsModalOpen}
+          data={data}
+        />
+      }
+    </>
   );
 };
 
