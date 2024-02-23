@@ -281,6 +281,12 @@ p.awesome_line {
     }
 }
 
+@media (max-width:425px) {
+    .item {
+        max-width: 300px;
+    }
+}
+
 @media (min-width:320px) and (max-width:600px) {
     .section-head h4 {
         font-size: 28px;
