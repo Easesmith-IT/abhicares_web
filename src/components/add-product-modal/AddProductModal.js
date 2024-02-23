@@ -9,32 +9,43 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
+import loader from "../../assets/rolling-white.gif";
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(product?.description || "");
+
+    const generateTwoDigitID = () => {
+        const randomID = Math.floor(Math.random() * 90) + 10;
+        // const randomID = Date.now();
+
+        return randomID;
+    }
+
+    const dbImages = product?.imageUrl?.map((image) => ({ img: `${process.env.REACT_APP_IMAGE_URL}/${image}`, id: generateTwoDigitID() }))
+
     const [productInfo, setProductInfo] = useState({
         name: product?.name || "",
         price: product?.price || "",
         offerPrice: product?.offerPrice || "",
         img: product?.imageUrl || [],
-        previewImages: []
+        previewImages: dbImages || [],
+        uploadedImages: [],
     });
     const [isImgPrev, setIsImgPrev] = useState(product ? false : true)
     const fileInputRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
 
 
-    const generateTwoDigitID = () => {
-        const randomID = Math.floor(Math.random() * 90) + 10;
-
-        return randomID;
-    }
+    console.log("prev state", productInfo.previewImages);
+    console.log("state", productInfo);
 
     const getImage = (e) => {
         e.preventDefault();
         setIsImgPrev(() => true);
-        const uploadedImage = Array.from(e.target.files);
-        if (uploadedImage.length > 3) {
+        console.log("img length", productInfo.img.length === 3);
+        const uploadedImages = Array.from(e.target.files);
+        if (uploadedImages.length > 3) {
             toast.error("Cannot upload files more than 3");
             e.target.value = null;
             return;
@@ -50,15 +61,27 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
             });
         };
 
-        Promise.all(uploadedImage.map((img) => readFile(img)))
-            .then(images => {
-                setProductInfo((prev) => ({ ...prev, previewImages: [...images] }));
-                setProductInfo((prev) => ({ ...prev, img: uploadedImage }));
+        Promise.all(uploadedImages.map((img) => readFile(img)))
+            .then((images) => {
+                const length = uploadedImages.length;
+                const Img = [...productInfo?.img]
+                const PrevImg = [...productInfo?.previewImages]
+                Img.splice(0, length);
+                PrevImg.splice(0, length);
+
+                const data = uploadedImages.map((item, index) => {
+                    return { img: item, id: images[index].id }
+                })
+
+                setProductInfo((prev) => ({
+                    ...prev,
+                    previewImages: [...PrevImg, ...images],
+                    img: Img,
+                    uploadedImages: data
+                }));
             });
     }
 
-    console.log("prev state", productInfo.previewImages);
-    console.log("img state", productInfo.img);
 
 
     const handleOnChange = (e) => {
@@ -70,37 +93,33 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         console.log("id", id);
         let imgArr = [...productInfo.img].filter((_, i) => i !== index);
         let prevImgArr = [...productInfo.previewImages].filter((item) => item.id !== id);
+        let uploadedImgArr = [...productInfo.uploadedImages].filter((item) => item.id !== id);
         console.log("prev", prevImgArr);
         console.log("db", imgArr);
         if (fileInputRef.current && prevImgArr.length === 0) {
             fileInputRef.current.value = null;
         }
 
-        setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr });
+        setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr, uploadedImages: uploadedImgArr });
     }
 
-    const handleDbImgDelete = (Img) => {
-        let arr = [...productInfo.img].filter((item) => item !== Img);
-
-        setProductInfo({ ...productInfo, img: arr });
-    }
-
-    const navigate = useNavigate()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!productInfo.name || !productInfo.price || !productInfo.offerPrice || productInfo.img.length === 0 || !description) {
+        if (!productInfo.name || !productInfo.price || !productInfo.offerPrice || !description) {
             toast.error("All the fields are required");
             return;
         }
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("name", productInfo.name);
         formData.append("price", productInfo.price);
         formData.append("offerPrice", productInfo.offerPrice);
         formData.append("serviceId", serviceId);
-        for (const img of productInfo.img) {
-            formData.append("img", img);
+        for (const item of productInfo.uploadedImages) {
+            formData.append("img", item.img);
         }
+        formData.append("imageUrl", JSON.stringify(productInfo.img));
         formData.append("description", description);
 
 
@@ -114,6 +133,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                 console.log(error);
                 setIsModalOpen(false);
                 checkAuthorization(error);
+            } finally {
+                setIsLoading(false);
             }
         }
         else {
@@ -126,6 +147,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                 console.log(error);
                 setIsModalOpen(false);
                 checkAuthorization(error);
+            } finally {
+                setIsLoading(false);
             }
         }
     }
@@ -158,28 +181,18 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="img">Image</label>
-                        <input ref={fileInputRef} onChange={getImage} multiple={2} type="file" name="img" id="img" />
+                        <input ref={fileInputRef} onChange={getImage} multiple type="file" name="img" id="img" />
                     </div>
-                    {isImgPrev &&
-                        <div className={classes.img_cotainer}>
-                            {productInfo?.previewImages?.map((item, index) => (
-                                <div key={index}>
-                                    <img width={190} height={150} src={item.img} alt="product" />
-                                    <MdClose onClick={() => handleSelectImgDelete(index, item.id)} className={classes.icon} />
-                                </div>
-                            ))}
-                        </div>}
-                    {!isImgPrev &&
-                        <div className={classes.img_cotainer}>
-                            {productInfo?.img?.map((img, index) => (
-                                <div key={index}>
-                                    <img key={index} width={190} height={150} src={`${process.env.REACT_APP_IMAGE_URL}/${img}`} alt="product" />
-                                    <MdClose onClick={() => handleDbImgDelete(img)} className={classes.icon} />
-                                </div>
-                            ))}
-                        </div>}
+                    <div className={classes.img_cotainer}>
+                        {productInfo?.previewImages?.map((item, index) => (
+                            <div key={index}>
+                                <img key={index} width={190} height={150} src={item.img} alt="product" />
+                                <MdClose onClick={() => handleSelectImgDelete(index, item.id)} className={classes.icon} />
+                            </div>
+                        ))}
+                    </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{product ? "Update" : "Add"}</button>
+                        <button className={classes.button}>{isLoading ? <img className={classes.loader} src={loader} alt="loader" /> : (product ? "Update" : "Add")}</button>
                     </div>
                 </form>
             </div>
