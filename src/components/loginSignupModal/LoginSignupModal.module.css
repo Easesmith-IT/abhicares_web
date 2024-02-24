@@ -94,6 +94,10 @@
     font-size: 14px;
 }
 
+.btn_wrapper .link:disabled{
+    cursor: not-allowed;
+}
+
 .button{
     margin-top: 10px;
     width: 100%;

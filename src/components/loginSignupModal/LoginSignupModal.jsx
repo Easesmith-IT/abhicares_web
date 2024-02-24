@@ -8,7 +8,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
-import toast from "react-hot-toast";
+import CountdownTimer from "../countdown/CountDown";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const [isLoginOtp, setIsLoginOtp] = useState(false);
   const [isSignupOtp, setIsSignupOtp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTimer, setIsTimer] = useState(false);
 
   const handleOnClose = () => {
     handleOnclick();
@@ -83,6 +84,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
     try {
       setIsLoading(true);
+      setIsTimer(true);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/signup-otp`,
         { ...loginSignupInfo },
@@ -114,6 +116,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     }
     try {
       setIsLoading(true);
+      setIsTimer(true);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/generate-otp`,
         { phoneNumber: loginSignupInfo.phone },
@@ -148,6 +151,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
     try {
       setIsLoading(true);
+      setIsTimer(false);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/verify-otp`,
         { enteredOTP: otp, phoneNumber: loginSignupInfo.phone },
@@ -184,6 +188,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
     try {
       setIsLoading(true);
+      setIsTimer(false);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/verify-signup`,
         { enteredOTP: otp, phone: loginSignupInfo.phone },
@@ -221,7 +226,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               <>
                 <p className={classes.login_signup_p}>Login</p>
                 {!isLoading && error.from === 'login' && (
-                  <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+                  <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
                 )}
                 <div className={classes.input_box}>
                   <input
@@ -253,7 +258,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               <>
                 <p className={classes.login_signup_p}>Sign up</p>
                 {!isLoading && error.from === 'signup' && (
-                  <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+                  <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
                 )}
                 <div className={classes.input_box}>
                   <input
@@ -297,7 +302,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
               {!isLoading && error.from === 'login otp verification' && (
-                <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+                <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
               )}
 
               {successMessage && (
@@ -314,7 +319,11 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                 />
               </div>
               <div className={classes.btn_wrapper}>
-                <button onClick={handleLogin} className={classes.link}>Resend OTP</button>
+                {isTimer &&
+                  <CountdownTimer setIsTimer={setIsTimer}>
+                    <button disabled={isTimer} onClick={handleLogin} className={classes.link}>Resend OTP</button>
+                  </CountdownTimer>}
+                {!isTimer && <button onClick={handleLogin} className={classes.link}>Resend OTP</button>}
               </div>
               <button
                 onClick={handleOtpVerification}
@@ -335,7 +344,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
               {!isLoading && error.from === 'signup otp verification' && (
-                <p style={{ color: "red", textAlign: "center" }}>{error.message}</p>
+                <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
               )}
 
               {successMessage && (
@@ -352,7 +361,11 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                 />
               </div>
               <div className={classes.btn_wrapper}>
-                <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>
+                {isTimer &&
+                  <CountdownTimer setIsTimer={setIsTimer}>
+                    <button disabled={isTimer} onClick={handleSignUp} className={classes.link}>Resend OTP</button>
+                  </CountdownTimer>}
+                {!isTimer && <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>}
               </div>
               <button
                 onClick={handleSignupOtpVerification}

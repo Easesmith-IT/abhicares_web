@@ -77,7 +77,7 @@ export const SpaForMen = () => {
           allServices.map((item) => (
 
             <>
-              <div onClick={() => navigate(`services/${item.serviceId}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes['card']} key={item._id}>
+              <div onClick={() => navigate(`services/${item?.serviceId?._id}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes['card']} key={item._id}>
                 <div className={classes['single-card']}>
                   <div className={classes['cardMedia']}>
                     <SkeletonCom

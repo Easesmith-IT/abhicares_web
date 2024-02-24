@@ -86,6 +86,11 @@
     color: white;
 }
 
+.loader {
+   width: 25px;
+   height: 25px;
+}
+
 .img_cotainer {
     display: flex;
     flex-wrap: wrap;

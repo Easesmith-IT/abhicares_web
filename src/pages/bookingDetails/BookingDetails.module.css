@@ -1,4 +1,4 @@
-.booking_details{
+.booking_details {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -9,31 +9,36 @@
     padding: 10px;
 }
 
-.booking_details_left{
+.booking_details_left {
     width: 70%;
 }
 
-.booking_details_right{
+.booking_details_right {
     width: 30%;
+}
+
+.order_details>.d_flex {
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .order_details,
 .delivery_details,
-.booking_details_right_top{
+.booking_details_right_top {
     border: 1px solid gray;
     width: 100%;
 }
 
-.delivery_details{
+.delivery_details {
     margin-top: 20px;
 }
 
-.h4{
+.h4 {
     padding: 10px;
     background: #ccc;
 }
 
-.d_flex{
+.d_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,13 +46,13 @@
 }
 
 
-.buttons_container{
+.buttons_container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.button{
+.button {
     background: #000;
     color: white;
     padding: 4px 10px;
@@ -57,18 +62,18 @@
     border-radius: 6px;
 }
 
-.red{
+.red {
     background: red;
 }
 
 
 
-.delivery_details .d_flex{
+.delivery_details .d_flex {
     flex-direction: column;
     align-items: normal;
 }
 
-.delivery_details .d_flex > div{
+.delivery_details .d_flex>div {
     width: 100%;
 }
 
@@ -93,7 +98,7 @@
     border-radius: 6px;
 }
 
-.status_container{
+.status_container {
     display: flex;
     justify-content: space-between;
 }
@@ -132,24 +137,24 @@
     text-align: right;
 }
 
-.booking_details_right_top .d_flex > div{
+.booking_details_right_top .d_flex>div {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
 @media screen and (max-width:800px) {
-    .booking_details{
+    .booking_details {
         flex-wrap: wrap;
     }
 
     .booking_details_left,
-    .booking_details_right{
+    .booking_details_right {
         width: 100%;
     }
 }
 
-.modal_wrapper{
+.modal_wrapper {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -161,7 +166,8 @@
     left: 0;
     background: rgba(0, 0, 0, 0.2);
 }
-.modal{
+
+.modal {
     max-width: 300px;
     width: 100%;
     background: white;
@@ -170,25 +176,32 @@
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
 }
 
-.button_wrapper{
+.button_wrapper {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
 }
 
-.button{
+.button {
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
 }
 
-.button.yes{
+.button.yes {
     background: green;
     color: white;
 }
 
-.button.no{
+.button.no {
     border: 1px solid #ccc;
+}
+
+
+@media screen and (max-width: 495px) {
+    .buttons_container {
+        flex-direction: row;
+    }
 }
