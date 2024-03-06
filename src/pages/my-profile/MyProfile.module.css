@@ -40,7 +40,7 @@
     gap: 8px;
 }
 
-.bold{
+.bold {
     color: rgb(88, 88, 88);
 }
 
@@ -55,7 +55,14 @@
     border-radius: 6px;
 }
 
-.input_box button {
+.d_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn {
     border: none;
     cursor: pointer;
     outline: none;
