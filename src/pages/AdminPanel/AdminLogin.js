@@ -17,34 +17,36 @@ const AdminLogin = () => {
     const userPassword = userPasswordRef.current.value;
 
     try {
-       const { data } = await axios.get(
-         `${process.env.REACT_APP_API_URL}/logout-user`,
-         { withCredentials: true }
-       );
-       localStorage.removeItem("userName");
-       localStorage.removeItem("userPhone");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/logout-user`,
+        { withCredentials: true }
+      );
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userPhone");
 
-       const response = await axios.post(
-         `${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`,
-         {
-           adminId: userName,
-           password: userPassword,
-         },
-         { withCredentials: true }
-       );
+      const response = await axios.post(
+        `${process.env.REACT_APP_ADMIN_API_URL}/login-Admin`,
+        {
+          adminId: userName,
+          password: userPassword,
+        },
+        { withCredentials: true }
+      );
 
-      localStorage.setItem('perm',JSON.stringify(response.data.perm))
-       if (response?.data) {
-         alert("Logged in successfully");
-         navigate("/admin/dashboard");
-      } 
-      
+      localStorage.setItem('perm', JSON.stringify(response.data.perm))
+      if (response?.data) {
+        const arr = ["dashboard", "banners", "orders", "bookings", "services", "partners", "customers", "offers", "availableCities", "payments", "enquiry", "helpCenter", "settings"]
+        alert("Logged in successfully");
+        const result = arr.find((item) => response?.data?.perm[item] !== "none")
+        navigate(`/admin/${result}`);
+      }
+
     } catch (err) {
       console.log(err)
       toast.error(err?.response?.data?.message)
     }
 
-   
+
   };
   return (
     <div

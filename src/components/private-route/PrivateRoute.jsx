@@ -9,11 +9,16 @@ const PrivateRoute = () => {
     const value = pathname.split("/admin/").join("").split("/")[0]
     console.log("value", value);
 
-    if (pathname.includes("/admin/") && value && permissions[value] !== "none") {
+    if (pathname.includes("/admin/") && value && permissions && permissions[value] !== "none") {
         return <Outlet />;
     }
     else {
-        navigate(-1);
+        if (!permissions) {
+            navigate("/admin/login")
+        }
+        else {
+            navigate(-1);
+        }
         return null;
     }
 }

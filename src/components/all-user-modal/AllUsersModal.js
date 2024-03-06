@@ -60,7 +60,7 @@ const AllUsersModal = ({ setIsModalOpen }) => {
                                     <tr>
                                         <th>Name</th>
                                         <th>Phone</th>
-                                        <th>Address</th>
+                                        <th>Locality</th>
                                     </tr>
                                 </thead>
                                 <tbody>
