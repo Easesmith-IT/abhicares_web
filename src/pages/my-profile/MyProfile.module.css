@@ -1,0 +1,92 @@
+.my_profile {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 90vh;
+}
+
+.profile_top {
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+.profile_info {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+.profile_info .img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile_info .img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profile_info_right div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bold{
+    color: rgb(88, 88, 88);
+}
+
+.input_box {
+    display: flex;
+    gap: 10px;
+}
+
+
+.input_box input {
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.input_box button {
+    border: none;
+    cursor: pointer;
+    outline: none;
+    background: #000;
+    color: white;
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+
+
+.address_container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.address_container .address {
+    max-width: 390px;
+    width: 100%;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+}
+
+.address_container .address span {
+    margin-left: 10px;
+}
+
+@media screen and (max-width:400px) {
+    .profile_info {
+        grid-template-columns: 1fr;
+    }
+}

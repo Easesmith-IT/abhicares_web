@@ -75,6 +75,7 @@ import Settings from "./pages/AdminPanel/settings/Settings";
 import UnautorizedModal from "./components/unautorized-modal/UnautorizedModal";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import WhyUs from "./pages/whyus/WhyUs";
+import MyProfile from "./pages/my-profile/MyProfile";
 
 
 
@@ -122,6 +123,7 @@ console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
           <Route path="/help_center" element={<HelpCenter />} />
           <Route path="/my_bookings" element={<MyBookings />} />
           <Route path="/my_bookings/:id" element={<BookingDetails />} />
+          <Route path="/my_profile" element={<MyProfile />} />
 
           <Route path="/success" element={<SuccessPage />} />
 

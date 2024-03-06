@@ -155,6 +155,13 @@ export const Header = () => {
             >
               My Bookings
             </Link>
+            <Link
+              onClick={() => setIsUserModalOpen(false)}
+              to={"/my_profile"}
+              className={classes.p}
+            >
+              My Profile
+            </Link>
             <p onClick={handleLogoutModal} className={classes.p}>
               Log out
             </p>

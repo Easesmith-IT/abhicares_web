@@ -13,6 +13,7 @@ import Loader from "../../components/loader/Loader";
 import { FaEye } from "react-icons/fa6";
 import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
 import useAuthorization from "../../hooks/useAuthorization";
+import AllUsersModal from "../../components/all-user-modal/AllUsersModal";
 
 const Customers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,7 @@ const Customers = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
+  const [isAllUsersModalOpen, setIsAllUsersModalOpen] = useState(false);
 
   const navigate = useNavigate()
   const { checkAuthorization } = useAuthorization();
@@ -97,13 +99,20 @@ const Customers = () => {
     };
   }
 
+  const handleOnSubmit = () => {
+    setIsAllUsersModalOpen(true);
+  };
+
   return (
     <>
       <Wrapper>
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
             <h1 className={classes["recent-Articles"]}>Customers</h1>
-            <input onChange={debounce(handleSerach, 1000)} className={classes.input} type="text" placeholder="Search customers" />
+            <div className={classes.d_flex}>
+              <button className={classes.btn} onClick={handleOnSubmit}>Download</button>
+              <input onChange={debounce(handleSerach, 1000)} className={classes.input} type="text" placeholder="Search customers" />
+            </div>
             {/* <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
                 <img src={AddBtn} alt="add product" />
               </button> */}
@@ -168,6 +177,12 @@ const Customers = () => {
         <DeleteModal
           setState={setIsDeleteModalOpen}
           handleDelete={handleDelete}
+        />
+      }
+
+      {isAllUsersModalOpen &&
+        <AllUsersModal
+          setIsModalOpen={setIsAllUsersModalOpen}
         />
       }
     </>
