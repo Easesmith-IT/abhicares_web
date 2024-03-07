@@ -18,7 +18,7 @@ import Product from "../Product";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
 
-const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
+const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [allProducts, setAllProducts] = useState([]);
     const [allReviews, setAllReviews] = useState([]);
     const [userReviews, setUserReviews] = useState([]);
@@ -58,7 +58,8 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
-            setAllProducts(data.data[0].productObjects);
+            console.log("package products",data);
+            setAllProducts(data?.data);
         } catch (error) {
             console.log(error);
         }
@@ -77,12 +78,11 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
         }
     };
 
-    console.log("user reviews", userReviews);
 
     const getAllReviews = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
-            console.log("get reviwes reviews", data);
+            console.log("get reviews", data);
             setAllReviews(data.reviews);
         } catch (error) {
             console.log(error);
@@ -145,22 +145,22 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
                                 </div> */}
                             </div>
 
-                            {!isProduct && !isLoading
-                                && allProducts.length === 0
-                                && <p>No product found</p>
-                            }
 
                             {!isProduct && <div className={classes.products_cotainer}>
                                 <h4>Products</h4>
                                 {allProducts?.map((product) => (
                                     <Product
-                                        key={product._id}
-                                        product={product}
-                                        flag={false}
-                                        features={features}
+                                    key={product._id}
+                                    product={product}
+                                    flag={false}
+                                    features={features}
                                     />
-                                ))}
+                                    ))}
                             </div>}
+                                    {!isProduct && !isLoading
+                                        && allProducts.length === 0
+                                        && <p>No product found</p>
+                                    }
 
                             {!isProduct && isLoading
                                 && allProducts.length === 0
@@ -224,6 +224,10 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features }) => {
                                 </div>
                                 <div className={classes.features_container}>
                                     <h4>We Offer</h4>
+                                    {features?.length === 0 &&
+                                        <p>No features found</p>
+                                    }
+
                                     {features?.map((feature) => (
                                         <div className={classes.feature}>
                                             <div className={classes.feature_img}>

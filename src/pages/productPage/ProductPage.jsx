@@ -64,6 +64,7 @@ const ProductPage = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/get-service-package/${params?.serviceId}`
       );
+      console.log("package",data);
       setAllPackages(data.data);
     } catch (error) {
       console.log(error);
@@ -129,7 +130,7 @@ const ProductPage = () => {
 
                     {allPackages?.map((singlePackage) => (
                       <SubService
-                        key={singlePackage._id}
+                        key={singlePackage?._id}
                         singlePackage={singlePackage}
                         serviceId={params?.serviceId}
                         setIsCartLoading={setIsCartLoading}
@@ -150,7 +151,7 @@ const ProductPage = () => {
                     <Product
                       product={product}
                       setIsCartLoading={setIsCartLoading}
-                      features={state.features}
+                      features={state?.features}
                     />
                   ))}
                 </div>

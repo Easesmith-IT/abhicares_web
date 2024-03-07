@@ -11,9 +11,11 @@ const MyProfile = () => {
   const [profileDetails, setProfileDetails] = useState("");
   const [userAddresses, setUserAddresses] = useState([]);
   const [isAddEmailModalOpen, setIsAddEmailModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getProfileDetails = async () => {
     try {
+      setIsLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/user-info`, { withCredentials: true });
       console.log("profile details", res?.data);
       if (res?.status === 200) {
@@ -22,6 +24,8 @@ const MyProfile = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -44,7 +48,7 @@ const MyProfile = () => {
                 <div className={classes.profile_info_right}>
                   <div className={classes.d_flex}>
                     <h5>{profileDetails?.name}</h5>
-                    {!profileDetails?.email &&<button className={classes.btn} onClick={() => setIsAddEmailModalOpen(true)}>Add Email</button>}
+                    {!profileDetails?.email && <button className={classes.btn} onClick={() => setIsAddEmailModalOpen(true)}>Add Email</button>}
                   </div>
                   <div>
                     {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
@@ -62,11 +66,15 @@ const MyProfile = () => {
                 </div>
               </div>}
             <div className={classes.address_container}>
-              {userAddresses.length === 0 &&
+              {userAddresses.length === 0 && isLoading &&
                 <div className={classes.address}>
                   <Skeleton width={"90%"} height={20} count={1} />
                   <Skeleton width={"90%"} height={20} count={1} />
                 </div>}
+
+              {userAddresses.length === 0 && !isLoading &&
+                <p>No address found</p>
+              }
               {userAddresses?.map((address) => (
                 <div key={address?._id} className={classes.address}>
                   <FaLocationDot size={20} />
