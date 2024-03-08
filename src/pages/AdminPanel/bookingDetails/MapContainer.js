@@ -27,7 +27,7 @@ const MapContainer = ({ google, location, sellerStatus, bookingStatus }) => {
     try {
       // (origin = 41.43206), -81.38992;
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-the-path-from-source-to-destination?sourceCoordinates=${sourceCoordinates}&destinationCoordinates=${destinationCoordinates}`
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-the-path-from-source-to-destination?sourceCoordinates=${sourceCoordinates}&destinationCoordinates=${destinationCoordinates}`, { withCredentials: true }
       );
 
       if (data.routes && data.routes.length > 0) {
@@ -45,12 +45,12 @@ const MapContainer = ({ google, location, sellerStatus, bookingStatus }) => {
   }, []);
 
   useEffect(() => {
-        if (sellerStatus === "out-of-delivery" && bookingStatus === "started") {
-          setShowBackdrop(false);
-        } else {
-          setShowBackdrop(true);
-        }
-  },[sellerStatus,bookingStatus])
+    if (sellerStatus === "out-of-delivery" && bookingStatus === "started") {
+      setShowBackdrop(false);
+    } else {
+      setShowBackdrop(true);
+    }
+  }, [sellerStatus, bookingStatus])
 
   return (
     <>

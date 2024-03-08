@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
 
-const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
+const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen,getSellers }) => {
     const [allSellers, setAllSellers] = useState([]);
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
@@ -33,6 +33,7 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen }) => {
             console.log(data);
             toast.success("Seller approved");
             getAllSellers();
+            getSellers();
         } catch (error) {
             console.log(error);
             setIsUnapprovedSellerModalOpen(false);

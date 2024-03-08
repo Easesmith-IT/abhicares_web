@@ -4,10 +4,34 @@ import { BsStarFill } from "react-icons/bs";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import AddReviewModal from "../reviewModal/AddReviewModal";
 import { useState } from "react";
+import DeleteModal from "../deleteModal/DeleteModal";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const CustomerReview = ({ review, isUser = false }) => {
+const CustomerReview = ({ review, isUser = false, getAllReviews }) => {
     const [isUpdateReviewModalOpen, setIsUpdateReviewModalOpen] = useState(false);
+    const [isDeleteReviewModalOpen, setIsDeleteReviewModalOpen] = useState(false);
+
     const userName = localStorage.getItem("userName");
+    const userId = localStorage.getItem("userId");
+    console.log("review", review);
+
+    const handleDelete = async () => {
+        try {
+            const res = await axios.delete(
+                `${process.env.REACT_APP_API_URL}/delete-product-review/${review._id}`,
+                {
+                    withCredentials: true,
+                }
+            );
+            toast.success("Review deleted successfully");
+            console.log("review res", res.data);
+            setIsDeleteReviewModalOpen(false);
+            getAllReviews();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -28,10 +52,11 @@ const CustomerReview = ({ review, isUser = false }) => {
                         <BsStarFill color="black" size={10} />
                         <span className={classes.rating_star_num}>{review.rating}</span>
                     </div>
-                    <div className={classes.d_flex}>
-                        <MdModeEdit onClick={() => setIsUpdateReviewModalOpen(true)} cursor={"pointer"} color="black" size={15} />
-                        <MdDelete cursor={"pointer"} color="black" size={15} />
-                    </div>
+                    {userId === review?.userId?._id &&
+                        <div className={classes.d_flex}>
+                            <MdModeEdit onClick={() => setIsUpdateReviewModalOpen(true)} cursor={"pointer"} color="black" size={15} />
+                            <MdDelete onClick={() => setIsDeleteReviewModalOpen(true)} cursor={"pointer"} color="black" size={15} />
+                        </div>}
                 </div>
             </div>
 
@@ -40,7 +65,15 @@ const CustomerReview = ({ review, isUser = false }) => {
                     isReviewModalOpen={isUpdateReviewModalOpen}
                     setIsReviewModalOpen={setIsUpdateReviewModalOpen}
                     id={review._id}
-                // getAllReviewsOfUser={getAllReviewsOfUser}
+                    review={review}
+                    getAllReviewsOfUser={getAllReviews}
+                />
+            }
+
+            {isDeleteReviewModalOpen &&
+                <DeleteModal
+                    handleDelete={handleDelete}
+                    setState={setIsDeleteReviewModalOpen}
                 />
             }
         </>
