@@ -22,10 +22,22 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [allProducts, setAllProducts] = useState([]);
     const [allReviews, setAllReviews] = useState([]);
     const [userReviews, setUserReviews] = useState([]);
+    const [isReviewLoading, setIsReviewLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+    const [isReviewBtn, setIsReviewBtn] = useState(false);
+    const userId = localStorage.getItem("userId");
 
     console.log("modal open", Data);
+    useEffect(() => {
+        const reviewObj = allReviews.find((review) => userId === review?.userId?._id)
+        console.log("review obj", reviewObj);
+        if (!reviewObj) {
+            setIsReviewBtn(true);
+        } else {
+            setIsReviewBtn(false);
+        }
+    }, [allReviews])
 
     const responsive = {
         superLargeDesktop: {
@@ -58,23 +70,13 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
-            console.log("package products",data);
+            console.log("package products", data);
             setAllProducts(data?.data);
         } catch (error) {
             console.log(error);
         }
         finally {
             setIsLoading(false);
-        }
-    };
-
-    const getAllReviewsOfUser = async () => {
-        try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-product-review/${Data._id}`, { type: isProduct ? "product" : "package" }, { withCredentials: true });
-            console.log("user reviews", data);
-            setUserReviews(data.data);
-        } catch (error) {
-            console.log(error);
         }
     };
 
@@ -86,6 +88,8 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
             setAllReviews(data.reviews);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsReviewLoading(false);
         }
     };
 
@@ -150,17 +154,17 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                 <h4>Products</h4>
                                 {allProducts?.map((product) => (
                                     <Product
-                                    key={product._id}
-                                    product={product}
-                                    flag={false}
-                                    features={features}
+                                        key={product._id}
+                                        product={product}
+                                        flag={false}
+                                        features={features}
                                     />
-                                    ))}
+                                ))}
                             </div>}
-                                    {!isProduct && !isLoading
-                                        && allProducts.length === 0
-                                        && <p>No product found</p>
-                                    }
+                            {!isProduct && !isLoading
+                                && allProducts.length === 0
+                                && <p>No product found</p>
+                            }
 
                             {!isProduct && isLoading
                                 && allProducts.length === 0
@@ -199,7 +203,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                         <BsStarFill color="black" size={15} />
                                         <span className={classes.rating_span}>4.83</span>
                                     </div>
-                                    {userReviews.length === 0 && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
+                                    {isReviewBtn && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
                                 </div>
                                 <p className={classes.reviews}>1.2M reviews</p>
 
@@ -214,11 +218,21 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                             isUser={true}
                                         />
                                     ))} */}
+                                    {!isReviewLoading
+                                        && allReviews.length === 0
+                                        && <p>No reviews found</p>
+                                    }
+
+                                    {isReviewLoading
+                                        && allReviews.length === 0
+                                        && <Loader />
+                                    }
 
                                     {allReviews?.map((review) => (
                                         <CustomerReview
                                             key={review._id}
                                             review={review}
+                                            getAllReviews={getAllReviews}
                                         />
                                     ))}
                                 </div>

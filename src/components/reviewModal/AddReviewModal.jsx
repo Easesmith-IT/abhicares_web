@@ -5,12 +5,12 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id, getAllReviewsOfUser }) => {
+const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser }) => {
 
     const [reviewInfo, setReviewInfo] = useState({
-        title: "",
-        content: "",
-        rating: ""
+        title: review?.title || "",
+        content: review?.content || "",
+        rating: review?.rating || ""
     });
     const [hoverValue, setHoverValue] = useState(undefined);
     const stars = Array(5).fill(0);
@@ -36,16 +36,31 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, id, getAllRev
         if (!reviewInfo.title || !reviewInfo.content || !reviewInfo.rating) {
             return;
         }
-        try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
-            setIsReviewModalOpen(false);
-            toast.success("Review added successfully");
-            getAllReviewsOfUser();
-            console.log(data);
-        } catch (error) {
-            // setIsReviewModalOpen(false);
-            toast.error(error?.response?.data?.message);
-            console.log(error);
+        if (review) {
+            try {
+                const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                setIsReviewModalOpen(false);
+                toast.success("Review updated successfully");
+                getAllReviewsOfUser();
+                console.log(data);
+            } catch (error) {
+                // setIsReviewModalOpen(false);
+                toast.error(error?.response?.data?.message);
+                console.log(error);
+            }
+        }
+        else {
+            try {
+                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                setIsReviewModalOpen(false);
+                toast.success("Review added successfully");
+                getAllReviewsOfUser();
+                console.log(data);
+            } catch (error) {
+                // setIsReviewModalOpen(false);
+                toast.error(error?.response?.data?.message);
+                console.log(error);
+            }
         }
     }
 

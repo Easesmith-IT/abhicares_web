@@ -193,6 +193,7 @@ const Partners = () => {
         <UnapprovedSellerModal
           setIsUnapprovedSellerModalOpen={setIsUnapprovedSellerModalOpen}
           allSellers={allSellers}
+          getSellers={getAllSellers}
         />
       }
     </>

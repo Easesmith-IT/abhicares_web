@@ -36,7 +36,7 @@ const Settings = () => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_ADMIN_API_URL}/delete-availabe-city/${subAdmin}`,
+        `${process.env.REACT_APP_ADMIN_API_URL}/delete-subadmin/${subAdmin}`,
         { withCredentials: true }
       );
       toast.success("Subadmin deleted successfully");
