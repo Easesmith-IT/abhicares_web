@@ -74,7 +74,7 @@ const BookingDetails = () => {
 
         //  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${sourceCoordinates}&destinations=${destinationCoordinates}&key=AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I`;
         const apiUrl = `${process.env.REACT_APP_ADMIN_API_URL}/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`;
-        const res = await axios.get(apiUrl);
+        const res = await axios.get(apiUrl,{withCredentials:true});
 
         setMapData({
           distance: res?.data?.rows[0]?.elements[0]?.distance?.text,
