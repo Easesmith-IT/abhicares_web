@@ -172,19 +172,24 @@ const ServiceInfoPage = () => {
       <Wrapper>
         <div className={classes["services-wrapper"]}>
           <div className={serviceInfoPageClasses.service_info_wrapper}>
-            <div className={serviceInfoPageClasses.service_info}>
-              {/* <h3>Services</h3> */}
-              <h5>{serviceDetail?.name}</h5>
-              <div>
-                <p>Starting Price: ₹{serviceDetail?.startingPrice}</p>
+            <div className={serviceInfoPageClasses.img_wrapper}>
+              {serviceDetail?.icon &&
+                <img onClick={() => setIsUploadIcnModal(true)} className={serviceInfoPageClasses.icon} src={`${process.env.REACT_APP_IMAGE_URL}/${serviceDetail.icon}`} alt="icon" />
+              }
+              <div className={serviceInfoPageClasses.service_info}>
+                {/* <h3>Services</h3> */}
+                <h5>{serviceDetail?.name}</h5>
+                <div>
+                  <p>Starting Price: ₹{serviceDetail?.startingPrice}</p>
+                </div>
+                <p>{serviceDetail?.description && parse(serviceDetail?.description)}</p>
+                {!serviceDetail?.icon && <button
+                  className={serviceInfoPageClasses.button}
+                  onClick={() => setIsUploadIcnModal(true)}
+                >
+                  Upload Icon
+                </button>}
               </div>
-              <p>{serviceDetail?.description && parse(serviceDetail?.description)}</p>
-              {!serviceDetail?.icon && <button
-                className={serviceInfoPageClasses.button}
-                onClick={() => setIsUploadIcnModal(true)}
-              >
-                Upload Icon
-              </button>}
             </div>
             <button
               className={serviceInfoPageClasses.button}

@@ -52,7 +52,7 @@ const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
         <div className={classes.wrapper}>
             <div className={classes.modal}>
                 <div className={classes.heading_container}>
-                    <h4>Add Icon</h4>
+                    <h4>Upload Icon</h4>
                     <div className={classes.d_flex}>
                         <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
                     </div>
@@ -79,7 +79,7 @@ const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
                             </div>}
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>Add</button>
+                        <button className={classes.button}>Upload</button>
                     </div>
                 </form>
             </div>

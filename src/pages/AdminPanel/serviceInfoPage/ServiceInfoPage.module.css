@@ -29,3 +29,16 @@
   margin-top: 20px;
   padding: 20px;
 }
+
+
+.img_wrapper{
+  display: flex;
+  gap: 20px;
+}
+
+.icon{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+}
