@@ -69,7 +69,7 @@ const WhyUsComp = () => {
                             </span>
                             <h6>Post-service guarantee</h6>
                             <p>When you avail the services in Darbhanga, Bihar from AbhiCares,
-                                you get a 30-day post service guarantee.</p>
+                                you get a 30-day post service guarantee.T&C apply</p>
 
                         </div>
                     </div>
@@ -86,7 +86,7 @@ const WhyUsComp = () => {
                                 AbhiCares strives to offer top quality services for you and
                                 your home every time. If you're not satisfied with the quality
                                 of the service, we'll get a rework done to your satisfaction
-                                at no extra charge
+                                at no extra charge.T&C apply
                             </p>
                         </div>
                     </div>
