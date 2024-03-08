@@ -174,7 +174,7 @@ const CheckoutPage = () => {
       if (data.data[0].status === "active") {
         setCouponId(data.data[0]._id);
         setMessage("Offer available");
-        const offerTotal = cart.totalPrice * (Number(data.data[0].offPercentage) / 100);
+        const offerTotal = Math.ceil(cart.totalPrice * (Number(data.data[0].offPercentage) / 100));
         setOfferValue(offerTotal);
         const totalValue = total - Number(offerTotal);
         setTotal(totalValue);
