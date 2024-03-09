@@ -122,6 +122,7 @@ const BookingDetails = () => {
                   <div>
                     {/* <h4>seller name</h4>
                                 <p>seller phone: 1234567890</p> */}
+                                {booking.autoAssigned && <p style={{color:'green'}}><i>Auto Assigned</i></p>}
                     <h4>Update Status</h4>
                     <select
                       value={status}

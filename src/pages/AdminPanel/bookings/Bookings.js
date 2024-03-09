@@ -63,7 +63,8 @@ const Bookings = () => {
 
                             {allBookings?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
-                                    <h3 className={classes["t-op-nextlvl"]}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
+                                    <h3 className={classes["t-op-nextlvl"]}><span style={{color:'green'}}>{order.autoAssigned && 'auto'}</span> {format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
+                                    
                                     <h3 className={`${classes["t-op-nextlvl"]} ${classes.status} ${order.status === "cancelled" ? classes.Cancelled : order.status === "completed" ? classes.Completed : order.status === "alloted" ? classes.alloted : classes.OutOfDelivery}`}>{order.status}</h3>
                                     <h3 className={`${classes["t-op-nextlvl"]}`}>{order.orderValue}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>

@@ -172,7 +172,7 @@ const CheckoutPage = () => {
         { withCredentials: true }
       );
       if (data.data[0].status === "active") {
-        setCouponId(data.data[0]._id);
+        setCouponId(data?.data[0]?._id);
         setMessage("Offer available");
         const offerTotal = Math.ceil(cart.totalPrice * (Number(data.data[0].offPercentage) / 100));
         setOfferValue(offerTotal);
@@ -191,6 +191,7 @@ const CheckoutPage = () => {
       const totalValue = total - Number(0);
       setTotal(totalValue);
       console.log(error);
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -415,7 +416,7 @@ const CheckoutPage = () => {
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-                {<div className={classes.payment_summary_div}>
+                {offerValue>0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
                 </div>}
