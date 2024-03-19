@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 import WebsiteWrapper from "../WebsiteWrapper";
 import { BackDropLoader } from "../../components/backdrop-loader/BackDropLoader";
+import CelebrationModal from "../../components/celebration-modal/CelebrationModal";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,9 @@ const CheckoutPage = () => {
   })
   const [totalTaxRs, setTotalTaxRs] = useState(0);
   const [isLoader, setIsLoader] = useState(false);
+  const [credits, setCredits] = useState(0);
+  const [creditsAvailable, setCreditsAvailable] = useState(false);
+  const [isCelebrationModalOpen, setIsCelebrationModalOpen] = useState(false);
 
 
 
@@ -94,9 +98,9 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     const totalTaxRupee = (cart.totalPrice * 18) / 100;
-    setTotal(Number(totalTaxRupee) + Number(cart.totalPrice));
+    setTotal((Number(totalTaxRupee) + Number(cart.totalPrice)) - credits);
     setTotalTaxRs(totalTaxRupee);
-  }, [getCartDetails, cart]);
+  }, [getCartDetails, cart,credits]);
 
 
   const handleOnclick = () => {
@@ -122,7 +126,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId }, { withCredentials: true });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
@@ -220,7 +224,7 @@ const CheckoutPage = () => {
       );
       console.log("tax", totalTaxRs);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId },
+        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId, referalDiscount: credits },
         { withCredentials: true }
       );
       console.log("razor", data);
@@ -275,10 +279,36 @@ const CheckoutPage = () => {
     }
   }
 
+  const getReferralCodeData = async () => {
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/get-referralCredits`, {}, { withCredentials: true });
+      console.log("referral details", res?.data);
+      if (res?.status === 200) {
+        setCredits(res?.data?.credits);
+        setCreditsAvailable(res?.data?.creditsAvailable);
+        setIsCelebrationModalOpen(res?.data?.creditsAvailable);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getReferralCodeData();
+  }, [])
+
+
 
   return (
     <WebsiteWrapper>
       <div>
+        {isCelebrationModalOpen &&
+          <CelebrationModal
+            isModalOpen={isCelebrationModalOpen}
+            setIsModalOpen={setIsCelebrationModalOpen}
+            credits={credits}
+          />
+        }
         {isLoader && <BackDropLoader />}
         <div className={`${classes.container} ${classes.checkout_container}`}>
           <div className={classes.checkout_container_left}>
@@ -390,19 +420,21 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            <div className={classes.offer_box}>
-              <div className={classes.logo_box}>
-                <AiOutlinePercentage size={20} />
-              </div>
-              <div>
-                <p className={classes.offer_p}>Coupons and offers</p>
-                <div className={classes.input_wrapper}>
-                  <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
-                  <button onClick={handleCheck}>Apply</button>
+            {!creditsAvailable &&
+              <div className={classes.offer_box}>
+                <div className={classes.logo_box}>
+                  <AiOutlinePercentage size={20} />
                 </div>
-                {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
+                <div>
+                  <p className={classes.offer_p}>Coupons and offers</p>
+                  <div className={classes.input_wrapper}>
+                    <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
+                    <button onClick={handleCheck}>Apply</button>
+                  </div>
+                  {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
+                </div>
               </div>
-            </div>
+            }
             {isShow && (
               <div className={classes.payment_summary}>
                 <h5 className={classes.payment_summary_h4}>Payment Summary</h5>
@@ -416,9 +448,14 @@ const CheckoutPage = () => {
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
                 </div>
-                {offerValue>0 && <div className={classes.payment_summary_div}>
+                {offerValue > 0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
                   <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
+                </div>}
+
+                {credits > 0 && <div className={classes.payment_summary_div}>
+                  <p className={classes.payment_summary_p}>Referal Discount</p>
+                  <p className={classes.payment_summary_p}> - ₹{credits}</p>
                 </div>}
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Total</p>
