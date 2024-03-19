@@ -72,6 +72,14 @@
     padding: 4px 10px;
 }
 
+.referral_code_wrapper{
+    display: flex;
+    gap: 10px;
+    border: 2px solid gray;
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
 
 .address_container {
     margin-top: 20px;

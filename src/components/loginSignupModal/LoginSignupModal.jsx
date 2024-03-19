@@ -17,12 +17,15 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
     phone: "",
+    referralCode: "",
   });
 
   const [error, setError] = useState({
     message: null,
     from: null
   });
+
+  console.log("signup",loginSignupInfo);
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -282,6 +285,17 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     name="phone"
                     id="phone"
                     placeholder="Enter mobile number"
+                  />
+                </div>
+                <div className={classes.input_box}>
+                  <input
+                    onChange={handleOnChange}
+                    value={loginSignupInfo.referralCode}
+                    className={classes.input}
+                    type="text"
+                    name="referralCode"
+                    id="referralCode"
+                    placeholder="Enter Referral Code"
                   />
                 </div>
                 <p className={classes.p}>

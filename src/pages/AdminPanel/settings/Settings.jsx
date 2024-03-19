@@ -10,6 +10,7 @@ import SeoModal from "../../../components/seo-modal/SeoModal";
 import UpdatePwdModal from "../../../components/update-password-modal/UpdatePwd";
 import useAuthorization from "../../../hooks/useAuthorization";
 import Loader from "../../../components/loader/Loader";
+import UpdateReferEarnModal from "../../../components/update-refer-and-earn-modal/UpdateRefer&EarnModal";
 
 const Settings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +21,7 @@ const Settings = () => {
   const [subAdmin, setSubadmin] = useState({});
   const [allSubadmins, setAllSubadmins] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdateReferAndEarnModalOpen, setIsUpdateReferAndEarnModalOpen] = useState(false);
 
   const { checkAuthorization } = useAuthorization();
 
@@ -75,6 +77,13 @@ const Settings = () => {
             <h1>Settings</h1>
             <div className={classes.btn_wrapper}>
               <button
+                onClick={() => setIsUpdateReferAndEarnModalOpen(true)}
+                className={classes.button}
+              >
+                Update Refer and Earn
+              </button>
+
+              <button
                 onClick={() => setIsSeoModalOpen(true)}
                 className={classes.button}
               >
@@ -110,9 +119,8 @@ const Settings = () => {
                   <p>
                     Status:{" "}
                     <span
-                      className={`${classes.status} ${
-                        subadmin.status ? classes.active : classes.inactive
-                      }`}
+                      className={`${classes.status} ${subadmin.status ? classes.active : classes.inactive
+                        }`}
                     >
                       {subadmin.status ? "Active" : "InActive"}
                     </span>
@@ -138,6 +146,11 @@ const Settings = () => {
       </Wrapper>
 
       {isSeoModalOpen && <SeoModal setIsModalOpen={setIsSeoModalOpen} />}
+
+      {isUpdateReferAndEarnModalOpen &&
+        <UpdateReferEarnModal
+          setIsModalOpen={setIsUpdateReferAndEarnModalOpen}
+        />}
 
       {isModalOpen && (
         <AddSubAdminModal

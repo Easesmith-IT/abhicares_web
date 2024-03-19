@@ -30,7 +30,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const [offerInfo, setOfferInfo] = useState({
         name: offer?.name || "",
         offPercentage: offer?.offPercentage || "",
-        // date: offer?.date || "",
+        noOfTimesPerUser: offer?.noOfTimesPerUser || 1,
         status: offer?.status || true,
     });
 
@@ -98,6 +98,10 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="offPercentage">Offer Percentage</label>
                         <input className={classes.input} onChange={handleOnChange} value={offerInfo.offPercentage} type="number" name="offPercentage" id="offPercentage" />
+                    </div>
+                    <div className={classes.input_container}>
+                        <label htmlFor="noOfTimesPerUser">No of Times Per User</label>
+                        <input className={classes.input} onChange={handleOnChange} value={offerInfo.noOfTimesPerUser} type="number" name="noOfTimesPerUser" id="noOfTimesPerUser" />
                     </div>
                     {/* <div className={classes.input_container}>
                         <label htmlFor="date">Date</label>

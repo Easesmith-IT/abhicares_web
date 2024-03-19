@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import AddEmailModal from '../../components/add-email-modal/AddEmailModal';
+import { MdOutlineContentCopy } from "react-icons/md";
 
 const MyProfile = () => {
   const [profileDetails, setProfileDetails] = useState("");
@@ -33,6 +34,11 @@ const MyProfile = () => {
     getProfileDetails();
   }, [])
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(profileDetails.referralCode);
+    toast.success("Copied")
+  }
+
 
   return (
     <>
@@ -48,7 +54,13 @@ const MyProfile = () => {
                 <div className={classes.profile_info_right}>
                   <div className={classes.d_flex}>
                     <h5>{profileDetails?.name}</h5>
-                    {!profileDetails?.email && <button className={classes.btn} onClick={() => setIsAddEmailModalOpen(true)}>Add Email</button>}
+                    <div>
+                      {!profileDetails?.email && <button className={classes.btn} onClick={() => setIsAddEmailModalOpen(true)}>Add Email</button>}
+                      <div className={classes.referral_code_wrapper}>
+                        <p>{profileDetails?.referralCode}</p>
+                        <MdOutlineContentCopy onClick={copyToClipboard} cursor={"pointer"} />
+                      </div>
+                    </div>
                   </div>
                   <div>
                     {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
