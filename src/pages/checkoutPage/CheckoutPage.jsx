@@ -179,6 +179,10 @@ const CheckoutPage = () => {
         setCouponId(data?.data[0]?._id);
         setMessage("Offer available");
         const offerTotal = Math.ceil(cart.totalPrice * (Number(data.data[0].offPercentage) / 100));
+        console.log("offerTotal",offerTotal);
+        if (offerValue > 0) {
+          return;
+        }
         setOfferValue(offerTotal);
         const totalValue = total - Number(offerTotal);
         setTotal(totalValue);
@@ -191,8 +195,8 @@ const CheckoutPage = () => {
       }
     } catch (error) {
       setMessage("Enter valid coupon code");
+      const totalValue = total + Number(offerValue);
       setOfferValue(0);
-      const totalValue = total - Number(0);
       setTotal(totalValue);
       console.log(error);
       toast.error(error?.response?.data?.message)
@@ -420,7 +424,6 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {!creditsAvailable &&
               <div className={classes.offer_box}>
                 <div className={classes.logo_box}>
                   <AiOutlinePercentage size={20} />
@@ -434,7 +437,7 @@ const CheckoutPage = () => {
                   {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
                 </div>
               </div>
-            }
+            
             {isShow && (
               <div className={classes.payment_summary}>
                 <h5 className={classes.payment_summary_h4}>Payment Summary</h5>

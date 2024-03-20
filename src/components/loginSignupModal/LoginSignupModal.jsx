@@ -25,7 +25,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
     from: null
   });
 
-  console.log("signup",loginSignupInfo);
+  // console.log("signup",loginSignupInfo);
 
   const [successMessage, setSuccessMessage] = useState("");
 
