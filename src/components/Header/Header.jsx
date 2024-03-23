@@ -169,7 +169,12 @@ export const Header = () => {
         )}
       </div>
 
-      <LoginSignupModal isOpen={isOpen} handleOnclick={handleOnclick} />
+      {isOpen &&
+        <LoginSignupModal
+          isOpen={isOpen}
+          handleOnclick={handleOnclick}
+        />
+      }
       {isLogoutModalOpen && (
         <LogoutModal
           setIsLogoutModalOpen={setIsLogoutModalOpen}

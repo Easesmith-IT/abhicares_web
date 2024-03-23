@@ -91,8 +91,18 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
                                 </div>
                                 <div className={classes.d_flex}>
                                     <b>Tax Rate (18%):</b>
-                                    <p>₹{state.tax}</p>
+                                    <p>₹{state?.tax}</p>
                                 </div>
+                                {state?.discount > 0 &&
+                                    <div className={classes.d_flex}>
+                                        <b>Discount:</b>
+                                        <p>₹ {state?.discount}</p>
+                                    </div>}
+                                {state?.referalDiscount > 0 &&
+                                    <div className={classes.d_flex}>
+                                        <b>Referal Discount:</b>
+                                        <p>₹ {state?.referalDiscount}</p>
+                                    </div>}
                                 <div className={classes.d_flex}>
                                     <b>Total:</b>
                                     <p>₹ {invoice.orderValue}</p>

@@ -123,11 +123,15 @@ const OrderDetails = () => {
                         </div>
                         <div className={classes.d_flex}>
                             <p>Tax (18%) :</p>
-                            <p>₹{state.tax}</p>
+                            <p>+ ₹{state.tax}</p>
                         </div>
-                        {discount > 0 && <div className={classes.d_flex}>
+                        {state?.discount > 0 && <div className={classes.d_flex}>
                             <p>Discount ('{state?.couponId?.name}') :</p>
-                            <p>₹{state.discount}</p>
+                            <p>- ₹{state.discount}</p>
+                        </div>}
+                        {state?.referalDiscount > 0 && <div className={classes.d_flex}>
+                            <p>Referal Discount :</p>
+                            <p>- ₹{state.referalDiscount}</p>
                         </div>}
                         <div className={classes.d_flex}>
                             <p>Total Amount :</p>

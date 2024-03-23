@@ -14,7 +14,7 @@ const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-refer-and-earn-amount`, { withCredentials: true })
             console.log('amount',data)
-            setAmount(data?.doc?.amount);
+            setAmount(data?.doc[0]?.amount);
         } catch (error) {
             console.log(error);
         }
