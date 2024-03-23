@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import CountdownTimer from "../countdown/CountDown";
+import { FaEdit } from "react-icons/fa";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const [isSignupOtp, setIsSignupOtp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isTimer, setIsTimer] = useState(false);
+  const [isEditNumber, setIsEditNumber] = useState(false);
 
   const handleOnClose = () => {
     handleOnclick();
@@ -324,6 +326,21 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
               {successMessage && (
                 <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
               )}
+
+              {isEditNumber &&
+                <div className={classes.input_box}>
+                  <input
+                    onChange={handleOnChange}
+                    value={loginSignupInfo.phone}
+                    className={classes.input}
+                    type="number"
+                    name="phone"
+                    id="phone"
+                    placeholder="Enter mobile number"
+                  />
+                </div>
+              }
+
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
@@ -334,12 +351,21 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   placeholder="Enter Otp"
                 />
               </div>
-              <div className={classes.btn_wrapper}>
-                {isTimer &&
-                  <CountdownTimer setIsTimer={setIsTimer}>
-                    <button disabled={isTimer} onClick={handleLogin} className={classes.link}>Resend OTP</button>
-                  </CountdownTimer>}
-                {!isTimer && <button onClick={handleLogin} className={classes.link}>Resend OTP</button>}
+              <div className={classes.flex}>
+                {!isEditNumber &&
+                  <div className={classes.edit_icon_wrapper}>
+                    <p>{loginSignupInfo.phone}</p>
+                    <FaEdit onClick={() => setIsEditNumber(!isEditNumber)} className={classes.icon} size={18} />
+                  </div>
+                }
+
+                <div className={classes.btn_wrapper}>
+                  {isTimer &&
+                    <CountdownTimer setIsTimer={setIsTimer}>
+                      <button disabled={isTimer} onClick={handleLogin} className={classes.link}>Resend OTP</button>
+                    </CountdownTimer>}
+                  {!isTimer && <button onClick={handleLogin} className={classes.link}>Resend OTP</button>}
+                </div>
               </div>
               <button
                 onClick={handleOtpVerification}
@@ -367,6 +393,20 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                 <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
               )}
 
+              {isEditNumber &&
+                <div className={classes.input_box}>
+                  <input
+                    onChange={handleOnChange}
+                    value={loginSignupInfo.phone}
+                    className={classes.input}
+                    type="number"
+                    name="phone"
+                    id="phone"
+                    placeholder="Enter mobile number"
+                  />
+                </div>
+              }
+
               <div className={classes.input_box}>
                 <input
                   onChange={(e) => setOtp(e.target.value)}
@@ -376,12 +416,19 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   placeholder="Enter Otp"
                 />
               </div>
-              <div className={classes.btn_wrapper}>
-                {isTimer &&
-                  <CountdownTimer setIsTimer={setIsTimer}>
-                    <button disabled={isTimer} onClick={handleSignUp} className={classes.link}>Resend OTP</button>
-                  </CountdownTimer>}
-                {!isTimer && <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>}
+              <div className={classes.flex}>
+                {!isEditNumber &&
+                  <div className={classes.edit_icon_wrapper}>
+                    <p>{loginSignupInfo.phone}</p>
+                    <FaEdit onClick={() => setIsEditNumber(!isEditNumber)} className={classes.icon} size={18} />
+                  </div>}
+                <div className={classes.btn_wrapper}>
+                  {isTimer &&
+                    <CountdownTimer setIsTimer={setIsTimer}>
+                      <button disabled={isTimer} onClick={handleSignUp} className={classes.link}>Resend OTP</button>
+                    </CountdownTimer>}
+                  {!isTimer && <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>}
+                </div>
               </div>
               <button
                 onClick={handleSignupOtpVerification}

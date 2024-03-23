@@ -33,11 +33,21 @@
     border-radius: 50%;
 }
 
-.profile_info_right div {
+.profile_info_right > div {}
+
+.profile_info_right > div .profileDetails {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+.profile_info_right > div .referralDetails {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .bold {

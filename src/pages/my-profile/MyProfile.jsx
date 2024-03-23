@@ -13,6 +13,7 @@ const MyProfile = () => {
   const [userAddresses, setUserAddresses] = useState([]);
   const [isAddEmailModalOpen, setIsAddEmailModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userReferral, setUserReferral] = useState("");
 
   const getProfileDetails = async () => {
     try {
@@ -22,6 +23,7 @@ const MyProfile = () => {
       if (res?.status === 200) {
         setProfileDetails(res?.data?.userInfo?.user)
         setUserAddresses(res?.data?.userInfo?.userAddresses)
+        setUserReferral(res?.data?.userInfo?.userRefDoc)
       }
     } catch (error) {
       console.log(error);
@@ -63,8 +65,15 @@ const MyProfile = () => {
                     </div>
                   </div>
                   <div>
-                    {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
-                    <p><b className={classes.bold}>Phone :</b> {profileDetails?.phone}</p>
+                    <div className={classes.profileDetails}>
+                      {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
+                      <p><b className={classes.bold}>Phone :</b> {profileDetails?.phone}</p>
+                    </div>
+                    {userReferral &&
+                    <div className={classes.referralDetails}>
+                      <p><b className={classes.bold}>Referral Credits :</b> ₹{userReferral?.referralCredits}</p>
+                      <p><b className={classes.bold}>No of Users Applied Coupon :</b> {userReferral?.noOfUsersAppliedCoupon}</p>
+                      </div>}
                   </div>
                 </div>
               </div>}

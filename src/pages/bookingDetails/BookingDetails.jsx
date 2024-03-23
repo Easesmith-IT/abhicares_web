@@ -153,6 +153,7 @@ const BookingDetails = () => {
                 <p>Subtotal: </p>
                 <p>Tax(18%): </p>
                 {state.discount > 0 && <p>Discount: </p>}
+                {state.referalDiscount && <p>Referal Discount: </p>}
                 <p>
                   <b>Total: </b>
                 </p>
@@ -161,6 +162,7 @@ const BookingDetails = () => {
                 <p>₹{state.itemTotal}</p>
                 <p> + ₹{state.tax}</p>
                 {state.discount > 0 && <p> - ₹{state.discount}</p>}
+                {state.referalDiscount && <p> - ₹{state.referalDiscount}</p>}
                 <p>
                   <b>₹{state.orderValue}</b>
                 </p>
