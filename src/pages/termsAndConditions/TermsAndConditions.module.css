@@ -54,11 +54,12 @@ ol {
     margin-top: 10px;
     font-size: 15px;
     color: #424242;
-    margin-left: 15px;
+    /* margin-left: 15px; */
 }
 
 div ol li {
     margin-top: 15px;
+    padding-left: 0px !important;
 }
 
 .bold {

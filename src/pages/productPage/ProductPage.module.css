@@ -474,6 +474,15 @@
   .sm_cart > .button {
     max-width: 200px;
   }
+
+  .heading {
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  /* .selected_service_h2 {
+    font-size: 20px;
+  } */
 }
 
 @media screen and (min-width: 1100px) {

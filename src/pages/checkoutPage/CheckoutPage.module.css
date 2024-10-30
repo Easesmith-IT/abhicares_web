@@ -418,6 +418,7 @@
 .input_wrapper input{
     padding: 0.25rem 0.5rem;
     border-radius: 6px;
+    width: 90%;
 }
 
 .input_wrapper button{
