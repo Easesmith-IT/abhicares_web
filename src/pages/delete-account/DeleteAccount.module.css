@@ -1,0 +1,41 @@
+.delete_account_wrapper{
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.delete_account_wrapper form{
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.delete_account_wrapper .input_container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.delete_account_wrapper .input_container input{
+    height: 40px;
+    border-radius: 6px;
+    padding: 2px 10px;
+}
+
+.delete_account_wrapper button{
+    padding: 10px 20px;
+    background: #e81e1e;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    margin-top: 20px;
+}

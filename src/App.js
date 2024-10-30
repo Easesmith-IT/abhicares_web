@@ -76,6 +76,7 @@ import UnautorizedModal from "./components/unautorized-modal/UnautorizedModal";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import WhyUs from "./pages/whyus/WhyUs";
 import MyProfile from "./pages/my-profile/MyProfile";
+import DeleteAccount from "./pages/delete-account/DeleteAccount";
 
 
 
@@ -126,6 +127,7 @@ console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
           <Route path="/my_profile" element={<MyProfile />} />
 
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
 
           {/* Admin Panel Routes */}
 
