@@ -6,6 +6,7 @@
     display: inline-block;
     text-decoration: none;
     color: inherit;
+    font-family: "Poppins", serif;
 }
 
 .section-head {
@@ -84,7 +85,7 @@ p.awesome_line {
     color: #712be2;
 }
 
-.card_container{
+.card_container {
     /* max-width: 1300px; */
     /* margin: 0 auto; */
     display: flex;
@@ -274,6 +275,9 @@ p.awesome_line {
     border-radius: 30px;
 }
 
+.para {
+    font-family: "Poppins", sans-serif;
+}
 
 @media (min-width:320px) and (max-width:500px) {
     .item {
@@ -319,7 +323,7 @@ p.awesome_line {
 
 
 @media screen and (max-width: 768px) {
-    .whyUs{
+    .whyUs {
         padding: 20px 0;
     }
 

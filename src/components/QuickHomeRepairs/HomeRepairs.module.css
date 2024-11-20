@@ -10,11 +10,13 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 0 5px;
+  font-family: "Poppins", serif;
 }
 
 .cardname {
   padding: 0.2rem 0.5rem;
   margin-top: 10px;
+  font-family: "Poppins", serif;
 }
 
 
@@ -57,6 +59,7 @@
 .price{
   font-size: 17px;
   padding: 0 0.5rem;
+  font-family: "Poppins", serif;
 }
 
 @media(max-width:520px) {

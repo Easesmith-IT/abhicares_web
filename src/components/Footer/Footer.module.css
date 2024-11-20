@@ -1,12 +1,14 @@
 .wrapper{
     width: 100%;
     background-color: rgba(245,245,245,1.00);
+    font-family: "Poppins", serif;
 
 
 }
 .main{
     width: 95%;
     margin: 0 auto;
+    font-family: "Poppins", serif;
 
 }
 .Footer{
@@ -17,16 +19,18 @@
     align-items: center;
     margin-bottom: 1rem;
     border-bottom: 1px solid #E3E3E3;
+    font-family: "Poppins", serif;
 }
 .Footer >div{
     padding: 0.5rem 0.9rem;
+    font-family: "Poppins", serif;
 }
 .social{
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    
+    font-family: "Poppins", serif;    
 }
 .social>div{
    padding: 0.4rem 0.8rem;
@@ -34,6 +38,7 @@
 }
 .logo-container{
     width: 10rem;
+    font-family: "Poppins", serif;
 }
 .logo-container > img{
     height: 100%;
@@ -48,20 +53,24 @@
 }
 .heading{
     padding: 1rem 0.2rem;
+    font-family: "Poppins", serif;
 }
 .heading>h5{
     font-weight: 550;
+    font-family: "Poppins", serif;
 }
 
 
 .p{
     margin-bottom: 5px;
+    font-family: "Poppins", serif;
 }
 
 a{
     text-decoration: none !important;
     color:black !important;
     font-size: 15px;
+    font-family: "Poppins", serif;
 
 }
 a>svg{
@@ -73,6 +82,7 @@ a>svg{
     text-align: center;
     padding: 20px;
     padding-bottom: 30px;
+    font-family: "Poppins", serif;
 }
 
 .section>div.div{

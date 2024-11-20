@@ -79,7 +79,11 @@ export const Footer = () => {
                                 </div>
                                 <div className={classes['download']}>
                                     {/* <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></Link></div> */}
-                                    <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg" alt="image" /></Link></div>
+                                    <div>
+                                        <a target='_blank' rel="noreferrer" href='https://play.google.com/store/apps/details?id=com.abhicares.abhicares_main&hl=en'>
+                                            <img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg" alt="" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 

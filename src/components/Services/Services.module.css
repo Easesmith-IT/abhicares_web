@@ -98,6 +98,7 @@
   display: flex !important;
   align-items: center;
   gap: 20px;
+  font-family: "Poppins", serif;
 }
 
 .search_result_item img {
@@ -137,6 +138,7 @@
 .heading>h4 {
   font-weight: 500;
   font-size: 32px;
+  font-family: "Poppins", serif;
 }
 
 @media(max-width:768px) {
