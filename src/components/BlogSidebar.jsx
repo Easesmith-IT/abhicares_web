@@ -9,10 +9,10 @@ const RecentBlogs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://blog.abhicares.com/wp-json/wp/v2/posts');
+        const response = await axios.get('https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/posts');
         const postsWithfeaturedimage = response.data.map(async (post) => {
           if (post.featured_media) {
-            const mediaResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${post.featured_media}`);
+            const mediaResponse = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/media/${post.featured_media}`);
             return { ...post, featured_image: mediaResponse.data };
           }
           return post;

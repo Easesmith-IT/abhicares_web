@@ -20,12 +20,12 @@ const BlogsCategory = () => {
 
         const categoryBlogs = async (id) => {
           try {
-            const response = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/posts?categories=${id}`);
+            const response = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/posts?categories=${id}`);
             console.log(response.data);
 
             const blogsWithMedia = await Promise.all(response.data.map(async (post) => {
               try {
-                const mediaResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${post.featured_media}`);
+                const mediaResponse = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/media/${post.featured_media}`);
                 console.log('Media Response for Post ID', post.id, mediaResponse.data);
                 return { ...post, featuredMedia: mediaResponse.data };
               } catch (mediaError) {

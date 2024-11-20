@@ -41,16 +41,16 @@ const Blogs = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const categoriesResponse = await axios.get('https://blog.abhicares.com/wp-json/wp/v2/categories');
+                const categoriesResponse = await axios.get('https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/categories');
                 setCategories(categoriesResponse.data);
 
                 const postsPromises = categoriesResponse.data.map(async (category) => {
-                    const postsResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/posts?categories=${category.id}`);
+                    const postsResponse = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/posts?categories=${category.id}`);
 
                     console.log("res",postsResponse);
                     const postsWithMediaPromises = postsResponse.data.map(async (post) => {
                         if (post.featured_media) {
-                            const featuredMediaResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${post.featured_media}`);
+                            const featuredMediaResponse = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/media/${post.featured_media}`);
                             return { ...post, featured_media_data: featuredMediaResponse.data };
                         }
                         return post;

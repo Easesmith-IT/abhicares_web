@@ -18,9 +18,9 @@ const SingleBlog = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/posts/${PostId}`);
+        const response = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/posts/${PostId}`);
         const featuredImageId = response.data.featured_media;
-        const imageResponse = await axios.get(`https://blog.abhicares.com/wp-json/wp/v2/media/${featuredImageId}`);
+        const imageResponse = await axios.get(`https://palegoldenrod-ibis-456811.hostingersite.com/wp-json/wp/v2/media/${featuredImageId}`);
         const featuredImageUrl = imageResponse.data.source_url;
         setPost({
           ...response.data,
