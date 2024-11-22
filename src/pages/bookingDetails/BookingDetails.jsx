@@ -6,6 +6,7 @@ import InvoiceModal from '../../components/invoiceModal/InvoiceModal';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import WebsiteWrapper from '../WebsiteWrapper';
+import AddReviewModal from '../../components/reviewModal/AddReviewModal';
 const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
@@ -17,6 +18,8 @@ const BookingDetails = () => {
   const [totalTaxRs, setTotalTaxRs] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
+
   const getOrderInvoice = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
@@ -72,6 +75,12 @@ const BookingDetails = () => {
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
+                <button
+                  onClick={() => setIsAddReviewModalOpen(true)}
+                  className={classes.button}
+                >
+                  Add Review
+                </button>
                 <button
                   onClick={() => setIsInvoiceModalOpen(true)}
                   className={classes.button}
@@ -177,6 +186,15 @@ const BookingDetails = () => {
             setIsInvoiceModalOpen={setIsInvoiceModalOpen}
           />
         )}
+        {isAddReviewModalOpen &&
+          <AddReviewModal
+            isReviewModalOpen={isAddReviewModalOpen}
+            setIsReviewModalOpen={setIsAddReviewModalOpen}
+            id={params.id}
+            getAllReviewsOfUser={() => { }}
+          />
+        }
+
         {isCancelledModalOpen && (
           <div className={classes.modal_wrapper}>
             <div className={classes.modal}>

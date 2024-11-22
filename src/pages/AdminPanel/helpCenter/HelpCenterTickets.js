@@ -27,6 +27,26 @@ const HelpCenterTickets = () => {
 
   const { checkAuthorization } = useAuthorization();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(10);
+  const [filters, setFilters] = useState({
+    startDate: "",
+    endDate: "",
+    serviceType: "",
+  });
+
+  // const handlePageClick = async (page) => {
+  //   setCurrentPage(page);
+  // };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({ ...filters, [name]: value });
+  };
+
+  const handleFilterSubmit = () => {
+    setCurrentPage(1);
+  };
 
 
   const getAllIssues = async () => {
@@ -36,7 +56,7 @@ const HelpCenterTickets = () => {
         { status },
         { withCredentials: true }
       );
-      console.log("issues",data);
+      console.log("issues", data);
       setPageCount(data.totalPage);
       setAllIssues(data.data);
     } catch (error) {
@@ -91,20 +111,54 @@ const HelpCenterTickets = () => {
       <Wrapper>
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
-            <h1 className={classes["recent-Articles"]}>All Issues</h1>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              name=""
-              id=""
-            >
-              <option value="in-review">In Review</option>
-              <option value="solved">Solved</option>
-            </select>
+            <h1 className={classes["recent-Articles"]}>All Tickets</h1>
+            <div className={classes.filter}>
+              <input
+                type="date"
+                name="startDate"
+                value={filters.startDate}
+                onChange={handleFilterChange}
+                placeholder="Start Date"
+                className={classes.filter_input}
+              />
+              {/* <input
+              type="date"
+              name="endDate"
+              value={filters.endDate}
+              onChange={handleFilterChange}
+              placeholder="End Date"
+              className={classes.filter_input}
+            /> */}
+              <select
+                name="serviceType"
+                value={filters.serviceType}
+                onChange={handleFilterChange}
+                className={classes.filter_input}
+              >
+                <option value="">All Services</option>
+                <option value="delivery">Delivery</option>
+                <option value="pickup">Pickup</option>
+              </select>
+              <button
+                onClick={handleFilterSubmit}
+                className={classes.filter_button}
+              >
+                Apply Filters
+              </button>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                name=""
+                id=""
+              >
+                <option value="in-review">In Review</option>
+                <option value="solved">Solved</option>
+              </select>
+            </div>
           </div>
 
           <div className={helpCenterClasses.container}>
-            {!isLoading && allIssues?.length === 0 && <p>No issues found</p>}
+            {!isLoading && allIssues?.length === 0 && <p>No tickets found</p>}
 
             {isLoading && allIssues?.length === 0 && <Loader />}
             {allIssues?.map((issue) => (

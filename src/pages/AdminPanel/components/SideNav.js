@@ -200,6 +200,20 @@ const SideNav = () => {
             <h3 className={classes.title}>Settings</h3>
           </Link>
         )}
+        {permissions.settings !== "none" && (
+          <Link
+            to="/admin/reviews"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <img
+              src={PaymentsIcn}
+              alt="reviews"
+              className={classes["nav-img"]}
+            />
+
+            <h3 className={classes.title}>Reviews</h3>
+          </Link>
+        )}
       </div>
     </nav>
   );

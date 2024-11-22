@@ -77,6 +77,8 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import WhyUs from "./pages/whyus/WhyUs";
 import MyProfile from "./pages/my-profile/MyProfile";
 import DeleteAccount from "./pages/delete-account/DeleteAccount";
+import SendNotifications from "./pages/AdminPanel/SendNotifications";
+import Reviews from "./pages/AdminPanel/reviews/Reviews";
 
 
 
@@ -88,7 +90,7 @@ function App() {
   })()
 
   const { isOpen } = useSelector((state) => state.auth);
-console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
+  console.log("env var ==>", process.env.REACT_APP_GOOGLE_MAP_API_KEY);
 
   return (
     <>
@@ -215,6 +217,7 @@ console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
             <Route path="/admin/services" element={<Services />} />
             <Route path="/admin/payments" element={<Payments />} />
             <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/reviews" element={<Reviews />} />
 
             <Route
               path="/admin/services/:categoryId"
@@ -240,6 +243,7 @@ console.log("env var ==>",process.env.REACT_APP_GOOGLE_MAP_API_KEY);
               path="/admin/help-center/tickets"
               element={<HelpCenterTickets />}
             />
+            <Route path="/admin/send-notifications" element={<SendNotifications />} />
           </Route>
 
           <Route path="/*" element={<ErrorPage />} />
