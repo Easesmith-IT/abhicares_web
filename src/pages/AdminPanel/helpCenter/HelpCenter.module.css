@@ -2,24 +2,7 @@
     width: 100%;
 }
 
-.filter {
-    display: flex;
-    gap: 30px;
-}
 
-
-.filter_input {
-    padding: 5px 20px;
-    border-radius: 6px;
-}
-
-.filter_button {
-    padding: 5px 20px;
-    border: none;
-    background: black;
-    color: white;
-    border-radius: 6px;
-}
 
 .justify {
     /* width: 100%; */
