@@ -79,6 +79,7 @@ import MyProfile from "./pages/my-profile/MyProfile";
 import DeleteAccount from "./pages/delete-account/DeleteAccount";
 import SendNotifications from "./pages/AdminPanel/SendNotifications";
 import Reviews from "./pages/AdminPanel/reviews/Reviews";
+import HelpCenterTicketDetails from "./pages/AdminPanel/helpCenter/HelpCenterTicketDetails";
 
 
 
@@ -242,6 +243,10 @@ function App() {
             <Route
               path="/admin/help-center/tickets"
               element={<HelpCenterTickets />}
+            />
+            <Route
+              path="/admin/help-center/tickets/:ticketId"
+              element={<HelpCenterTicketDetails />}
             />
             <Route path="/admin/send-notifications" element={<SendNotifications />} />
           </Route>

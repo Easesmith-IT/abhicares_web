@@ -61,27 +61,43 @@ const Reviews = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [filters, setFilters] = useState({
-    startDate: "",
-    endDate: "",
+    date: "",
     serviceType: "",
   });
+
+  const [allCategories, setAllCategories] = useState([]);
+
+  console.log("filter", filters);
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+      setAllCategories(data.data);
+      console.log("allCategories", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, [])
 
   const handlePageClick = async (page) => {
     setCurrentPage(page);
   };
 
-  const fetchReviews = async (page = 1, filters = {}) => {
+  const fetchReviews = async () => {
     setIsLoading(true);
     try {
-      // const { data } = await axios.get(
-      //   `${process.env.REACT_APP_ADMIN_API_URL}/get-reviews`,
-      //   {
-      //     params: { page, ...filters },
-      //     withCredentials: true,
-      //   }
-      // );
-      // setReviews(data.reviews);
-      // setTotalPages(data.totalPages);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-reviews?page=${currentPage}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("reviews", data);
+      setReviews(data.data);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch reviews");
@@ -95,14 +111,37 @@ const Reviews = () => {
     setFilters({ ...filters, [name]: value });
   };
 
-  const handleFilterSubmit = () => {
-    fetchReviews(1, filters);
-    setCurrentPage(1);
+  const filterReviews = async () => {
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_ADMIN_API_URL}/filter-review`, {
+        date: filters.date,
+        serviceType: filters.serviceType,
+        page: filters.currentPage
+      }, { withCredentials: true }
+      );
+      console.log("filter reviews", data);
+      setTotalPages(data.totalPages);
+      setReviews(data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+
   useEffect(() => {
-    fetchReviews();
-  }, [currentPage]);
+    if (!filters.date &&
+      !filters.serviceType) {
+      fetchReviews();
+    }
+    else {
+      filterReviews();
+    }
+  }, [currentPage,
+    filters.date,
+    filters.serviceType]);
 
   return (
     <Wrapper>
@@ -113,36 +152,30 @@ const Reviews = () => {
           <div className={classes.filter_container}>
             <input
               type="date"
-              name="startDate"
-              value={filters.startDate}
+              name="date"
+              value={filters.date}
               onChange={handleFilterChange}
               placeholder="Start Date"
               className={classes.filter_input}
             />
-            {/* <input
-              type="date"
-              name="endDate"
-              value={filters.endDate}
-              onChange={handleFilterChange}
-              placeholder="End Date"
-              className={classes.filter_input}
-            /> */}
+
             <select
               name="serviceType"
               value={filters.serviceType}
               onChange={handleFilterChange}
               className={classes.filter_input}
             >
-              <option value="">All Services</option>
-              <option value="delivery">Delivery</option>
-              <option value="pickup">Pickup</option>
+              <option value="">Select</option>
+              {allCategories?.map((item) => (
+                <option key={item?._id} value={item?._id}>{item?.name}</option>
+              ))}
             </select>
-            <button
+            {/* <button
               onClick={handleFilterSubmit}
               className={classes.filter_button}
             >
               Apply Filters
-            </button>
+            </button> */}
           </div>
         </div>
 

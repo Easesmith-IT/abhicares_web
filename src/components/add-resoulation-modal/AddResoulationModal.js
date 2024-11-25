@@ -10,7 +10,9 @@ import useAuthorization from '../../hooks/useAuthorization';
 
 const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
     const [resoulationInfo, setResoulationInfo] = useState({
+        status: "",
         resolution: "",
+        ticketId: id,
     });
     const { checkAuthorization } = useAuthorization();
 
@@ -23,12 +25,12 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!resoulationInfo.resolution) {
+        if (!resoulationInfo.resolution || !resoulationInfo.status) {
             return;
         }
         try {
-            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-help-list/${id}`, { ...resoulationInfo }, { withCredentials: true });
-            toast.success("Issue resolved successfully");
+            const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-ticket`, { ...resoulationInfo }, { withCredentials: true });
+            toast.success("Ticket updated successfully");
             getAllIssues();
             setIsModalOpen(false);
         } catch (error) {
@@ -48,6 +50,22 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
                     </div>
                 </div>
                 <form onSubmit={handleOnSubmit} className={classes.form}>
+                    <div className={classes.input_container}>
+                        <label htmlFor="status">Status</label>
+                        {/* <input className={classes.input} onChange={handleOnChange} value={resoulationInfo.resolution} type="text" name="resolution" id="resolution" /> */}
+                        <select
+                        name='status'
+                            value={resoulationInfo.status}
+                            onChange={handleOnChange}
+                            className={classes.input}
+                        >
+                            <option value="">Select status</option>
+                            <option value="raised">Raised</option>
+                            <option value="in-progress">In progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+
                     <div className={classes.input_container}>
                         <label htmlFor="resolution">Resolution</label>
                         <input className={classes.input} onChange={handleOnChange} value={resoulationInfo.resolution} type="text" name="resolution" id="resolution" />

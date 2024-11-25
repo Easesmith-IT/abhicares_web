@@ -14,50 +14,62 @@ import { format } from 'date-fns';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useAuthorization from '../../../hooks/useAuthorization';
+import { FaEye } from 'react-icons/fa';
 
 const HelpCenterTickets = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [issue, setIssue] = useState({});
+  const [issue, setIssue] = useState("");
   const [allIssues, setAllIssues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [status, setStatus] = useState("in-review");
-  const [pageCount, setPageCount] = useState(0);
-  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
   const { checkAuthorization } = useAuthorization();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [filters, setFilters] = useState({
-    startDate: "",
-    endDate: "",
+    date: "",
     serviceType: "",
+    raisedBy: "",
+    status: "",
   });
 
-  // const handlePageClick = async (page) => {
-  //   setCurrentPage(page);
-  // };
+  const [allCategories, setAllCategories] = useState([]);
+
+  console.log("filter", filters);
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+      setAllCategories(data.data);
+      console.log("allCategories", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, [])
+
+  const handlePageClick = async (page) => {
+    setCurrentPage(page);
+  };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
 
-  const handleFilterSubmit = () => {
-    setCurrentPage(1);
-  };
-
 
   const getAllIssues = async () => {
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list`,
-        { status },
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-tickets?page=${currentPage}`,
         { withCredentials: true }
       );
-      console.log("issues", data);
-      setPageCount(data.totalPage);
+      console.log("tickets", data);
+      setTotalPages(data.totalPages);
       setAllIssues(data.data);
     } catch (error) {
       console.log(error);
@@ -69,9 +81,35 @@ const HelpCenterTickets = () => {
 
 
   useEffect(() => {
-    getAllIssues();
-  }, [status]);
+    if (!filters.date &&
+      !filters.raisedBy &&
+      !filters.serviceType &&
+      !filters.status) {
+      getAllIssues();
+    }
+    else {
+      filterTickets();
+    }
+  }, [currentPage,
+    filters.date,
+    filters.raisedBy,
+    filters.serviceType,
+    filters.status]);
 
+  const filterTickets = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${filters.currentPage}`, { withCredentials: true }
+      );
+      console.log("filter tickets", data);
+      setTotalPages(data.totalPages);
+      setAllIssues(data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDeleteModal = (id) => {
     setIssue(id);
@@ -86,7 +124,7 @@ const HelpCenterTickets = () => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_ADMIN_API_URL}/delete-help-list/${issue}`,
+        `${process.env.REACT_APP_ADMIN_API_URL}/delete-ticket?ticketId=${issue}`,
         { withCredentials: true }
       );
       toast.success("Issue deleted successfully");
@@ -99,12 +137,6 @@ const HelpCenterTickets = () => {
     }
   };
 
-  const handlePageClick = async (page) => {
-    setPage(page);
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_ADMIN_API_URL}/get-all-help-list?page=${page}`, { status }, { withCredentials: true });
-    setAllIssues(data.data);
-  };
 
   return (
     <>
@@ -115,45 +147,51 @@ const HelpCenterTickets = () => {
             <div className={classes.filter}>
               <input
                 type="date"
-                name="startDate"
-                value={filters.startDate}
+                name="date"
+                value={filters.date}
                 onChange={handleFilterChange}
                 placeholder="Start Date"
                 className={classes.filter_input}
               />
-              {/* <input
-              type="date"
-              name="endDate"
-              value={filters.endDate}
-              onChange={handleFilterChange}
-              placeholder="End Date"
-              className={classes.filter_input}
-            /> */}
+
               <select
                 name="serviceType"
                 value={filters.serviceType}
                 onChange={handleFilterChange}
                 className={classes.filter_input}
               >
-                <option value="">All Services</option>
-                <option value="delivery">Delivery</option>
-                <option value="pickup">Pickup</option>
+                <option value="">Select</option>
+                {allCategories?.map((item) => (
+                  <option key={item?._id} value={item?._id}>{item?.name}</option>
+                ))}
               </select>
-              <button
-                onClick={handleFilterSubmit}
+              {/* <select
+                name="status"
+                value={filters.status}
+                onChange={handleFilterChange}
+                className={classes.filter_input}
+              >
+                <option value="">Select status</option>
+                <option value="raised">Raised</option>
+                <option value="in-progress">In progress</option>
+                <option value="completed">Completed</option>
+              </select> */}
+              <select
+                name="raisedBy"
+                value={filters.raisedBy}
+                onChange={handleFilterChange}
+                className={classes.filter_input}
+              >
+                <option value="">Raised by</option>
+                <option value="customer">Customer</option>
+                <option value="partner">Partner</option>
+              </select>
+              {/* <button
+                onClick={filterTickets}
                 className={classes.filter_button}
               >
                 Apply Filters
-              </button>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                name=""
-                id=""
-              >
-                <option value="in-review">In Review</option>
-                <option value="solved">Solved</option>
-              </select>
+              </button> */}
             </div>
           </div>
 
@@ -161,54 +199,72 @@ const HelpCenterTickets = () => {
             {!isLoading && allIssues?.length === 0 && <p>No tickets found</p>}
 
             {isLoading && allIssues?.length === 0 && <Loader />}
-            {allIssues?.map((issue) => (
-              <div className={helpCenterClasses.helpCenter}>
-                <div className={helpCenterClasses.helpCenter_left}>
-                  <p>name: {issue?.userId?.name}</p>
-                  <p>
-                    status:{" "}
-                    <span
-                      className={
-                        status === "in-review"
-                          ? helpCenterClasses.under_review
-                          : helpCenterClasses.resolved
-                      }
-                    >
-                      {issue.status}
-                    </span>
-                  </p>
-                  <p>issue: {issue.issue}</p>
-                  <p>
-                    issue date:{" "}
-                    {format(new Date(issue.createdAt), "dd-MM-yyyy")}
-                  </p>
-                  <p>description: {issue.description}</p>
-                  {issue.status !== "solved" && (
-                    <button
-                      onClick={() => handleSolvedModal(issue._id)}
-                      className={helpCenterClasses.button}
-                    >
-                      Mark as resolved
-                    </button>
-                  )}
+            {allIssues?.map((ticket) => {
+              return (
+                <div key={ticket?._id} className={helpCenterClasses.helpCenter}>
+                  <div className={helpCenterClasses.helpCenter_left}>
+                    <p>
+                      {ticket?.status ? (
+                        <div>
+                          <b>Status:</b>{" "}
+
+                          <span
+                            className={
+                              ticket?.status === "in-review"
+                                ? helpCenterClasses.under_review
+                                : helpCenterClasses.resolved
+                            }
+                          >
+                            {ticket?.status}
+                          </span>
+                        </div>
+                      ) : (
+                        <span>Status unavailable</span>
+                      )}
+
+                    </p>
+                    <p><b>Raised by:</b> {ticket?.raisedBy}</p>
+                    <p><b>Concern:</b> {ticket?.description}</p>
+                    <p>
+                      <b>Issue Date:</b>{" "}
+                      {format(new Date(ticket?.createdAt), "dd-MM-yyyy")}
+                    </p>
+                    <p><b>Raiser ID :</b> {ticket?.raisedBy === "customer" ? ticket?.userId : ticket?.sellerId}</p>
+                    {ticket?.bookingId && <p><b>Booking ID :</b> {ticket?.bookingId}</p>}
+                    <p><b>Service ID :</b> {ticket?.serviceId}</p>
+                    <p><b>Ticket type :</b> {ticket?.ticketType}</p>
+                    {ticket.status !== "solved" && (
+                      <button
+                        onClick={() => handleSolvedModal(ticket._id)}
+                        className={helpCenterClasses.button}
+                      >
+                        Mark as resolved
+                      </button>
+                    )}
+                  </div>
+                  <div className={helpCenterClasses.helpCenter_right}>
+                    <MdDelete
+                      onClick={() => handleDeleteModal(ticket._id)}
+                      cursor={"pointer"}
+                      size={22}
+                      color="red"
+                    />
+                    <FaEye
+                      onClick={() => navigate(`/admin/help-center/tickets/${ticket._id}`)}
+                      cursor={"pointer"}
+                      size={22}
+                    />
+                  </div>
                 </div>
-                <div className={helpCenterClasses.helpCenter_right}>
-                  <MdDelete
-                    onClick={() => handleDeleteModal(issue._id)}
-                    cursor={"pointer"}
-                    size={22}
-                    color="red"
-                  />
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
           <div>
             <PaginationControl
               changePage={handlePageClick}
               limit={10}
-              page={page}
-              total={pageCount + "0"}
+              page={currentPage}
+              total={totalPages + "0"}
             />
           </div>
         </div>

@@ -21,7 +21,9 @@ const Wrapper = ({ children }) => {
                 >
                     <SideNav />
                 </div>
-                {children}
+                <div className={classes.main}>
+                    {children}
+                </div>
             </div>
         </div>
     )

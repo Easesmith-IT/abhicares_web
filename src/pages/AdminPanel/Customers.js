@@ -40,6 +40,7 @@ const Customers = () => {
       setIsLoading(false);
     }
   };
+  
   useEffect(() => {
     getAllUsers();
   }, [])
