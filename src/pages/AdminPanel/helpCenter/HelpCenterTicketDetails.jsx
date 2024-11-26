@@ -37,7 +37,7 @@ const HelpCenterTicketDetails = () => {
 
     const history = (val) => ticketDetails?.ticketHistory?.find((ticket) => ticket?.status === val)
     const { addressLine: addressLine1, city: city1, pincode: pincode1, landmark } = ticketDetails?.bookingId?.userAddress || {};
-    const { addressLine, city, pincode, state } = ticketDetails?.sellerId || {};
+    const { addressLine, city, pincode, state } = ticketDetails?.sellerId?.address || {};
 
 
     return (
