@@ -99,7 +99,7 @@ const HelpCenterTickets = () => {
   const filterTickets = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${filters.currentPage}`, { withCredentials: true }
+        `${process.env.REACT_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date && format(new Date(filters.date),"dd-MM-yyyy")}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`, { withCredentials: true }
       );
       console.log("filter tickets", data);
       setTotalPages(data.totalPages);

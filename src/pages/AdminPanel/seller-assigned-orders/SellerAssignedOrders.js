@@ -48,8 +48,10 @@ const SellerAssignedOrders = () => {
                 getCashOutRequests(data.wallet._id);
                 setWallet(data.wallet);
             }
+            setCashReqIsLoading(false)
             console.log("wallet", data);
         } catch (error) {
+            setCashReqIsLoading(false)
             console.log(error);
         }
     };

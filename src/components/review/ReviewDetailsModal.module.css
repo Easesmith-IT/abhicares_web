@@ -43,4 +43,26 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    margin-top: 20px;
+}
+
+.reviewGrid> div{
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.reviewGrid .price {
+    display: flex;
+    gap: 20px;
+}
+
+.reviewGrid>div span:first-child {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.reviewGrid>div span:last-child {
+    font-weight: 500;
+    font-size: 20px;
 }

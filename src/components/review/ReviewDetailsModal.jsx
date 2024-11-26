@@ -4,10 +4,13 @@ import { RxCross2 } from 'react-icons/rx';
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import ReactStars from 'react-stars'
+import { useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
     const [reviewDetails, setReviewDetails] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     const getReviews = async () => {
         try {
@@ -15,7 +18,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                 `${process.env.REACT_APP_ADMIN_API_URL}/review-detail?reviewId=${review._id}`, { withCredentials: true }
             );
             console.log("details reviews", data);
-              setReviewDetails(data.data);
+            setReviewDetails(data.data);
         } catch (error) {
             console.log(error);
         } finally {
@@ -47,36 +50,48 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                             size={24}
                             color2={'#ffd700'} />
                     </p>
-                    <p>Date: {new Date(review.createdAt).toLocaleDateString()}</p>
-                    <p>Review: {review.content}</p>
+                    <p><b>Date:</b> {review.date}</p>
+                    <p><b>Review:</b> {review.content}</p>
 
                     <div className={classes.reviewGrid}>
                         <div>
                             <div className={classes.heading_container}>
                                 <h5 className={classes.heading}>User Details</h5>
-                                <button className={classes.viewBtn}>View</button>
+                                {/* <button onClick={() => navigate(`/admin/customers`, { state: reviewDetails?.userId })} className={classes.viewBtn}>View</button> */}
                             </div>
-                            <p>Name: {review.userName}</p>
-                            <p>Phone : 1234561236</p>
-                            <p>Address  : Harraiya Mishra - Byotahra Rd ,Basti,272002</p>
+                            <p><b>Name:</b> {reviewDetails?.userId?.name}</p>
+                            <p><b>Phone:</b> {reviewDetails?.userId?.phone}</p>
+                            {/* <p>Address  : {reviewDetails?.userId?.name}</p> */}
                         </div>
                         <div>
                             <div className={classes.heading_container}>
                                 <h5 className={classes.heading}>Service Details</h5>
-                                <button className={classes.viewBtn}>View</button>
+                                {/* <button onClick={() => navigate(`/admin/services/${reviewDetails?.productId ? reviewDetails?.productId?.serviceId?.categoryId : reviewDetails?.packageId?.serviceId?.categoryId}/product/${reviewDetails?.productId ? reviewDetails?.productId?.serviceId?._id : reviewDetails?.packageId?.serviceId?._id}`)} className={classes.viewBtn}>View</button> */}
                             </div>
-                            <p>Name: {review.userName}</p>
-                            <p>Type: Package</p>
-                        </div>
-                        <div>
-                            <div className={classes.heading_container}>
-                                <h5 className={classes.heading}>Partner Details</h5>
-                                <button className={classes.viewBtn}>View</button>
+                            <p><b>Name:</b> {reviewDetails?.productId ? reviewDetails?.productId?.name : reviewDetails?.packageId?.name}</p>
+                            <p><b>Type:</b> {reviewDetails?.productId ? "Product" : "Package"}</p>
+                            <p>
+                                <b>Description:</b>
+                                {reviewDetails?.productId ?
+                                    <p>{parse(reviewDetails?.productId?.description)}</p>
+                                    : <p>{reviewDetails?.packageId?.description && parse(reviewDetails?.packageId?.description)}</p>
+                                }
+                            </p>
+                            <div className={classes.price}>
+                                <span>₹{reviewDetails?.productId ? reviewDetails?.productId?.price : reviewDetails?.packageId?.price}</span>
+                                <span>₹{reviewDetails?.productId ? reviewDetails?.productId?.offerPrice : reviewDetails?.packageId?.offerPrice}</span>
                             </div>
-                            <p>Name: {review.userName}</p>
-                            <p>Phone : 1234561236</p>
-                            <p>Email : email@gmail.com</p>
                         </div>
+                        {reviewDetails?.bookingId
+                            && <div>
+                                <div className={classes.heading_container}>
+                                    <h5 className={classes.heading}>Partner Details</h5>
+                                    <button onClick={() => navigate(`/admin/partners/${reviewDetails?.bookingId?.sellerId?._id}`, { state: reviewDetails?.bookingId?.sellerId })} className={classes.viewBtn}>View</button>
+                                </div>
+                                <p><b>Name:</b> {reviewDetails?.bookingId?.sellerId?.name}</p>
+                                <p><b>Phone:</b> {reviewDetails?.bookingId?.sellerId?.phone}</p>
+                                {/* <p>Email : {reviewDetails?.bookingId?.sellerId?.name}</p> */}
+                            </div>}
                     </div>
                 </div>
             </div>

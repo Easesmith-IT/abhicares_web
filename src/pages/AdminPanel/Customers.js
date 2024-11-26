@@ -4,7 +4,7 @@ import classes from "./Shared.module.css";
 import AddUserModal from "../../components/add-user-modal/AddUserModal";
 import axios from "axios";
 import { FiEdit } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import DeleteModal from "../../components/deleteModal/DeleteModal";
@@ -27,6 +27,8 @@ const Customers = () => {
 
   const navigate = useNavigate()
   const { checkAuthorization } = useAuthorization();
+  const { state } = useLocation()
+
 
   const getAllUsers = async () => {
     try {
@@ -40,7 +42,7 @@ const Customers = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getAllUsers();
   }, [])
@@ -50,6 +52,13 @@ const Customers = () => {
     setUser(seller);
     setIsUpdateModalOpen(!isDeleteModalOpen);
   };
+
+  // useEffect(() => {
+  //   if (state) {
+  //     handleUpdateModal(state)
+  //   }
+  // }, [state])
+  
 
   const handleUserInfoModal = (seller) => {
     setUser(seller);

@@ -15,9 +15,7 @@ const Review = ({ review, fetchReviews }) => {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `${process.env.REACT_APP_ADMIN_API_URL}/delete-review/${review?._id}`,
-                { withCredentials: true }
-            );
+                `${process.env.REACT_APP_ADMIN_API_URL}/delete-review?reviewId=${review?._id}`, { withCredentials: true });
             toast.success("Review deleted successfully");
             fetchReviews();
         } catch (error) {
@@ -32,7 +30,7 @@ const Review = ({ review, fetchReviews }) => {
                 <div className={classes.left}>
                     {/* <p>User: {review.userName}</p> */}
                     <p>Title: {review.title}</p>
-                    <p style={{display:"flex",alignItems:"center", gap:"10px"}}>Rating:
+                    <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>Rating:
                         <ReactStars
                             count={5}
                             edit={false}
@@ -40,7 +38,7 @@ const Review = ({ review, fetchReviews }) => {
                             size={24}
                             color2={'#ffd700'} />
                     </p>
-                    <p>Date: {new Date(review.createdAt).toLocaleDateString()}</p>
+                    <p>Date: {review.date}</p>
                     <p>Review: {review.content}</p>
                 </div>
                 <div className={classes.right}>

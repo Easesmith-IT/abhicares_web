@@ -9,6 +9,7 @@ import Loader from "../../../components/loader/Loader";
 import { PaginationControl } from "react-bootstrap-pagination-control";
 import { FaStar } from "react-icons/fa";
 import Review from "../../../components/review/Review";
+import { format } from "date-fns";
 
 const Reviews = () => {
   const reviewData = [
@@ -113,13 +114,7 @@ const Reviews = () => {
 
   const filterReviews = async () => {
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_ADMIN_API_URL}/filter-review`, {
-        date: filters.date,
-        serviceType: filters.serviceType,
-        page: filters.currentPage
-      }, { withCredentials: true }
-      );
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date),"dd-MM-yyyy")}&serviceType=${filters.serviceType}&page=${currentPage}`, { withCredentials: true });
       console.log("filter reviews", data);
       setTotalPages(data.totalPages);
       setReviews(data.data);
