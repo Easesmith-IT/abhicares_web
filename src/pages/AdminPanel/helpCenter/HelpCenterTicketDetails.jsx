@@ -60,9 +60,9 @@ const HelpCenterTicketDetails = () => {
                         </p>
                         <div className='raisedby'>
                             <p>
-                                <strong>Raised by:</strong> Name
+                                <strong>Raised by:</strong> {ticketDetails?.userId?.name}
                                 <br />
-                                +91 2840580294
+                                {ticketDetails?.userId?.phone}
                             </p>
                             <Link to={""} className="view-profile">
                                 View Profile
@@ -77,16 +77,16 @@ const HelpCenterTicketDetails = () => {
 
                 <div className="right">
                     <div className="section card">
-                        <p><strong>Booking Id:</strong></p>
+                        <p><strong>Booking Id: {ticketDetails?.bookingId?._id}</strong></p>
                         <p><strong>Service Booked:</strong></p>
-                        <p><strong>Time:</strong></p>
-                        <p><strong>Address:</strong></p>
-                        <p><strong>Cost:</strong> Rs599</p>
+                        <p><strong>Time: {ticketDetails?.bookingId?.bookingTime}</strong></p>
+                        <p><strong>Address: {ticketDetails?.bookingId?.userAddress.addressLine}</strong></p>
+                        <p><strong>Cost:</strong> Rs{ticketDetails?.bookingId?.orderValue}</p>
                     </div>
                     <div className="section card">
-                        <p><strong>Booking Id:</strong></p>
-                        <p><strong>Service Id:</strong></p>
-                        <p><strong>Ticket Type:</strong> On General</p>
+                        <p><strong>Booking Id: {ticketDetails?.bookingId?._id}</strong></p>
+                        <p><strong>Service Id: {ticketDetails?.serviceId?._id}</strong></p>
+                        <p><strong>Ticket Type: {ticketDetails?.ticketType}</strong> </p>
                         <div style={{ marginTop: "20px" }}>
                             <Timeline
                                 title="Raised"

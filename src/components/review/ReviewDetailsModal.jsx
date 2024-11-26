@@ -12,7 +12,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
     const getReviews = async () => {
         try {
             const { data } = await axios.get(
-                `${process.env.REACT_APP_ADMIN_API_URL}/review-detail`, { reviewId: review?._id }, { withCredentials: true }
+                `${process.env.REACT_APP_ADMIN_API_URL}/review-detail?reviewId=${review._id}`, { withCredentials: true }
             );
             console.log("details reviews", data);
               setReviewDetails(data.data);
