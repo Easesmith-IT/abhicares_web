@@ -23,10 +23,6 @@ const SellerAssignedOrders = () => {
     const [cashOutRequests, setCashOutRequests] = useState([]);
 
     const params = useParams()
-    const navigate = useNavigate()
-    const { state } = useLocation();
-
-
 
     const getSellerOrders = async () => {
         try {
@@ -103,6 +99,26 @@ const SellerAssignedOrders = () => {
         setSellerOrderInfoModal(true);
     }
 
+    const [state, setState] = useState("");
+
+    const getReviews = async () => {
+        try {
+            const { data } = await axios.get(
+                `${process.env.REACT_APP_ADMIN_API_URL}/get-seller?sellerId=${params?.partnerId}`, { withCredentials: true }
+            );
+            console.log("partnerDetails", data);
+            setState(data.data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getReviews();
+    }, [])
+
 
     return (
         <>
@@ -177,7 +193,7 @@ const SellerAssignedOrders = () => {
                                     <h3 className={sellerAssignedOrdersClasses.h3}><RiWalletLine size={50} /> Wallet</h3>
                                     <div className={sellerAssignedOrdersClasses.d_flex}>
                                         <h4>Balance</h4>
-                                        <p>₹ {wallet?.balance}</p>
+                                        <p>₹ {wallet?.balance || 0}</p>
                                     </div>
                                 </div>
                                 <div className={sellerAssignedOrdersClasses.right}>

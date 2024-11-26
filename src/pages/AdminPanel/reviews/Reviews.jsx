@@ -60,7 +60,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState(reviewData);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState({
     date: "",
     serviceType: "",
@@ -114,7 +114,7 @@ const Reviews = () => {
 
   const filterReviews = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date),"dd-MM-yyyy")}&serviceType=${filters.serviceType}&page=${currentPage}`, { withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date),"dd/MM/yyyy")}&serviceType=${filters.serviceType}&page=${currentPage}`, { withCredentials: true });
       console.log("filter reviews", data);
       setTotalPages(data.totalPages);
       setReviews(data.data);

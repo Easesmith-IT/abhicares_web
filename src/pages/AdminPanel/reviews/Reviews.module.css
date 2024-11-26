@@ -53,6 +53,13 @@
     margin-top: 30px;
 }
 
+.flex{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .item {
     max-width: 290px;
     width: 100%;
@@ -60,6 +67,7 @@
     border-radius: 4px;
     padding: 20px;
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     align-items: flex-start;
 }

@@ -29,7 +29,23 @@ const Review = ({ review, fetchReviews }) => {
             <div className={classes.item}>
                 <div className={classes.left}>
                     {/* <p>User: {review.userName}</p> */}
-                    <p>Title: {review.title}</p>
+                    <div className={classes.flex}>
+                        <p>Title: {review.title}</p>
+                        <div className={classes.right}>
+                            <FaEye
+                                onClick={() => setIsDetailsModalOpen(true)}
+                                cursor="pointer"
+                                size={22}
+                                color="black"
+                            />
+                            <MdDelete
+                                onClick={() => setIsDeleteModalOpen(true)}
+                                cursor="pointer"
+                                size={22}
+                                color="red"
+                            />
+                        </div>
+                    </div>
                     <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>Rating:
                         <ReactStars
                             count={5}
@@ -41,20 +57,7 @@ const Review = ({ review, fetchReviews }) => {
                     <p>Date: {review.date}</p>
                     <p>Review: {review.content}</p>
                 </div>
-                <div className={classes.right}>
-                    <FaEye
-                        onClick={() => setIsDetailsModalOpen(true)}
-                        cursor="pointer"
-                        size={22}
-                        color="black"
-                    />
-                    <MdDelete
-                        onClick={() => setIsDeleteModalOpen(true)}
-                        cursor="pointer"
-                        size={22}
-                        color="red"
-                    />
-                </div>
+
             </div>
 
             {isDeleteModalOpen &&
