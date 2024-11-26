@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Loader from '../../../components/loader/Loader';
-import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
+// import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
 import DeleteModal from '../../../components/deleteModal/DeleteModal';
 import { format } from 'date-fns';
 
@@ -99,7 +99,7 @@ const HelpCenterTickets = () => {
   const filterTickets = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date && format(new Date(filters.date),"dd-MM-yyyy")}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`, { withCredentials: true }
+        `${process.env.REACT_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${filters.currentPage}`, { withCredentials: true }
       );
       console.log("filter tickets", data);
       setTotalPages(data.totalPages);
@@ -233,14 +233,14 @@ const HelpCenterTickets = () => {
                     {ticket?.bookingId && <p><b>Booking ID :</b> {ticket?.bookingId}</p>}
                     <p><b>Service ID :</b> {ticket?.serviceId}</p>
                     <p><b>Ticket type :</b> {ticket?.ticketType}</p>
-                    {ticket.status !== "solved" && (
+                    {/* {ticket.status !== "solved" && (
                       <button
                         onClick={() => handleSolvedModal(ticket._id)}
                         className={helpCenterClasses.button}
                       >
                         Mark as resolved
                       </button>
-                    )}
+                    )} */}
                   </div>
                   <div className={helpCenterClasses.helpCenter_right}>
                     <MdDelete
@@ -270,13 +270,13 @@ const HelpCenterTickets = () => {
         </div>
       </Wrapper>
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <AddResoulationModal
           setIsModalOpen={setIsModalOpen}
           getAllIssues={getAllIssues}
           id={issue}
         />
-      )}
+      )} */}
 
       {isDeleteModalOpen && (
         <DeleteModal

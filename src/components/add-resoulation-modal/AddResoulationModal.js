@@ -8,11 +8,23 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 
-const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
+const AddResoulationModal = ({ setIsModalOpen, id, getTicketDetails }) => {
+    const getFormattedDate = () => {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+     
+        return `${day}/${month}/${year}`;
+    };
+
+    const date = getFormattedDate()
+
     const [resoulationInfo, setResoulationInfo] = useState({
         status: "",
         resolution: "",
         ticketId: id,
+        date:""
     });
     const { checkAuthorization } = useAuthorization();
 
@@ -20,8 +32,8 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
         const { name, value } = e.target;
         setResoulationInfo({ ...resoulationInfo, [name]: value });
     }
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -31,7 +43,8 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
         try {
             const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-ticket`, { ...resoulationInfo }, { withCredentials: true });
             toast.success("Ticket updated successfully");
-            getAllIssues();
+            console.log("dataxghu :", data)
+            getTicketDetails();
             setIsModalOpen(false);
         } catch (error) {
             console.log(error);
@@ -61,7 +74,7 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
                         >
                             <option value="">Select status</option>
                             <option value="raised">Raised</option>
-                            <option value="in-progress">In progress</option>
+                            <option value="in-review">In review</option>
                             <option value="completed">Completed</option>
                         </select>
                     </div>
@@ -69,6 +82,10 @@ const AddResoulationModal = ({ setIsModalOpen, id, getAllIssues }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="resolution">Resolution</label>
                         <input className={classes.input} onChange={handleOnChange} value={resoulationInfo.resolution} type="text" name="resolution" id="resolution" />
+                    </div>
+                    <div className={classes.input_container}>
+                        <label htmlFor="date">Date</label>
+                        <input className={classes.input} onChange={handleOnChange} value={resoulationInfo.date} type="date" name="date" id="date" />
                     </div>
                     <div className={classes.button_wrapper}>
                         <button onClick={handleOnSubmit} className={classes.button}>Resolve</button>

@@ -6,10 +6,12 @@ import ProgressTracker from './ProgressTracker';
 import Timeline from './TimeLine';
 import axios from 'axios';
 import { format } from 'date-fns';
+import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
 
 const HelpCenterTicketDetails = () => {
     const [status, setStatus] = useState("in-progress");
     const steps = ["Raised", "In Progress", "Completed"];
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const params = useParams();
 
     const [ticketDetails, setTicketDetails] = useState("");
@@ -40,7 +42,15 @@ const HelpCenterTicketDetails = () => {
                     <div className="header">
                         <div>
                             <h3>Update status</h3>
-                            <select
+                            <button onClick={setIsModalOpen} className="button">Update</button>
+                            {isModalOpen && (
+                                <AddResoulationModal
+                                    setIsModalOpen={setIsModalOpen}
+                                    getTicketDetails={getTicketDetails}
+                                    id={params.ticketId}
+                                />
+                            )}
+                            {/* <select
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
                                 className="dropdown"
@@ -48,7 +58,7 @@ const HelpCenterTicketDetails = () => {
                                 <option value="raised">Raised</option>
                                 <option value="in-progress">In progress</option>
                                 <option value="completed">Completed</option>
-                            </select>
+                            </select> */}
                         </div>
                         <p>
                             {ticketDetails?.createdAt && format(new Date(ticketDetails?.createdAt), "dd MMMM, yyyy HH:mm:ss")}
@@ -64,9 +74,9 @@ const HelpCenterTicketDetails = () => {
                                 <br />
                                 {ticketDetails?.userId?.phone}
                             </p>
-                            <Link to={""} className="view-profile">
+                            {/* <Link to={""} className="view-profile">
                                 View Profile
-                            </Link>
+                            </Link> */}
                         </div>
                         <p>
                             <strong>Concern (description):</strong> {ticketDetails?.description}
