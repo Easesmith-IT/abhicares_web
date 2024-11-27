@@ -1,17 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TotalOrdersIcn from "../../../assets/admin-panel/total-orders-icon.png";
 import PendingOrdersIcn from "../../../assets/admin-panel/pending-orders.png";
 import CancelledOrdersIcn from "../../../assets/admin-panel/cancelled-orders.png";
 
 import classes from "../Shared.module.css";
+import axios from "axios";
 
 const Shared = () => {
+  const [orderCount, setOrderCount] = useState({
+    completed: 0,
+    cancelled: 0,
+    pending: 0,
+    total: 0,
+  });
+
+  const getOrderCount = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ADMIN_API_URL}/get-order-count-by-status`,
+        { withCredentials: true }
+      );
+
+      let totalval = 0;
+      data?.data?.forEach(element => {
+        totalval += element.count
+      });
+
+      setOrderCount({
+        cancelled: data?.data?.find((item) => item.status === "cancelled")?.count || 0,
+        completed: data?.data?.find((item) => item.status === "completed")?.count || 0,
+        pending: data?.data?.find((item) => item.status === "pending")?.count || 0,
+        total: totalval || 0,
+      })
+      console.log("count", data);
+    } catch (error) {
+      console.log(error);
+    };
+  }
+
+  useEffect(() => {
+    getOrderCount();
+  }, [])
+
   return (
     <div className={classes.main}>
       <div className={classes["box-container"]}>
         <div className={`${classes.box} ${classes.box1}`}>
           <div className={classes.text}>
-            <h2 className={classes["topic-heading"]}>60.5k</h2>
+            <h2 className={classes["topic-heading"]}>{orderCount.total}</h2>
             <h2 className={classes.topic}>Total Orders</h2>
           </div>
           <img src={TotalOrdersIcn} alt="total-orders" />
@@ -19,7 +55,7 @@ const Shared = () => {
 
         <div className={`${classes.box} ${classes.box2}`}>
           <div className={classes.text}>
-            <h2 className={classes["topic-heading"]}>1.50K</h2>
+            <h2 className={classes["topic-heading"]}>{orderCount.completed}</h2>
             <h2 className={classes.topic}>Completed Orders</h2>
           </div>
 
@@ -31,7 +67,7 @@ const Shared = () => {
 
         <div className={`${classes.box} ${classes.box3}`}>
           <div className={classes.text}>
-            <h2 className={classes["topic-heading"]}>3.20K</h2>
+            <h2 className={classes["topic-heading"]}>{orderCount.pending}</h2>
             <h2 className={classes.topic}>Pending Orders</h2>
           </div>
 
@@ -40,7 +76,7 @@ const Shared = () => {
 
         <div className={`${classes.box} ${classes.box4}`}>
           <div className={classes.text}>
-            <h2 className={classes["topic-heading"]}>70</h2>
+            <h2 className={classes["topic-heading"]}>{orderCount.cancelled}</h2>
             <h2 className={classes.topic}>Cancelled Orders</h2>
           </div>
 

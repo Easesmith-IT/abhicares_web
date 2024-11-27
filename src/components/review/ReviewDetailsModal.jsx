@@ -6,6 +6,7 @@ import axios from 'axios';
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
+import { format } from 'date-fns';
 
 const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
     const [reviewDetails, setReviewDetails] = useState("");
@@ -51,6 +52,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                             color2={'#ffd700'} />
                     </p>
                     <p><b>Date:</b> {review.date}</p>
+                    <p><b>Review Type:</b> {reviewDetails?.reviewType}</p>
                     <p><b>Review:</b> {review.content}</p>
 
                     <div className={classes.reviewGrid}>
@@ -82,7 +84,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                                 <span>₹{reviewDetails?.productId ? reviewDetails?.productId?.offerPrice : reviewDetails?.packageId?.offerPrice}</span>
                             </div>
                         </div>
-                        {reviewDetails?.bookingId
+                        {reviewDetails?.bookingId?.sellerId
                             && <div>
                                 <div className={classes.heading_container}>
                                     <h5 className={classes.heading}>Partner Details</h5>
@@ -90,6 +92,17 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                                 </div>
                                 <p><b>Name:</b> {reviewDetails?.bookingId?.sellerId?.name}</p>
                                 <p><b>Phone:</b> {reviewDetails?.bookingId?.sellerId?.phone}</p>
+                                {/* <p>Email : {reviewDetails?.bookingId?.sellerId?.name}</p> */}
+                            </div>}
+                        {reviewDetails?.bookingId
+                            && <div>
+                                <div className={classes.heading_container}>
+                                    <h5 className={classes.heading}>Booking Details</h5>
+                                    <button onClick={() => navigate(`/admin/bookings/${reviewDetails?.bookingId?._id}`, { state: reviewDetails?.bookingId })} className={classes.viewBtn}>View</button>
+                                </div>
+                                <p><b>Order Value:</b> {reviewDetails?.bookingId?.orderValue}</p>
+                                <p><b>Booking Date:</b> {reviewDetails?.bookingId?.bookingDate && format(new Date(reviewDetails?.bookingId?.bookingDate),"dd-MM-yyyy")}</p>
+                                <p><b>Booking Time:</b> {reviewDetails?.bookingId?.bookingTime}</p>
                                 {/* <p>Email : {reviewDetails?.bookingId?.sellerId?.name}</p> */}
                             </div>}
                     </div>

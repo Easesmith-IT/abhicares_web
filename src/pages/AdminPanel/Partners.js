@@ -119,7 +119,7 @@ const Partners = () => {
           </div>
 
           <div className={classes["report-body"]}>
-            <div className={classes["report-topic-heading"]}>
+            <div className={classes.sellers}>
               <h3 className={classes["t-op"]}>Seller Name</h3>
               {/* <h3 className={classes["t-op"]} style={{width:"100px"}}>Service</h3> */}
               <h3 className={classes["t-op"]}>Category</h3>
@@ -139,7 +139,7 @@ const Partners = () => {
                 && <Loader />
               }
               {allSellers?.map((seller) => (
-                <div key={seller._id} className={classes.item1}>
+                <div key={seller._id} className={classes.sellers}>
                   <h3 className={classes["t-op-nextlvl"]}>{seller.name}</h3>
                   {/* <h3 className={`${classes["t-op-nextlvl"]}`} style={{width:"100px"}}>{seller.services[0].serviceId.name}, ...</h3> */}
                   <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.categoryId.name}</h3>

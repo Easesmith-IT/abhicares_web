@@ -10,6 +10,11 @@ import OffersIcn from "../../../assets/admin-panel/offer-icon.png";
 
 import classes from "../Shared.module.css";
 
+import { MdAnnouncement, MdCategory, MdFeedback, MdHelpOutline, MdPayment, MdSettings } from 'react-icons/md';
+import { FaCalendarCheck, FaLifeRing, FaQuestionCircle, FaRegImages, FaShoppingCart } from "react-icons/fa";
+import { GiWorld } from 'react-icons/gi';
+import { AiOutlineCustomerService } from "react-icons/ai";
+
 const SideNav = () => {
   const permissions = JSON.parse(localStorage.getItem("perm"));
   // {permissions.dashboard!=='none' && }
@@ -35,11 +40,12 @@ const SideNav = () => {
             to="/admin/banners"
             className={`${classes["nav-option"]} ${classes.option1}}`}
           >
-            <img
+            {/* <img
               src={DashboardIcn}
               alt="banners"
               className={classes["nav-img"]}
-            />
+            /> */}
+            <FaRegImages size={30} />
             <h3 className={classes.title}>Banners</h3>
           </Link>
         )}
@@ -47,18 +53,19 @@ const SideNav = () => {
         {/* <Link
           to="/admin/cms"
           className={`${classes["nav-option"]} ${classes.option2}}`}
-        >
+          >
           <img src={ServiceIcn} className={classes["nav-img"]} alt="cms" />
-
+          
           <h3 className={classes.title}>CMS</h3>
-        </Link> */}
+          </Link> */}
 
         {permissions.orders !== "none" && (
           <Link
             to="/admin/orders"
             className={`${classes["nav-option"]} ${classes.option2}}`}
           >
-            <img src={ServiceIcn} className={classes["nav-img"]} alt="orders" />
+            <FaShoppingCart size={24} />
+            {/* <img src={ServiceIcn} className={classes["nav-img"]} alt="orders" /> */}
 
             <h3 className={classes.title}>Orders</h3>
           </Link>
@@ -69,11 +76,12 @@ const SideNav = () => {
             to="/admin/bookings"
             className={`${classes["nav-option"]} ${classes.option2}}`}
           >
-            <img
+            <FaCalendarCheck size={24} />
+            {/* <img
               src={ServiceIcn}
               className={classes["nav-img"]}
               alt="bookings"
-            />
+              /> */}
 
             <h3 className={classes.title}>Bookings</h3>
           </Link>
@@ -84,11 +92,12 @@ const SideNav = () => {
             to="/admin/services"
             className={`${classes["nav-option"]} ${classes.option2}}`}
           >
-            <img
+            <MdCategory size={24} />
+            {/* <img
               src={ServiceIcn}
               className={classes["nav-img"]}
               alt="services"
-            />
+              /> */}
 
             <h3 className={classes.title}>Categories</h3>
           </Link>
@@ -137,21 +146,24 @@ const SideNav = () => {
             to="/admin/available-cities"
             className={`${classes["nav-option"]} ${classes.option5}}`}
           >
-            <img src={OffersIcn} alt="offers" className={classes["nav-img"]} />
+            {/* <img src={OffersIcn} alt="offers" className={classes["nav-img"]} /> */}
+            <GiWorld size={24} />
+
             <h3 className={classes.title}>Available Cities</h3>
           </Link>
         )}
 
         {permissions.payments !== "none" && (
           <Link
-            to="/admin/payments"
-            className={`${classes["nav-option"]} ${classes.option6}}`}
+          to="/admin/payments"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-            <img
+          <MdPayment size={24} />
+            {/* <img
               src={PaymentsIcn}
               alt="payments"
               className={classes["nav-img"]}
-            />
+              /> */}
 
             <h3 className={classes.title}>Payments</h3>
           </Link>
@@ -159,14 +171,15 @@ const SideNav = () => {
 
         {permissions.helpCenter !== "none" && (
           <Link
-            to="/admin/help-center"
-            className={`${classes["nav-option"]} ${classes.option6}}`}
+          to="/admin/help-center"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-            <img
+          <AiOutlineCustomerService size={24} />
+            {/* <img
               src={PaymentsIcn}
               alt="help-center"
               className={classes["nav-img"]}
-            />
+              /> */}
 
             <h3 className={classes.title}>Help Center</h3>
           </Link>
@@ -174,42 +187,45 @@ const SideNav = () => {
 
         {permissions.enquiry !== "none" && (
           <Link
-            to="/admin/enquiries"
-            className={`${classes["nav-option"]} ${classes.option6}}`}
+          to="/admin/enquiries"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-            <img
+          <FaQuestionCircle size={24} />
+            {/* <img
               src={PaymentsIcn}
               alt="enquiries"
               className={classes["nav-img"]}
-            />
+              /> */}
 
             <h3 className={classes.title}>Enquiries</h3>
           </Link>
         )}
         {permissions.settings !== "none" && (
           <Link
-            to="/admin/settings"
-            className={`${classes["nav-option"]} ${classes.option6}}`}
+          to="/admin/settings"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-            <img
+          <MdSettings size={24} />
+            {/* <img
               src={PaymentsIcn}
               alt="settings"
               className={classes["nav-img"]}
-            />
+              /> */}
 
             <h3 className={classes.title}>Settings</h3>
           </Link>
         )}
         {permissions.settings !== "none" && (
           <Link
-            to="/admin/reviews"
-            className={`${classes["nav-option"]} ${classes.option6}}`}
+          to="/admin/reviews"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-            <img
+          <MdFeedback size={24} />
+            {/* <img
               src={PaymentsIcn}
               alt="reviews"
               className={classes["nav-img"]}
-            />
+            /> */}
 
             <h3 className={classes.title}>Reviews</h3>
           </Link>

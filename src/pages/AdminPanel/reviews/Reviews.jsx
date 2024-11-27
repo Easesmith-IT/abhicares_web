@@ -64,6 +64,7 @@ const Reviews = () => {
   const [filters, setFilters] = useState({
     date: "",
     serviceType: "",
+    type: "",
   });
 
   const [allCategories, setAllCategories] = useState([]);
@@ -114,7 +115,7 @@ const Reviews = () => {
 
   const filterReviews = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date),"dd/MM/yyyy")}&serviceType=${filters.serviceType}&page=${currentPage}`, { withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`, { withCredentials: true });
       console.log("filter reviews", data);
       setTotalPages(data.totalPages);
       setReviews(data.data);
@@ -128,7 +129,8 @@ const Reviews = () => {
 
   useEffect(() => {
     if (!filters.date &&
-      !filters.serviceType) {
+      !filters.serviceType &&
+      !filters.type) {
       fetchReviews();
     }
     else {
@@ -136,7 +138,9 @@ const Reviews = () => {
     }
   }, [currentPage,
     filters.date,
-    filters.serviceType]);
+    filters.serviceType,
+    filters.type
+  ]);
 
   return (
     <Wrapper>
@@ -160,17 +164,21 @@ const Reviews = () => {
               onChange={handleFilterChange}
               className={classes.filter_input}
             >
-              <option value="">Select</option>
+              <option value="">Select Service</option>
               {allCategories?.map((item) => (
                 <option key={item?._id} value={item?._id}>{item?.name}</option>
               ))}
             </select>
-            {/* <button
-              onClick={handleFilterSubmit}
-              className={classes.filter_button}
+            <select
+              name="type"
+              value={filters.type}
+              onChange={handleFilterChange}
+              className={classes.filter_input}
             >
-              Apply Filters
-            </button> */}
+              <option value="">Select Type</option>
+              <option value="service">Service</option>
+              <option value="product">Product</option>
+            </select>
           </div>
         </div>
 

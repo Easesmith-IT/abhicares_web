@@ -67,11 +67,11 @@ const Enquiry = () => {
             <Wrapper>
                 <div className={classes["report-container"]}>
                     <div className={classes["report-header"]}>
-                        <h1 className={classes["recent-Articles"]}>Inquires</h1>
+                        <h1 className={classes["recent-Articles"]}>Enquiries</h1>
                     </div>
 
                     <div className={classes["report-body"]}>
-                        <div className={classes["report-topic-heading"]}>
+                        <div className={classes.enquiries}>
                             <h3 className={classes["t-op"]}>Name</h3>
                             <h3 className={classes["t-op"]}>Phone</h3>
                             <h3 className={classes["t-op"]}>City</h3>
@@ -91,7 +91,7 @@ const Enquiry = () => {
                                 && <Loader />
                             }
                             {allInquiries?.map((inquiry) => (
-                                <div key={inquiry._id} className={classes.item1}>
+                                <div key={inquiry._id} className={classes.enquiries}>
                                     <h3 className={classes["t-op-nextlvl"]}>{inquiry.name}</h3>
                                     <h3 className={classes["t-op-nextlvl"]}>{inquiry.phone}</h3>
                                     <h3 className={`${classes["t-op-nextlvl"]}`}>{inquiry.city}</h3>

@@ -171,7 +171,7 @@ export const Services = ({ open }) => {
           </div> */}
           <div className={classes["heading"]}>
             <h4>
-              Home services <br /> at your doorstep
+              Home services at your doorstep
             </h4>
           </div>
           <div className={`${classes.dFlexRow} ${classes.searchBox}`}>

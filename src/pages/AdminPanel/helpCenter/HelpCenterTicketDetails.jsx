@@ -105,16 +105,16 @@ const HelpCenterTicketDetails = () => {
 
                 <div className="right">
                     <div className="section card">
-                        <p><strong>Booking Id: {ticketDetails?.bookingId?._id}</strong></p>
+                        <p><strong>Booking Id:</strong> {ticketDetails?.bookingId?.bookingId}</p>
                         <p><strong>Service Booked:</strong>{ticketDetails?.serviceId?.name}</p>
                         <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime}</p>
                         <p><strong>Address: </strong>{ticketDetails?.bookingId?.userAddress.addressLine}</p>
                         <p><strong>Cost:</strong> Rs{ticketDetails?.bookingId?.orderValue}</p>
                     </div>
                     <div className="section card card2">
-                        <p><strong>Booking Id: {ticketDetails?.bookingId?._id}</strong></p>
-                        <p><strong>Service Id: {ticketDetails?.serviceId?._id}</strong></p>
-                        <p><strong>Ticket Type: {ticketDetails?.ticketType}</strong> </p>
+                        <p><strong>Booking Id: </strong>{ticketDetails?.bookingId?.bookingId}</p>
+                        <p><strong>Service Id: </strong>{ticketDetails?.serviceId?._id}</p>
+                        <p><strong>Ticket Type: </strong>{ticketDetails?.ticketType} </p>
                         <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "20px" }}>
                             <Timeline
                                 title="Raised"

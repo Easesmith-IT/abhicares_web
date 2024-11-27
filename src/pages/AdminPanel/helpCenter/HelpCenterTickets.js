@@ -230,7 +230,7 @@ const HelpCenterTickets = () => {
                       {format(new Date(ticket?.createdAt), "dd-MM-yyyy")}
                     </p>
                     <p><b>Raiser ID :</b> {ticket?.raisedBy === "customer" ? ticket?.userId : ticket?.sellerId}</p>
-                    {ticket?.bookingId && <p><b>Booking ID :</b> {ticket?.bookingId}</p>}
+                    {ticket?.bookingId && <p><b>Booking ID :</b> {ticket?.bookingId?.bookingId}</p>}
                     <p><b>Service ID :</b> {ticket?.serviceId}</p>
                     <p><b>Ticket type :</b> {ticket?.ticketType}</p>
                     {/* {ticket.status !== "solved" && (

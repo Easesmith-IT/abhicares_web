@@ -17,6 +17,7 @@ const AdminPage = () => {
 
   const [allOrders, setAllOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true);
+  
 
   const getAllOrders = async () => {
     try {
@@ -36,6 +37,8 @@ const AdminPage = () => {
   useEffect(() => {
     getAllOrders();
   }, [])
+
+
 
 
   return (

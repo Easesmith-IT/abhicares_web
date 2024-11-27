@@ -80,6 +80,7 @@ import DeleteAccount from "./pages/delete-account/DeleteAccount";
 import SendNotifications from "./pages/AdminPanel/SendNotifications";
 import Reviews from "./pages/AdminPanel/reviews/Reviews";
 import HelpCenterTicketDetails from "./pages/AdminPanel/helpCenter/HelpCenterTicketDetails";
+import ProductInfo from "./components/product-info-modal/ProductInfo";
 
 
 
@@ -227,6 +228,10 @@ function App() {
             <Route
               path="/admin/services/:categoryId/product/:serviceId"
               element={<ServiceInfoPage />}
+            />
+            <Route
+              path="/admin/services/:categoryId/product/:serviceId/info"
+              element={<ProductInfo />}
             />
 
             <Route path="/admin/enquiries" element={<Enquiry />} />

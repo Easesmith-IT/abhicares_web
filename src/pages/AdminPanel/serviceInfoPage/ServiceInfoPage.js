@@ -50,13 +50,15 @@ const ServiceInfoPage = () => {
   const handleProductInfoModal = (e, product) => {
     e.stopPropagation();
     setProduct(product);
-    setIsInfoModalOpen(!isDeleteModalOpen);
+    // setIsInfoModalOpen(!isDeleteModalOpen);
+    navigate(`/admin/services/${params?.categoryId}/product/${params?.serviceId}/info`, { state: { product, isPackage: false } })
   };
 
   const handlePackageInfoModal = (e, singlePackage) => {
     e.stopPropagation();
     setSinglePackage(singlePackage);
-    setIsPackageInfoModalOpen(!isPackageInfoModalOpen);
+    navigate(`/admin/services/${params?.categoryId}/product/${params?.serviceId}/info`, { state: { product: singlePackage, isPackage: true } })
+    // setIsPackageInfoModalOpen(!isPackageInfoModalOpen);
   };
 
   const handleUpdateModal = (e, product) => {

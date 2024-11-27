@@ -63,8 +63,8 @@ const OrderDetails = () => {
                 <div className={classes.left_div}>
                     <div className={classes.info}>
                         <div>
-                            {/* <h4>seller name</h4>
-                            <p>seller phone: 1234567890</p> */}
+                            <h4>Order Id: {state?.orderId}</h4>
+                            {/* <p>seller phone: 1234567890</p> */}
                             <h5>Update Status</h5>
                             <select onChange={handleChange} value={status} className={classes.select} name="status" id="status">
                                 <option value="Pending">Pending</option>
