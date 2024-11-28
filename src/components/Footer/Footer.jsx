@@ -105,9 +105,9 @@ export const Footer = () => {
                         </a>
                     </div>
                     <div className={classes.bg_white}>
-                        <a href="mailto:Support@Abhicares.com">
+                        <a href="mailto:info@abhicares.com">
                             <IoMdMail size={22} />
-                            Support@Abhicares.com
+                            info@abhicares.com
                         </a>
                     </div>
                 </div>

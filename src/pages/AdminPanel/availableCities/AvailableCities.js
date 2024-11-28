@@ -92,7 +92,7 @@ const AvailableCities = () => {
                                 <div className={citiesClasses.city_left}>
                                     <p>city: {city.city}</p>
                                     <p>state: {city.state}</p>
-                                    <p>pincode: {city.pinCode}</p>
+                                    <p>pincode: {city.pinCodes.map(item=> item?.code).join(", ")}</p>
                                 </div>
                                 <div className={citiesClasses.city_right}>
                                     <FiEdit onClick={() => handleUpdateModal(city)} cursor={"pointer"} size={20} />

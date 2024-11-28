@@ -32,6 +32,9 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         offPercentage: offer?.offPercentage || "",
         noOfTimesPerUser: offer?.noOfTimesPerUser || 1,
         status: offer?.status || true,
+        type: offer?.type || "",
+        upTo: offer?.upTo || "",
+        offerValue: offer?.offerValue || "",
     });
 
     const handleOnChange = (e) => {
@@ -40,15 +43,33 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     }
     const navigate = useNavigate()
 
+    console.log("offerInfo", offerInfo);
+
+
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if (!offerInfo.name
-            || !offerInfo.offPercentage
-            || !description
-        ) {
+
+        const { name, offPercentage, type, offerValue, upTo } = offerInfo;
+
+        const isOfferMissing =
+            !name ||
+            !offPercentage ||
+            !type ||
+            (type === "percentage" ? !offPercentage || !upTo : !offerValue);
+
+        const isDescriptionMissing = !description;
+        
+        console.log("isDescriptionMissing", isDescriptionMissing);
+        console.log("isOfferMissing", isOfferMissing);
+        
+        console.log("isOfferMissing || isDescriptionMissing", (isOfferMissing || isDescriptionMissing));
+
+        if (isOfferMissing || isDescriptionMissing) {
+            toast.error("All fields are required");
             return;
         }
+
         if (offer) {
             try {
                 const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon/${offer._id}`, { ...offerInfo, description }, { withCredentials: true });
@@ -96,9 +117,34 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                         <input className={classes.input} onChange={handleOnChange} value={offerInfo.name} type="text" name="name" id="name" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="offPercentage">Offer Percentage</label>
-                        <input className={classes.input} onChange={handleOnChange} value={offerInfo.offPercentage} type="number" name="offPercentage" id="offPercentage" />
+                        <label htmlFor="type">Coupon Type</label>
+                        <select className={classes.input} onChange={handleOnChange} value={offerInfo.type} name="type" id="type">
+                            <option value="">Select Coupon Type</option>
+                            <option value="percentage">Percentage</option>
+                            <option value="fixed">Fixed</option>
+                        </select>
+                        {/* <input className={classes.input} onChange={handleOnChange} value={offerInfo.name} type="text" name="name" id="name" /> */}
                     </div>
+                    {offerInfo.type === "percentage" &&
+                        <>
+                            <div className={classes.input_container}>
+                                <label htmlFor="offPercentage">Offer Percentage</label>
+                                <input className={classes.input} onChange={handleOnChange} value={offerInfo.offPercentage} type="number" name="offPercentage" id="offPercentage" />
+                            </div>
+                            <div className={classes.input_container}>
+                                <label htmlFor="upTo">Up To</label>
+                                <input className={classes.input} onChange={handleOnChange} value={offerInfo.upTo} type="number" name="upTo" id="upTo" />
+                            </div>
+                        </>
+                    }
+                    {offerInfo.type === "fixed" &&
+                        <>
+                            <div className={classes.input_container}>
+                                <label htmlFor="offerValue">Offer Value</label>
+                                <input className={classes.input} onChange={handleOnChange} value={offerInfo.offerValue} type="number" name="offerValue" id="offerValue" />
+                            </div>
+                        </>
+                    }
                     <div className={classes.input_container}>
                         <label htmlFor="noOfTimesPerUser">No of Times Per User</label>
                         <input className={classes.input} onChange={handleOnChange} value={offerInfo.noOfTimesPerUser} type="number" name="noOfTimesPerUser" id="noOfTimesPerUser" />

@@ -91,7 +91,7 @@ const SendNotifications = () => {
                             placeholder="Search notification"
                             value={searchTerm}
                         />
-                        <div className={classes.filter}>
+                        <div className={classes.filterSend}>
                             <span>Filter by date</span>
                             <input
                                 onChange={(e) => setFilterDate(e.target.value)}

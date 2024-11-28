@@ -15,6 +15,7 @@ import { BiMinus, BiPlus } from "react-icons/bi";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import ReactStars from "react-stars";
 
 const Product = ({ product, setIsCartLoading, flag = true, features }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,6 +101,13 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
               <p className={classes.price}>₹{product.price}</p>
               <p className={classes.price}>₹{product.offerPrice}</p>
             </div>
+            <ReactStars
+              edit={false}
+              size={30}
+              count={5}
+              value={product?.rating}
+              color2={'#FF8A00'}
+            />
             {cart?.items?.find(
               (item) => item?.productId?._id === product?._id
             ) ? (

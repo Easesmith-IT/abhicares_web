@@ -30,6 +30,33 @@
   gap: 30px;
 }
 
+.icon_container {
+  display: flex;
+  gap: 7px;
+}
+
+.sendNotificationBtn{
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: black;
+  color: white;
+}
+
+.notifications{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.filterSend{
+  display: flex;
+  flex-direction: column;
+}
+
+.filterSend span{
+  font-size: 10px;
+}
+
 
 .filter_input {
   padding: 5px 20px;
@@ -39,7 +66,7 @@
 .filter_button {
   padding: 5px 20px;
   border: none;
-  background: black;
+  background: black !important;
   color: white;
   border-radius: 6px;
 }

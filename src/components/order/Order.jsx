@@ -28,7 +28,7 @@ const Order = ({ order, index }) => {
           </div>
 
           <div className={classes.info}>
-            <p style={{ color: 'grey' }}>#{order._id}</p>
+            <p style={{ color: 'grey' }}>#{order.orderId}</p>
             <div className={classes.info_row}>
               <p>Date : {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
               <p>Order Value : ₹{order.orderValue}</p>

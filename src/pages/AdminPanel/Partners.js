@@ -24,6 +24,7 @@ const Partners = () => {
   const [allSellers, setAllSellers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUnapprovedSellerModalOpen, setIsUnapprovedSellerModalOpen] = useState(false);
+  const [status, setStatus] = useState("")
 
 
   const navigate = useNavigate()
@@ -46,6 +47,24 @@ const Partners = () => {
   useEffect(() => {
     getAllSellers();
   }, [])
+
+  const handleFilterChange = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
+      setAllSellers(data.data);
+      console.log("seller filtered", data);
+    } catch (error) {
+      console.log(error);
+    }
+    finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    status && handleFilterChange();
+  }, [status])
 
 
 
@@ -110,8 +129,18 @@ const Partners = () => {
       <Wrapper>
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
-            <h1 className={classes["recent-Articles"]}>Professionals</h1>
+            <h1 className={classes["recent-Articles"]}>Partners</h1>
             <input onChange={debounce(handleSerach, 1000)} className={classes.input} type="text" placeholder="Search professionals" />
+            <select
+              name="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className={classes.input}
+            >
+              <option value="">Select Status</option>
+              <option value="unapproved">Unapproved</option>
+              <option value="approved">Unapproved</option>
+            </select>
             <button onClick={() => setIsUnapprovedSellerModalOpen(true)} className={classes.button}>Unapproved Seller</button>
             <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
               <img src={AddBtn} alt="add seller" />

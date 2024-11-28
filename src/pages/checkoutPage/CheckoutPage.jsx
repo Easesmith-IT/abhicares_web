@@ -100,7 +100,7 @@ const CheckoutPage = () => {
     const totalTaxRupee = (cart.totalPrice * 18) / 100;
     setTotal((Number(totalTaxRupee) + Number(cart.totalPrice)) - credits);
     setTotalTaxRs(totalTaxRupee);
-  }, [getCartDetails, cart,credits]);
+  }, [getCartDetails, cart, credits]);
 
 
   const handleOnclick = () => {
@@ -179,7 +179,7 @@ const CheckoutPage = () => {
         setCouponId(data?.data[0]?._id);
         setMessage("Offer available");
         const offerTotal = Math.ceil(cart.totalPrice * (Number(data.data[0].offPercentage) / 100));
-        console.log("offerTotal",offerTotal);
+        console.log("offerTotal", offerTotal);
         if (offerValue > 0) {
           return;
         }
@@ -249,7 +249,7 @@ const CheckoutPage = () => {
           try {
             setIsLoader(true);
             const res = await axios.post(
-              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id },
+              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id,orderId:data?.order?.orderId },
               { withCredentials: true }
             );
             console.log("handler", res.data);
@@ -424,20 +424,20 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-              <div className={classes.offer_box}>
-                <div className={classes.logo_box}>
-                  <AiOutlinePercentage size={20} />
-                </div>
-                <div>
-                  <p className={classes.offer_p}>Coupons and offers</p>
-                  <div className={classes.input_wrapper}>
-                    <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
-                    <button onClick={handleCheck}>Apply</button>
-                  </div>
-                  {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
-                </div>
+            <div className={classes.offer_box}>
+              <div className={classes.logo_box}>
+                <AiOutlinePercentage size={20} />
               </div>
-            
+              <div>
+                <p className={classes.offer_p}>Coupons and offers</p>
+                <div className={classes.input_wrapper}>
+                  <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
+                  <button onClick={handleCheck}>Apply</button>
+                </div>
+                {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
+              </div>
+            </div>
+
             {isShow && (
               <div className={classes.payment_summary}>
                 <h5 className={classes.payment_summary_h4}>Payment Summary</h5>
@@ -463,7 +463,7 @@ const CheckoutPage = () => {
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Total</p>
                   <p className={classes.payment_summary_p}>
-                    ₹{total}
+                    ₹{Math.round(total)}
                   </p>
                 </div>
               </div>
@@ -472,7 +472,7 @@ const CheckoutPage = () => {
             <div className={classes.amount_to_pay_box}>
               <h5 className={classes.amount_to_pay_box_h4}>Amount to pay</h5>
               <div>
-                <p className={classes.amount_to_pay}>₹{total}</p>
+                <p className={classes.amount_to_pay}>₹{Math.round(total)}</p>
                 <button
                   onClick={() => setIsShow(!isShow)}
                   className={classes.view_break_up_button}

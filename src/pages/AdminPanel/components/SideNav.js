@@ -10,7 +10,7 @@ import OffersIcn from "../../../assets/admin-panel/offer-icon.png";
 
 import classes from "../Shared.module.css";
 
-import { MdAnnouncement, MdCategory, MdFeedback, MdHelpOutline, MdPayment, MdSettings } from 'react-icons/md';
+import { MdAnnouncement, MdCategory, MdFeedback, MdHelpOutline, MdNotifications, MdPayment, MdSettings } from 'react-icons/md';
 import { FaCalendarCheck, FaLifeRing, FaQuestionCircle, FaRegImages, FaShoppingCart } from "react-icons/fa";
 import { GiWorld } from 'react-icons/gi';
 import { AiOutlineCustomerService } from "react-icons/ai";
@@ -155,10 +155,10 @@ const SideNav = () => {
 
         {permissions.payments !== "none" && (
           <Link
-          to="/admin/payments"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
+            to="/admin/payments"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-          <MdPayment size={24} />
+            <MdPayment size={24} />
             {/* <img
               src={PaymentsIcn}
               alt="payments"
@@ -171,10 +171,10 @@ const SideNav = () => {
 
         {permissions.helpCenter !== "none" && (
           <Link
-          to="/admin/help-center"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
+            to="/admin/help-center"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-          <AiOutlineCustomerService size={24} />
+            <AiOutlineCustomerService size={24} />
             {/* <img
               src={PaymentsIcn}
               alt="help-center"
@@ -187,10 +187,10 @@ const SideNav = () => {
 
         {permissions.enquiry !== "none" && (
           <Link
-          to="/admin/enquiries"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
+            to="/admin/enquiries"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-          <FaQuestionCircle size={24} />
+            <FaQuestionCircle size={24} />
             {/* <img
               src={PaymentsIcn}
               alt="enquiries"
@@ -202,10 +202,10 @@ const SideNav = () => {
         )}
         {permissions.settings !== "none" && (
           <Link
-          to="/admin/settings"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
+            to="/admin/settings"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-          <MdSettings size={24} />
+            <MdSettings size={24} />
             {/* <img
               src={PaymentsIcn}
               alt="settings"
@@ -217,10 +217,10 @@ const SideNav = () => {
         )}
         {permissions.settings !== "none" && (
           <Link
-          to="/admin/reviews"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
+            to="/admin/reviews"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
           >
-          <MdFeedback size={24} />
+            <MdFeedback size={24} />
             {/* <img
               src={PaymentsIcn}
               alt="reviews"
@@ -230,6 +230,15 @@ const SideNav = () => {
             <h3 className={classes.title}>Reviews</h3>
           </Link>
         )}
+
+        <Link
+          to="/admin/send-notifications"
+          className={`${classes["nav-option"]} ${classes.option6}}`}
+        >
+          <MdNotifications style={{ fontSize: "40px" }} />
+
+          <h3 className={classes.title}>Send Notifications</h3>
+        </Link>
       </div>
     </nav>
   );

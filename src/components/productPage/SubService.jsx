@@ -11,7 +11,8 @@ import {
     deleteItemFromCart,
     getCartDetails,
 } from "../../store/slices/cartSlice";
-const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
+import ReactStars from "react-stars";
+const SubService = ({ singlePackage, serviceId, setIsCartLoading, features }) => {
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false);
     const [productInCart, setProductInCart] = useState({});
@@ -34,10 +35,13 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
         setIsOpen(!isOpen);
     };
 
+    console.log("singlepackage", singlePackage);
+
+
     const handleAddToCart = async () => {
         setIsLoading(true);
         setIsCartLoading(true);
-        await dispatch(addItemToCart({ id: singlePackage._id,type:"package" }))
+        await dispatch(addItemToCart({ id: singlePackage._id, type: "package" }))
         await dispatch(getCartDetails());
         setIsLoading(false);
         setIsCartLoading(false);
@@ -45,14 +49,14 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
 
     const handleOnPlusClick = async () => {
         await dispatch(
-            addItemToCart({ id: productInCart?.packageId?._id,type:"package" })
+            addItemToCart({ id: productInCart?.packageId?._id, type: "package" })
         );
         await dispatch(getCartDetails());
     }
 
     const handleOnMinusClick = async () => {
         await dispatch(
-            deleteItemFromCart({ itemId: productInCart.packageId._id,type:"package" })
+            deleteItemFromCart({ itemId: productInCart.packageId._id, type: "package" })
         );
         await dispatch(getCartDetails());
     }
@@ -77,6 +81,13 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
                                 <span className={classes.price}>₹{singlePackage.price}</span>
                                 <span className={classes.price}>₹{singlePackage.offerPrice}</span>
                             </div>
+                            <ReactStars
+                                edit={false}
+                                size={30}
+                                count={5}
+                                value={singlePackage?.rating}
+                                color2={'#FF8A00'}
+                            />
                             {/* <div className={classes.dot_time_container}>
                             <div className={classes.dot}></div>
                             <span className={classes.time}>1 hr 20 mins</span>
@@ -95,13 +106,13 @@ const SubService = ({ singlePackage, serviceId,setIsCartLoading,features }) => {
                                 <span className={classes.quantity}>{productInCart?.quantity}</span>
                                 <BiPlus size={20} onClick={handleOnPlusClick} />
                             </button>
-                            : <button 
-                            onClick={handleAddToCart} 
-                            className={`${classes.addToCartBtn}`}>{isLoading ?
-                                <div className={loaderClasses.img_container}>
-                                    <img src={loader} alt="loader" />
-                                    {/* Adding... */}
-                                </div>: "Add"}</button>
+                            : <button
+                                onClick={handleAddToCart}
+                                className={`${classes.addToCartBtn}`}>{isLoading ?
+                                    <div className={loaderClasses.img_container}>
+                                        <img src={loader} alt="loader" />
+                                        {/* Adding... */}
+                                    </div> : "Add"}</button>
                         }
 
                     </div>

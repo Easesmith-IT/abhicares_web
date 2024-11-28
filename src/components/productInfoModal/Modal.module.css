@@ -448,6 +448,26 @@ p {
     gap: 30px;
 }
 
+.singlerating-bar-container {
+    width: 100%;
+    /* Equivalent to Tailwind's `w-11/12` */
+    height: 0.5rem;
+    /* Equivalent to Tailwind's `h-2` */
+    background-color: #d2d8df;
+    /* Gray background */
+    border-radius: 1.5rem;
+    /* Fully rounded corners */
+    overflow: hidden;
+}
+
+.singlerating-bar {
+    height: 100%;
+    border-radius: 1.5rem;
+    /* Fully rounded corners */
+    background-color: #000000;
+    /* Green background */
+}
+
 .customer_review {
     display: flex;
     align-items: flex-start;

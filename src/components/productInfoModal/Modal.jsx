@@ -28,6 +28,8 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [isReviewBtn, setIsReviewBtn] = useState(false);
     const userId = localStorage.getItem("userId");
 
+    const { rating, ratingDistribution,totalReviews } = Data || {}
+
     console.log("modal open", Data);
     useEffect(() => {
         const reviewObj = allReviews.find((review) => userId === review?.userId?._id)
@@ -122,7 +124,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                         <h3 className={classes.modal_header_left_h4}>{Data.name}</h3>
                                         <div className={classes.rating}>
                                             <BsStarFill color="gray" size={11} />
-                                            <span className={classes.rating_span}>4.83 (1.2M)</span>
+                                            <span className={classes.rating_span}>{Data?.rating} ({Data?.totalReviews})</span>
                                         </div>
                                         <div className={classes.price_time_container}>
                                             <div className={classes.price_cotainer}>
@@ -201,14 +203,38 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                 <div className={classes.d_flex}>
                                     <div className={classes.rating}>
                                         <BsStarFill color="black" size={15} />
-                                        <span className={classes.rating_span}>4.83</span>
+                                        <span className={classes.rating_span}>{rating}</span>
                                     </div>
                                     {isReviewBtn && <button onClick={() => setIsReviewModalOpen(true)} className={classes.button}>Add Review</button>}
                                 </div>
-                                <p className={classes.reviews}>1.2M reviews</p>
+                                <p className={classes.reviews}>{totalReviews} reviews</p>
 
                                 <div className={classes.rating_stars_container}>
-                                    <SpecificStarRating />
+                                    <SpecificStarRating
+                                        ratingStar={5}
+                                        ratingValue={ratingDistribution["5"]}
+                                        maxRating={totalReviews}
+                                    />
+                                    <SpecificStarRating
+                                        ratingStar={4}
+                                        ratingValue={ratingDistribution["4"]}
+                                        maxRating={totalReviews}
+                                    />
+                                    <SpecificStarRating
+                                        ratingStar={3}
+                                        ratingValue={ratingDistribution["3"]}
+                                        maxRating={totalReviews}
+                                    />
+                                    <SpecificStarRating
+                                        ratingStar={2}
+                                        ratingValue={ratingDistribution["2"]}
+                                        maxRating={totalReviews}
+                                    />
+                                    <SpecificStarRating
+                                        ratingStar={1}
+                                        ratingValue={ratingDistribution["1"]}
+                                        maxRating={totalReviews}
+                                    />
                                 </div>
                                 <div className={classes.customer_reviews_container}>
                                     {/* {userReviews?.map((review) => (

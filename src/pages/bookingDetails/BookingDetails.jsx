@@ -71,16 +71,16 @@ const BookingDetails = () => {
                 <p>
                   Order Date: {format(new Date(state.createdAt), "dd-MM-yyyy")}
                 </p>
-                <p>Order ID: {params.id}</p>
+                <p>Order ID: {state.orderId}</p>
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
-                {/* <button
+                <button
                   onClick={() => setIsAddReviewModalOpen(true)}
                   className={classes.button}
                 >
                   Add Review
-                </button> */}
+                </button>
                 <button
                   onClick={() => setIsInvoiceModalOpen(true)}
                   className={classes.button}
