@@ -58,6 +58,7 @@ const CheckoutPage = () => {
 
 
   const userName = localStorage.getItem("userName");
+  const userId = localStorage.getItem("userId");
 
   const getAllAddress = async () => {
     try {
@@ -88,6 +89,21 @@ const CheckoutPage = () => {
 
 
   const cart = useSelector((state) => state.cart);
+  console.log("cart", cart);
+  let serviceCategoryType = []
+
+  useEffect(() => {
+    cart?.items?.forEach((element) => {
+      if (element?.packageId) {
+        serviceCategoryType.push(element?.packageId?.serviceId?.categoryId?._id)
+      }
+      else {
+        serviceCategoryType.push(element?.productId?.serviceId?.categoryId?._id)
+      }
+    });
+  }, [cart])
+
+
 
   useEffect(() => {
     if (cart.items.length === 0) {
@@ -172,20 +188,35 @@ const CheckoutPage = () => {
     }
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/get-coupon-details`, { name: offerCode },
+        `${process.env.REACT_APP_API_URL}/get-coupon-details`, { name: offerCode, serviceCategoryType, userId },
         { withCredentials: true }
       );
-      if (data.data[0].status === "active") {
-        setCouponId(data?.data[0]?._id);
-        setMessage("Offer available");
-        const offerTotal = Math.ceil(cart.totalPrice * (Number(data.data[0].offPercentage) / 100));
-        console.log("offerTotal", offerTotal);
-        if (offerValue > 0) {
-          return;
+
+      console.log("coupon details", data);
+
+      const { discountType, status, _id, couponFixedValue, offPercentage, maxDiscount } = data?.data || {};
+
+
+      if (offerValue > 0) {
+        return;
+      }
+
+      if (status === "active") {
+        if (discountType === "fixed") {
+          setOfferValue(Number(couponFixedValue));
+          const totalValue = total - Number(couponFixedValue);
+          setTotal(totalValue);
         }
-        setOfferValue(offerTotal);
-        const totalValue = total - Number(offerTotal);
-        setTotal(totalValue);
+        else {
+          setCouponId(_id);
+          setMessage("Offer available");
+          let offerTotal = Math.ceil(cart.totalPrice * (Number(offPercentage) / 100));
+          offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
+          console.log("offerTotal", offerTotal);
+          setOfferValue(offerTotal);
+          const totalValue = total - Number(offerTotal);
+          setTotal(totalValue);
+        }
       }
       else {
         setMessage("Offer not available");
@@ -249,7 +280,7 @@ const CheckoutPage = () => {
           try {
             setIsLoader(true);
             const res = await axios.post(
-              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id,orderId:data?.order?.orderId },
+              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id, orderId: data?.order?.orderId },
               { withCredentials: true }
             );
             console.log("handler", res.data);

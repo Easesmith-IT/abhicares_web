@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import WebsiteWrapper from '../WebsiteWrapper';
 import AddReviewModal from '../../components/reviewModal/AddReviewModal';
+import SingleBooking from './SingleBooking';
 const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
@@ -52,11 +53,20 @@ const BookingDetails = () => {
     setTotalTaxRs(taxRs);
     setSubTotal(() => value);
 
+    const { discountType, couponFixedValue, offPercentage, maxDiscount } = state.couponId || {};
+
     if (state.couponId) {
-      const localDiscount = (Number(value) * Number(state.couponId.offPercentage)) / 100;
-      console.log("discount", localDiscount);
-      setDiscount(localDiscount);
-      setSubTotal((prev) => prev - Number(localDiscount));
+      if (discountType === "fixed") {
+        setDiscount(couponFixedValue);
+        setSubTotal((prev) => prev - Number(couponFixedValue));
+      }
+      else {
+        let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
+        offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
+        console.log("offerTotal", offerTotal);
+        setDiscount(offerTotal);
+        setSubTotal((prev) => prev - Number(offerTotal));
+      }
     }
   }, [state.orderValue, state.couponId]);
 
@@ -75,12 +85,12 @@ const BookingDetails = () => {
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
-                <button
+                {/* <button
                   onClick={() => setIsAddReviewModalOpen(true)}
                   className={classes.button}
                 >
                   Add Review
-                </button>
+                </button> */}
                 <button
                   onClick={() => setIsInvoiceModalOpen(true)}
                   className={classes.button}
@@ -113,43 +123,7 @@ const BookingDetails = () => {
             </div>
             <div className={classes.product_contaner}>
               {state?.items?.map((item, i) => (
-                <div key={i} className={classes.product}>
-                  <div>
-                    <img
-                      className={classes.img}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/${item.package
-                        ? item.package.imageUrl[0]
-                        : item.product.imageUrl[0]
-                        }`}
-                      alt=""
-                    />
-                    <small>Type:{item.package ? "Package" : "Product"}</small>
-                  </div>
-                  <div className={classes.info}>
-                    <h5>
-                      {item.package ? item.package.name : item.product.name}
-                    </h5>
-                    <p>
-                      {item.package
-                        ? item.package.bookingDate
-                        : item.product.bookingDate}
-                    </p>
-                    <p>
-                      {item.package
-                        ? item.package.bookingTime
-                        : item.product.bookingTime}
-                    </p>
-                    <p>Qty: {item.quantity}</p>
-                    <p>
-                      ₹
-                      {Number(
-                        item.package
-                          ? item.package.offerPrice
-                          : item.product.offerPrice
-                      ) * Number(item.quantity)}
-                    </p>
-                  </div>
-                </div>
+                <SingleBooking item={item} />
               ))}
             </div>
           </div>

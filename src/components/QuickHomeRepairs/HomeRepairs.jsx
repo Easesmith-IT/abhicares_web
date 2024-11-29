@@ -8,10 +8,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SkeletonCom from "../sekeleton/SkeletonCom";
+import ReactStars from "react-stars";
+import LoadingSkeleton from "../loading-skeleton/LoadingSkeleton";
 
 
 export const HomeRepairs = () => {
   const [allServiceProducts, setAllServiceProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,12 +47,15 @@ export const HomeRepairs = () => {
   };
 
   const getServiceProducts = async () => {
+    setIsLoading(true);
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8b0a9f3a2d134bee93a0`, { withCredentials: true });
       // console.log(data);
       setAllServiceProducts(data.data);
+      setIsLoading(false);
       // setLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   }
@@ -61,42 +67,57 @@ export const HomeRepairs = () => {
   return (
     <div className={classes['Card']}>
       <div className={classes['heading']}><Typography variant='h4'>Men's Salon & Massage</Typography></div>
-      <Carousel
-        removeArrowOnDeviceType={["tablet", "mobile"]}
-        swipeable={true}
-        draggable={true}
-        showDots={false}
-        responsive={responsive}
-        ssr={true}
-        infinite={false}
-        keyBoardControl={true}
-        customTransition="all 1s"
-        transitionDuration={500}
-        containerClass="carousel-container"
-        itemClass="carousel-item-padding-30-px">
-        {
-          allServiceProducts.map((item) => (
-            <>
-              <div onClick={() => navigate(`services/${item?.serviceId?._id}`,{ state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes['card']} key={item._id}>
-                <div className={classes['single-card']}>
-                  <div className={classes['cardMedia']}>
-                    <SkeletonCom
-                      alt={"service"}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
-                      height={230}
-                    />
-                    {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
+      {isLoading ?
+        <LoadingSkeleton />
+        :
+        <Carousel
+          removeArrowOnDeviceType={["tablet", "mobile"]}
+          swipeable={true}
+          draggable={true}
+          showDots={false}
+          responsive={responsive}
+          ssr={true}
+          infinite={false}
+          keyBoardControl={true}
+          customTransition="all 1s"
+          transitionDuration={500}
+          containerClass="carousel-container"
+          itemClass="carousel-item-padding-30-px">
+          {
+            allServiceProducts.map((item) => (
+              <>
+                <div onClick={() => navigate(`services/${item?.serviceId?._id}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes['card']} key={item._id}>
+                  <div className={classes['single-card']}>
+                    <div className={classes['cardMedia']}>
+                      {/* <SkeletonCom
+                        alt={"service"}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
+                        height={230}
+                      /> */}
+                      <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" />
+                    </div>
                   </div>
+
                 </div>
+                <p className={classes['cardname']}><b>{item.name}</b></p>
+                <div className={classes.flex}>
+                  <div className={classes.flex_item}>
+                    <ReactStars
+                      count={5}
+                      edit={false}
+                      value={item.rating}
+                      size={24}
+                      color2={'#ffd700'}
+                    />
+                    {item.rating}
+                  </div>
+                  <p className={classes.price}><span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
+                </div>
+              </>
+            ))
+          }
 
-              </div>
-              <p className={classes['cardname']}><b>{item.name}</b></p>
-              <p className={classes.price}><span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
-            </>
-          ))
-        }
-
-      </Carousel>
+        </Carousel>}
 
     </div>
   )

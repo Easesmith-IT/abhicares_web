@@ -48,11 +48,20 @@ const OrderDetails = () => {
         const taxRs = (Number(value) * 18) / 100;
         setTotalTaxRs(taxRs);
 
+        const { discountType, couponFixedValue, offPercentage, maxDiscount } = state.couponId || {};
+
         if (state.couponId) {
-            const localDiscount = (Number(subTotal) * Number(state.couponId.offPercentage)) / 100;
-            console.log("discount", localDiscount);
-            setDiscount(localDiscount);
-            setSubTotal((prev) => prev - Number(localDiscount));
+            if (discountType === "fixed") {
+                setDiscount(couponFixedValue);
+                setSubTotal((prev) => prev - Number(couponFixedValue));
+            }
+            else {
+                let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
+                offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
+                console.log("offerTotal", offerTotal);
+                setDiscount(offerTotal);
+                setSubTotal((prev) => prev - Number(offerTotal));
+            }
         }
     }, [state.orderValue, state.couponId, totalTaxRs, navigate]);
 

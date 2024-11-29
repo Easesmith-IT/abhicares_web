@@ -27,6 +27,21 @@ const Offers = () => {
 
     const { checkAuthorization } = useAuthorization();
 
+    const [filterdResults, setFilterdResults] = useState([]);
+    // const [status, setStatus] = useState("all")
+
+    const [statusFilter, setStatusFilter] = useState("all");
+
+
+    useEffect(() => {
+        const filteredCoupons = allOffers.filter((coupon) => coupon.status === statusFilter);
+        setFilterdResults(statusFilter === "all" ? allOffers : filteredCoupons);
+    }, [statusFilter,allOffers])
+
+
+    console.log("filteredCoupons", filterdResults);
+
+
 
     const getAllOffers = async () => {
         try {
@@ -74,30 +89,42 @@ const Offers = () => {
                 <div className={classes["report-container"]}>
                     <div className={classes["report-header"]}>
                         <h1 className={classes["recent-Articles"]}>Offers</h1>
-                        <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
-                            <img src={AddBtn} alt="add seller" />
-                        </button>
+                        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                            <select className={classes.input} onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
+                                <option value="">Select Staus</option>
+                                <option value="all">All</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
+                                <img src={AddBtn} alt="add" />
+                            </button>
+                        </div>
                     </div>
 
                     <div className={offersClasses.container}>
                         {!isLoading
-                            && allOffers?.length === 0
+                            && filterdResults?.length === 0
                             && <p>No offers found</p>
                         }
 
                         {isLoading
-                            && allOffers?.length === 0
+                            && filterdResults?.length === 0
                             && <Loader />
                         }
-                        {allOffers?.map((offer) => (
+                        
+                        {filterdResults?.map((offer) => (
                             <div key={offer._id} className={offersClasses.city}>
                                 <div className={offersClasses.city_left}>
                                     <h5>{offer.name}</h5>
                                     <div className={offersClasses.d_flex}>
                                         {/* <p>{format(new Date(offer.date), "dd-MM-yyyy")}</p> */}
-                                        <p>{offer.offPercentage}%</p>
+                                        {offer?.discountType === "fixed" ?
+                                            <p>₹{offer.couponFixedValue}</p>
+                                            : <p>{offer.offPercentage}%</p>}
                                         <p className={`${classes.status} ${offer.status === "active" ? classes.active : classes.inactive}`}>{offer.status}</p>
                                     </div>
+                                    <p><b>Type:</b> {offer?.discountType}</p>
                                     <p className={offersClasses.p}>{parse(offer.description)}</p>
                                 </div>
                                 <div className={offersClasses.city_right}>

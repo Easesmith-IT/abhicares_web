@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './AddOfferModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -24,28 +24,69 @@ const validateCouponCode = (code) => {
 
 }
 
+function formatCouponCode(input) {
+    return input.toUpperCase().replace(/\s+/g, '');
+}
+
 const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(offer?.description || "");
+    const [selectedItems, setSelectedItems] = useState(offer?.categoryType || []);
+    const [isLoading, setIsLoading] = useState(false);
     const [offerInfo, setOfferInfo] = useState({
         name: offer?.name || "",
         offPercentage: offer?.offPercentage || "",
         noOfTimesPerUser: offer?.noOfTimesPerUser || 1,
         status: offer?.status || true,
-        type: offer?.type || "",
-        upTo: offer?.upTo || "",
-        offerValue: offer?.offerValue || "",
+        type: offer?.discountType || "",
+        upTo: offer?.maxDiscount || "",
+        offerValue: offer?.fixedCouponValue || "",
+        categoryType: selectedItems,
     });
+    const [allCategories, setAllCategories] = useState([]);
 
     const handleOnChange = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name === "name") {
+            value = formatCouponCode(value);
+        }
         setOfferInfo({ ...offerInfo, [name]: value });
     }
+
+
+    const getAllCategories = async () => {
+        setIsLoading(true);
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+            setAllCategories(data.data);
+            setIsLoading(false);
+            console.log("allCategories", data);
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getAllCategories();
+    }, [])
+
     const navigate = useNavigate()
 
+
+    console.log("selectedItems", selectedItems);
     console.log("offerInfo", offerInfo);
 
+    // Handle checkbox changes
+    const handleCheckboxChange = (event) => {
+        const { value, checked } = event.target;
 
+        if (checked) {
+            setSelectedItems((prev) => [...prev, value]);
+        } else {
+            setSelectedItems((prev) => prev.filter((item) => item !== value));
+        }
+    };
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -59,10 +100,10 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             (type === "percentage" ? !offPercentage || !upTo : !offerValue);
 
         const isDescriptionMissing = !description;
-        
+
         console.log("isDescriptionMissing", isDescriptionMissing);
         console.log("isOfferMissing", isOfferMissing);
-        
+
         console.log("isOfferMissing || isDescriptionMissing", (isOfferMissing || isDescriptionMissing));
 
         if (isOfferMissing || isDescriptionMissing) {
@@ -72,7 +113,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
 
         if (offer) {
             try {
-                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon/${offer._id}`, { ...offerInfo, description }, { withCredentials: true });
+                const { data } = await axios.patch(`${process.env.REACT_APP_ADMIN_API_URL}/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, fixedCouponValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id }, { withCredentials: true });
 
                 toast.success("Offer updated successfully");
                 getAllOffers();
@@ -89,8 +130,8 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                     toast.error('Please enter valid coupon code');
                     return;
                 }
-                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description }, { withCredentials: true });
-                console.log(data);
+                const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, fixedCouponValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage }, { withCredentials: true });
+                console.log("add offer res", data);
                 toast.success("Offer added successfully");
                 getAllOffers();
                 setIsModalOpen(false);
@@ -101,6 +142,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             }
         }
     }
+
 
     return (
         <div className={classes.wrapper}>
@@ -117,14 +159,43 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                         <input className={classes.input} onChange={handleOnChange} value={offerInfo.name} type="text" name="name" id="name" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="type">Coupon Type</label>
-                        <select className={classes.input} onChange={handleOnChange} value={offerInfo.type} name="type" id="type">
-                            <option value="">Select Coupon Type</option>
-                            <option value="percentage">Percentage</option>
-                            <option value="fixed">Fixed</option>
-                        </select>
-                        {/* <input className={classes.input} onChange={handleOnChange} value={offerInfo.name} type="text" name="name" id="name" /> */}
+                        <label htmlFor="categoryType">Category</label>
+                        <div className={classes.categories}>
+                            {allCategories.length > 0 && !isLoading && allCategories?.map((item) => (
+                                <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                                    <input
+                                        style={{ width: "20px", height: "20px" }}
+                                        type="checkbox"
+                                        value={item?._id}
+                                        id={item?._id}
+                                        name={item?._id}
+                                        checked={selectedItems.some((selected) => selected === item?._id)}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    <label htmlFor={item?._id}>{item?.name}</label>
+                                </div>
+                            ))}
+
+                            {allCategories.length === 0 && isLoading &&
+                                <p>Loading...</p>
+                            }
+
+                            {allCategories.length === 0 && !isLoading &&
+                                <p>No Categories found</p>
+                            }
+                        </div>
                     </div>
+
+                    {!offer &&
+                        <div className={classes.input_container}>
+                            <label htmlFor="type">Coupon Type</label>
+                            <select className={classes.input} onChange={handleOnChange} value={offerInfo.type} name="type" id="type">
+                                <option value="">Select Coupon Type</option>
+                                <option value="percentage">Percentage</option>
+                                <option value="fixed">Fixed</option>
+                            </select>
+                        </div>}
+
                     {offerInfo.type === "percentage" &&
                         <>
                             <div className={classes.input_container}>

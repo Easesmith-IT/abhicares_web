@@ -5,7 +5,8 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser }) => {
+const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser, isBooking = false, bookingId, serviceType, serviceId }) => {
+    const userId = localStorage.getItem("userId");
 
     const [reviewInfo, setReviewInfo] = useState({
         title: review?.title || "",
@@ -36,30 +37,44 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
         if (!reviewInfo.title || !reviewInfo.content || !reviewInfo.rating) {
             return;
         }
-        if (review) {
+
+        if (isBooking) {
             try {
-                const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-booking-review`, { ...reviewInfo, bookingId, serviceType, serviceId, userId }, { withCredentials: true });
                 setIsReviewModalOpen(false);
-                toast.success("Review updated successfully");
-                getAllReviewsOfUser();
+                toast.success("Review added successfully");
                 console.log(data);
             } catch (error) {
-                // setIsReviewModalOpen(false);
                 toast.error(error?.response?.data?.message);
                 console.log(error);
             }
         }
         else {
-            try {
-                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
-                setIsReviewModalOpen(false);
-                toast.success("Review added successfully");
-                getAllReviewsOfUser();
-                console.log(data);
-            } catch (error) {
-                // setIsReviewModalOpen(false);
-                toast.error(error?.response?.data?.message);
-                console.log(error);
+            if (review) {
+                try {
+                    const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                    setIsReviewModalOpen(false);
+                    toast.success("Review updated successfully");
+                    getAllReviewsOfUser();
+                    console.log(data);
+                } catch (error) {
+                    // setIsReviewModalOpen(false);
+                    toast.error(error?.response?.data?.message);
+                    console.log(error);
+                }
+            }
+            else {
+                try {
+                    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                    setIsReviewModalOpen(false);
+                    toast.success("Review added successfully");
+                    getAllReviewsOfUser();
+                    console.log(data);
+                } catch (error) {
+                    // setIsReviewModalOpen(false);
+                    toast.error(error?.response?.data?.message);
+                    console.log(error);
+                }
             }
         }
     }
