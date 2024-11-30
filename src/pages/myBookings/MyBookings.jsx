@@ -10,11 +10,11 @@ const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const userId = localStorage.getItem("userId");
 
   const getAllOrders = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders`, { withCredentials: true });
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-orders?userId=${userId}`, { withCredentials: true });
       console.log(data);
       setAllOrders(data.data);
       setLoading(false);
@@ -43,9 +43,9 @@ const MyBookings = () => {
           && <Loader />
         }
         <div className={classes.bookings_container}>
-          {allOrders?.map((order,index) => (
+          {allOrders?.map((order, index) => (
             <Order
-            index={index}
+              index={index}
               key={order._id}
               order={order}
             />

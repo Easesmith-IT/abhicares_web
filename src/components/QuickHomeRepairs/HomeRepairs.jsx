@@ -103,9 +103,9 @@ export const HomeRepairs = () => {
                 <div className={classes.flex}>
                   <div className={classes.flex_item}>
                     <ReactStars
-                      count={5}
+                      count={1}
                       edit={false}
-                      value={item.rating}
+                      value={1}
                       size={24}
                       color2={'#ffd700'}
                     />

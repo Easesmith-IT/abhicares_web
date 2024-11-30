@@ -54,8 +54,8 @@ const HelpCenter = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!helpCenterInfo.description
-      || (helpCenterInfo.issue && !helpCenterInfo.issue )
-      || (helpCenterInfo.others && !helpCenterInfo.others )
+      || (helpCenterInfo.issue && !helpCenterInfo.issue)
+      || (helpCenterInfo.others && !helpCenterInfo.others)
     ) {
       toast.error("Please fill all fields");
       return;
@@ -169,7 +169,7 @@ const HelpCenter = () => {
               {allIssues?.map((issue) => (
                 <div key={issue._id} className={classes.issue}>
                   <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
-                  <p className={issue.status === "in-review" ? classes.in_review : classes.solved}>{issue.status}</p>
+                  <p className={issue.status === "in-review" ? classes.in_review : issue.status === "raised" ? classes.raised : classes.solved}>{issue.status}</p>
                   <button onClick={() => handleView(issue)} className={classes.button}>View</button>
                 </div>
               ))}

@@ -11,7 +11,7 @@ import gurantee from "../../assets/why-us/gurantee.png"
 const WhyUsComp = () => {
     return (
         <div
-            className={`feat bg-gray ${classes.whyUs}`}
+            className={`feat ${classes.whyUs}`}
         >
             <div className={``}>
                 <div className={`${classes.card_container}`}>

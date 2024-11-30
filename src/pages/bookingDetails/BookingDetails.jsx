@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import WebsiteWrapper from '../WebsiteWrapper';
 import AddReviewModal from '../../components/reviewModal/AddReviewModal';
 import SingleBooking from './SingleBooking';
+import RaiseTicketModal from '../../components/raiseTicketModal/RaiseTicketModal';
 const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
@@ -19,7 +20,6 @@ const BookingDetails = () => {
   const [totalTaxRs, setTotalTaxRs] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
 
   const getOrderInvoice = async () => {
     try {
@@ -70,6 +70,7 @@ const BookingDetails = () => {
     }
   }, [state.orderValue, state.couponId]);
 
+
   return (
     <WebsiteWrapper>
       <section className={classes.booking_details}>
@@ -85,12 +86,6 @@ const BookingDetails = () => {
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
-                {/* <button
-                  onClick={() => setIsAddReviewModalOpen(true)}
-                  className={classes.button}
-                >
-                  Add Review
-                </button> */}
                 <button
                   onClick={() => setIsInvoiceModalOpen(true)}
                   className={classes.button}
@@ -123,7 +118,7 @@ const BookingDetails = () => {
             </div>
             <div className={classes.product_contaner}>
               {state?.items?.map((item, i) => (
-                <SingleBooking item={item} />
+                <SingleBooking item={item} booking={state} />
               ))}
             </div>
           </div>
@@ -160,14 +155,7 @@ const BookingDetails = () => {
             setIsInvoiceModalOpen={setIsInvoiceModalOpen}
           />
         )}
-        {isAddReviewModalOpen &&
-          <AddReviewModal
-            isReviewModalOpen={isAddReviewModalOpen}
-            setIsReviewModalOpen={setIsAddReviewModalOpen}
-            id={params.id}
-            getAllReviewsOfUser={() => { }}
-          />
-        }
+
 
         {isCancelledModalOpen && (
           <div className={classes.modal_wrapper}>

@@ -1,5 +1,6 @@
 .whyUs {
     padding: 80px 0;
+    background: #F8F8F8;
 }
 
 .span {
@@ -16,7 +17,7 @@
 .section-head h4 {
     position: relative;
     padding: 0;
-    color: #712be2;
+    color: #283891;
     line-height: 1;
     letter-spacing: 0.3px;
     font-size: 34px;
@@ -30,7 +31,7 @@
     content: '';
     width: 60px;
     height: 3px;
-    background: #712be2;
+    background: #283891;
     position: absolute;
     left: 0px;
     bottom: -10px;
@@ -72,7 +73,7 @@ p.awesome_line {
     content: '';
     width: 60px;
     height: 3px;
-    background: #712be2;
+    background: #283891;
     position: absolute;
     left: 0px;
     bottom: -10px;
@@ -82,7 +83,7 @@ p.awesome_line {
 
 .extra-text span {
     font-weight: 700;
-    color: #712be2;
+    color: #283891;
 }
 
 .card_container {
@@ -121,7 +122,7 @@ p.awesome_line {
 }
 
 .item:hover {
-    background: #FFE3FF;
+    background: #ebedf9;
     color: black;
     box-shadow: 0 8px 20px 0px rgba(0, 0, 0, 0.2);
     -webkit-transition: all .5s ease 0;
