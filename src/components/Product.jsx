@@ -95,12 +95,7 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
         />
         <div className={classes.product_info}>
           <h5>{product?.name}</h5>
-          <p>{parse(product.description)}</p>
-          <div className={classes.d_flex}>
-            <div className={classes.price_cotainer}>
-              <p className={classes.price}>₹{product.price}</p>
-              <p className={classes.price}>₹{product.offerPrice}</p>
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <ReactStars
               edit={false}
               size={30}
@@ -108,6 +103,16 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
               value={product?.rating}
               color2={'#FF8A00'}
             />
+            <p>{product.rating}</p>
+            ({product?.totalReviews})
+          </div>
+          <p>{parse(product.description)}</p>
+          <div className={classes.d_flex}>
+            <div className={classes.price_cotainer}>
+              <p className={classes.price}>₹{product.price}</p>
+              <p className={classes.price}>₹{product.offerPrice}</p>
+            </div>
+
             {cart?.items?.find(
               (item) => item?.productId?._id === product?._id
             ) ? (

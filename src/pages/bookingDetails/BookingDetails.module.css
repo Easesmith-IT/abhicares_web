@@ -143,6 +143,13 @@
     gap: 10px;
 }
 
+.link{
+    border: none;
+    background: transparent;
+    text-decoration: underline;
+    color: rgb(42, 42, 219);
+}
+
 @media screen and (max-width:800px) {
     .booking_details {
         flex-wrap: wrap;

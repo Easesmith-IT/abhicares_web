@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classes from './BookingDetails.module.css'
 import AddReviewModal from '../../components/reviewModal/AddReviewModal';
 import RaiseTicketModal from '../../components/raiseTicketModal/RaiseTicketModal';
+import { Link } from 'react-router-dom';
 
 const SingleBooking = ({ item,booking }) => {
     const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
@@ -55,9 +56,9 @@ const SingleBooking = ({ item,booking }) => {
                             </button>
                         <button
                             onClick={() => setIsAddTicketModalOpen(true)}
-                            className={classes.button}
+                            className={classes.link}
                         >
-                            Raise Ticket
+                            Issue with order?
                         </button>
                     </div>
                 </div>

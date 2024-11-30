@@ -110,6 +110,7 @@ export const WomenSpa = () => {
                       color2={'#ffd700'}
                     />
                     {item.rating}
+                    ({item?.totalReviews})
                   </div>
                   <p className={classes.price}><span style={{ color: 'green' }}>₹{item.offerPrice}</span></p>
                 </div>

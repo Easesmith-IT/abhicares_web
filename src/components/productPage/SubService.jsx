@@ -76,11 +76,7 @@ const SubService = ({ singlePackage, serviceId, setIsCartLoading, features }) =>
                             </div> */}
                             {/* <span className={`${classes.booking_span} ${classes.sub_service_booking_span}`}>4.81 (1M reviews)</span> */}
                         </div>
-                        <p className={classes.price_time_container}>
-                            <div className={classes.price_cotainer}>
-                                <span className={classes.price}>₹{singlePackage.price}</span>
-                                <span className={classes.price}>₹{singlePackage.offerPrice}</span>
-                            </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             <ReactStars
                                 edit={false}
                                 size={30}
@@ -88,6 +84,15 @@ const SubService = ({ singlePackage, serviceId, setIsCartLoading, features }) =>
                                 value={singlePackage?.rating}
                                 color2={'#FF8A00'}
                             />
+                            {singlePackage.rating}
+                            ({singlePackage?.totalReviews})
+                        </div>
+
+                        <p className={classes.price_time_container}>
+                            <div className={classes.price_cotainer}>
+                                <span className={classes.price}>₹{singlePackage.price}</span>
+                                <span className={classes.price}>₹{singlePackage.offerPrice}</span>
+                            </div>
                             {/* <div className={classes.dot_time_container}>
                             <div className={classes.dot}></div>
                             <span className={classes.time}>1 hr 20 mins</span>
