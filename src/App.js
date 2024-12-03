@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, HashRouter } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -98,7 +98,7 @@ function App() {
     <>
       {isOpen && <UnautorizedModal />}
 
-      <Router>
+      <HashRouter>
         {/* <Header /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -258,7 +258,7 @@ function App() {
 
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
-      </Router>
+      </HashRouter>
       {/* <Toaster /> */}
     </>
   );
