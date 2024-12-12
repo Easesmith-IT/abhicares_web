@@ -91,7 +91,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoading(true);
       setIsTimer(true);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/signup-otp`,
+        `${import.meta.env.VITE_APP_API_URL}/signup-otp`,
         { ...loginSignupInfo },
         { withCredentials: true }
       );
@@ -123,7 +123,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoading(true);
       setIsTimer(true);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-otp`,
+        `${import.meta.env.VITE_APP_API_URL}/generate-otp`,
         { phoneNumber: loginSignupInfo.phone },
         { withCredentials: true }
       );
@@ -158,7 +158,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoading(true);
       setIsTimer(false);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/verify-otp`,
+        `${import.meta.env.VITE_APP_API_URL}/verify-otp`,
         { enteredOTP: otp, phoneNumber: loginSignupInfo.phone },
         { withCredentials: true }
       );
@@ -196,7 +196,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsLoading(true);
       setIsTimer(false);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/verify-signup`,
+        `${import.meta.env.VITE_APP_API_URL}/verify-signup`,
         { enteredOTP: otp, phone: loginSignupInfo.phone },
         { withCredentials: true }
       );

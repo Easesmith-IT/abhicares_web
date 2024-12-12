@@ -53,7 +53,7 @@ const Product = () => {
 
 
       const response = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/get-banners`,
         {
           params: {
             type: "product-banner",
@@ -64,7 +64,7 @@ const Product = () => {
       );
 
       setImage({
-        file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/${response.data.banners.image}`
+        file: null, preview: `${import.meta.env.VITE_APP_IMAGE_URL}/${response.data.banners.image}`
       })
       console.log("response1", response);
     } catch (err) {

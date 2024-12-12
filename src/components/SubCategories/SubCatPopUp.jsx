@@ -30,7 +30,7 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
 
     const getAllServices = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-service/${category?._id}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-all-service/${category?._id}`);
             console.log(data);
             setAllServices(data.data);
         } catch (error) {
@@ -81,10 +81,10 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                                     <div className={classes['image-Box']}>
                                                         {/* <SkeletonCom
                                                             alt={"service"}
-                                                            src={`${process.env.REACT_APP_IMAGE_URL}/${service.imageUrl}`}
+                                                            src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`}
                                                             height={60}
                                                         /> */}
-                                                        <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={`${process.env.REACT_APP_IMAGE_URL}/${service.imageUrl}`} alt="img" />
+                                                        <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`} alt="img" />
                                                     </div>
                                                     <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
                                                 </div>

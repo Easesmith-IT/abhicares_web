@@ -40,7 +40,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
 
         if (isBooking) {
             try {
-                const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-booking-review`, { ...reviewInfo, bookingId, serviceType, serviceId, userId }, { withCredentials: true });
+                const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/add-booking-review`, { ...reviewInfo, bookingId, serviceType, serviceId, userId }, { withCredentials: true });
                 setIsReviewModalOpen(false);
                 toast.success("Review added successfully");
                 console.log(data);
@@ -52,7 +52,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
         else {
             if (review) {
                 try {
-                    const { data } = await axios.patch(`${process.env.REACT_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                    const { data } = await axios.patch(`${import.meta.env.VITE_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
                     setIsReviewModalOpen(false);
                     toast.success("Review updated successfully");
                     getAllReviewsOfUser();
@@ -65,7 +65,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
             }
             else {
                 try {
-                    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                    const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
                     setIsReviewModalOpen(false);
                     toast.success("Review added successfully");
                     getAllReviewsOfUser();

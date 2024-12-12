@@ -54,5 +54,5 @@ const CurrentLocationAddInfo = ({
 // export default CurrentLocationAddInfo
 
 export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+  apiKey: import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY,
 })(CurrentLocationAddInfo);

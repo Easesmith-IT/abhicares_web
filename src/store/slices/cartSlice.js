@@ -13,7 +13,7 @@ const initialState = {
 
 export const getCartDetails = createAsyncThunk("/cart/details", async () => {
   try {
-    const res = axios.get(`${process.env.REACT_APP_API_URL}/cart-details`, {
+    const res = axios.get(`${import.meta.env.VITE_APP_API_URL}/cart-details`, {
       withCredentials: true,
     });
 
@@ -37,7 +37,7 @@ export const addItemToCart = createAsyncThunk(
     console.log(data.id);
     try {
       const res = axios.post(
-        `${process.env.REACT_APP_API_URL}/add-item-cart`,
+        `${import.meta.env.VITE_APP_API_URL}/add-item-cart`,
         {
           itemId: data.id,
           type: data.type,
@@ -62,7 +62,7 @@ export const updateQty = createAsyncThunk(
   async (data) => {
     try {
       const res = axios.post(
-        `${process.env.REACT_APP_API_URL}/update-item-quantity/${data.id}`,
+        `${import.meta.env.VITE_APP_API_URL}/update-item-quantity/${data.id}`,
         {
           quantity: data.quantity,
         },
@@ -84,7 +84,7 @@ export const deleteItemFromCart = createAsyncThunk(
   async (data) => {
     try {
       const res = axios.post(
-        `${process.env.REACT_APP_API_URL}/remove-cart-item/${data?.itemId}`,
+        `${import.meta.env.VITE_APP_API_URL}/remove-cart-item/${data?.itemId}`,
         { type: data.type },
         { withCredentials: true }
       );

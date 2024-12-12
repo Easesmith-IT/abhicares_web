@@ -22,7 +22,7 @@ const ProductInfo = () => {
                 </div>
                 <div className={classes.carousel} >
                     {product?.imageUrl?.map((image) => (
-                        <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/${image}`} alt={isPackage ? "Package" : "Product"} />
+                        <img key={image} className={classes.carousel_img} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${image}`} alt={isPackage ? "Package" : "Product"} />
                     ))}
                 </div>
                 <div className={classes.contianer}>
@@ -41,7 +41,7 @@ const ProductInfo = () => {
                             {product.products.map((item) => (
                                 <div className={classes.product}>
                                     <div>
-                                        <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/${item?.productId?.imageUrl[0]}`} alt="product" />
+                                        <img className={classes.img} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.productId?.imageUrl[0]}`} alt="product" />
                                         <div className={classes.product_info}>
                                             <h5>{item?.productId?.name}</h5>
                                             <p>{parse(item?.productId?.description)}</p>

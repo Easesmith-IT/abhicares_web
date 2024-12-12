@@ -15,7 +15,7 @@ const Review = ({ review, fetchReviews }) => {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `${process.env.REACT_APP_ADMIN_API_URL}/delete-review?reviewId=${review?._id}`, { withCredentials: true });
+                `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-review?reviewId=${review?._id}`, { withCredentials: true });
             toast.success("Review deleted successfully");
             fetchReviews();
         } catch (error) {

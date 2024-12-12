@@ -20,7 +20,7 @@ const HelpCenterTicketDetails = () => {
     const getTicketDetails = async () => {
         try {
             const { data } = await axios.get(
-                `${process.env.REACT_APP_ADMIN_API_URL}/get-single-ticket?ticketId=${params?.ticketId}`, { withCredentials: true }
+                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-single-ticket?ticketId=${params?.ticketId}`, { withCredentials: true }
             );
             console.log("details of ticket", data);
             setTicketDetails(data.ticket);

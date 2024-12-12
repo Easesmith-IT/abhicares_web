@@ -10,7 +10,7 @@ const Faqs = () => {
 
     const getAllFaqs = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-all-faq`, { withCredentials: true });
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-all-faq`, { withCredentials: true });
             console.log(data);
             setAllFaqs(data.data);
         } catch (error) {

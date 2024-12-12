@@ -18,7 +18,7 @@ const AboutUs = () => {
   const getSeoForAboutPage = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-seo-by-page-user-side?page=about-us`
+        `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=about-us`
       );
       const { seoTitle, seoDescription } = data?.seo;
       setSeoData({ title: seoTitle, description: seoDescription });

@@ -40,8 +40,8 @@ export const BannerCard = () => {
   const fetchBanners = async () => {
     try {
       // setIsLoading(true)
-      console.log('cms url', process.env.REACT_APP_CMS_URL)
-      const response = await axios.get(`${process.env.REACT_APP_CMS_URL}/get-banners`, {
+      console.log('cms url', import.meta.env.VITE_APP_CMS_URL)
+      const response = await axios.get(`${import.meta.env.VITE_APP_CMS_URL}/get-banners`, {
         params: {
           heroBanners: true,
           page: "home-sale-banners",
@@ -87,10 +87,10 @@ export const BannerCard = () => {
           <div key={index} onClick={() => navigate(`/services/${item?.serviceId?._id}`, { state: { name: item?.serviceId?.name, features: item?.serviceId?.features } })} className={classes["image-container"]}>
             <SkeletonCom
               alt={"Banner"}
-              src={`${process.env.REACT_APP_IMAGE_URL}/${item?.image}`}
+              src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.image}`}
               height={200}
             />
-            {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${url}`} alt="Banner" /> */}
+            {/* <img src={`${import.meta.env.VITE_APP_IMAGE_URL}/${url}`} alt="Banner" /> */}
           </div>
         ))}
 

@@ -16,7 +16,7 @@ const SingleBooking = ({ item,booking }) => {
                 <div>
                     <img
                         className={classes.img}
-                        src={`${process.env.REACT_APP_IMAGE_URL}/${item.package
+                        src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.package
                             ? item.package.imageUrl[0]
                             : item.product.imageUrl[0]
                             }`}

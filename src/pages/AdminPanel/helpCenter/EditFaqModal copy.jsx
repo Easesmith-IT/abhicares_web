@@ -28,7 +28,7 @@ const EditFaqModal = ({ setIsModalOpen, faq, getAllFaqs }) => {
     }
     try {
       const { data } = await axios.patch(
-        `${process.env.REACT_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
         { ...faqInfo },
         { withCredentials: true }
       );

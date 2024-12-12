@@ -12,7 +12,7 @@ const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
 
     const getOrderInvoice = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${order._id}`, { withCredentials: true });
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-invoice/${order._id}`, { withCredentials: true });
             console.log("invoice", data);
             setInvoice(data.data);
         } catch (error) {
@@ -48,7 +48,7 @@ const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
                     <div className={classes.product_contaner}>
                         {order?.products?.map((product) => (
                             <div key={product._id} className={classes.product}>
-                                <img className={classes.img} src={`${process.env.REACT_APP_IMAGE_URL}/${product.product.imageUrl[0]}`} alt="" />
+                                <img className={classes.img} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${product.product.imageUrl[0]}`} alt="" />
                                 <div className={classes.info}>
                                     <h4>{product?.product?.name}</h4>
                                     <p>Qty: {product?.quantity}</p>

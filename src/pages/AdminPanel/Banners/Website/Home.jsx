@@ -60,7 +60,7 @@ const WebHome = () => {
   const getBannersFromServer = async () => {
     try {
       const response1 = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/get-banners`,
         {
           params: {
             heroBanners: true,
@@ -84,7 +84,7 @@ const WebHome = () => {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
             file: "",
-            preview: `${process.env.REACT_APP_IMAGE_URL}/${img}`,
+            preview: `${import.meta.env.VITE_APP_IMAGE_URL}/${img}`,
           });
         }
       }

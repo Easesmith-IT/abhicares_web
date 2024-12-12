@@ -80,18 +80,18 @@ const WebCategory = () => {
 
     try {
       const response1 = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
         formDataHero,
         { withCredentials: true }
       );
       const response2 = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
         formDataBan1,
         { withCredentials: true }
       );
       console.log(response2);
       const response3 = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
         formDataBan2,
         { withCredentials: true }
       );

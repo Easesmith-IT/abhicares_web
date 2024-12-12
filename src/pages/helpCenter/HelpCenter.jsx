@@ -61,7 +61,7 @@ const HelpCenter = () => {
       return;
     }
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-help`, { ...helpCenterInfo }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/create-help`, { ...helpCenterInfo }, { withCredentials: true });
       console.log(data);
       toast.success("Issue submited successfully");
       setHelpCenterInfo({
@@ -77,7 +77,7 @@ const HelpCenter = () => {
 
   const getAllIssues = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-user-help `, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-user-help `, { withCredentials: true });
       console.log("issues", data);
       setAllIssues(data.data);
     } catch (error) {

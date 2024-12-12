@@ -71,7 +71,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
 
     const getAllProducts = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-package-product/${Data._id}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-package-product/${Data._id}`);
             console.log("package products", data);
             setAllProducts(data?.data);
         } catch (error) {
@@ -85,7 +85,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
 
     const getAllReviews = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
             console.log("get reviews", data);
             setAllReviews(data.reviews);
         } catch (error) {
@@ -114,7 +114,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                     <div className={classes.modal}>
                         {Data.imageUrl && <Carousel responsive={responsive} arrows={false} showDots className={classes.carousel} customButtonGroup={<ButtonGroup />} >
                             {Data?.imageUrl?.map((image) => (
-                                <img key={image} className={classes.carousel_img} src={`${process.env.REACT_APP_IMAGE_URL}/${image}`} alt="product" />
+                                <img key={image} className={classes.carousel_img} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${image}`} alt="product" />
                             ))}
                         </Carousel>}
                         <div className={classes.modal_body}>
@@ -271,7 +271,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                     {features?.map((feature) => (
                                         <div className={classes.feature}>
                                             <div className={classes.feature_img}>
-                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/${feature?.image}`} alt="feature" />
+                                                <img src={`${import.meta.env.VITE_APP_IMAGE_URL}/${feature?.image}`} alt="feature" />
                                             </div>
                                             <div className={classes.feature_content}>
                                                 <h5>{feature?.title}</h5>

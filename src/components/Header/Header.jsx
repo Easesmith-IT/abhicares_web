@@ -41,7 +41,7 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/logout-user`, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/logout-user`, { withCredentials: true });
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
 

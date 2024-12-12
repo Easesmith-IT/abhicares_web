@@ -30,7 +30,7 @@ const HelpCenterFaqs = () => {
   const getAllFaqs = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-faq`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-faq`,
         { withCredentials: true }
       );
       console.log('faqs', data);
@@ -55,7 +55,7 @@ const HelpCenterFaqs = () => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_ADMIN_API_URL}//delete-faq/${faq}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}//delete-faq/${faq}`,
         { withCredentials: true }
       );
       toast.success("Issue deleted successfully");

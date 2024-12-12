@@ -48,7 +48,7 @@ export const SpaForMen = () => {
   const getServices = async () => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8af29f3a2d134bee939c`, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-products-by-categoryId/656b8af29f3a2d134bee939c`, { withCredentials: true });
       // console.log("woment spa", data);
       setIsLoading(false);
       setAllServices(data.data);
@@ -91,10 +91,10 @@ export const SpaForMen = () => {
                     <div className={classes['cardMedia']}>
                       {/* <SkeletonCom
                         alt={"service"}
-                        src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
+                        src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`}
                         height={230}
                       /> */}
-                      <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" />
+                      <img src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" />
                     </div>
                   </div>
 

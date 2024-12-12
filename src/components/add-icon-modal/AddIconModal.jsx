@@ -16,7 +16,7 @@ const AddIconModal = ({ setIsUploadIcnModal,serviceId }) => {
       formData.append("img", imagePreview.img);
       
           try {
-            const { data } = await axios.post(`${process.env.REACT_APP_ADMIN_API_URL}/upload-service-icon/${serviceId}`, formData, { withCredentials: true });
+            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/upload-service-icon/${serviceId}`, formData, { withCredentials: true });
             console.log(data)
         toast.success("Service updated successfully");
         setIsUploadIcnModal(false);

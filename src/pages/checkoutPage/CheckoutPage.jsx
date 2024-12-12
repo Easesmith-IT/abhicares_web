@@ -63,7 +63,7 @@ const CheckoutPage = () => {
   const getAllAddress = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/get-user-address`,
+        `${import.meta.env.VITE_APP_API_URL}/get-user-address`,
         { withCredentials: true }
       );
       setAllAddress(data.data);
@@ -142,7 +142,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
@@ -188,7 +188,7 @@ const CheckoutPage = () => {
     }
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/get-coupon-details`, { name: offerCode, serviceCategoryType, userId },
+        `${import.meta.env.VITE_APP_API_URL}/get-coupon-details`, { name: offerCode, serviceCategoryType, userId },
         { withCredentials: true }
       );
 
@@ -254,12 +254,12 @@ const CheckoutPage = () => {
     try {
       setIsLoading(true);
       const { data: { apiKey } } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/get-api-key`, {},
+        `${import.meta.env.VITE_APP_API_URL}/get-api-key`, {},
         { withCredentials: true }
       );
       console.log("tax", totalTaxRs);
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId, referalDiscount: credits },
+        `${import.meta.env.VITE_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId, referalDiscount: credits },
         { withCredentials: true }
       );
       console.log("razor", data);
@@ -280,7 +280,7 @@ const CheckoutPage = () => {
           try {
             setIsLoader(true);
             const res = await axios.post(
-              `${process.env.REACT_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id, orderId: data?.order?.orderId },
+              `${import.meta.env.VITE_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id, orderId: data?.order?.orderId },
               { withCredentials: true }
             );
             console.log("handler", res.data);
@@ -316,7 +316,7 @@ const CheckoutPage = () => {
 
   const getReferralCodeData = async () => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/get-referralCredits`, {}, { withCredentials: true });
+      const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/get-referralCredits`, {}, { withCredentials: true });
       console.log("referral details", res?.data);
       if (res?.status === 200) {
         setCredits(res?.data?.credits);

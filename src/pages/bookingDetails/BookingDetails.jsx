@@ -23,7 +23,7 @@ const BookingDetails = () => {
 
   const getOrderInvoice = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
       setInvoice(data.data);
     } catch (error) {
       console.log(error);
@@ -31,7 +31,7 @@ const BookingDetails = () => {
   }
   const handleCancelOrder = async () => {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { withCredentials: true });
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
     } catch (error) {

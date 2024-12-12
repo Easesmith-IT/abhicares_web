@@ -36,7 +36,7 @@ const ProductPage = () => {
   const getSeoForProductPage = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-seo/${params.serviceId}`
+        `${import.meta.env.VITE_APP_CMS_URL}/get-seo/${params.serviceId}`
       );
       const { seoTitle, seoDescription } = data?.seo;
       setSeoData({ title: seoTitle, description: seoDescription });
@@ -48,7 +48,7 @@ const ProductPage = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/get-all-product/${params.serviceId}`
+        `${import.meta.env.VITE_APP_API_URL}/get-all-product/${params.serviceId}`
       );
       console.log("services", data);
       setAllProducts(data.data);
@@ -62,7 +62,7 @@ const ProductPage = () => {
   const getAllPackages = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/get-service-package/${params?.serviceId}`
+        `${import.meta.env.VITE_APP_API_URL}/get-service-package/${params?.serviceId}`
       );
       console.log("package",data);
       setAllPackages(data.data);

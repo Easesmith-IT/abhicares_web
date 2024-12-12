@@ -1,0 +1,232 @@
+import React, { useEffect, useState } from "react";
+
+import classes from "./Shared.module.css";
+import AddBtn from "../../assets/add-icon-nobg.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import AddSellerModal from "../../components/add-seller-modal/AddSellerModal";
+import { FiEdit, FiEye } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import toast from "react-hot-toast";
+import DeleteModal from "../../components/deleteModal/DeleteModal";
+import Wrapper from "../Wrapper";
+import SellerInfoModal from "../../components/seller-info-modal/SellerOrderInfoModal";
+import Loader from "../../components/loader/Loader";
+import UnapprovedSellerModal from "../../components/unapproved-seller-modal/UnapprovedSellerModal";
+import useAuthorization from "../../hooks/useAuthorization";
+
+const Partners = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSellerInfoModalOpen, setIsSellerInfoModalOpen] = useState(false);
+  const [seller, setSeller] = useState({});
+  const [allSellers, setAllSellers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUnapprovedSellerModalOpen, setIsUnapprovedSellerModalOpen] = useState(false);
+  const [status, setStatus] = useState("")
+
+
+  const navigate = useNavigate()
+  const { checkAuthorization } = useAuthorization();
+
+
+  const getAllSellers = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
+      setAllSellers(data.data);
+      console.log("seller", data);
+    } catch (error) {
+      console.log(error);
+    }
+    finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllSellers();
+  }, [])
+
+  const handleFilterChange = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
+      setAllSellers(data.data);
+      console.log("seller filtered", data);
+    } catch (error) {
+      console.log(error);
+    }
+    finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    status && handleFilterChange();
+  }, [status])
+
+
+
+  const handleUpdateModal = (e, seller) => {
+    e.stopPropagation();
+    setSeller(seller);
+    setIsUpdateModalOpen(!isDeleteModalOpen);
+  };
+
+  const handleDeleteModal = (e, id) => {
+    e.stopPropagation();
+    setSeller(id);
+    setIsDeleteModalOpen(!isDeleteModalOpen);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-seller/${seller}`, { withCredentials: true });
+      toast.success("Seller deleted successfully");
+      getAllSellers();
+      setIsDeleteModalOpen(!isDeleteModalOpen);
+    } catch (error) {
+      console.log(error);
+      setIsDeleteModalOpen(false);
+      checkAuthorization(error);
+    }
+  };
+
+  const handleSerach = async (e) => {
+    const value = e.target.value;
+
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials: true });
+      console.log("search", data);
+      setAllSellers(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  function debounce(fx, time) {
+    let id = null;
+    return function (data) {
+      if (id) {
+        clearTimeout(id);
+      }
+      id = setTimeout(() => {
+        fx(data);
+        // id = null;
+      }, time);
+    };
+  }
+
+  const handleSellerInfoModal = (data) => {
+    setSeller(data);
+    setIsSellerInfoModalOpen(true);
+  }
+
+  return (
+    <>
+      <Wrapper>
+        <div className={classes["report-container"]}>
+          <div className={classes["report-header"]}>
+            <h1 className={classes["recent-Articles"]}>Partners</h1>
+            <input onChange={debounce(handleSerach, 1000)} className={classes.input} type="text" placeholder="Search professionals" />
+            <select
+              name="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className={classes.input}
+            >
+              <option value="">Select Status</option>
+              <option value="unapproved">Unapproved</option>
+              <option value="approved">Unapproved</option>
+            </select>
+            <button onClick={() => setIsUnapprovedSellerModalOpen(true)} className={classes.button}>Unapproved Seller</button>
+            <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
+              <img src={AddBtn} alt="add seller" />
+            </button>
+          </div>
+
+          <div className={classes["report-body"]}>
+            <div className={classes.sellers}>
+              <h3 className={classes["t-op"]}>Seller Name</h3>
+              {/* <h3 className={classes["t-op"]} style={{width:"100px"}}>Service</h3> */}
+              <h3 className={classes["t-op"]}>Category</h3>
+              <h3 className={classes["t-op"]}>Phone</h3>
+              {/* <h3 className={classes["t-op"]}>Status</h3> */}
+              <h3 className={classes["t-op"]}>Update/<br />Delete/Seller Order</h3>
+            </div>
+
+            <div className={classes.items}>
+              {!isLoading
+                && allSellers.length === 0
+                && <p>No sellers found</p>
+              }
+
+              {isLoading
+                && allSellers.length === 0
+                && <Loader />
+              }
+              {allSellers?.map((seller) => (
+                <div key={seller._id} className={classes.sellers}>
+                  <h3 className={classes["t-op-nextlvl"]}>{seller.name}</h3>
+                  {/* <h3 className={`${classes["t-op-nextlvl"]}`} style={{width:"100px"}}>{seller.services[0].serviceId.name}, ...</h3> */}
+                  <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.categoryId.name}</h3>
+                  <h3 className={`${classes["t-op-nextlvl"]}`}>{seller.phone}</h3>
+                  {/* <h3 onClick={(e) => e.stopPropagation()} className={`${classes["t-op-nextlvl"]}`}>
+                    <input checked={seller.status} onChange={(e) => handleOnChange(e, seller._id)} type="checkbox" name="" id="" />
+                    {seller.status ? "Active" : "InActive"}
+                  </h3> */}
+                  <h3 className={`${classes["t-op-nextlvl"]}`}>
+                    <FiEdit onClick={(e) => handleUpdateModal(e, seller)} cursor={"pointer"} size={20} />
+                    <MdDelete onClick={(e) => handleDeleteModal(e, seller._id)} cursor={"pointer"} size={22} color='red' />
+                    <FiEye onClick={() => navigate(`/admin/partners/${seller._id}`, { state: seller })} cursor={"pointer"} size={20} />
+                  </h3>
+
+                </div>
+              ))}
+
+            </div>
+          </div>
+        </div>
+      </Wrapper >
+      {isModalOpen &&
+        <AddSellerModal
+          setIsModalOpen={setIsModalOpen}
+          getAllSellers={getAllSellers}
+        />
+      }
+
+      {/* {isSellerInfoModalOpen &&
+        <SellerInfoModal
+          setIsSellerInfoModalOpen={setIsSellerInfoModalOpen}
+          seller={seller}
+        />
+      } */}
+
+      {isUpdateModalOpen &&
+        <AddSellerModal
+          setIsModalOpen={setIsUpdateModalOpen}
+          getAllSellers={getAllSellers}
+          seller={seller}
+        />
+      }
+
+      {isDeleteModalOpen &&
+        <DeleteModal
+          setState={setIsDeleteModalOpen}
+          handleDelete={handleDelete}
+        />
+      }
+      {isUnapprovedSellerModalOpen &&
+        <UnapprovedSellerModal
+          setIsUnapprovedSellerModalOpen={setIsUnapprovedSellerModalOpen}
+          allSellers={allSellers}
+          getSellers={getAllSellers}
+        />
+      }
+    </>
+  );
+};
+
+export default Partners;

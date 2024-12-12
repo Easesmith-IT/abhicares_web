@@ -90,7 +90,7 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
           style={{ display: !isImgLoading ? "block" : "none" }}
           onLoad={() => setIsImgLoading(false)}
           className={classes.img}
-          src={`${process.env.REACT_APP_IMAGE_URL}/${product?.imageUrl[0]}`}
+          src={`${import.meta.env.VITE_APP_IMAGE_URL}/${product?.imageUrl[0]}`}
           alt="product"
         />
         <div className={classes.product_info}>

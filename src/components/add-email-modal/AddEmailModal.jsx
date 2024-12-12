@@ -20,7 +20,7 @@ const AddEmailModal = ({ isAddEmailModalOpen, setIsAddEmailModalOpen, getProfile
         }
 
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/update-email`, { email }, { withCredentials: true });
+            const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/update-email`, { email }, { withCredentials: true });
             console.log(data);
             toast.success("Email added successfully");
             setIsAddEmailModalOpen(false);

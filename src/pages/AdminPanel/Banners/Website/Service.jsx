@@ -42,7 +42,7 @@ const WebService = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_CMS_URL}/upload-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
         formDataHero,
         { withCredentials: true }
       );

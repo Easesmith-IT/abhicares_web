@@ -38,7 +38,7 @@ const Settings = () => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_ADMIN_API_URL}/delete-subadmin/${subAdmin}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-subadmin/${subAdmin}`,
         { withCredentials: true }
       );
       toast.success("Subadmin deleted successfully");
@@ -53,7 +53,7 @@ const Settings = () => {
   const getSubadmins = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-sub-admins`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-sub-admins`,
         { withCredentials: true }
       );
       console.log("data", data);

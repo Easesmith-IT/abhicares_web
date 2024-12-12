@@ -99,7 +99,7 @@ const Home = () => {
   const getBannersFromServer = async () => {
     try {
       const response1 = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/get-banners`,
         {
           params: {
             heroBanners: true,
@@ -122,14 +122,14 @@ const Home = () => {
           imgInstance.splice(index, 1, {
             bannerName: bannerName,
             file: "",
-            preview: `${process.env.REACT_APP_IMAGE_URL}/${img}`,
+            preview: `${import.meta.env.VITE_APP_IMAGE_URL}/${img}`,
           });
         }
       }
       setImages(imgInstance);
 
       const response2 = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/get-banners`,
         {
           params: {
             type: "banner1",
@@ -143,11 +143,11 @@ const Home = () => {
 
       const instance = [...banners];
       const index = banners.findIndex((banner) => banner.bannerName === "banner4");
-      instance.splice(index, 1, { bannerName: "banner4", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/${response2.data.banners.image}` })
+      instance.splice(index, 1, { bannerName: "banner4", file: null, preview: `${import.meta.env.VITE_APP_IMAGE_URL}/${response2.data.banners.image}` })
       setBanners(() => instance);
 
       const response3 = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-banners`,
+        `${import.meta.env.VITE_APP_CMS_URL}/get-banners`,
         {
           params: {
             type: "banner2",
@@ -158,7 +158,7 @@ const Home = () => {
         }
       );
       const index2 = banners.findIndex((banner) => banner.bannerName === "banner5");
-      instance.splice(index2, 1, { bannerName: "banner5", file: null, preview: `${process.env.REACT_APP_IMAGE_URL}/${response3.data.banners.image}` })
+      instance.splice(index2, 1, { bannerName: "banner5", file: null, preview: `${import.meta.env.VITE_APP_IMAGE_URL}/${response3.data.banners.image}` })
       setBanners(() => instance);
 
       console.log("response1", response1);

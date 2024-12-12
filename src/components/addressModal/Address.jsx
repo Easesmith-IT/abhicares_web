@@ -14,7 +14,7 @@ const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   const handleDelete = async () => {
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/delete-user-address/${data._id}`,
+        `${import.meta.env.VITE_APP_API_URL}/delete-user-address/${data._id}`,
         {
           withCredentials: true,
         }

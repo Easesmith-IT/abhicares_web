@@ -21,7 +21,7 @@ const Order = ({ order, index }) => {
             {order.items.map((item, index) => (
               <img key={index}
                 className={classes.img}
-                src={`${process.env.REACT_APP_IMAGE_URL}/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] : item?.package?.imageUrl[0]}`}
+                src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] : item?.package?.imageUrl[0]}`}
                 alt=""
               />
             ))}

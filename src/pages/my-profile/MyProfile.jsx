@@ -18,7 +18,7 @@ const MyProfile = () => {
   const getProfileDetails = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user-info`, { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/user-info`, { withCredentials: true });
       console.log("profile details", res?.data);
       if (res?.status === 200) {
         setProfileDetails(res?.data?.userInfo?.user)

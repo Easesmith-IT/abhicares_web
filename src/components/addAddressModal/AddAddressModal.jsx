@@ -59,7 +59,7 @@ const AddAddressModal = ({
     if (Data) {
       try {
         const { data } = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/update-user-address/${Data._id}`,
+          `${import.meta.env.VITE_APP_API_URL}/update-user-address/${Data._id}`,
           { ...addressInfo },
           { withCredentials: true }
         );
@@ -79,7 +79,7 @@ const AddAddressModal = ({
         const body = { ...addressInfo, location: geometry, city: location.city };
         console.log('body', body)
         const { data } = await axios.post(
-          `${process.env.REACT_APP_API_URL}/create-user-address`,
+          `${import.meta.env.VITE_APP_API_URL}/create-user-address`,
           { ...body },
           { withCredentials: true }
         );
@@ -246,5 +246,5 @@ const AddAddressModal = ({
 // export default AddAddressModal;
 
 export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+  apiKey: import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY,
 })(AddAddressModal);

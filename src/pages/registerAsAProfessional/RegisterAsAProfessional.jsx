@@ -22,7 +22,7 @@ const RegisterAsAProfessional = () => {
   const getSeoForSellerPage = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_CMS_URL}/get-seo-by-page-user-side?page=register-as-professional`
+        `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=register-as-professional`
       );
       const { seoTitle, seoDescription } = data?.seo;
       setSeoData({ title: seoTitle, description: seoDescription });
@@ -51,7 +51,7 @@ const RegisterAsAProfessional = () => {
             return;
         }
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-enquiry`, { ...registrationInfo });
+            const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/create-enquiry`, { ...registrationInfo });
             console.log(data);
             setRegistrationInfo({
                 name: "",

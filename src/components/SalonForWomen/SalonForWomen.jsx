@@ -44,7 +44,7 @@
 
 //   const getServices = async () => {
 //     try {
-//       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8abe9f3a2d134bee9396`, { withCredentials: true });
+//       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-products-by-categoryId/656b8abe9f3a2d134bee9396`, { withCredentials: true });
 //       console.log("home care", data);
 //       setAllServices(data.data);
 //       // setLoading(false);
@@ -82,10 +82,10 @@
 //                 <div className={classes['cardMedia']}>
 //                   <SkeletonCom
 //                     alt={"service"}
-//                     src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
+//                     src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`}
 //                     height={230}
 //                   />
-//                   {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
+//                   {/* <img src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
 //                 </div>
 //               </div>
 //               <p className={classes['cardname']}><b>{item.name}</b></p>
@@ -148,7 +148,7 @@ export const WomenSpa = () => {
 
   const getServices = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/get-products-by-categoryId/656b8abe9f3a2d134bee9396`, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-products-by-categoryId/656b8abe9f3a2d134bee9396`, { withCredentials: true });
       console.log("woment spa",data);
       setAllServices(data.data);
       // setLoading(false);
@@ -187,10 +187,10 @@ export const WomenSpa = () => {
                   <div className={classes['cardMedia']}>
                     <SkeletonCom
                       alt={"service"}
-                      src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`}
+                      src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`}
                       height={230}
                     />
-                    {/* <img src={`${process.env.REACT_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
+                    {/* <img src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.imageUrl}`} alt="service" /> */}
                   </div>
                 </div>
 

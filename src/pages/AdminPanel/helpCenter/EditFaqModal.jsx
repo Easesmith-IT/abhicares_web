@@ -27,7 +27,7 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
     if (faq) {
       try {
         const { data } = await axios.patch(
-          `${process.env.REACT_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
+          `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
           { ...faqInfo },
           { withCredentials: true }
         );
@@ -43,7 +43,7 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
     else {
       try {
         const { data } = await axios.post(
-          `${process.env.REACT_APP_ADMIN_API_URL}/create-faq`,
+          `${import.meta.env.VITE_APP_ADMIN_API_URL}/create-faq`,
           { ...faqInfo },
           { withCredentials: true }
         );

@@ -72,7 +72,7 @@ const Reviews = () => {
   console.log("filter", filters);
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
       setAllCategories(data.data);
       console.log("allCategories", data);
     } catch (error) {
@@ -92,7 +92,7 @@ const Reviews = () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_ADMIN_API_URL}/get-all-reviews?page=${currentPage}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-reviews?page=${currentPage}`,
         {
           withCredentials: true,
         }
@@ -115,7 +115,7 @@ const Reviews = () => {
 
   const filterReviews = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`, { withCredentials: true });
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`, { withCredentials: true });
       console.log("filter reviews", data);
       setTotalPages(data.totalPages);
       setReviews(data.data);
