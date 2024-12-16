@@ -8,6 +8,9 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 
 const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId, index }) => {
+
+    console.log("index",index);
+    
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
 

@@ -29,7 +29,7 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen,getSellers }) =>
 
     const handleOnChange = async (id) => {
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: "active" }, { withCredentials: true });
+            const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: "APPROVED" }, { withCredentials: true });
             console.log(data);
             toast.success("Seller approved");
             getAllSellers();

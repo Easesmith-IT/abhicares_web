@@ -34,6 +34,8 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
         enquiry: subAdmin?.permissions.enquiry || "",
         helpCenter: subAdmin?.permissions.helpCenter || "",
         settings: subAdmin?.permissions.settings || "",
+        reviews: subAdmin?.permissions.reviews || "",
+        notifications: subAdmin?.permissions.notifications || "",
     });
 
     const handleOnChange = (e) => {

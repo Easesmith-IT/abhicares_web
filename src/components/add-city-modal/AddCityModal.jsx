@@ -13,8 +13,26 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
     const [cityInfo, setCityInfo] = useState({
         city: city?.city || "",
         state: city?.state || "",
-        pinCode: city?.pinCode || "",
+        pinCode: "",
     });
+
+    const [pinCodes, setPinCodes] = useState(city?.pinCodes || []);
+
+    console.log("pinCodes", pinCodes);
+
+
+    const handelAddPincode = () => {
+        if (!cityInfo.pinCode) {
+            toast.error("Please enter a pincode");
+        }
+
+        if (cityInfo.pinCode.length !== 6) {
+            toast.error("Pincode length must be 6 digits");
+            return;
+        }
+        setPinCodes((prev) => [...prev, { code: cityInfo.pinCode }]);
+        setCityInfo({ ...cityInfo, pinCode: "" });
+    };
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -26,14 +44,15 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!cityInfo.city
-            || !cityInfo.pinCode
+            || pinCodes.length === 0
             || !cityInfo.state
         ) {
+            toast.error("All fields are required");
             return;
         }
         if (city) {
             try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo,  }, { withCredentials: true });
+                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo, pinCodes }, { withCredentials: true });
                 toast.success("City updated successfully");
                 getAllCities();
                 setIsModalOpen(false);
@@ -45,7 +64,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         }
         else {
             try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-availabe-city`, { ...cityInfo }, { withCredentials: true });
+                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-availabe-city`, { ...cityInfo, pinCode: pinCodes }, { withCredentials: true });
                 toast.success("City added successfully");
                 getAllCities();
                 setIsModalOpen(false);
@@ -75,8 +94,15 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                         <input className={classes.input} onChange={handleOnChange} value={cityInfo.state} type="text" name="state" id="state" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="pinCode">Pincode</label>
-                        <input className={classes.input} onChange={handleOnChange} value={cityInfo.pinCode} type="number" name="pinCode" id="pinCode" />
+                        <label htmlFor="pinCode">Add Pincodes</label>
+                        <div className={classes.inputAndButton}>
+                            <input className={classes.input} onChange={handleOnChange} value={cityInfo.pinCode} type="number" name="pinCode" id="pinCode" />
+                            <button onClick={handelAddPincode} type='button' className={classes.button}>Add Pincode</button>
+                        </div>
+
+                        {pinCodes.length > 0 && <div className={classes.pincodes}>
+                            Added Pincodes: {pinCodes.map((pincode) => pincode?.code).join(", ")}
+                        </div>}
                     </div>
                     <div className={classes.button_wrapper}>
                         <button className={classes.button}>{city ? "Update" : "Add"}</button>

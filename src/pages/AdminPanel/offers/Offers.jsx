@@ -91,7 +91,7 @@ const Offers = () => {
                         <h1 className={classes["recent-Articles"]}>Offers</h1>
                         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
                             <select className={classes.input} onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
-                                <option value="">Select Staus</option>
+                                {/* <option value="">Select Staus</option> */}
                                 <option value="all">All</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>

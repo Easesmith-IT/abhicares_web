@@ -62,3 +62,10 @@
     background: #4b49ac;
     color: white;
 }
+
+.inputAndButton{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 72% 26%;
+    gap: 2%;
+}

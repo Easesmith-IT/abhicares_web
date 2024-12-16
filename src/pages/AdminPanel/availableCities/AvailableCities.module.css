@@ -6,12 +6,15 @@
     margin-top: 20px;
 }
 
-.city{
+.city_wrapper{
     max-width: 270px;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 20px;
+}
+.city{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;

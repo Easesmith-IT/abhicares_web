@@ -64,7 +64,7 @@ const Payments = () => {
                     {payment.razorpay_payment_id}
                   </p>
                   <p className={classes["t-op-nextlvl"]}>{payment.orderId}</p>
-                  <p className={classes["t-op-nextlvl"]}>{payment.amount}</p>
+                  <p className={classes["t-op-nextlvl"]}>{payment.amount.toFixed(2)}</p>
                 </div>
               ))}
           </div>

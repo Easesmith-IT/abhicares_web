@@ -21,7 +21,7 @@ const SideNav = () => {
   return (
     <nav className={classes.nav}>
       <div className={classes["nav-upper-options"]}>
-        {permissions.dashboard !== "none" && (
+        {permissions.dashboard && permissions.dashboard !== "none" && (
           <Link
             to="/admin/dashboard"
             className={`${classes["nav-option"]} ${classes.option1}}`}
@@ -35,7 +35,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.banners !== "none" && (
+        {permissions.banners && permissions.banners !== "none" && (
           <Link
             to="/admin/banners"
             className={`${classes["nav-option"]} ${classes.option1}}`}
@@ -59,7 +59,7 @@ const SideNav = () => {
           <h3 className={classes.title}>CMS</h3>
           </Link> */}
 
-        {permissions.orders !== "none" && (
+        {permissions.orders && permissions.orders !== "none" && (
           <Link
             to="/admin/orders"
             className={`${classes["nav-option"]} ${classes.option2}}`}
@@ -71,7 +71,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.bookings !== "none" && (
+        {permissions.bookings && permissions.bookings !== "none" && (
           <Link
             to="/admin/bookings"
             className={`${classes["nav-option"]} ${classes.option2}}`}
@@ -87,7 +87,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.services !== "none" && (
+        {permissions.services && permissions.services !== "none" && (
           <Link
             to="/admin/services"
             className={`${classes["nav-option"]} ${classes.option2}}`}
@@ -103,7 +103,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.partners !== "none" && (
+        {permissions.partners && permissions.partners !== "none" && (
           <Link
             to="/admin/partners"
             className={`${classes["nav-option"]} ${classes.option3}}`}
@@ -117,7 +117,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.customers !== "none" && (
+        {permissions.customers && permissions.customers !== "none" && (
           <Link
             to="/admin/customers"
             className={`${classes["nav-option"]} ${classes.option4}}`}
@@ -131,7 +131,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.offers !== "none" && (
+        {permissions.offers && permissions.offers !== "none" && (
           <Link
             to="/admin/offers"
             className={`${classes["nav-option"]} ${classes.option5}}`}
@@ -141,7 +141,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.availableCities !== "none" && (
+        {permissions.availableCities && permissions.availableCities !== "none" && (
           <Link
             to="/admin/available-cities"
             className={`${classes["nav-option"]} ${classes.option5}}`}
@@ -153,7 +153,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.payments !== "none" && (
+        {permissions.payments && permissions.payments !== "none" && (
           <Link
             to="/admin/payments"
             className={`${classes["nav-option"]} ${classes.option6}}`}
@@ -169,7 +169,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.helpCenter !== "none" && (
+        {permissions.helpCenter && permissions.helpCenter !== "none" && (
           <Link
             to="/admin/help-center"
             className={`${classes["nav-option"]} ${classes.option6}}`}
@@ -185,7 +185,7 @@ const SideNav = () => {
           </Link>
         )}
 
-        {permissions.enquiry !== "none" && (
+        {permissions.enquiry && permissions.enquiry !== "none" && (
           <Link
             to="/admin/enquiries"
             className={`${classes["nav-option"]} ${classes.option6}}`}
@@ -200,7 +200,7 @@ const SideNav = () => {
             <h3 className={classes.title}>Enquiries</h3>
           </Link>
         )}
-        {permissions.settings !== "none" && (
+        {permissions.settings && permissions.settings !== "none" && (
           <Link
             to="/admin/settings"
             className={`${classes["nav-option"]} ${classes.option6}}`}
@@ -215,7 +215,7 @@ const SideNav = () => {
             <h3 className={classes.title}>Settings</h3>
           </Link>
         )}
-        {permissions.settings !== "none" && (
+        {permissions.reviews && permissions.reviews !== "none" && (
           <Link
             to="/admin/reviews"
             className={`${classes["nav-option"]} ${classes.option6}}`}
@@ -225,20 +225,22 @@ const SideNav = () => {
               src={PaymentsIcn}
               alt="reviews"
               className={classes["nav-img"]}
-            /> */}
+              /> */}
 
             <h3 className={classes.title}>Reviews</h3>
           </Link>
         )}
 
-        <Link
-          to="/admin/send-notifications"
-          className={`${classes["nav-option"]} ${classes.option6}}`}
-        >
-          <MdNotifications style={{ fontSize: "40px" }} />
+        {permissions.notifications && permissions.notifications !== "none" && (
+          <Link
+            to="/admin/send-notifications"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <MdNotifications style={{ fontSize: "40px" }} />
 
-          <h3 className={classes.title}>Send Notifications</h3>
-        </Link>
+            <h3 className={classes.title}>Send Notifications</h3>
+          </Link>
+        )}
       </div>
     </nav>
   );

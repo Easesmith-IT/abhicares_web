@@ -11,6 +11,7 @@ import UpdatePwdModal from "../../../components/update-password-modal/UpdatePwd"
 import useAuthorization from "../../../hooks/useAuthorization";
 import Loader from "../../../components/loader/Loader";
 import UpdateReferEarnModal from "../../../components/update-refer-and-earn-modal/UpdateRefer&EarnModal";
+import DeleteModal from "../../../components/deleteModal/DeleteModal";
 
 const Settings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,22 +31,23 @@ const Settings = () => {
     setIsUpdateModalOpen(!isUpdateModalOpen);
   };
 
-  const handleDeleteModal = (id) => {
-    setSubadmin(id);
+  const handleDeleteModal = (data) => {
+    setSubadmin(data);
     setIsDeleteModalOpen(!isDeleteModalOpen);
   };
 
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-subadmin/${subAdmin}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-sub-admin?subAdminId=${subAdmin?._id}&role=${subAdmin?.role}`,
         { withCredentials: true }
       );
       toast.success("Subadmin deleted successfully");
       setIsDeleteModalOpen(!isDeleteModalOpen);
+      getSubadmins()
     } catch (error) {
       console.log(error);
-      setIsModalOpen(false);
+      // setIsModalOpen(false);
       checkAuthorization(error);
     }
   };
@@ -133,7 +135,7 @@ const Settings = () => {
                     size={20}
                   />
                   <MdDelete
-                    onClick={() => handleDeleteModal("")}
+                    onClick={() => handleDeleteModal(subadmin)}
                     cursor={"pointer"}
                     size={22}
                     color="red"
@@ -169,11 +171,12 @@ const Settings = () => {
 
       {updatePwdModal && <UpdatePwdModal setIsModalOpen={setUpdatePwdModal} />}
 
-      {/* {isDeleteModalOpen &&
-                <Dele
-                    setIsModalOpen={setIsUpdateModalOpen}
-                />
-            } */}
+      {isDeleteModalOpen &&
+        <DeleteModal
+          setState={setIsDeleteModalOpen}
+          handleDelete={handleDelete}
+        />
+      }
     </>
   );
 };

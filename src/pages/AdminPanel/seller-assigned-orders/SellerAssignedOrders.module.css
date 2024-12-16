@@ -9,6 +9,13 @@
     margin-bottom: 10px;
 }
 
+.select{
+    border-radius: 6px;
+    padding: 2px 5px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
 .contianer>div {
     display: flex;
     gap: 20px;

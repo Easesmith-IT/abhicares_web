@@ -12,7 +12,7 @@ import { MdClose } from "react-icons/md";
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const { checkAuthorization } = useAuthorization();
-console.log('seller',seller)
+    console.log('seller', seller)
     const [sellerInfo, setSellerInfo] = useState({
         name: seller?.name || "",
         legalName: seller?.legalName || "",
@@ -85,7 +85,7 @@ console.log('seller',seller)
 
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-            console.log('categories',data.data)
+            console.log('categories', data.data)
             setAllCategories(data.data);
         } catch (error) {
             console.log(error);
@@ -170,7 +170,7 @@ console.log('seller',seller)
                 pincode: address.pincode,
                 addressLine: address.addressLine,
                 location: {
-                    type:"Point",
+                    type: "Point",
                     coordinates: [coordinates.latitude, coordinates.longitude]
                 }
             },
@@ -193,7 +193,7 @@ console.log('seller',seller)
             try {
                 const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
                 toast.success("Seller added successfully");
-                console.log("add seller",data);
+                console.log("add seller", data);
                 getAllSellers();
                 setIsModalOpen(false);
             } catch (error) {
@@ -267,8 +267,11 @@ console.log('seller',seller)
                         <label htmlFor="status">Status</label>
                         <select onChange={handleOnChange} value={sellerInfo.status} className={classes.input} name="status" id="status">
                             <option value="">Select</option>
-                            <option value="active">Active</option>
-                            <option value="in-review">In Review</option>
+                            {/* ["IN-REVIEW", "APPROVED", "REJECTED", "HOLD"] */}
+                            <option value="IN-REVIEW">In Review</option>
+                            <option value="APPROVED">Approved</option>
+                            <option value="REJECTED">Rejected</option>
+                            <option value="HOLD">Hold</option>
                         </select>
                     </div>
                     <div className={classes.input_container}>
@@ -315,14 +318,14 @@ console.log('seller',seller)
                     </div>
                     {/* <button type='button' className={classes.button} onClick={handleLocationClick}>Get Location</button> */}
 
-            <div className={classes.button_wrapper}>
-              <button type="submit" className={classes.button}>
-                {seller ? "Update" : "Add"}
-              </button>
+                    <div className={classes.button_wrapper}>
+                        <button type="submit" className={classes.button}>
+                            {seller ? "Update" : "Add"}
+                        </button>
+                    </div>
+                </form>
             </div>
-          </form>
         </div>
-      </div>
     );
 }
 

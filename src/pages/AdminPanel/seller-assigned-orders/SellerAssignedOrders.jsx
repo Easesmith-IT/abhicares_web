@@ -12,10 +12,12 @@ import WalletViewModal from '../../../components/wallet-view-modal/WalletViewMod
 import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 
 const SellerAssignedOrders = () => {
+    const [state, setState] = useState("");
     const [sellerOrders, setSellerOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isCashReqLoading, setCashReqIsLoading] = useState(true);
     const [status, setStatus] = useState("");
+    const [partnerstatus, setPartnerStatus] = useState("");
     const [sellerOrder, setSellerOrder] = useState({})
     const [sellerOrderInfoModal, setSellerOrderInfoModal] = useState(false);
     const [isViewWalletModalOpen, setIsViewWalletModalOpen] = useState(false);
@@ -23,6 +25,15 @@ const SellerAssignedOrders = () => {
     const [cashOutRequests, setCashOutRequests] = useState([]);
 
     const params = useParams()
+
+    console.log("state", state);
+    console.log("partnerstatus", partnerstatus);
+
+    useEffect(() => {
+        setPartnerStatus(state?.status)
+    }, [state])
+
+
 
     const getSellerOrders = async () => {
         try {
@@ -35,6 +46,8 @@ const SellerAssignedOrders = () => {
             console.log(error);
         }
     };
+
+
     const getSellerWallet = async () => {
         try {
             const { data } = await axios.get(
@@ -99,9 +112,8 @@ const SellerAssignedOrders = () => {
         setSellerOrderInfoModal(true);
     }
 
-    const [state, setState] = useState("");
 
-    const getReviews = async () => {
+    const getSeller = async () => {
         try {
             const { data } = await axios.get(
                 `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller?sellerId=${params?.partnerId}`, { withCredentials: true }
@@ -116,8 +128,22 @@ const SellerAssignedOrders = () => {
     };
 
     useEffect(() => {
-        getReviews();
+        getSeller();
     }, [])
+
+    const handleStatusChange = async (e) => {
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-partner-status`, { sellerId: params.partnerId, status: partnerstatus }, { withCredentials: true });
+            console.log("seller orders", data);
+            getSeller();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        partnerstatus && handleStatusChange()
+    }, [partnerstatus])
 
 
     return (
@@ -131,7 +157,14 @@ const SellerAssignedOrders = () => {
                             <p><b>Gst Number:</b> {state?.gstNumber}</p>
                             <p><b>Phone</b>: {state?.phone}</p>
                             <p><b>Legal Name:</b> {state?.legalName}</p>
-                            <p><b>Status:</b> <span className={`${classes.status} ${state.status === "active" ? sellerAssignedOrdersClasses.active : sellerAssignedOrdersClasses.inactive}`}>{state.status}</span></p>
+                            <p><b>Status:</b> <span className={`${classes.status} ${state.status === "active" ? sellerAssignedOrdersClasses.active : sellerAssignedOrdersClasses.inactive}`}>{state.status}</span>
+                                <select onChange={(e) => setPartnerStatus(e.target.value)} value={partnerstatus} className={sellerAssignedOrdersClasses.select} name="partnerstatus" id="partnerstatus">
+                                    <option value="IN-REVIEW">In Review</option>
+                                    <option value="APPROVED">Approved</option>
+                                    <option value="REJECTED">Rejected</option>
+                                    <option value="HOLD">Hold</option>
+                                </select>
+                            </p>
                             <p><b>Address:</b> {`${state?.address?.addressLine}, ${state?.address?.city}, ${state?.address?.state}, ${state?.address?.pincode}`}</p>
                             <p className={classes.mt}><b>Contact Person Email:</b> <span style={{ textDecoration: "underline" }}>{state?.contactPerson?.email}</span></p>
                             <p><b>Contact Person Name:</b> {state?.contactPerson?.name}</p>

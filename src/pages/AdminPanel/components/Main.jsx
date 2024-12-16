@@ -27,9 +27,9 @@ const Shared = () => {
       });
 
       setOrderCount({
-        cancelled: data?.data?.find((item) => item.status === "cancelled")?.count || 0,
-        completed: data?.data?.find((item) => item.status === "completed")?.count || 0,
-        pending: data?.data?.find((item) => item.status === "pending")?.count || 0,
+        cancelled: data?.data?.find((item) => item.status === "Cancelled")?.count || 0,
+        completed: data?.data?.find((item) => item.status === "Completed")?.count || 0,
+        pending: data?.data?.find((item) => item.status === "Pending")?.count || 0,
         total: totalval || 0,
       })
       console.log("count", data);

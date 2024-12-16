@@ -127,7 +127,7 @@ const HelpCenterTickets = () => {
         `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-ticket?ticketId=${issue}`,
         { withCredentials: true }
       );
-      toast.success("Issue deleted successfully");
+      toast.success("Faq deleted successfully");
       getAllIssues();
       setIsDeleteModalOpen(!isDeleteModalOpen);
     } catch (error) {

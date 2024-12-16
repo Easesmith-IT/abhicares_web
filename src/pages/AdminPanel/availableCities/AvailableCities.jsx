@@ -88,16 +88,18 @@ const AvailableCities = () => {
                             && <Loader />
                         }
                         {allCities?.map((city) => (
-                            <div key={city._id} className={citiesClasses.city}>
-                                <div className={citiesClasses.city_left}>
-                                    <p>city: {city.city}</p>
-                                    <p>state: {city.state}</p>
-                                    <p>pincode: {city.pinCodes.map(item=> item?.code).join(", ")}</p>
+                            <div key={city._id} className={citiesClasses.city_wrapper}>
+                                <div className={citiesClasses.city}>
+                                    <div className={citiesClasses.city_left}>
+                                        <p>city: {city.city}</p>
+                                    </div>
+                                    <div className={citiesClasses.city_right}>
+                                        <FiEdit onClick={() => handleUpdateModal(city)} cursor={"pointer"} size={20} />
+                                        <MdDelete onClick={() => handleDeleteModal(city._id)} cursor={"pointer"} size={22} color='red' />
+                                    </div>
                                 </div>
-                                <div className={citiesClasses.city_right}>
-                                    <FiEdit onClick={() => handleUpdateModal(city)} cursor={"pointer"} size={20} />
-                                    <MdDelete onClick={() => handleDeleteModal(city._id)} cursor={"pointer"} size={22} color='red' />
-                                </div>
+                                <p>state: {city.state}</p>
+                                <p>pincode: {city.pinCodes.map(item => item?.code).join(", ")}</p>
                             </div>
                         ))}
                     </div>

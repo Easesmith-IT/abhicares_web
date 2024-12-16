@@ -16,8 +16,8 @@
     background: red;
     overflow-x: hidden;
     width: 80%;
-    /* height: 80vh; */
-    /* overflow: auto; */
+    height: 80vh;
+    overflow-y: auto;
     padding: 20px;
     border-radius: 6px;
     background: white;

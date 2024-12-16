@@ -51,9 +51,9 @@ const Partners = () => {
   const handleFilterChange = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
-      setAllSellers(data.data);
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-seller?status=${status}`, { withCredentials: true });
       console.log("seller filtered", data);
+      setAllSellers(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -95,6 +95,13 @@ const Partners = () => {
 
   const handleSerach = async (e) => {
     const value = e.target.value;
+
+    console.log("value", value);
+
+    if (!value) {
+      getAllSellers();
+      return;
+    }
 
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials: true });
@@ -138,8 +145,10 @@ const Partners = () => {
               className={classes.input}
             >
               <option value="">Select Status</option>
-              <option value="unapproved">Unapproved</option>
-              <option value="approved">Unapproved</option>
+              <option value="IN-REVIEW">In Review</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+              <option value="HOLD">Hold</option>
             </select>
             <button onClick={() => setIsUnapprovedSellerModalOpen(true)} className={classes.button}>Unapproved Seller</button>
             <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>

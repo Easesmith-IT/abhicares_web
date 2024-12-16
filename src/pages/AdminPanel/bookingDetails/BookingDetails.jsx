@@ -18,8 +18,8 @@ const BookingDetails = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [mapData, setMapData] = useState({
     time: '',
-    distance:''
-    });
+    distance: ''
+  });
   const [totalTaxRs, setTotalTaxRs] = useState(0);
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -46,8 +46,8 @@ const BookingDetails = () => {
 
   const updateStatus = async () => {
 
-    if(status==='')return
-    
+    if (status === '') return
+
     try {
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
@@ -74,7 +74,7 @@ const BookingDetails = () => {
 
         //  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${sourceCoordinates}&destinations=${destinationCoordinates}&key=AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I`;
         const apiUrl = `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`;
-        const res = await axios.get(apiUrl,{withCredentials:true});
+        const res = await axios.get(apiUrl, { withCredentials: true });
 
         setMapData({
           distance: res?.data?.rows[0]?.elements[0]?.distance?.text,
@@ -122,20 +122,20 @@ const BookingDetails = () => {
                   <div>
                     {/* <h4>seller name</h4>
                                 <p>seller phone: 1234567890</p> */}
-                                {booking.autoAssigned && <p style={{color:'green'}}><i>Auto Assigned</i></p>}
+                    {booking.autoAssigned && <p style={{ color: 'green' }}><i>Auto Assigned</i></p>}
                     <h4>Update Status</h4>
                     <select
                       value={status}
-                      onChange={(e)=>  setStatus(() => e.target.value)}
+                      onChange={(e) => setStatus(() => e.target.value)}
                       className={classes.select}
                       name="status"
                       id="status"
                     >
                       <option value="">Select</option>
-                      <option value="alloted">Alloted</option>
+                      {/* <option value="alloted">Alloted</option> */}
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
-                      <option value="not-alloted">Not Alloted</option>
+                      {/* <option value="not-alloted">Not Alloted</option> */}
                     </select>
 
                     <button
@@ -181,11 +181,10 @@ const BookingDetails = () => {
                     <div>
                       <img
                         className={classes.img}
-                        src={`${import.meta.env.VITE_APP_IMAGE_URL}/${
-                          booking.package
+                        src={`${import.meta.env.VITE_APP_IMAGE_URL}/${booking.package
                             ? booking.package.imageUrl[0]
                             : booking.product.imageUrl[0]
-                        }`}
+                          }`}
                         alt="product"
                       />
                       <div>

@@ -7,7 +7,7 @@ const PrivateRoute = () => {
     const permissions = JSON.parse(localStorage.getItem("perm"));
     const navigate = useNavigate();
     const value = pathname.split("/admin/").join("").split("/")[0]
-    console.log("value", value);
+    console.log("permissions", permissions);
 
     if (pathname.includes("/admin/") && value && permissions && permissions[value] !== "none") {
         return <Outlet />;
