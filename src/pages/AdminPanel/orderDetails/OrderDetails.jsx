@@ -61,32 +61,34 @@ const OrderDetails = () => {
     }
 
     useEffect(() => {
-        let value = 0;
-        for (const item of state?.items) {
-            if (item?.product) {
-                value = value + Number(item.quantity * item.product.offerPrice);
+        if (state?.items && state?.items.length > 0) {
+            let value = 0;
+            for (const item of state.items) {
+                if (item?.product) {
+                    value = value + Number(item.quantity * item.product.offerPrice);
+                }
+                else {
+                    value = value + Number(item.quantity * item.package.offerPrice);
+                }
             }
-            else {
-                value = value + Number(item.quantity * item.package.offerPrice);
-            }
-        }
-        setSubTotal(() => value);
-        const taxRs = (Number(value) * 18) / 100;
-        setTotalTaxRs(taxRs);
+            setSubTotal(() => value);
+            const taxRs = (Number(value) * 18) / 100;
+            setTotalTaxRs(taxRs);
 
-        const { discountType, couponFixedValue, offPercentage, maxDiscount } = state?.couponId || {};
+            const { discountType, couponFixedValue, offPercentage, maxDiscount } = state?.couponId || {};
 
-        if (state?.couponId) {
-            if (discountType === "fixed") {
-                setDiscount(couponFixedValue);
-                setSubTotal((prev) => prev - Number(couponFixedValue));
-            }
-            else {
-                let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
-                offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
-                console.log("offerTotal", offerTotal);
-                setDiscount(offerTotal);
-                setSubTotal((prev) => prev - Number(offerTotal));
+            if (state?.couponId) {
+                if (discountType === "fixed") {
+                    setDiscount(couponFixedValue);
+                    setSubTotal((prev) => prev - Number(couponFixedValue));
+                }
+                else {
+                    let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
+                    offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
+                    console.log("offerTotal", offerTotal);
+                    setDiscount(offerTotal);
+                    setSubTotal((prev) => prev - Number(offerTotal));
+                }
             }
         }
     }, [state?.orderValue, state?.couponId, totalTaxRs, navigate]);
