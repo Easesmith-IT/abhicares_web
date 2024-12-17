@@ -15,7 +15,7 @@ const OrderDetails = () => {
     const [discount, setDiscount] = useState(0);
     const navigate = useNavigate();
     const [state, setState] = useState(stateData || "");
-    const [status, setStatus] = useState(state?.status);
+    const [status, setStatus] = useState(stateData?.status);
     const { id } = useParams();
     console.log(state);
 
