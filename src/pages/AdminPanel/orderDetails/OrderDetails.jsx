@@ -32,7 +32,7 @@ const OrderDetails = () => {
 
             setState(data.data);
             setIsLoading(false)
-            setStatus(data.data.status);
+            setStatus(data?.data?.status);
         } catch (error) {
             console.log(error);
         }
