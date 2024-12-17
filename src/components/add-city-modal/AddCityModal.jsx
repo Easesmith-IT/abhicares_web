@@ -75,6 +75,13 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
             }
         }
     }
+
+    const handleRemovePincode = (code)=> {
+        let pincodesArr = [...pinCodes];
+        let filteredPincodes = pincodesArr.filter((pincode)=> pincode.code !== code)
+        setPinCodes(filteredPincodes);
+    }
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>
@@ -100,9 +107,18 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                             <button onClick={handelAddPincode} type='button' className={classes.button}>Add Pincode</button>
                         </div>
 
-                        {pinCodes.length > 0 && <div className={classes.pincodes}>
-                            Added Pincodes: {pinCodes.map((pincode) => pincode?.code).join(", ")}
-                        </div>}
+                        {pinCodes.length > 0 &&
+                            <div>
+                                <p className={classes.pincodes_heading}>Added Pincodes:</p>
+                                <div className={classes.pincodes}>
+                                    {pinCodes.map((pincode) =>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                            <p>{pincode?.code}</p>
+                                            <RxCross2 onClick={() => handleRemovePincode(pincode.code)} style={{color:"red"}} cursor={"pointer"} />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>}
                     </div>
                     <div className={classes.button_wrapper}>
                         <button className={classes.button}>{city ? "Update" : "Add"}</button>

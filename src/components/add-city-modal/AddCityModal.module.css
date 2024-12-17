@@ -69,3 +69,7 @@
     grid-template-columns: 72% 26%;
     gap: 2%;
 }
+
+.pincodes_heading{
+    margin-top: 20px;
+}
