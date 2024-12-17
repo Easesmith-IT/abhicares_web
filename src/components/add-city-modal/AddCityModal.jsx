@@ -76,10 +76,10 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         }
     }
 
-    const handleRemovePincode = (code)=> {
+    const handleRemovePincode = (i) => {
         let pincodesArr = [...pinCodes];
-        let filteredPincodes = pincodesArr.filter((pincode)=> pincode.code !== code)
-        setPinCodes(filteredPincodes);
+        pincodesArr.splice(i, 1);
+        setPinCodes(pincodesArr);
     }
 
     return (
@@ -111,10 +111,10 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                             <div>
                                 <p className={classes.pincodes_heading}>Added Pincodes:</p>
                                 <div className={classes.pincodes}>
-                                    {pinCodes.map((pincode) =>
+                                    {pinCodes.map((pincode, i) =>
                                         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                             <p>{pincode?.code}</p>
-                                            <RxCross2 onClick={() => handleRemovePincode(pincode.code)} style={{color:"red"}} cursor={"pointer"} />
+                                            <RxCross2 onClick={() => handleRemovePincode(i)} style={{ color: "red" }} cursor={"pointer"} />
                                         </div>
                                     )}
                                 </div>
