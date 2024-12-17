@@ -30,7 +30,7 @@ const OrderDetails = () => {
             );
             console.log("Order details", data);
 
-            setState(data.data);
+            setState(data?.data);
             setIsLoading(false)
             setStatus(data?.data?.status);
         } catch (error) {
@@ -91,7 +91,7 @@ const OrderDetails = () => {
                 }
             }
         }
-    }, [state?.orderValue, state?.couponId, totalTaxRs, navigate]);
+    }, [state?.orderValue, state?.couponId, state, state?.items, totalTaxRs, navigate]);
 
 
     return (
