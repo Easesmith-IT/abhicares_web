@@ -7,26 +7,34 @@ import { FaSearch } from "react-icons/fa";
 import Loader from "../../../components/loader/Loader";
 import { format } from "date-fns";
 import MonthlyOrderModal from "../../../components/monthly-order-modal/MonthlyOrderModal";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 
 const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateYearInfo, setDateYearInfo] = useState("");
   const [monthlyOrders, setMonthlyOrders] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchMessage,setSearchMessage] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchMessage, setSearchMessage] = useState(null)
+  const [pageCount, setPageCount] = useState(1);
+  const [page, setPage] = useState(1);
 
   const searchRef = useRef();
 
   const navigate = useNavigate();
 
+  const handlePageClick = async (page) => {
+    setPage(page);
+  };
+
   const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-orders`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-orders?page=${page}`,
         { withCredentials: true }
       );
       setAllOrders(data.data);
+      setPageCount(Number(data?.totalPage))
       console.log("allOrders", data);
     } catch (error) {
       console.log(error);
@@ -37,29 +45,29 @@ const Orders = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, []);
+  }, [page]);
 
   const getOrderById = async () => {
     try {
       const orderId = searchRef.current.value;
-        if (!orderId) {
-            getAllOrders();
-           return; 
-        } 
-        
+      if (!orderId) {
+        getAllOrders();
+        return;
+      }
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-order-by-id?orderId=${orderId}`,
         { withCredentials: true }
-        );
-        
-        console.log('orderbyid',data)
+      );
+
+      console.log('orderbyid', data)
       setAllOrders([data.data]);
     } catch (error) {
-        console.log(error);
-        if (error?.response?.status === 404) {
-            // setSearchMessage('No order found')
-             setAllOrders([]);
-        }
+      console.log(error);
+      if (error?.response?.status === 404) {
+        // setSearchMessage('No order found')
+        setAllOrders([]);
+      }
     }
   };
 
@@ -150,15 +158,14 @@ const Orders = () => {
                     {format(new Date(order.createdAt), "dd-MM-yyyy")}
                   </h3>
                   <h3
-                    className={`${classes["t-op-nextlvl"]} ${classes.status} ${
-                      order.status === "Cancelled"
-                        ? classes.Cancelled
-                        : order.status === "Completed"
+                    className={`${classes["t-op-nextlvl"]} ${classes.status} ${order.status === "Cancelled"
+                      ? classes.Cancelled
+                      : order.status === "Completed"
                         ? classes.Completed
                         : order.status === "pending"
-                        ? classes.pending
-                        : classes.OutOfDelivery
-                    }`}
+                          ? classes.pending
+                          : classes.OutOfDelivery
+                      }`}
                   >
                     {order.status}
                   </h3>
@@ -179,6 +186,15 @@ const Orders = () => {
                   </h3>
                 </div>
               ))}
+            </div>
+
+            <div style={{ marginTop: "100px" }}>
+              <PaginationControl
+                changePage={handlePageClick}
+                limit={10}
+                page={page}
+                total={pageCount + "0"}
+              />
             </div>
           </div>
         </div>
