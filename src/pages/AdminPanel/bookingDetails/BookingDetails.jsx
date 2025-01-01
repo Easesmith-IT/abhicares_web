@@ -148,14 +148,14 @@ const BookingDetails = () => {
                   </div>
                   <div>
                     <p>
-                      booking date:{" "}
-                      {format(new Date(booking.createdAt), "dd-MM-yyyy")}
-                    </p>
-                    <p>
-                      date of appointment:{" "}
+                      Date of Booking:{" "}
                       {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
                     </p>
-                    <p>time of appointment: {booking.bookingTime}</p>
+                    {/* <p>
+                      date of appointment:{" "}
+                      {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
+                    </p> */}
+                    <p>Time of Booking: {booking.bookingTime && format(new Date(booking?.bookingTime),"hh:mm aa")}</p>
                     {(!booking.sellerId || status === "not-alloted") && (
                       <button
                         onClick={handlePartnerModal}

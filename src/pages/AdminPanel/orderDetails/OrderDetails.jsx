@@ -111,9 +111,9 @@ const OrderDetails = () => {
                             </select>
                         </div>
                         <div>
-                            <p>order date: {state?.createdAt && format(new Date(state?.createdAt), "dd-MM-yyyy")}</p>
-                            <p>date of appointment: 07/12/2023</p>
-                            <p>time of appointment: 12:00</p>
+                            <p>Date of Order: {state?.createdAt && format(new Date(state?.createdAt), "dd-MM-yyyy")}</p>
+                            {/* <p>date of appointment: 07/12/2023</p> */}
+                            <p>Time of Order: {state?.createdAt && format(new Date(state?.createdAt),"hh:mm aa")}</p>
                         </div>
                     </div>
                     {/* <h5 className={classes.heading}>Packages</h5>
