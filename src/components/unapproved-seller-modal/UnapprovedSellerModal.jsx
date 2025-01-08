@@ -79,7 +79,7 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen,getSellers }) =>
                                 <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>{seller.category}</h3>
                                 <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>{seller.phone}</h3>
                                 <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>
-                                    {seller.status === "in-review" ?
+                                    {seller.status === "IN-REVIEW" ?
                                         <button onClick={() => handleOnChange(seller._id)} className={unapprovedSellerModalClasses.button}>Approve</button>
                                         : <p>Approved</p>
                                     }

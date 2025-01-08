@@ -110,6 +110,10 @@ const BookingDetails = () => {
   const handlePartnerModal = () => {
     setIsPartnerModalOpen(true);
   };
+  let localTime = booking?.bookingTime && new Date(booking?.bookingTime);
+  let hours = localTime && localTime?.getHours();
+  console.log("hours",hours);
+  
 
   return (
     <>
@@ -155,7 +159,7 @@ const BookingDetails = () => {
                       date of appointment:{" "}
                       {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
                     </p> */}
-                    <p>Time of Booking: {booking.bookingTime && format(new Date(booking?.bookingTime),"hh:mm aa")}</p>
+                    <p>Time of Booking: {booking.bookingTime && format(new Date(booking?.bookingTime), "hh:mm aa")}</p>
                     {(!booking.sellerId || status === "not-alloted") && (
                       <button
                         onClick={handlePartnerModal}
@@ -182,8 +186,8 @@ const BookingDetails = () => {
                       <img
                         className={classes.img}
                         src={`${import.meta.env.VITE_APP_IMAGE_URL}/${booking.package
-                            ? booking.package.imageUrl[0]
-                            : booking.product.imageUrl[0]
+                          ? booking.package.imageUrl[0]
+                          : booking.product.imageUrl[0]
                           }`}
                         alt="product"
                       />

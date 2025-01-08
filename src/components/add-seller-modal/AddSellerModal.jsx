@@ -153,6 +153,9 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             || !contactPerson.email
             || !contactPerson.phone
         ) {
+            toast.error("Please fill all the fields");
+            console.log("seller",sellerInfo);
+            
             return;
         }
         const allData = {
