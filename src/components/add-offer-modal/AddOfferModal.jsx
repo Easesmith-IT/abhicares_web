@@ -91,12 +91,13 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
 
-        const { name, offPercentage, type, offerValue, upTo } = offerInfo;
+        const { name, offPercentage, type, offerValue, upTo,noOfTimesPerUser } = offerInfo;
 
         const isOfferMissing =
             !name ||
-            !offPercentage ||
             !type ||
+            !noOfTimesPerUser ||
+            allCategories.length === 0 ||
             (type === "percentage" ? !offPercentage || !upTo : !offerValue);
 
         const isDescriptionMissing = !description;

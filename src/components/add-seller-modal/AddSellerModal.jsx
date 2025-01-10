@@ -145,6 +145,8 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             || !sellerInfo.phone
             || !sellerInfo.password
             || !sellerInfo.categoryId
+            || !coordinates.latitude
+            || !coordinates.longitude
             || !address.addressLine
             || !address.city
             || !address.pincode
@@ -154,8 +156,8 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             || !contactPerson.phone
         ) {
             toast.error("Please fill all the fields");
-            console.log("seller",sellerInfo);
-            
+            console.log("seller", sellerInfo);
+
             return;
         }
         const allData = {
