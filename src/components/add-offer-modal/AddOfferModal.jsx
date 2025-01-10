@@ -91,13 +91,13 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
 
-        const { name, offPercentage, type, offerValue, upTo,noOfTimesPerUser } = offerInfo;
+        const { name, offPercentage, type, offerValue, upTo,noOfTimesPerUser,categoryType } = offerInfo;
 
         const isOfferMissing =
             !name ||
             !type ||
             !noOfTimesPerUser ||
-            allCategories.length === 0 ||
+            selectedItems.length === 0 ||
             (type === "percentage" ? !offPercentage || !upTo : !offerValue);
 
         const isDescriptionMissing = !description;
@@ -114,7 +114,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
 
         if (offer) {
             try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, fixedCouponValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id }, { withCredentials: true });
+                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id }, { withCredentials: true });
 
                 toast.success("Offer updated successfully");
                 getAllOffers();
@@ -131,7 +131,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                     toast.error('Please enter valid coupon code');
                     return;
                 }
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, fixedCouponValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage }, { withCredentials: true });
+                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage }, { withCredentials: true });
                 console.log("add offer res", data);
                 toast.success("Offer added successfully");
                 getAllOffers();
