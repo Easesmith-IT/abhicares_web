@@ -81,6 +81,7 @@ import SendNotifications from "./pages/AdminPanel/SendNotifications";
 import Reviews from "./pages/AdminPanel/reviews/Reviews";
 import HelpCenterTicketDetails from "./pages/AdminPanel/helpCenter/HelpCenterTicketDetails";
 import ProductInfo from "./components/product-info-modal/ProductInfo";
+import MangageComision from "./pages/AdminPanel/settings/MangageComision";
 
 
 
@@ -219,6 +220,7 @@ function App() {
             <Route path="/admin/services" element={<Services />} />
             <Route path="/admin/payments" element={<Payments />} />
             <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/settings/manage-comision" element={<MangageComision />} />
             <Route path="/admin/reviews" element={<Reviews />} />
 
             <Route

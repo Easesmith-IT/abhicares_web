@@ -12,6 +12,7 @@ import useAuthorization from "../../../hooks/useAuthorization";
 import Loader from "../../../components/loader/Loader";
 import UpdateReferEarnModal from "../../../components/update-refer-and-earn-modal/UpdateRefer&EarnModal";
 import DeleteModal from "../../../components/deleteModal/DeleteModal";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +26,7 @@ const Settings = () => {
   const [isUpdateReferAndEarnModalOpen, setIsUpdateReferAndEarnModalOpen] = useState(false);
 
   const { checkAuthorization } = useAuthorization();
+  const navigate = useNavigate();
 
   const handleUpdateModal = (data) => {
     setSubadmin(data);
@@ -102,6 +104,12 @@ const Settings = () => {
                 className={classes.button}
               >
                 Update Password
+              </button>
+              <button
+                onClick={() => navigate("/admin/settings/manage-comision")}
+                className={classes.button}
+              >
+                Manage Comision
               </button>
             </div>
           </div>
