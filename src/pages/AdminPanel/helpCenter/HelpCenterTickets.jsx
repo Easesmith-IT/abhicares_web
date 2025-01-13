@@ -160,7 +160,7 @@ const HelpCenterTickets = () => {
                 onChange={handleFilterChange}
                 className={classes.filter_input}
               >
-                <option value="">Select</option>
+                <option value="">Select Service Category</option>
                 {allCategories?.map((item) => (
                   <option key={item?._id} value={item?._id}>{item?.name}</option>
                 ))}

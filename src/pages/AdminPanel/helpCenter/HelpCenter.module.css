@@ -132,16 +132,16 @@
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    color: white;
+    color: white !important;
 }
 
 
 .faqs {
     /* border:2px solid green; */
-    background-color: #5500cb;
     padding: 80px 100px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    color: white;
+    background-color: #5500cb;
+    color: white !important;
 }

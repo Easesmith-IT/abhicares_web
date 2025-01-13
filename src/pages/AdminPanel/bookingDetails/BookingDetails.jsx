@@ -112,8 +112,8 @@ const BookingDetails = () => {
   };
   let localTime = booking?.bookingTime && new Date(booking?.bookingTime);
   let hours = localTime && localTime?.getHours();
-  console.log("hours",hours);
-  
+  console.log("hours", hours);
+
 
   return (
     <>
@@ -124,31 +124,37 @@ const BookingDetails = () => {
               <div className={classes.left_div}>
                 <div className={classes.info}>
                   <div>
+                    <h4>Booking Id: {booking?.bookingId}</h4>
                     {/* <h4>seller name</h4>
                                 <p>seller phone: 1234567890</p> */}
                     {booking.autoAssigned && <p style={{ color: 'green' }}><i>Auto Assigned</i></p>}
-                    <h4>Update Status</h4>
-                    <select
-                      value={status}
-                      onChange={(e) => setStatus(() => e.target.value)}
-                      className={classes.select}
-                      name="status"
-                      id="status"
-                    >
-                      <option value="">Select</option>
-                      {/* <option value="alloted">Alloted</option> */}
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                      {/* <option value="not-alloted">Not Alloted</option> */}
-                    </select>
+                    <div style={{ display: "flex", alignItems: "start", gap: "10px" }}>
+                      <h4>Update Status</h4>
+                      <select
+                        value={status}
+                        onChange={(e) => setStatus(() => e.target.value)}
+                        className={classes.select}
+                        name="status"
+                        id="status"
+                      >
+                        <option value="">Select</option>
+                        {/* <option value="alloted">Alloted</option> */}
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                        {/* <option value="not-alloted">Not Alloted</option> */}
+                      </select>
 
-                    <button
-                      onClick={updateStatus}
-                      className={classes.button}
-                      style={{ marginLeft: "10px" }}
-                    >
-                      Update
-                    </button>
+                      <button
+                        onClick={updateStatus}
+                        className={classes.button}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Update
+                      </button>
+                    </div>
+                    <p style={{marginTop:"10px"}}>Payment Status: {booking?.paymentStatus}</p>
+                    <p style={{marginTop:"10px"}}>Refund Amount: {booking?.refundInfo?.amount}</p>
+                    <p style={{marginTop:"10px"}}>Refund Status: {booking?.refundInfo?.status}</p>
                   </div>
                   <div>
                     <p>

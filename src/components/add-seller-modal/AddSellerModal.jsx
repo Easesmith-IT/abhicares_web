@@ -20,7 +20,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         phone: seller?.phone || "",
         password: seller?.password || "",
         categoryId: seller?.categoryId?._id || "",
-        services: seller?.services || [],
+        services: seller?.services?.map((service)=> ({ serviceId: service?.serviceId?._id, name:service?.serviceId?.name })) || [],
         status: seller?.status
     });
 
@@ -48,20 +48,24 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
     const handleServiceOnChange = (e, name) => {
         const { value, checked } = e.target;
+        console.log("value: " + value);
+        
         if (checked) {
             setSellerInfo({ ...sellerInfo, services: [...sellerInfo.services, { serviceId: value, name }] })
         }
         else {
-            const filtered = sellerInfo.services.filter((service) => service.serviceId._id !== value);
+            const filtered = sellerInfo.services.filter((service) => service.serviceId !== value);
+            console.log("filtered",filtered);
+            
             setSellerInfo({ ...sellerInfo, services: filtered })
         }
     }
 
-    const handleRemoveService = (id) => {
-        console.log("id", id);
-        const filtered = sellerInfo.services.filter((service) => service.serviceId._id !== id);
-        setSellerInfo({ ...sellerInfo, services: filtered })
-    }
+    // const handleRemoveService = (id) => {
+    //     console.log("id", id);
+    //     const filtered = sellerInfo.services.filter((service) => service.serviceId !== id);
+    //     setSellerInfo({ ...sellerInfo, services: filtered })
+    // }
 
     const handleContactPersonOnChange = (e) => {
         const { name, value } = e.target;
@@ -114,6 +118,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
 
     console.log("seller state", sellerInfo);
+    console.log("contactPerson state", contactPerson);
 
     const handleLocationClick = () => {
         if (navigator.geolocation) {
@@ -145,6 +150,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             || !sellerInfo.phone
             || !sellerInfo.password
             || !sellerInfo.categoryId
+            || sellerInfo.services.length === 0
             || !coordinates.latitude
             || !coordinates.longitude
             || !address.addressLine
@@ -257,15 +263,15 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                         <input className={classes.input} onChange={handleOnChange} value={address.pincode} type="text" name="pincode" id="pincode" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="name">Contact Person Name</label>
+                        <label htmlFor="contactPersonName">Contact Person Name</label>
                         <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.name} type="text" name="name" id="name" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="phone">Contact Person Phone</label>
+                        <label htmlFor="contactPersonPhone">Contact Person Phone</label>
                         <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.phone} type="text" name="phone" id="phone" />
                     </div>
                     <div className={classes.input_container}>
-                        <label htmlFor="email">Contact Person Email</label>
+                        <label htmlFor="contactPersonEmail">Contact Person Email</label>
                         <input className={classes.input} onChange={handleContactPersonOnChange} value={contactPerson.email} type="email" name="email" id="email" />
                     </div>
                     <div className={classes.input_container}>
@@ -290,28 +296,26 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                     </div>
                     {sellerInfo.categoryId && <div className={classes.input_container}>
                         <label htmlFor="servicesId">Services</label>
-                        <div onClick={() => setIsMultiSelectOpen(!isMultiSelectOpen)} className={`${classes.input} ${classes.d_flex}`}>
+                        {/* <div onClick={() => setIsMultiSelectOpen(!isMultiSelectOpen)} className={`${classes.input} ${classes.d_flex}`}>
                             select service
                             <IoIosArrowDown />
+                        </div> */}
+                        <div className={classes.multi_select}>
+                            {allCategoryServices?.map((service) => (
+                                <div key={service._id} className={classes.d_flex}>
+                                    <label htmlFor={service.name}>{service.name}</label>
+                                    <input style={{ width: "20px", height: "20px" }} checked={sellerInfo.services.some((item) => item?.serviceId?._id ? item.serviceId._id === service._id : item.serviceId === service._id)} onChange={(e) => handleServiceOnChange(e, service.name)} type="checkbox" value={service._id} name={service.name} id={service.name} />
+                                </div>
+                            ))}
                         </div>
-                        {isMultiSelectOpen &&
-                            <div className={classes.multi_select}>
-                                {allCategoryServices?.map((service) => (
-                                    <div key={service._id} className={classes.d_flex}>
-                                        <label htmlFor={service.name}>{service.name}</label>
-                                        <input checked={sellerInfo.services.some((item) => item?.serviceId?._id ? item.serviceId._id === service._id : item.serviceId === service._id)} onChange={(e) => handleServiceOnChange(e, service.name)} type="checkbox" value={service._id} name={service.name} id={service.name} />
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        <div className={classes.service_container}>
+                        {/* <div className={classes.service_container}>
                             {sellerInfo.services.length > 0 && sellerInfo.services.map((item) => (
                                 <span key={item.name} className={classes.service}>
                                     {item?.name ? item.name : item.serviceId.name}
                                     <MdClose cursor={"pointer"} size={20} onClick={() => handleRemoveService(item.serviceId._id)} />
                                 </span>
                             ))}
-                        </div>
+                        </div> */}
                     </div>}
                     <div className={classes.input_container}>
                         <label htmlFor="latitude">Latitude</label>

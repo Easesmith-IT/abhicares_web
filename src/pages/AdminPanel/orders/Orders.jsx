@@ -19,6 +19,16 @@ const Orders = () => {
   const [pageCount, setPageCount] = useState(1);
   const [page, setPage] = useState(1);
 
+  const [filters, setFilters] = useState({
+    date: "",
+    status: "",
+  });
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({ ...filters, [name]: value });
+  };
+
   const searchRef = useRef();
 
   const navigate = useNavigate();
@@ -105,6 +115,26 @@ const Orders = () => {
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
             <h1 className={classes["recent-Articles"]}>Orders</h1>
+            <input
+              type="date"
+              name="date"
+              value={filters.date}
+              onChange={handleFilterChange}
+              className={classes.filter_input}
+            />
+
+            <select
+              name="status"
+              value={filters.status}
+              onChange={handleFilterChange}
+              className={classes.filter_input}
+            >
+              <option value="">Select Status</option>
+              <option value="Pending">Pending</option>
+              <option value="OutOfDelivery">OutOfDelivery</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
             <div className="d-flex" style={{ position: "relative" }}>
               <input
                 ref={searchRef}
@@ -141,6 +171,7 @@ const Orders = () => {
 
           <div className={classes["report-body"]}>
             <div className={classes["report-topic-heading"]}>
+              <h3 className={classes["t-op"]} style={{ width: "200px" }}>Order Id</h3>
               <h3 className={classes["t-op"]}>Order Date</h3>
               <h3 className={`${classes["t-op"]}`}>Status</h3>
               <h3 className={`${classes["t-op"]}`}>Order Value</h3>
@@ -154,6 +185,7 @@ const Orders = () => {
 
               {allOrders?.map((order, i) => (
                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
+                  <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "200px" }}>{order.orderId}</h3>
                   <h3 className={classes["t-op-nextlvl"]}>
                     {format(new Date(order.createdAt), "dd-MM-yyyy")}
                   </h3>
@@ -170,7 +202,7 @@ const Orders = () => {
                     {order.status}
                   </h3>
                   <h3 className={`${classes["t-op-nextlvl"]}`}>
-                    {order.orderValue}
+                  ₹{order.orderValue}
                   </h3>
                   <h3 className={classes["t-op-nextlvl"]}>
                     <button

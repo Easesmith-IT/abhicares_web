@@ -157,7 +157,7 @@ const SellerAssignedOrders = () => {
                             <p><b>Gst Number:</b> {state?.gstNumber}</p>
                             <p><b>Phone</b>: {state?.phone}</p>
                             <p><b>Legal Name:</b> {state?.legalName}</p>
-                            <p><b>Status:</b> <span className={`${classes.status} ${state.status === "active" ? sellerAssignedOrdersClasses.active : sellerAssignedOrdersClasses.inactive}`}>{state.status}</span>
+                            <p><b>Status:</b> <span className={`${classes.status} ${state.status === "APPROVED" ? sellerAssignedOrdersClasses.active : sellerAssignedOrdersClasses.inactive}`}>{state.status}</span>
                                 <select onChange={(e) => setPartnerStatus(e.target.value)} value={partnerstatus} className={sellerAssignedOrdersClasses.select} name="partnerstatus" id="partnerstatus">
                                     <option value="IN-REVIEW">In Review</option>
                                     <option value="APPROVED">Approved</option>
@@ -209,7 +209,7 @@ const SellerAssignedOrders = () => {
 
                                     {sellerOrders?.map((order) => (
                                         <div key={order._id} className={sellerAssignedOrdersClasses.item1}>
-                                            <h3 className={classes["t-op-nextlvl"]}>{order._id}</h3>
+                                            <h3 className={classes["t-op-nextlvl"]}>{order.orderId}</h3>
                                             <h3 className={classes["t-op-nextlvl"]} style={{ width: "110px", textAlign: "center" }}>{order.orderValue}</h3>
                                             <h3 className={`${classes["t-op-nextlvl"]} ${sellerAssignedOrdersClasses.status}`}>{order.status}</h3>
                                             <button onClick={() => handleSellerOrderInfoModal(order)} className={classes.button} style={{ color: "#2599ff" }}>View Details</button>

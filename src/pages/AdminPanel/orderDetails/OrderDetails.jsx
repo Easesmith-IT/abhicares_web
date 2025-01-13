@@ -113,9 +113,14 @@ const OrderDetails = () => {
                         <div>
                             <p>Date of Order: {state?.createdAt && format(new Date(state?.createdAt), "dd-MM-yyyy")}</p>
                             {/* <p>date of appointment: 07/12/2023</p> */}
-                            <p>Time of Order: {state?.createdAt && format(new Date(state?.createdAt),"hh:mm aa")}</p>
+                            <p>Time of Order: {state?.createdAt && format(new Date(state?.createdAt), "hh:mm aa")}</p>
+                            <p>Payment Type: {state?.paymentType}</p>
+                            <p>No of Left Bookings: {state?.No_of_left_bookings}</p>
+                            <p>Refund Amount: {state?.refundInfo?.amount}</p>
+                            <p>Refund Status: {state?.refundInfo?.status}</p>
                         </div>
                     </div>
+                    <p style={{marginTop:"20px"}}>Admin Comment: {state?.adminComment}</p>
                     {/* <h5 className={classes.heading}>Packages</h5>
                     <div className={classes.container}>
                         <div className={classes.item}>

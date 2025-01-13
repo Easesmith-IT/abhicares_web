@@ -22,7 +22,7 @@ const SellerOrderInfoModal = ({ setSellerOrderInfoModal, sellerOrder }) => {
             </div>
             <div className={classes.contianer}>
               <p>
-                <b>Order Id:</b> {sellerOrder?._id}
+                <b>Order Id:</b> {sellerOrder?.orderId}
               </p>
               <p>
                 <b>Booking Date:</b>{" "}

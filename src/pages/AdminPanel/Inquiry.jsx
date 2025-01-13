@@ -12,6 +12,7 @@ import Loader from '../../components/loader/Loader';
 import { MdDelete } from 'react-icons/md';
 import Wrapper from '../Wrapper';
 import useAuthorization from '../../hooks/useAuthorization';
+import { FaSearch } from 'react-icons/fa';
 
 const Enquiry = () => {
     const { checkAuthorization } = useAuthorization();
@@ -68,6 +69,29 @@ const Enquiry = () => {
                 <div className={classes["report-container"]}>
                     <div className={classes["report-header"]}>
                         <h1 className={classes["recent-Articles"]}>Enquiries</h1>
+                        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+                            <div className="d-flex" style={{ position: "relative" }}>
+                                <input
+                                    style={{
+                                        width: "400px",
+                                        padding: "5px 10px",
+                                        paddingRight:"25px",
+                                        borderRadius: "5px",
+                                    }}
+                                    type="text"
+                                    placeholder="search enquiry by name, phone and city"
+                                />
+                                <FaSearch
+                                    onClick={() => { }}
+                                    style={{
+                                        position: "absolute",
+                                        right: "8px",
+                                        top: "10px",
+                                        cursor: "pointer",
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div className={classes["report-body"]}>

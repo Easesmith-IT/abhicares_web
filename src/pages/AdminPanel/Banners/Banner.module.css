@@ -1,37 +1,37 @@
-.container{
-/* border: 2px solid; */
-width: 75%;
-margin: 0 auto;
-display: flex;
-justify-content: space-around;
-align-items: center;
+.container {
+    /* border: 2px solid; */
+    width: 75%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
-.appBanner{
-/* border: 2px solid red; */
-background-color: rgb(208, 125, 125);
-padding: 80px 100px;
-font-size: 1.2rem;
-font-weight:bold;
-cursor: pointer;
-color: black;
+.appBanner {
+    /* border: 2px solid red; */
+    padding: 80px 100px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #5500cb;
+    color: white !important;
 }
 
 
-.websiteBanner{
-/* border:2px solid green; */
-background-color: rgb(91, 240, 91);
-padding: 80px 100px;
-font-size: 1.2rem;
-font-weight:bold;
-cursor: pointer;
-color: black;
+.websiteBanner {
+    /* border:2px solid green; */
+    padding: 80px 100px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #5500cb;
+    color: white !important;
 }
 
 
 /* App Banner and Website Banner styles */
 
-.parentContainer{
+.parentContainer {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -42,14 +42,13 @@ color: black;
 }
 
 
-.pageBanner{
-/* border:2px solid green; */
-background-color: rgb(91, 180, 240);
-padding: 80px 100px;
-font-size: 1.2rem;
-font-weight:bold;
-cursor: pointer;
-color: black;
+.pageBanner {
+    padding: 80px 100px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #5500cb;
+    color: white !important;
 }
 
 /* app pages stylings  */
@@ -57,16 +56,16 @@ color: black;
 
 
 
-.imagesContainer{
+.imagesContainer {
     /* border: 2px solid; */
     display: flex;
     width: 90%;
     margin: 0 auto;
     flex-wrap: wrap;
-    padding: 30px ;
+    padding: 30px;
 }
 
-.imageWrapper{
+.imageWrapper {
     border: 1px solid grey;
     width: 30%;
     margin: 0 12px;
@@ -75,22 +74,22 @@ color: black;
 
 .imageWrapper img {
     width: 100%;
-    height:  400px;
+    height: 400px;
 }
 
-.otherBanners{
+.otherBanners {
     display: flex;
     flex-direction: column;
     /* border: 2px solid; */
 }
 
-.bannerFooter{
+.bannerFooter {
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
 }
 
-.bannerContainer{
+.bannerContainer {
     border: 1px solid grey;
     width: 70%;
     margin: 20px auto;
@@ -99,5 +98,5 @@ color: black;
 
 .bannerContainer img {
     width: 100%;
-    height:  300px;
+    height: 300px;
 }

@@ -33,7 +33,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
 
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper1}>
             <div className={classes.modal}>
                 <div className={classes.heading_container}>
                     <h4>Review Details</h4>
