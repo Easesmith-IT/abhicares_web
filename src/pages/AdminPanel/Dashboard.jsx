@@ -11,6 +11,7 @@ import Wrapper from "../Wrapper";
 import { format } from "date-fns";
 import Loader from "../../components/loader/Loader";
 import axios from "axios";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 
 const AdminPage = () => {
   const navigate = useNavigate()
@@ -18,10 +19,16 @@ const AdminPage = () => {
   const [allOrders, setAllOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
-    date: "",
+    startDate: "",
+    endDate: "",
     status: "",
   });
+  const [pageCount, setPageCount] = useState(1);
+  const [page, setPage] = useState(1);
 
+  const handlePageClick = async (page) => {
+    setPage(page);
+  };
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
@@ -33,10 +40,11 @@ const AdminPage = () => {
   const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-recent-orders`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-recent-orders?page=${page}&status=${filters.status}`,
         { withCredentials: true }
       );
       setAllOrders(data.data);
+      setPageCount(Number(data?.pagination?.totalPages))
       console.log("allOrders", data);
     } catch (error) {
       console.log(error);
@@ -47,9 +55,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, [])
-
-
+  }, [filters.status, page, filters.startDate, filters.endDate])
 
 
   return (
@@ -64,14 +70,6 @@ const AdminPage = () => {
             <button onClick={handleOnSubmit}>Submit</button>
           </div> */}
             <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-              <input
-                type="date"
-                name="date"
-                value={filters.date}
-                onChange={handleFilterChange}
-                className={classes.filter_input}
-              />
-
               <select
                 name="status"
                 value={filters.status}
@@ -113,6 +111,14 @@ const AdminPage = () => {
                   </h3>
                 </div>
               ))}
+            </div>
+            <div style={{ marginTop: "20px" }}>
+              <PaginationControl
+                changePage={handlePageClick}
+                limit={10}
+                page={page}
+                total={pageCount + "0"}
+              />
             </div>
           </div>
         </div>

@@ -72,3 +72,9 @@
     border: 1px solid black;
     text-align: center;
 }
+
+.d_flex{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}

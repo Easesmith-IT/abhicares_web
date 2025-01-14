@@ -1,13 +1,12 @@
 import axios from 'axios';
-import Wrapper from '../../Wrapper'
+import Wrapper from '../../Wrapper';
 // import classes from './Bookings.module.css'
-import classes from "../Shared.module.css";
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import Loader from '../../../components/loader/Loader';
 import { format } from 'date-fns';
-import MonthlyOrderModal from '../../../components/monthly-order-modal/MonthlyOrderModal';
+import { useEffect, useRef, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../../../components/loader/Loader';
+import classes from "../Shared.module.css";
 
 const Bookings = () => {
     const [allBookings, setAllBookings] = useState([])
@@ -16,6 +15,9 @@ const Bookings = () => {
         date: "",
         status: "",
     });
+
+    console.log("filters", filters);
+
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -45,7 +47,50 @@ const Bookings = () => {
         getAllBookings();
     }, [])
 
-    const getOrderById = () => { }
+    const filterBookings = async () => {
+        try {
+            const { data } = await axios.get(
+                `${import.meta.env.VITE_APP_ADMIN_API_URL}/search-filter-bookings?status=${filters.status}&bookingDate=${filters.date}`,
+                { withCredentials: true }
+            );
+
+            setAllBookings(data.data);
+            console.log("filterBookings", data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (filters.date || filters.status) {
+            filterBookings();
+        }
+    }, [filters.date, filters.status])
+
+    const getOrderById = async () => {
+        try {
+            const orderId = searchRef.current.value;
+            if (!orderId) {
+                getAllBookings();
+                return;
+            }
+
+            const { data } = await axios.get(
+                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-booking-by-id?bookingId=${orderId}`,
+                { withCredentials: true }
+            );
+
+            console.log('bookingId data', data)
+            setAllBookings(data.data);
+        } catch (error) {
+            console.log(error);
+            if (error?.response?.status === 404) {
+                setAllBookings([]);
+            }
+        }
+    };
 
     return (
         <>
@@ -92,10 +137,10 @@ const Bookings = () => {
                                 className={classes.filter_input}
                             >
                                 <option value="">Select Status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="OutOfDelivery">OutOfDelivery</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="alloted">Alloted</option>
+                                <option value="completed">Completed</option>
+                                <option value="not-alloted">Not Alloted</option>
                             </select>
                         </div>
                     </div>
@@ -119,7 +164,7 @@ const Bookings = () => {
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
                                     <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "200px" }}>{order.bookingId}</h3>
                                     {/* <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "200px" }}>{order.orderId}</h3> */}
-                                    <h3 className={classes["t-op-nextlvl"]}><span style={{ color: 'green' }}>{order.autoAssigned && 'auto'}</span> {format(new Date(order.createdAt), "dd-MM-yyyy")}</h3>
+                                    <h3 className={classes["t-op-nextlvl"]}><span style={{ color: 'green' }}>{order.autoAssigned && 'auto'}</span> {format(new Date(order?.bookingDate), "dd-MM-yyyy")}</h3>
 
                                     <h3 className={`${classes["t-op-nextlvl"]} ${classes.status} ${order.status === "cancelled" ? classes.Cancelled : order.status === "completed" ? classes.Completed : order.status === "alloted" ? classes.alloted : classes.OutOfDelivery}`}>{order.status}</h3>
                                     <h3 className={`${classes["t-op-nextlvl"]}`}>₹{order.orderValue}</h3>

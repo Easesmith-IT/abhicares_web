@@ -63,6 +63,39 @@ const Enquiry = () => {
     }, [])
 
 
+    const handleSerach = async (e) => {
+        const value = e.target.value;
+
+        console.log("value", value);
+
+        if (!value) {
+            getAllInquiries();
+            return;
+        }
+
+        try {
+            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-enquiries?query=${value}`, { withCredentials: true });
+            console.log("search", data);
+            setAllInquiries(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    function debounce(fx, time) {
+        let id = null;
+        return function (data) {
+            if (id) {
+                clearTimeout(id);
+            }
+            id = setTimeout(() => {
+                fx(data);
+                // id = null;
+            }, time);
+        };
+    }
+
     return (
         <>
             <Wrapper>
@@ -71,24 +104,25 @@ const Enquiry = () => {
                         <h1 className={classes["recent-Articles"]}>Enquiries</h1>
                         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
                             <div className="d-flex" style={{ position: "relative" }}>
-                                <input
-                                    style={{
-                                        width: "400px",
-                                        padding: "5px 10px",
-                                        paddingRight:"25px",
-                                        borderRadius: "5px",
-                                    }}
-                                    type="text"
-                                    placeholder="search enquiry by name, phone and city"
-                                />
                                 <FaSearch
                                     onClick={() => { }}
                                     style={{
                                         position: "absolute",
-                                        right: "8px",
+                                        left: "8px",
                                         top: "10px",
                                         cursor: "pointer",
                                     }}
+                                />
+                                <input
+                                    onChange={debounce(handleSerach, 1000)}
+                                    style={{
+                                        width: "400px",
+                                        padding: "5px 10px",
+                                        paddingLeft: "30px",
+                                        borderRadius: "5px",
+                                    }}
+                                    type="search"
+                                    placeholder="search enquiry by name, phone and city"
                                 />
                             </div>
                         </div>

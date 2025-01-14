@@ -3,7 +3,7 @@ import Wrapper from "../../Wrapper";
 import classes from "../Shared.module.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaDownload, FaSearch } from "react-icons/fa";
 import Loader from "../../../components/loader/Loader";
 import { format } from "date-fns";
 import MonthlyOrderModal from "../../../components/monthly-order-modal/MonthlyOrderModal";
@@ -12,15 +12,14 @@ import { PaginationControl } from "react-bootstrap-pagination-control";
 const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [dateYearInfo, setDateYearInfo] = useState("");
-  const [monthlyOrders, setMonthlyOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchMessage, setSearchMessage] = useState(null)
   const [pageCount, setPageCount] = useState(1);
   const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
-    date: "",
+    startDate: "",
+    endDate: "",
     status: "",
   });
 
@@ -40,11 +39,11 @@ const Orders = () => {
   const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-orders?page=${page}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-orders?page=${page}&status=${filters.status}&startDate=${filters.startDate}&endDate=${filters.endDate}`,
         { withCredentials: true }
       );
       setAllOrders(data.data);
-      setPageCount(Number(data?.totalPage))
+      setPageCount(Number(data?.pagination?.totalPages))
       console.log("allOrders", data);
     } catch (error) {
       console.log(error);
@@ -55,7 +54,7 @@ const Orders = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, [page]);
+  }, [page, filters.status, filters.startDate, filters.endDate]);
 
   const getOrderById = async () => {
     try {
@@ -81,33 +80,6 @@ const Orders = () => {
     }
   };
 
-  const handleOnChange = (e) => {
-    setDateYearInfo(e.target.value);
-  };
-
-  const handleOnSubmit = async () => {
-    if (!dateYearInfo) {
-      return;
-    }
-    try {
-      const arr = dateYearInfo.split("-");
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-monthly-orders`,
-        {
-          month: arr[1],
-          year: arr[0],
-        },
-        { withCredentials: true }
-      );
-      // if (data.data.length > 0) {
-      setIsModalOpen(true);
-      // }
-      setMonthlyOrders(data.data);
-      console.log("orders-month", data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -115,57 +87,67 @@ const Orders = () => {
         <div className={classes["report-container"]}>
           <div className={classes["report-header"]}>
             <h1 className={classes["recent-Articles"]}>Orders</h1>
-            <input
-              type="date"
-              name="date"
-              value={filters.date}
-              onChange={handleFilterChange}
-              className={classes.filter_input}
-            />
+            <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+              <div>
+                <p>Start Date</p>
+                <input
+                  type="date"
+                  name="startDate"
+                  value={filters.startDate}
+                  onChange={handleFilterChange}
+                  className={classes.filter_input}
+                />
+              </div>
+              <div>
+                <p>End Date</p>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={filters.endDate}
+                  onChange={handleFilterChange}
+                  className={classes.filter_input}
+                />
+              </div>
 
-            <select
-              name="status"
-              value={filters.status}
-              onChange={handleFilterChange}
-              className={classes.filter_input}
-            >
-              <option value="">Select Status</option>
-              <option value="Pending">Pending</option>
-              <option value="OutOfDelivery">OutOfDelivery</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-            <div className="d-flex" style={{ position: "relative" }}>
-              <input
-                ref={searchRef}
-                // className={classes.input}
-                style={{
-                  width: "300px",
-                  padding: "5px 10px",
-                  borderRadius: "5px",
-                }}
-                type="text"
-                placeholder="search order by id"
-              />
-              <FaSearch
-                onClick={getOrderById}
-                style={{
-                  position: "absolute",
-                  right: "8px",
-                  top: "10px",
-                  cursor: "pointer",
-                }}
-              />
-            </div>
-
-            <div className={classes.d_flex}>
-              <input
-                onChange={handleOnChange}
-                type="month"
-                name="month"
-                id="month"
-              />
-              <button onClick={handleOnSubmit}>Download</button>
+              <select
+                name="status"
+                value={filters.status}
+                onChange={handleFilterChange}
+                className={classes.filter_input}
+              >
+                <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
+                <option value="OutOfDelivery">OutOfDelivery</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <div className="d-flex" style={{ position: "relative" }}>
+                <input
+                  ref={searchRef}
+                  // className={classes.input}
+                  style={{
+                    width: "300px",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}
+                  type="text"
+                  placeholder="search order by id"
+                />
+                <FaSearch
+                  onClick={getOrderById}
+                  style={{
+                    position: "absolute",
+                    right: "8px",
+                    top: "10px",
+                    cursor: "pointer",
+                  }}
+                />
+              </div>
+              <div className={classes.d_flex}>
+                <button onClick={() => setIsModalOpen(true)}>
+                  <FaDownload />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -202,7 +184,7 @@ const Orders = () => {
                     {order.status}
                   </h3>
                   <h3 className={`${classes["t-op-nextlvl"]}`}>
-                  ₹{order.orderValue}
+                    ₹{order.orderValue}
                   </h3>
                   <h3 className={classes["t-op-nextlvl"]}>
                     <button
@@ -235,7 +217,6 @@ const Orders = () => {
       {isModalOpen && (
         <MonthlyOrderModal
           setIsModalOpen={setIsModalOpen}
-          monthlyOrders={monthlyOrders}
         />
       )}
     </>
