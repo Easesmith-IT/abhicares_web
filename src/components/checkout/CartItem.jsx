@@ -30,7 +30,6 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     if (!info.bookingDate || !info.bookingTime) {
       toast.error("Select booking date and time");
       return;
-
     }
     setIsModalOpen(false);
     setBookingInfo([...bookingInfo, info]);
@@ -85,7 +84,7 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
           {/* <MdDelete size={20} onClick={handleCartItemDelete} /> */}
           <span className={classes.price}>₹{Number(item?.quantity) * Number(item.type === "product" ? item.productId.offerPrice : item?.packageId?.offerPrice)}</span>
         </div>
-        {isButton && isSelectButton && <button onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
+        {isButton && isSelectButton && <button style={{color:"#005CC8"}} onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
       </div>
 
       {isModalOpen &&

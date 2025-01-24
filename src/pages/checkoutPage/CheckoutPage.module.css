@@ -185,7 +185,8 @@
 }
 
 .select_address_btn{
-    background-color: black;
+    background-color: #005CC8;
+    border: none;
     /* width: 100%; */
     padding: 10px;
     border-radius: 6px;
@@ -264,7 +265,7 @@
     background: transparent;
     border: none;
     outline: none;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid #005CC8;
     cursor: pointer;
 }
 

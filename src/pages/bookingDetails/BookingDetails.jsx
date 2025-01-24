@@ -104,9 +104,9 @@ const BookingDetails = () => {
             </div>
           </div>
           <div className={classes.delivery_details}>
-            <h4 className={classes.h4}>Delivery Details</h4>
+            {/* <h4 className={classes.h4}>Delivery Details</h4>
             <div className={classes.d_flex}>
-              {/* <h5>Order Status: {state.status}</h5> */}
+              <h5>Order Status: {state.status}</h5>
               <div>
                 <div className={classes.progress}></div>
                 <div className={classes.status_container}>
@@ -115,7 +115,7 @@ const BookingDetails = () => {
                   <p>Delivered</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className={classes.product_contaner}>
               {state?.items?.map((item, i) => (
                 <SingleBooking item={item} booking={state} />

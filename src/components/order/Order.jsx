@@ -37,14 +37,9 @@ const Order = ({ order, index }) => {
         </div>
         <hr />
         <div className={classes.order_bottom}>
-          <p>Track Order</p>
+          <p>Order Status :</p>
           <div>
-            <div className={classes.progress}></div>
-            <div className={classes.d_flex}>
-              <p className={classes.p}></p>
-              <p>Out for delivary</p>
-              <p className={classes.p}>Delivered</p>
-            </div>
+            {order?.status}
           </div>
         </div>
       </div>

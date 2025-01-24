@@ -21,6 +21,9 @@ import DateTimeModal from "../../components/dateTimeModal/DateTimeModal";
 import WebsiteWrapper from "../WebsiteWrapper";
 import { BackDropLoader } from "../../components/backdrop-loader/BackDropLoader";
 import CelebrationModal from "../../components/celebration-modal/CelebrationModal";
+import { Button } from "@mui/material";
+import { convertTimeToDate } from "../../utils/timeToDate";
+import { parse } from "date-fns";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -105,11 +108,11 @@ const CheckoutPage = () => {
 
 
 
-  useEffect(() => {
-    if (cart.items.length === 0) {
-      navigate("/")
-    }
-  }, [cart])
+  // useEffect(() => {
+  //   if (cart.items.length === 0) {
+  //     navigate("/")
+  //   }
+  // }, [cart])
 
 
   useEffect(() => {
@@ -122,6 +125,8 @@ const CheckoutPage = () => {
   const handleOnclick = () => {
     setIsOpen(!isOpen);
   };
+
+  console.log("bookingInfo", bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })));
 
 
   const handleCodOrder = async () => {
@@ -142,7 +147,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime:  parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
@@ -259,7 +264,7 @@ const CheckoutPage = () => {
       );
       console.log("tax", totalTaxRs);
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo, couponId, referalDiscount: credits },
+        `${import.meta.env.VITE_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })), couponId, referalDiscount: credits },
         { withCredentials: true }
       );
       console.log("razor", data);
@@ -394,7 +399,7 @@ const CheckoutPage = () => {
                         <h6>{data.name}</h6>
                         <p>{data.bookingDate}</p>
                         <p>{data.bookingTime}</p>
-                        <button onClick={() => handleDateTimeChange(index)}>Change</button>
+                        <button style={{ color: "#005CC8" }} onClick={() => handleDateTimeChange(index)}>Change</button>
                       </div>
                     ))}
                   </div>
@@ -405,11 +410,11 @@ const CheckoutPage = () => {
                     <div className={classes.d_flex}>
                       <div>
                         <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="cod" id="cod" />
-                        <label htmlFor="cod">COD</label>
+                        <label style={{ color: "#005CC8" }} htmlFor="cod">COD</label>
                       </div>
                       <div>
                         <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="online" id="online" />
-                        <label htmlFor="online">Online</label>
+                        <label style={{ color: "#005CC8" }} htmlFor="online">Online</label>
                       </div>
                     </div>
                   </>
@@ -452,6 +457,21 @@ const CheckoutPage = () => {
                     bookingInfo={bookingInfo}
                   />
                 ))}
+                {cart.items.length === 0 &&
+                  <div style={{ display: "flex", gap: "20px", padding: "10px 0" }}>
+                    <h5>Cart is empty</h5>
+                    <Button
+                      onClick={() => navigate("/")}
+                      // style={{
+                      //   backgroundColor: "white",
+                      //   color: "black"
+                      // }}
+                      variant="contained"
+                    >
+                      Shop Now
+                    </Button>
+                  </div>
+                }
               </div>
             </div>
 
@@ -475,26 +495,26 @@ const CheckoutPage = () => {
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Item total</p>
                   <p className={classes.payment_summary_p}>
-                    ₹{cart.totalPrice}
+                    ₹{cart.totalPrice || 0}
                   </p>
                 </div>
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
-                  <p className={classes.payment_summary_p}> + ₹{totalTaxRs}</p>
+                  <p className={classes.payment_summary_p}> + ₹{totalTaxRs || 0}</p>
                 </div>
                 {offerValue > 0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Discount</p>
-                  <p className={classes.payment_summary_p}> - ₹{offerValue}</p>
+                  <p className={classes.payment_summary_p}> - ₹{offerValue || 0}</p>
                 </div>}
 
                 {credits > 0 && <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Referal Discount</p>
-                  <p className={classes.payment_summary_p}> - ₹{credits}</p>
+                  <p className={classes.payment_summary_p}> - ₹{credits || 0}</p>
                 </div>}
                 <div className={classes.payment_summary_div}>
                   <p className={classes.payment_summary_p}>Total</p>
                   <p className={classes.payment_summary_p}>
-                    ₹{Math.round(total)}
+                    ₹{Math.round(total || 0)}
                   </p>
                 </div>
               </div>
@@ -503,7 +523,7 @@ const CheckoutPage = () => {
             <div className={classes.amount_to_pay_box}>
               <h5 className={classes.amount_to_pay_box_h4}>Amount to pay</h5>
               <div>
-                <p className={classes.amount_to_pay}>₹{Math.round(total)}</p>
+                <p className={classes.amount_to_pay}>₹{Math.round(total || 0)}</p>
                 <button
                   onClick={() => setIsShow(!isShow)}
                   className={classes.view_break_up_button}

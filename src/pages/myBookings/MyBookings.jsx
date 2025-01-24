@@ -17,9 +17,11 @@ const MyBookings = () => {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-user-orders?userId=${userId}`, { withCredentials: true });
       console.log(data);
       setAllOrders(data.data);
-      setLoading(false);
     } catch (error) {
       console.log(error);
+    }
+    finally{
+      setLoading(false);
     }
   }
 

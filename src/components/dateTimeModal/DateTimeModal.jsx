@@ -7,6 +7,7 @@ const DateTimeModal = ({ setIsModalOpen, isModalOpen, setInfo, info, handleOnSub
         const { name, value } = e.target;
         setInfo({ ...info, [name]: value });
     }
+    
 
     const getMaxDate = () => {
         const today = new Date();
@@ -32,7 +33,7 @@ const DateTimeModal = ({ setIsModalOpen, isModalOpen, setInfo, info, handleOnSub
                         </div>
                         <div className={classes.mt}>
                             <label htmlFor="bookingTime">Booking Time</label>
-                            <select onChange={handleOnChange} value={info.bookingTime} className={`${classes.input_box} ${classes.padding}`} name='bookingTime' id='bookingTime'>
+                            {/* <select onChange={handleOnChange} value={info.bookingTime} className={`${classes.input_box} ${classes.padding}`} name='bookingTime' id='bookingTime'>
                                 <option value="">Select time (08:00AM - 08:00PM)</option>
                                 <option value="08:00AM">08:00 AM</option>
                                 <option value="09:00AM">09:00 AM</option>
@@ -47,7 +48,10 @@ const DateTimeModal = ({ setIsModalOpen, isModalOpen, setInfo, info, handleOnSub
                                 <option value="06:00PM">06:00 PM</option>
                                 <option value="07:00PM">07:00 PM</option>
                                 <option value="08:00PM">08:00 PM</option>
-                            </select>
+                            </select> */}
+                            <div className={classes.input_box}>
+                                <input className={classes.input} onChange={handleOnChange} value={info.bookingTime} type="time" name="bookingTime" id="bookingTime" placeholder="Enter booking time" />
+                            </div>
                         </div>
                         <button className={classes.button}>Proceed</button>
                     </form>

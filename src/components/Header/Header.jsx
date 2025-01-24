@@ -18,6 +18,7 @@ import logo from "../../assets/White Logo V2-02.png"
 import { changeUserStatus } from "../../store/slices/userSlice";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from "axios";
+import { FaCartShopping } from "react-icons/fa6";
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -44,8 +45,9 @@ export const Header = () => {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/logout-user`, { withCredentials: true });
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
+      localStorage.removeItem("userId");
 
-      // navigate("/");
+      navigate("/");
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
       setIsLogoutModalOpen(false);
@@ -116,29 +118,42 @@ export const Header = () => {
               </div>
             </div>
           </div> */}
-        {!isUser && (
-          <div className={classes["button-container"]}>
-            <Button
-              onClick={handleOnclick}
-              style={{
-                backgroundColor: "white",
-                color: "black"
-              }}
-              variant="contained"
+        <div style={{ display: "flex", gap: "20px",alignItems:"center" }}>
+
+          <FaCartShopping
+            onClick={() => navigate("/checkout")}
+            size={26}
+            color="white"
+            cursor={"pointer"}
+          />
+
+          {!isUser && (
+            <div className={classes["button-container"]}>
+
+              <Button
+                onClick={handleOnclick}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "white",
+                  // fontSize:"1.1rem",
+                  padding:"0"
+                }}
+                variant="contained"
+              >
+                Login
+              </Button>
+            </div>
+          )}
+          {isUser && (
+            <div
+              ref={userIconRef}
+              onClick={() => setIsUserModalOpen(!isUserModalOpen)}
+              className={classes.icon_container}
             >
-              Login
-            </Button>
-          </div>
-        )}
-        {isUser && (
-          <div
-            ref={userIconRef}
-            onClick={() => setIsUserModalOpen(!isUserModalOpen)}
-            className={classes.icon_container}
-          >
-            <FaUser size={20} color="#B0B0B0" />
-          </div>
-        )}
+              <FaUser size={20} color="#B0B0B0" />
+            </div>
+          )}
+        </div>
         {isUserModalOpen && (
           <div ref={ref} className={classes.info}>
             <Link
