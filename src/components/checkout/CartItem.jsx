@@ -21,9 +21,13 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     productId: item.type === "product" ? item?.productId?._id : "",
     packageId: item.type === "package" ? item?.packageId?._id : "",
     name: item.type === "product" ? item?.productId?.name : item?.packageId?.name,
+    imageUrl: item.type === "product" ? item?.productId?.imageUrl : item?.packageId?.imageUrl,
     bookingDate: "",
     bookingTime: ""
   })
+
+  console.log("item",item);
+  
 
   const handleOnSubmit = (e) => {
     e.preventDefault();

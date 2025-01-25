@@ -33,20 +33,20 @@
     border-radius: 50%;
 }
 
-.profile_info_right > div {}
+.profile_info_right>div {}
 
-.profile_info_right > div .profileDetails {
+.profile_info_right>div .profileDetails {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
 }
 
-.profile_info_right > div .referralDetails {
+.profile_info_right>div .referralDetails {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 20px;
     margin-top: 10px;
 }
 
@@ -69,6 +69,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -82,7 +83,7 @@
     padding: 4px 10px;
 }
 
-.referral_code_wrapper{
+.referral_code_wrapper {
     display: flex;
     gap: 10px;
     border: 2px solid gray;
@@ -110,7 +111,7 @@
     margin-left: 10px;
 }
 
-@media screen and (max-width:400px) {
+@media screen and (max-width:600px) {
     .profile_info {
         grid-template-columns: 1fr;
     }

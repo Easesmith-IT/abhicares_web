@@ -18,7 +18,7 @@ const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booki
         userId: userId,
         sellerId: booking?.bookingId?.sellerId || "",
         raisedBy: "customer",
-        bookingId: booking?.bookingId?._id || "",
+        bookingId: booking?.bookingId || "",
         serviceType: item?.product ? item?.product?.serviceId?.categoryId : item?.package?.serviceId?.categoryId || "",
         ticketType: "Booking",
         serviceId: item?.product ? item?.product?.serviceId?._id : item?.package?.serviceId?._id || "",

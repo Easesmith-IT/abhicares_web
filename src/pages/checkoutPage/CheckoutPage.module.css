@@ -29,8 +29,9 @@
     flex-direction: column;
     width: 100%;
 }
-.login_button_container_guest{
-      max-width: 550px;
+
+.login_button_container_guest {
+    max-width: 550px;
     width: 100%;
     border: 1px solid #d5d5d5;
     border-radius: 8px;
@@ -38,10 +39,12 @@
     padding: 15px;
 
 }
-.login_button_container_guest .p{
+
+.login_button_container_guest .p {
     width: 100%;
 
 }
+
 .login_button_container {
     max-width: 550px;
     width: 100%;
@@ -55,41 +58,42 @@
     align-items: center;
 }
 
-.bookingWrapper{
-     max-width: 550px;
+.bookingWrapper {
+    max-width: 550px;
     width: 100%;
-    border: 1px solid #d5d5d5;
+    /* border: 1px solid #d5d5d5; */
     border-radius: 8px;
     margin-top: 40px
 }
 
-.booking_info_container{
-    display: flex;
-    flex-direction: column;
+.booking_info_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    /* flex-direction: column; */
     gap: 10px;
     margin-bottom: 20px;
 
-      /* display: flex;
+    /* display: flex;
     justify-content: space-between;
     align-items: center; */
     /* border: 2px solid; */
 }
 
-.booking_info{
+.booking_info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     padding: 15px;
-    /* border: 2px solid; */
-    width:100%;
+    border: 2px solid #d5d5d5;
+    width: 100%;
 }
 
-.select_type_heading{
+.select_type_heading {
     margin-top: 20px;
 }
 
-.d_flex{
+.d_flex {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -97,25 +101,25 @@
     font-size: 20px;
 }
 
-.d_flex > div{
+.d_flex>div {
     display: flex;
     gap: 10px;
 }
 
-.booking_info > button{
+.booking_info>button {
     border: none;
     outline: none;
     background: transparent;
     cursor: pointer;
 }
 
-.img_container{
+.img_container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.img_container .img{
+.img_container .img {
     width: 20px;
 }
 
@@ -144,7 +148,7 @@
     align-items: center;
 }
 
-.modal > .button{
+.modal>.button {
     background: green;
 }
 
@@ -173,8 +177,8 @@
     cursor: pointer;
 }
 
-.continue_btn{
-   width: 200px;
+.continue_btn {
+    width: 200px;
     padding: 10px;
     border-radius: 6px;
     color: white;
@@ -184,7 +188,7 @@
     background-color: black;
 }
 
-.select_address_btn{
+.select_address_btn {
     background-color: #005CC8;
     border: none;
     /* width: 100%; */
@@ -192,12 +196,12 @@
     border-radius: 6px;
     color: white;
     margin-top: 20px;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
-.address_container{
+.address_container {
     /* border: 2px solid green; */
-    padding:15px;
+    padding: 15px;
 }
 
 .cart_checkout_container {
@@ -261,7 +265,7 @@
     color: #000;
 }
 
-.link{
+.link {
     background: transparent;
     border: none;
     outline: none;
@@ -410,19 +414,19 @@
     margin-bottom: 6px;
 }
 
-.input_wrapper{
+.input_wrapper {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-.input_wrapper input{
+.input_wrapper input {
     padding: 0.25rem 0.5rem;
     border-radius: 6px;
     width: 90%;
 }
 
-.input_wrapper button{
+.input_wrapper button {
     padding: 4px 10px;
     border: none;
     background: #000;
@@ -431,12 +435,12 @@
     cursor: pointer;
 }
 
-.green{
+.green {
     font-size: 14px;
     color: green;
 }
 
-.red{
+.red {
     font-size: 14px;
     color: red;
 }
@@ -539,7 +543,7 @@
 }
 
 @media screen and (max-width:340px) {
-    .input_wrapper input{
+    .input_wrapper input {
         padding: 4px 5px;
     }
 }

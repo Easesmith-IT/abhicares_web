@@ -22,7 +22,7 @@
   background-color: #fff;
 }
 
-.left-card{
+.left-card {
   margin-top: 30px;
 }
 
@@ -125,6 +125,7 @@
   /* equivalent to Tailwind's h-8 */
 }
 
-.bg-gray{
+.bg-gray {
   background: #D1D5DB;
 }
+

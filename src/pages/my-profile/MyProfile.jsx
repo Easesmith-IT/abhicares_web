@@ -55,30 +55,34 @@ const MyProfile = () => {
                 </div>
                 <div className={classes.profile_info_right}>
                   <div className={classes.d_flex}>
-                    <h5>{profileDetails?.name}</h5>
+                    <div>
+                      <h5>{profileDetails?.name}</h5>
+
+                      <div className={classes.profileDetails}>
+                        {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
+                        <p><b className={classes.bold}>Phone :</b> {profileDetails?.phone}</p>
+                      </div>
+                      {userReferral &&
+                        <div className={classes.referralDetails}>
+                          <p><b className={classes.bold}>Referral Credits :</b> ₹{userReferral?.referralCredits}</p>
+                          <p><b className={classes.bold}>No of Users Applied Coupon :</b> {userReferral?.noOfUsersAppliedCoupon}</p>
+                        </div>}
+                    </div>
                     <div>
                       {!profileDetails?.email && <button className={classes.btn} onClick={() => setIsAddEmailModalOpen(true)}>Add Email</button>}
-                      <div className={classes.referral_code_wrapper}>
-                        <p>{profileDetails?.referralCode}</p>
-                        <MdOutlineContentCopy onClick={copyToClipboard} cursor={"pointer"} />
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "10px" }}>
+                        <h6>Referral Code:</h6>
+                        <div className={classes.referral_code_wrapper}>
+                          <p>{profileDetails?.referralCode}</p>
+                          <MdOutlineContentCopy onClick={copyToClipboard} cursor={"pointer"} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <div className={classes.profileDetails}>
-                      {profileDetails?.email && <p><b className={classes.bold}>Email :</b> {profileDetails?.email}</p>}
-                      <p><b className={classes.bold}>Phone :</b> {profileDetails?.phone}</p>
-                    </div>
-                    {userReferral &&
-                    <div className={classes.referralDetails}>
-                      <p><b className={classes.bold}>Referral Credits :</b> ₹{userReferral?.referralCredits}</p>
-                      <p><b className={classes.bold}>No of Users Applied Coupon :</b> {userReferral?.noOfUsersAppliedCoupon}</p>
-                      </div>}
                   </div>
                 </div>
               </div>}
 
-            {!profileDetails &&
+            {!profileDetails && isLoading &&
               <div className={classes.profile_info}>
                 <Skeleton circle width={60} height={60} count={1} />
                 <div className={classes.profile_info_right}>
@@ -98,8 +102,12 @@ const MyProfile = () => {
               }
               {userAddresses?.map((address) => (
                 <div key={address?._id} className={classes.address}>
-                  <FaLocationDot size={20} />
-                  <span>{`${address?.addressLine}`}</span>
+                  {/* <FaLocationDot size={20} /> */}
+                  <div><b>Address Line:</b> {address?.addressLine}</div>
+                  <div><b>Landmark:</b> {address?.landmark}</div>
+                  <div><b>City:</b> {address?.city}</div>
+                  <div><b>Pincode:</b> {address?.pincode}</div>
+                  <div><b>Default Address:</b> {address?.defaultAddress ? "Yes" : "No"}</div>
                 </div>
               ))}
             </div>

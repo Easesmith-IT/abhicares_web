@@ -7,11 +7,14 @@ import Timeline from './TimeLine';
 import axios from 'axios';
 import { format } from 'date-fns';
 import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
+import { Button } from '@mui/material';
+import ServiceDetailsModal from './ServiceDetailsModal';
 
 const HelpCenterTicketDetails = () => {
     const [status, setStatus] = useState("in-progress");
     const steps = ["Raised", "In Progress", "Completed"];
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isServiceDetailsModalOpen, setIsServiceDetailsModalOpen] = useState(false);
     const params = useParams();
 
     const [ticketDetails, setTicketDetails] = useState("");
@@ -95,18 +98,19 @@ const HelpCenterTicketDetails = () => {
                         <div><b>Customer Phone Number:</b>{ticketDetails?.userId?.phone}</div>
                         <div><b>Address: </b>{`${addressLine1}, ${landmark}, ${city1}, ${pincode1}`}</div>
                     </div>
-                    <div className="section card left-card">
-                        <h4>Service Provider Details</h4>
-                        <div><b>Service Provider Name: </b>{ticketDetails?.sellerId?.name}</div>
-                        <div><b>Phone Number:</b>{ticketDetails?.sellerId?.phone}</div>
-                        <div><b>Address: </b>{`${addressLine}, ${city}, ${state}, ${pincode}`}</div>
-                    </div>
+                    {ticketDetails?.sellerId &&
+                        <div className="section card left-card">
+                            <h4>Service Provider Details</h4>
+                            <div><b>Service Provider Name: </b>{ticketDetails?.sellerId?.name}</div>
+                            <div><b>Phone Number:</b>{ticketDetails?.sellerId?.phone}</div>
+                            <div><b>Address: </b>{`${addressLine}, ${city}, ${state}, ${pincode}`}</div>
+                        </div>}
                 </div>
 
                 <div className="right">
                     <div className="section card">
                         <p><strong>Booking Id:</strong> {ticketDetails?.bookingId?.bookingId}</p>
-                        <p><strong>Service Booked:</strong>{ticketDetails?.serviceId?.name}</p>
+                        <p><strong>Service Booked:</strong>{ticketDetails?.serviceId?.name} <Button onClick={() => setIsServiceDetailsModalOpen(true)}>View</Button></p>
                         <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime}</p>
                         <p><strong>Address: </strong>{ticketDetails?.bookingId?.userAddress.addressLine}</p>
                         <p><strong>Cost:</strong> Rs{ticketDetails?.bookingId?.orderValue}</p>
@@ -143,6 +147,12 @@ const HelpCenterTicketDetails = () => {
                     </div>
                 </div>
             </div>
+            {isServiceDetailsModalOpen &&
+                <ServiceDetailsModal
+                    setIsModalOpen={setIsServiceDetailsModalOpen}
+                    service={ticketDetails?.serviceId}
+                />
+            }
         </Wrapper>
     )
 }

@@ -58,6 +58,7 @@ const CheckoutPage = () => {
   const [creditsAvailable, setCreditsAvailable] = useState(false);
   const [isCelebrationModalOpen, setIsCelebrationModalOpen] = useState(false);
 
+  console.log("bookingInfo", bookingInfo);
 
 
   const userName = localStorage.getItem("userName");
@@ -147,7 +148,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime:  parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
@@ -396,7 +397,11 @@ const CheckoutPage = () => {
                         className={classes.booking_info}
                         key={data.productId}
                       >
-                        <h6>{data.name}</h6>
+                        <img
+                          style={{ width: "70px", height: "70px", borderRadius: "10px" }}
+                          src={`${import.meta.env.VITE_APP_IMAGE_URL}/${data?.imageUrl[0]}`}
+                        />
+                        <h6 style={{ marginTop: "10px" }}>{data.name}</h6>
                         <p>{data.bookingDate}</p>
                         <p>{data.bookingTime}</p>
                         <button style={{ color: "#005CC8" }} onClick={() => handleDateTimeChange(index)}>Change</button>
@@ -410,11 +415,11 @@ const CheckoutPage = () => {
                     <div className={classes.d_flex}>
                       <div>
                         <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="cod" id="cod" />
-                        <label style={{ color: "#005CC8" }} htmlFor="cod">COD</label>
+                        <label style={{ color: "#005CC8" }} htmlFor="cod">Cash on Delivery (COD)</label>
                       </div>
                       <div>
                         <input onChange={handlePaymentTypeChange} type="radio" name="paymentType" value="online" id="online" />
-                        <label style={{ color: "#005CC8" }} htmlFor="online">Online</label>
+                        <label style={{ color: "#005CC8" }} htmlFor="online">Pay using UPI,Debit Card, wallet</label>
                       </div>
                     </div>
                   </>

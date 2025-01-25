@@ -13,7 +13,7 @@ const BookingDetails = () => {
   const { state } = useLocation();
   const params = useParams();
   const navigate = useNavigate();
-  console.log(state);
+  console.log("state",state);
   const [invoice, setInvoice] = useState({});
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
