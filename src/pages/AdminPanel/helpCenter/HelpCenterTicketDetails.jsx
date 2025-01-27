@@ -111,7 +111,7 @@ const HelpCenterTicketDetails = () => {
                     <div className="section card">
                         <p><strong>Booking Id:</strong> {ticketDetails?.bookingId?.bookingId}</p>
                         <p><strong>Service Booked:</strong>{ticketDetails?.serviceId?.name} <Button onClick={() => setIsServiceDetailsModalOpen(true)}>View</Button></p>
-                        <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime}</p>
+                        <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime && format(new Date(ticketDetails?.bookingId?.bookingTime),"hh:mm aa")}</p>
                         <p><strong>Address: </strong>{ticketDetails?.bookingId?.userAddress.addressLine}</p>
                         <p><strong>Cost:</strong> Rs{ticketDetails?.bookingId?.orderValue}</p>
                     </div>

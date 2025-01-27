@@ -90,6 +90,8 @@ const MyProfile = () => {
                   <Skeleton width={"40%"} height={20} count={1} />
                 </div>
               </div>}
+
+              <h4 style={{marginTop:"20px"}}>Adresses</h4>
             <div className={classes.address_container}>
               {userAddresses.length === 0 && isLoading &&
                 <div className={classes.address}>
