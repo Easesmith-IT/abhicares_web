@@ -11,17 +11,19 @@ const DateTimeModal = ({ setIsModalOpen, isModalOpen, setInfo, info, handleOnSub
 
     const getMaxDate = () => {
         const today = new Date();
-        today.setDate(today.getMonth() + 30);
+        today.setDate(today.getDate() + 30);
         return format(today, "yyyy-MM-dd");
     }
+
+
 
     const getTodaysDate = () => format(new Date(), "yyyy-MM-dd");
 
     const getCurrentTime = () => {
         const now = new Date();
+        now.setMinutes(now.getMinutes() + 1); // Ensure at least the next available minute
         return now.toTimeString().slice(0, 5); // Format as HH:mm
     };
-
 
     return (
         <div className={`${classes.modal_overlay} ${isModalOpen ? classes.modal_open : classes.modal_close}`}>
