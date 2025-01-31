@@ -1,6 +1,6 @@
 import classes from './Footer.module.css'
 import { Grid, Typography } from '@mui/material'
-import TwitterIcon from '@mui/icons-material/Twitter';
+import TwitterIcon from '@mui/icons-material/X';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -72,10 +72,10 @@ export const Footer = () => {
                             <div className={classes['sections']}>
                                 <div className={classes['heading']}><Typography variant='h5'>Social Links</Typography></div>
                                 <div className={classes['social']}>
-                                    <div><Link to="#"><TwitterIcon /></Link></div>
-                                    <div><Link to="#"><FacebookIcon /></Link></div>
-                                    <div><Link to="#"><InstagramIcon /></Link></div>
-                                    <div><Link to="#"><LinkedInIcon /></Link></div>
+                                    <div><a target='_blank' href="https://x.com/abhicares_com"><TwitterIcon /></a></div>
+                                    <div><a target='_blank' href="https://www.facebook.com/Abhicares"><FacebookIcon /></a></div>
+                                    <div><a target='_blank' href="https://www.instagram.com/abhicaresofficial"><InstagramIcon /></a></div>
+                                    <div><a target='_blank' href="http://Linkedin.com/company/abhicares-com"><LinkedInIcon /></a></div>
                                 </div>
                                 <div className={classes['download']}>
                                     {/* <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></Link></div> */}

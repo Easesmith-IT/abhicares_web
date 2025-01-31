@@ -111,8 +111,15 @@ const HelpCenter = () => {
                 </div>
                 {isMultiSelectOpen &&
                   <div className={classes.multi_select}>
-                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
-                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="having an issue with changing my number">Having an issue with changing my number</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="Having an issue with changing my number">Having an issue with changing my number</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="Having an issue with changing my Address">Having an issue with changing my Address</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="Having an issue with changing my E-mail">Having an issue with changing my E-mail</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="I am unable to make Payment">I am unable to make Payment</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="Can I get my service delivered faster?">Can I get my service delivered faster?</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="How can I get my refund back?">How can I get my refund back?</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="Having an issue with product Cancellation">Having an issue with product Cancellation</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="How many days will it take for the refund to arrive?">How many days will it take for the refund to arrive?</label>
+                    <label className={classes.label} onClick={handleMultiSelectClose} htmlFor="How can we edit my profile?">How can we edit my profile?</label>
                     <label onClick={() => setIsOtherOpen(true)} htmlFor="">other</label>
                     {isOtherOpen &&
                       <div>
