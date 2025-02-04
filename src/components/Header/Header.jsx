@@ -19,6 +19,7 @@ import { changeUserStatus } from "../../store/slices/userSlice";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from "axios";
 import { FaCartShopping } from "react-icons/fa6";
+import { readCookie } from "../../utils/readCookie";
 
 export const Header = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -32,9 +33,9 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("userName");
+  const token = readCookie("userInfo");
 
-  const isUser = userId ? true : false;
+  const isUser = token?.id ? true : false;
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
@@ -51,7 +52,7 @@ export const Header = () => {
       await dispatch(changeUserStatus(null));
       await dispatch(getCartDetails());
       setIsLogoutModalOpen(false);
-      window.location.reload();
+      // window.location.reload();
 
     } catch (error) {
       console.log(error);

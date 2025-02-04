@@ -7,13 +7,14 @@ import { useState } from "react";
 import DeleteModal from "../deleteModal/DeleteModal";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { readCookie } from "../../utils/readCookie";
 
 const CustomerReview = ({ review, isUser = false, getAllReviews }) => {
     const [isUpdateReviewModalOpen, setIsUpdateReviewModalOpen] = useState(false);
     const [isDeleteReviewModalOpen, setIsDeleteReviewModalOpen] = useState(false);
-
-    const userName = localStorage.getItem("userName");
-    const userId = localStorage.getItem("userId");
+    const token = readCookie("userInfo");
+    const userName = token?.name;
+    const userId = token?.id;
     console.log("review", review);
 
     const handleDelete = async () => {

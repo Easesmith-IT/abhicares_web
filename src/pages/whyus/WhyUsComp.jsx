@@ -14,7 +14,6 @@ const WhyUsComp = () => {
             className={`feat ${classes.whyUs}`}
         >
             <div className={``}>
-                <div className={`${classes.card_container}`}>
                     <div
                         className={`${classes["section-head"]} col-sm-12`}
                     >
@@ -28,6 +27,7 @@ const WhyUsComp = () => {
                             online, SEO and social media.
                         </p> */}
                     </div>
+                <div className={`${classes.card_container}`}>
 
                     <div>
                         <div className={classes.item}>

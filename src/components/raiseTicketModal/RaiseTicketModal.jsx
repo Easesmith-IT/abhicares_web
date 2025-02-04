@@ -5,9 +5,11 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
+import { readCookie } from '../../utils/readCookie'
 
 const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booking, item }) => {
-    const userId = localStorage.getItem("userId");
+    const token = readCookie("userInfo");
+    const userId = token?.id;
 
     console.log("booking", booking);
 
@@ -18,7 +20,7 @@ const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booki
         userId: userId,
         sellerId: booking?.bookingId?.sellerId || "",
         raisedBy: "customer",
-        bookingId: item?.bookingId || "",
+        bookingId: item?.bookingId?._id || "",
         serviceType: item?.product ? item?.product?.serviceId?.categoryId : item?.package?.serviceId?.categoryId || "",
         ticketType: "Booking",
         serviceId: item?.product ? item?.product?.serviceId?._id : item?.package?.serviceId?._id || "",

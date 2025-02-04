@@ -5,12 +5,14 @@ import axios from 'axios';
 import Loader from '../../components/loader/Loader';
 import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
+import { readCookie } from '../../utils/readCookie';
 
 const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const token = readCookie("userInfo");
+  const userId = token?.id;
 
   const getAllOrders = async () => {
     try {
@@ -20,7 +22,7 @@ const MyBookings = () => {
     } catch (error) {
       console.log(error);
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }

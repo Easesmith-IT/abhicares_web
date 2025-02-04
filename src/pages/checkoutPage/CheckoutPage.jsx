@@ -24,6 +24,7 @@ import CelebrationModal from "../../components/celebration-modal/CelebrationModa
 import { Button } from "@mui/material";
 import { convertTimeToDate } from "../../utils/timeToDate";
 import { parse } from "date-fns";
+import { readCookie } from "../../utils/readCookie";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -60,9 +61,9 @@ const CheckoutPage = () => {
 
   console.log("bookingInfo", bookingInfo);
 
-
-  const userName = localStorage.getItem("userName");
-  const userId = localStorage.getItem("userId");
+  const token = readCookie("userInfo");
+  const userId = token?.id;
+  const userName = token?.name;
 
   const getAllAddress = async () => {
     try {
@@ -302,8 +303,8 @@ const CheckoutPage = () => {
           }
         },
         prefill: {
-          name: localStorage.getItem("userName"),
-          contact: localStorage.getItem("userPhone")
+          name: userName,
+          contact: token?.phone
         },
         notes: {
           address: "Abhicares Corporate Office"
@@ -401,9 +402,11 @@ const CheckoutPage = () => {
                           style={{ width: "70px", height: "70px", borderRadius: "10px" }}
                           src={`${import.meta.env.VITE_APP_IMAGE_URL}/${data?.imageUrl[0]}`}
                         />
-                        <h6 style={{ marginTop: "10px" }}>{data.name}</h6>
-                        <p>{data.bookingDate}</p>
-                        <p>{data.bookingTime}</p>
+                        <h6 style={{ marginTop: "10px", fontSize: "16px" }}>{data.name}</h6>
+                        <div>
+                          <p>{data.bookingDate}</p>
+                          <p>{data.bookingTime}</p>
+                        </div>
                         <button style={{ color: "#005CC8" }} onClick={() => handleDateTimeChange(index)}>Change</button>
                       </div>
                     ))}

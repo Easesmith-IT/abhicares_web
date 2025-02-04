@@ -17,12 +17,12 @@ const AdminLogin = () => {
     const userPassword = userPasswordRef.current.value;
 
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/logout-user`,
-        { withCredentials: true }
-      );
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userPhone");
+      // const { data } = await axios.get(
+      //   `${import.meta.env.VITE_APP_API_URL}/logout-user`,
+      //   { withCredentials: true }
+      // );
+      // localStorage.removeItem("userName");
+      // localStorage.removeItem("userPhone");
 
       const response = await axios.post(
         `${import.meta.env.VITE_APP_ADMIN_API_URL}/login-Admin`,
@@ -37,6 +37,7 @@ const AdminLogin = () => {
       if (response?.data) {
         const arr = ["dashboard", "banners", "orders", "bookings", "services", "partners", "customers", "offers", "availableCities", "payments", "enquiry", "helpCenter", "settings"]
         alert("Logged in successfully");
+        localStorage.setItem("admin-status", true);
         const result = arr.find((item) => response?.data?.perm[item] !== "none")
         navigate(`/admin/${result}`);
       }

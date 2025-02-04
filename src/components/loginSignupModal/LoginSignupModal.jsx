@@ -163,6 +163,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { withCredentials: true }
       );
       console.log("login otp verification", data);
+      localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);
@@ -202,6 +203,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       );
       console.log("signup otp verification", data);
       await dispatch(getCartDetails());
+      localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);

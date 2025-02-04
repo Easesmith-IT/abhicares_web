@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import Product from "../Product";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
+import { readCookie } from "../../utils/readCookie";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [allProducts, setAllProducts] = useState([]);
@@ -26,7 +27,9 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [isReviewBtn, setIsReviewBtn] = useState(false);
-    const userId = localStorage.getItem("userId");
+
+    const token = readCookie("userInfo");
+    const userId = token?.id;
 
     const { rating, ratingDistribution,totalReviews } = Data || {}
 

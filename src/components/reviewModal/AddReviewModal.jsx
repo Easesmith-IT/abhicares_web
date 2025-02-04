@@ -4,9 +4,14 @@ import { useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { readCookie } from '../../utils/readCookie'
 
 const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser, isBooking = false, bookingId, serviceType, serviceId }) => {
-    const userId = localStorage.getItem("userId");
+    const token = readCookie("userInfo");
+    const userId = token?.id;
+    console.log("userId",userId);
+    console.log("bookingId",bookingId);
+    
 
     const [reviewInfo, setReviewInfo] = useState({
         title: review?.title || "",

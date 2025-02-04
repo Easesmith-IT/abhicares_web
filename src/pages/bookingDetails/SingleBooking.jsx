@@ -8,7 +8,8 @@ const SingleBooking = ({ item,booking }) => {
     const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
     const [isAddTicketModalOpen, setIsAddTicketModalOpen] = useState(false);
 
-    console.log("singleBooking", item);
+    console.log("singleBooking", booking);
+    console.log("item", item);
 
     return (
         <>
@@ -69,7 +70,7 @@ const SingleBooking = ({ item,booking }) => {
                     isReviewModalOpen={isAddReviewModalOpen}
                     setIsReviewModalOpen={setIsAddReviewModalOpen}
                     isBooking
-                    bookingId={item?._id}
+                    bookingId={item?.bookingId?._id}
                     serviceId={item.package ? item.package._id : item.product._id}
                     serviceType={item.package ? "package" : "product"}
                     getAllReviewsOfUser={() => { }}
