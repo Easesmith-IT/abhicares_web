@@ -68,22 +68,22 @@ select {
     z-index: 5;
 }
 
-.multi_select label{
+.multi_select label {
     display: block;
     width: 100%;
     cursor: pointer;
     margin: 2px 0;
 }
 
-.input_box .input > span{
+.input_box .input>span {
     color: rgb(107, 107, 107);
 }
 
-.label{
+.label {
     padding: 2px;
 }
 
-.label:hover{
+.label:hover {
     background: #ececec;
 }
 
@@ -112,7 +112,7 @@ select {
     margin-top: 60px;
 }
 
-.issues_container{
+.issues_container {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -121,36 +121,41 @@ select {
     padding: 20px;
 }
 
-.issue{
+.issue,
+.issues {
     background: white;
     padding: 10px 15px;
     border: 2px solid #ececec;
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
 }
 
-.in_review{
+.in_review {
     background: orange;
     padding: 2px 10px;
     border-radius: 30px;
 }
 
-.solved{
+.solved {
     background: green;
     color: white;
     padding: 2px 10px;
     border-radius: 30px;
 }
 
-.raised{
+.raised {
     background: #283891;
     color: white;
     padding: 2px 10px;
     border-radius: 30px;
 }
 
-.issue .button{
+.issue .button {
     padding: 8px 20px;
 }
 
@@ -176,7 +181,7 @@ select {
 
 .modal_wrapper {
     position: relative;
-    max-width: 480px;
+    max-width: 580px;
     width: 100%;
     padding: 0 20px;
 }
@@ -185,6 +190,8 @@ select {
     border-radius: 15px;
     background: white;
     padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 
@@ -201,4 +208,24 @@ select {
     position: absolute;
     right: 0px;
     top: -40px;
+}
+
+.sm{
+    display: none;
+}
+
+
+@media screen and (max-width:500px) {
+    .issues {
+        grid-template-columns: auto;
+        gap: 10px;
+    }
+    .issue{
+        display: none;
+    }
+
+    .button{
+        width: 100%;
+    }
+    
 }

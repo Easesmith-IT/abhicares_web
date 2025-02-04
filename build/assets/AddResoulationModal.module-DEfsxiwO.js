@@ -1,0 +1,1 @@
+const n="_wrapper_1s75l_1",t="_modal_1s75l_27",_="_heading_container_1s75l_47",o="_form_1s75l_59",r="_input_container_1s75l_73",s="_input_1s75l_73",a="_button_wrapper_1s75l_105",p="_button_1s75l_105",c={wrapper:n,modal:t,heading_container:_,form:o,input_container:r,input:s,button_wrapper:a,button:p};export{c};

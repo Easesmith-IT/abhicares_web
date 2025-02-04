@@ -9,6 +9,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
+import HistoryModal from './HistoryModal';
 
 const HelpCenter = () => {
   const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
@@ -169,15 +170,21 @@ const HelpCenter = () => {
           {allIssues.length > 0 &&
             <div className={classes.issues_container}>
               <div className={classes.issue}>
+                <p>Ticket Id</p>
                 <p>Date</p>
                 <p>Status</p>
                 <p>View</p>
               </div>
               {allIssues?.map((issue) => (
-                <div key={issue._id} className={classes.issue}>
+                <div key={issue._id} className={classes.issues}>
+                  <b className='ticketId' style={{ whiteSpace: "nowrap" }}>{issue?.ticketId}</b>
                   <p>{format(new Date(issue.createdAt), "dd-MM-yyyy")}</p>
-                  <p className={issue.status === "in-review" ? classes.in_review : issue.status === "raised" ? classes.raised : classes.solved}>{issue.status}</p>
-                  <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+                  <div>
+                    <span className={issue.status === "in-review" ? classes.in_review : issue.status === "raised" ? classes.raised : classes.solved}>{issue.status}</span>
+                  </div>
+                  <div>
+                    <button onClick={() => handleView(issue)} className={classes.button}>View</button>
+                  </div>
                 </div>
               ))}
             </div>}
@@ -198,9 +205,10 @@ const HelpCenter = () => {
               <AiOutlineClose size={20} />
             </button>
             <div className={classes.modal}>
+              <h4 style={{ fontWeight: "600" }}>Ticket details</h4>
               <b>{issue.issue}</b>
-              {issue.resolution && <p>{issue.resolution}</p>}
-              {!issue.resolution && <p>No resolution found.</p>}
+              <p>{issue.description}</p>
+              <HistoryModal ticketHistory={issue?.ticketHistory} />
             </div>
           </div>
         </div>
