@@ -13,6 +13,7 @@ import useGetApiReq from "./hooks/useGetApiReq";
 import usePostApiReq from "./hooks/usePostApiReq";
 import { readCookie } from "./utils/readCookie";
 import ProtectedRoute from "./components/private-route/ProtectedRoute";
+import { changeAdminStatus, changeUserAuthStatus } from "./store/slices/userSlice";
 
 
 const HomePage = lazy(() => import('./pages/Home'));
@@ -109,6 +110,7 @@ function App() {
   }
 
   const token = readCookie("userInfo");
+  const adminInfo = readCookie("adminInfo");
   console.log("token", token);
 
   const refreshToken = () => {
@@ -116,35 +118,35 @@ function App() {
   }
 
   const logout = () => {
-    fetchLogoutData("/shopping/logout-all", { phone: token?.phone });
+    fetchLogoutData("/shopping/logout-all", { phone: token?.phone, role: "user" });
   }
 
   useEffect(() => {
-    getStatus();
+    token?.role === "user" && getStatus();
   }, [])
 
   useEffect(() => {
     if (res?.status === 200 || res?.status === 201) {
-      localStorage.setItem("user-status", res?.data?.isAuthenticated);
+      dispatch(changeUserAuthStatus({ isAuthenticated: res?.data?.isAuthenticated }))
       console.log("status response", res);
-      res?.data?.shouldLoggOut && logout();
-      !res1?.data?.isAuthenticated && !res1?.data?.shouldLoggOut && refreshToken();
+      res?.data?.shouldLogOut && logout();
+      !res?.data?.isAuthenticated && !res?.data?.shouldLogOut && refreshToken();
     }
   }, [res])
 
 
   useEffect(() => {
     if (refreshRes?.status === 200 || refreshRes?.status === 201) {
-      // console.log("refreshRes", refreshRes);
-      localStorage.setItem("user-status", true);
+      console.log("refreshRes", refreshRes);
+      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
       // window.location.reload();
     }
   }, [refreshRes])
 
   useEffect(() => {
     if (logoutRes?.status === 200 || logoutRes?.status === 201) {
-      localStorage.setItem("user-status", false);
-      // window.location.reload();
+      console.log("logoutRes", logoutRes);
+      dispatch(changeUserAuthStatus({ isAuthenticated: false }))
     }
   }, [logoutRes])
 
@@ -154,43 +156,39 @@ function App() {
     fetchData1("/admin/status");
   }
 
-  // const token = readCookie("userInfo");
-  // console.log("token", token);
-
   const refreshAdminToken = () => {
     fetchRefreshData1("/admin/refresh");
   }
 
   const logoutAdmin = () => {
-    fetchLogoutData1("/admin/logout-all", { phone: token?.phone });
+    fetchLogoutData1("/admin/logout-all", { adminId: adminInfo?.id, role: "admin" });
   }
 
   useEffect(() => {
-    getAdminStatus();
+    adminInfo?.role === "admin" && getAdminStatus();
   }, [])
 
   useEffect(() => {
     if (res1?.status === 200 || res1?.status === 201) {
-      localStorage.setItem("admin-status", res1?.data?.isAuthenticated);
-      console.log("status response admin", res);
-      res1?.data?.shouldLoggOut && logoutAdmin();
-      !res1?.data?.isAuthenticated && !res1?.data?.shouldLoggOut && refreshAdminToken();
+      dispatch(changeAdminStatus({ isAdminAuthenticated: res1?.data?.isAuthenticated }))
+      console.log("status response admin", res1);
+      res1?.data?.shouldLogOut && logoutAdmin();
+      !res1?.data?.isAuthenticated && !res1?.data?.shouldLogOut && refreshAdminToken();
     }
   }, [res1])
 
 
   useEffect(() => {
     if (refreshRes1?.status === 200 || refreshRes1?.status === 201) {
-      console.log("refreshRes", refreshRes);
-      localStorage.setItem("admin-status", true);
-      // window.location.reload();
+      console.log("refreshRes1", refreshRes1);
+      dispatch(changeAdminStatus({ isAdminAuthenticated: true }))
     }
   }, [refreshRes1])
 
   useEffect(() => {
     if (logoutRes1?.status === 200 || logoutRes1?.status === 201) {
-      localStorage.setItem("admin-status", false);
-      // window.location.reload();
+      console.log("logoutRes1", logoutRes1);
+      dispatch(changeAdminStatus({ isAdminAuthenticated: false }))
     }
   }, [logoutRes1])
 
@@ -199,7 +197,6 @@ function App() {
       {isOpen && <UnautorizedModal />}
 
       <Router>
-        {/* <Header /> */}
         <Suspense fallback={<div className='fallback'>Loading...</div>}>
           <Routes>
             <Route path="/" element={<HomePage />} />

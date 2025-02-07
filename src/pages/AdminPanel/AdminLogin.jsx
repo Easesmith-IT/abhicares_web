@@ -1,14 +1,23 @@
-import React, { useRef } from "react";
 import axios from 'axios';
-import logo from "../../assets/logo .png";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo .png";
+import { changeAdminStatus } from '../../store/slices/userSlice';
 
 
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userNameRef = useRef();
   const userPasswordRef = useRef();
+  const { isAdminAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    isAdminAuthenticated && navigate("/admin/dashboard")
+  }, [isAdminAuthenticated])
+
 
   const handleAdminLogin = async (e) => {
     e.preventDefault()
@@ -35,6 +44,7 @@ const AdminLogin = () => {
 
       localStorage.setItem('perm', JSON.stringify(response.data.perm))
       if (response?.data) {
+        dispatch(changeAdminStatus({ isAdminAuthenticated: true }))
         const arr = ["dashboard", "banners", "orders", "bookings", "services", "partners", "customers", "offers", "availableCities", "payments", "enquiry", "helpCenter", "settings"]
         alert("Logged in successfully");
         localStorage.setItem("admin-status", true);

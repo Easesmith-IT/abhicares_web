@@ -19,8 +19,9 @@ const Header = (props) => {
       );
       console.log("admin logout", data);
       localStorage.removeItem("perm");
+      localStorage.setItem("admin-status",false);
       setIsLogoutModalOpen(false);
-      navigate("/");
+      navigate("/admin/login");
       return;
     } catch (error) {
       console.log(error);
@@ -31,26 +32,6 @@ const Header = (props) => {
     setIsLogoutModalOpen(true);
   };
 
-  const checkTokenExpiration = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/check-token-expiration`,
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.log(error);
-      if (error?.response?.data?.tokenExpired) {
-        toast.error("Your session was expired!");
-        localStorage.removeItem("perm");
-        navigate("/admin/login");
-        return;
-      }
-    }
-  };
-
-  useEffect(() => {
-    checkTokenExpiration();
-  }, []);
   return (
     <>
       <header className={classes.header}>

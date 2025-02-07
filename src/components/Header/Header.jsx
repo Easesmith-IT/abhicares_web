@@ -11,7 +11,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LoginSignupModal from "../loginSignupModal/LoginSignupModal";
 import { useLocation } from "react-router";
 import { FaUser } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../logoutModal/LogoutModal";
 import logo from "../../assets/White Logo V2-02.png"
@@ -33,9 +33,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const token = readCookie("userInfo");
-
-  const isUser = token?.id ? true : false;
+  const { isAuthenticated } = useSelector((state) => state.user)
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
@@ -47,6 +45,7 @@ export const Header = () => {
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
       localStorage.removeItem("userId");
+      localStorage.setItem("user-status",false);
 
       navigate("/");
       await dispatch(changeUserStatus(null));
@@ -128,7 +127,7 @@ export const Header = () => {
             cursor={"pointer"}
           />
 
-          {!isUser && (
+          {!isAuthenticated && (
             <div className={classes["button-container"]}>
 
               <Button
@@ -145,7 +144,7 @@ export const Header = () => {
               </Button>
             </div>
           )}
-          {isUser && (
+          {isAuthenticated && (
             <div
               ref={userIconRef}
               onClick={() => setIsUserModalOpen(!isUserModalOpen)}

@@ -10,6 +10,7 @@ import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import CountdownTimer from "../countdown/CountDown";
 import { FaEdit } from "react-icons/fa";
+import { changeUserAuthStatus } from "../../store/slices/userSlice";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
@@ -163,6 +164,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
         { withCredentials: true }
       );
       console.log("login otp verification", data);
+      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
       localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
