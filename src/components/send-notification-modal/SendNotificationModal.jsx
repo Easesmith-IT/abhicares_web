@@ -17,6 +17,7 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
         timingType: "",
         time: "",
         date: "",
+        appType: "all",
     });
 
     const timeOptions = generateTimeOptions();
@@ -46,6 +47,7 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
             e.preventDefault();
             if (!notificationInfo.title
                 || !notificationInfo.desc
+                || !notificationInfo.appType
             ) {
                 console.log("error");
 
@@ -58,6 +60,7 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
             formData.append("date", notificationInfo.date);
             formData.append("time", notificationInfo.time);
             formData.append("image", notificationInfo.image);
+            formData.append("appType", notificationInfo.appType);
 
             setIsLoading(true)
             const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/send-notification`, formData);
@@ -106,6 +109,20 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="desc">Description</label>
                         <textarea className={classes.input} onChange={handleOnChange} value={notificationInfo.desc} name="desc" id="desc" />
+                    </div>
+                    <div className={classes.input_container}>
+                        <label htmlFor="appType">App Type</label>
+                        <select
+                            className={classes.input}
+                            onChange={handleOnChange}
+                            value={notificationInfo.appType}
+                            name="appType"
+                            id="appType"
+                        >
+                            <option value="mainApp">Main App</option>
+                            <option value="partnerApp">Partner App</option>
+                            <option value="all">all</option>
+                        </select>
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="timing">Timing</label>
