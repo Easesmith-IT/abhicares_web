@@ -175,9 +175,7 @@ export const Services = ({ open }) => {
             </h4>
           </div>
           <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
-            <div>
-              <SearchIcon />
-            </div>
+            <SearchIcon style={{margin:"0 10px"}} />
             <div>
               <input
                 onChange={debounce(handleOnChange, 1000)}

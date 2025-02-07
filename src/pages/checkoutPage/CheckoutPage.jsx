@@ -116,12 +116,38 @@ const CheckoutPage = () => {
   //   }
   // }, [cart])
 
+  const caluclateCharge = async () => {
+    const modifiedItems = cart?.items?.map(item => ({
+      type: item?.type,
+      serviceId: item?.type === "package" ? item?.packageId?.serviceId?._id : item?.productId?.serviceId?._id,
+      quantity: item?.quantity,
+      prodId: item?.type === "package" ? item?.packageId?._id : item?.productId?._id
+    }))
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_API_URL}/caluclate-charge`, { items: modifiedItems },
+        { withCredentials: true }
+      );
+      console.log("caluclateCharge", data);
+      setTotalTaxRs(data?.totalTax)
+      setTotal(data?.totalPayable)
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const totalTaxRupee = (cart.totalPrice * 18) / 100;
-    setTotal((Number(totalTaxRupee) + Number(cart.totalPrice)) - credits);
-    setTotalTaxRs(totalTaxRupee);
-  }, [getCartDetails, cart, credits]);
+    caluclateCharge()
+  }, [cart])
+
+
+
+  // useEffect(() => {
+  //   const totalTaxRupee = (cart.totalPrice * 18) / 100;
+  //   setTotal((Number(totalTaxRupee) + Number(cart.totalPrice)) - credits);
+  //   setTotalTaxRs(totalTaxRupee);
+  // }, [getCartDetails, cart, credits]);
 
 
   const handleOnclick = () => {

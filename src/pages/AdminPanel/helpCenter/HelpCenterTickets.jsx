@@ -33,6 +33,7 @@ const HelpCenterTickets = () => {
     serviceType: "",
     raisedBy: "",
     status: "",
+    searchQuery: "",
   });
 
   const [allCategories, setAllCategories] = useState([]);
@@ -146,6 +147,14 @@ const HelpCenterTickets = () => {
             <h1 className={classes["recent-Articles"]}>All Tickets</h1>
             <div className={classes.filter}>
               <input
+                type="search"
+                name="searchQuery"
+                value={filters.searchQuery}
+                onChange={handleFilterChange}
+                placeholder="Search by ticket Id"
+                className={classes.filter_input}
+              />
+              <input
                 type="date"
                 name="date"
                 value={filters.date}
@@ -233,6 +242,7 @@ const HelpCenterTickets = () => {
                     {ticket?.bookingId && <p><b>Booking ID :</b> {ticket?.bookingId?.bookingId}</p>}
                     <p><b>Service ID :</b> {ticket?.serviceId}</p>
                     <p><b>Ticket type :</b> {ticket?.ticketType}</p>
+                    <p><b>Ticket Id :</b> {ticket?.ticketId}</p>
                     {/* {ticket.status !== "solved" && (
                       <button
                         onClick={() => handleSolvedModal(ticket._id)}

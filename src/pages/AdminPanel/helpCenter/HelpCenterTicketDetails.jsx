@@ -69,9 +69,12 @@ const HelpCenterTicketDetails = () => {
                                 <option value="completed">Completed</option>
                                 </select> */}
                             </div>
-                            <p>
-                                {ticketDetails?.createdAt && format(new Date(ticketDetails?.createdAt), "dd MMMM, yyyy HH:mm:ss")}
-                            </p>
+                            <div>
+                                <p>{ticketDetails?.ticketId}</p>
+                                <p>
+                                    {ticketDetails?.createdAt && format(new Date(ticketDetails?.createdAt), "dd MMMM, yyyy HH:mm:ss")}
+                                </p>
+                            </div>
                         </div>
                         <div className="content">
                             <p>
@@ -110,8 +113,8 @@ const HelpCenterTicketDetails = () => {
                 <div className="right">
                     <div className="section card">
                         <p><strong>Booking Id:</strong> {ticketDetails?.bookingId?.bookingId}</p>
-                        <p><strong>Service Booked:</strong>{ticketDetails?.serviceId?.name} <Button onClick={() => setIsServiceDetailsModalOpen(true)}>View</Button></p>
-                        <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime && format(new Date(ticketDetails?.bookingId?.bookingTime),"hh:mm aa")}</p>
+                        <p><strong>Service Booked:</strong><p>{ticketDetails?.serviceId?.name} {ticketDetails?.serviceId?.name ? <Button onClick={() => setIsServiceDetailsModalOpen(true)}>View</Button> : "No service booked"}</p></p>
+                        <p><strong>Time: </strong>{ticketDetails?.bookingId?.bookingTime && format(new Date(ticketDetails?.bookingId?.bookingTime), "hh:mm aa")}</p>
                         <p><strong>Address: </strong>{ticketDetails?.bookingId?.userAddress.addressLine}</p>
                         <p><strong>Cost:</strong> Rs{ticketDetails?.bookingId?.orderValue}</p>
                     </div>
