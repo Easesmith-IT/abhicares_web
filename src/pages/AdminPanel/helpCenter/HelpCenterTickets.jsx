@@ -66,7 +66,7 @@ const HelpCenterTickets = () => {
   const getAllIssues = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-tickets?page=${currentPage}`,
+        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-tickets?page=${currentPage}&ticketId=${filters.searchQuery}`,
         { withCredentials: true }
       );
       console.log("tickets", data);
@@ -85,6 +85,7 @@ const HelpCenterTickets = () => {
     if (!filters.date &&
       !filters.raisedBy &&
       !filters.serviceType &&
+      filters.searchQuery &&
       !filters.status) {
       getAllIssues();
     }
@@ -95,6 +96,7 @@ const HelpCenterTickets = () => {
     filters.date,
     filters.raisedBy,
     filters.serviceType,
+    filters.searchQuery,
     filters.status]);
 
   const filterTickets = async () => {
