@@ -12,7 +12,7 @@ import classes from "../Shared.module.css";
 
 import { MdAnnouncement, MdCategory, MdFeedback, MdHelpOutline, MdNotifications, MdPayment, MdSettings } from 'react-icons/md';
 import { FaCalendarCheck, FaLifeRing, FaQuestionCircle, FaRegImages, FaShoppingCart } from "react-icons/fa";
-import { GiWorld } from 'react-icons/gi';
+import { GiCash, GiWorld } from 'react-icons/gi';
 import { AiOutlineCustomerService } from "react-icons/ai";
 
 const SideNav = () => {
@@ -239,6 +239,16 @@ const SideNav = () => {
             <MdNotifications style={{ fontSize: "40px" }} />
 
             <h3 className={classes.title}>Send Notifications</h3>
+          </Link>
+        )}
+        {permissions?.sellerCashout && permissions?.sellerCashout !== "none" && (
+          <Link
+            to="/admin/seller-cashouts"
+            className={`${classes["nav-option"]} ${classes.option6}}`}
+          >
+            <GiCash style={{ fontSize: "30px" }} />
+
+            <h3 className={classes.title}>Seller Cashouts</h3>
           </Link>
         )}
       </div>

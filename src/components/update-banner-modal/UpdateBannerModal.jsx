@@ -91,6 +91,7 @@ const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
         } catch (err) {
             console.log("ERROR", err.message);
             checkAuthorization(err);
+            setIsModalOpen(false);
         }
     }
 

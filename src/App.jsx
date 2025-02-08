@@ -66,6 +66,7 @@ const WebService = lazy(() => import("./pages/AdminPanel/Banners/Website/Service
 
 const AdminBookings = lazy(() => import("./pages/AdminPanel/bookingDetails/BookingDetails"));
 const Bookings = lazy(() => import("./pages/AdminPanel/bookings/Bookings"));
+const SellerCashouts = lazy(() => import("./pages/AdminPanel/seller-cashouts/SellerCashouts"));
 const Cms = lazy(() => import("./pages/AdminPanel/cms/Cms"));
 const AdminOrders = lazy(() => import("./pages/AdminPanel/orderDetails/OrderDetails"));
 
@@ -88,7 +89,7 @@ const MyProfile = lazy(() => import("./pages/my-profile/MyProfile"));
 const WhyUs = lazy(() => import("./pages/whyus/WhyUs"));
 
 function App() {
-  const { location } = useGeolocation();
+  // const { location } = useGeolocation();
   const dispatch = useDispatch();
   (async () => {
     await dispatch(getCartDetails());
@@ -354,6 +355,7 @@ function App() {
                 element={<HelpCenterTicketDetails />}
               />
               <Route path="/admin/send-notifications" element={<SendNotifications />} />
+              <Route path="/admin/seller-cashouts" element={<SellerCashouts />} />
             </Route>
 
             <Route path="/*" element={<ErrorPage />} />

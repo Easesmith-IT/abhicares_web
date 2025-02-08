@@ -36,6 +36,7 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
         settings: subAdmin?.permissions.settings || "",
         reviews: subAdmin?.permissions.reviews || "",
         notifications: subAdmin?.permissions.notifications || "",
+        sellerCashout: subAdmin?.permissions.sellerCashout || "",
     });
 
     const handleOnChange = (e) => {
@@ -70,7 +71,11 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
             || !permissions.enquiry
             || !permissions.helpCenter
             || !permissions.settings
+            || !permissions.reviews
+            || !permissions.notifications
+            || !permissions.sellerCashout
         ) {
+          toast.error("All fields are required")
             return;
         }
         if (subAdmin) {
