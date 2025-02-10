@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import toast from "react-hot-toast";
 
 const WebCategory = () => {
   const { checkAuthorization } = useAuthorization();
@@ -102,6 +103,7 @@ const WebCategory = () => {
 
       // console.log(response3);
     } catch (err) {
+      toast.error(err.message);
       console.log("ERROR", err.message);
       checkAuthorization(err);
     }

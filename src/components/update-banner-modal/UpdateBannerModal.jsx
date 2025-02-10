@@ -5,16 +5,17 @@ import toast from 'react-hot-toast';
 
 import { RxCross2 } from 'react-icons/rx';
 import useAuthorization from '../../hooks/useAuthorization';
+import { useAuthStatus } from '../../hooks/useAuthStatus';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 
 const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
-    const { checkAuthorization } = useAuthorization();
     const [info, setInfo] = useState({
         serviceId: "",
         categoryId: ""
     })
 
-
+    const { res, fetchData, isLoading } = usePostApiReq();
     const [allCategories, setAllCategories] = useState([]);
     const [allCategoryServices, setAllCategoryServices] = useState([]);
     const [isSelceted, setIsSelceted] = useState(false);
@@ -76,25 +77,41 @@ const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
         formDataHero.append("page", data.page);
         formDataHero.append("section", data.section);
 
-        try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
-                formDataHero,
-                { withCredentials: true }
-            );
+        fetchData("/content/upload-banners", formDataHero)
 
-            if (response.status === 200) {
-                setIsModalOpen(false);
-                getBannersFromServer();
-                toast.success("Updated successfully!");
-            }
-        } catch (err) {
-            console.log("ERROR", err.message);
-            checkAuthorization(err);
-            setIsModalOpen(false);
-        }
+        // try {
+        //     const response = await axios.post(
+        //         `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
+        //         formDataHero,
+        //         { withCredentials: true }
+        //     );
+
+        //     if (response.status === 200) {
+        //         setIsModalOpen(false);
+        //         getBannersFromServer();
+        //         toast.success("Updated successfully!");
+        //     }
+        // } catch (err) {
+        //     toast.error(err.message);
+
+        //     if (err.response.status === 401) {
+        //         console.log("error", err);
+        //         checkAuthStatus()
+        //     }
+        //     console.log("ERROR", err.message);
+        //     checkAuthorization(err);
+        //     setIsModalOpen(false);
+        // }
     }
 
+    useEffect(() => {
+        if (res?.status === 200 || res?.status === 201) {
+            console.log("Admin status response:", res);
+            setIsModalOpen(false);
+            getBannersFromServer();
+            toast.success("Updated successfully!");
+        }
+    }, [res]);
 
     return (
         <div className={classes.wrapper}>

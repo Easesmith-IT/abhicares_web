@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import toast from "react-hot-toast";
 const WebService = () => {
   const { checkAuthorization } = useAuthorization();
   const [images, setImages] = useState([
@@ -51,6 +52,7 @@ const WebService = () => {
         alert("Updated successfully!");
       }
     } catch (err) {
+      toast.error(err.message);
       console.log("ERROR", err.message);
       checkAuthorization(err);
     }

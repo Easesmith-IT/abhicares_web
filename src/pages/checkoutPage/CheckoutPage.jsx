@@ -119,7 +119,7 @@ const CheckoutPage = () => {
   const caluclateCharge = async () => {
     const modifiedItems = cart?.items?.map(item => ({
       type: item?.type,
-      serviceId: item?.type === "package" ? item?.packageId?.serviceId?._id : item?.productId?.serviceId?._id,
+      serviceId: item?.type === "package" ? item?.packageId?.serviceId : item?.productId?.serviceId,
       quantity: item?.quantity,
       prodId: item?.type === "package" ? item?.packageId?._id : item?.productId?._id
     }))

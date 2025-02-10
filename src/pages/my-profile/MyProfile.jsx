@@ -7,6 +7,10 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import AddEmailModal from '../../components/add-email-modal/AddEmailModal';
 import { MdOutlineContentCopy } from "react-icons/md";
+import { Box, Button } from '@mui/material';
+import AddAddressModal from '../../components/addAddressModal/AddAddressModal';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import SingleAddress from './SingleAddress';
 
 const MyProfile = () => {
   const [profileDetails, setProfileDetails] = useState("");
@@ -14,6 +18,7 @@ const MyProfile = () => {
   const [isAddEmailModalOpen, setIsAddEmailModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userReferral, setUserReferral] = useState("");
+  const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
 
   const getProfileDetails = async () => {
     try {
@@ -73,7 +78,7 @@ const MyProfile = () => {
                       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "10px" }}>
                         <h6>Referral Code:</h6>
                         <div className={classes.referral_code_wrapper}>
-                          <p>{profileDetails?.referralCode}</p>
+                          <p style={{marginBottom:"0"}}>{profileDetails?.referralCode}</p>
                           <MdOutlineContentCopy onClick={copyToClipboard} cursor={"pointer"} />
                         </div>
                       </div>
@@ -91,7 +96,10 @@ const MyProfile = () => {
                 </div>
               </div>}
 
-              <h4 style={{marginTop:"20px"}}>Adresses</h4>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} >
+              <h4 style={{ marginTop: "20px" }}>Adresses</h4>
+              <Button onClick={() => setIsAddAddressModalOpen(true)}>Add Address</Button>
+            </Box>
             <div className={classes.address_container}>
               {userAddresses.length === 0 && isLoading &&
                 <div className={classes.address}>
@@ -102,15 +110,13 @@ const MyProfile = () => {
               {userAddresses.length === 0 && !isLoading &&
                 <p>No address found</p>
               }
-              {userAddresses?.map((address) => (
-                <div key={address?._id} className={classes.address}>
-                  {/* <FaLocationDot size={20} /> */}
-                  <div><b>Address Line:</b> {address?.addressLine}</div>
-                  <div><b>Landmark:</b> {address?.landmark}</div>
-                  <div><b>City:</b> {address?.city}</div>
-                  <div><b>Pincode:</b> {address?.pincode}</div>
-                  <div><b>Default Address:</b> {address?.defaultAddress ? "Yes" : "No"}</div>
-                </div>
+              {userAddresses?.map((address, i) => (
+                <SingleAddress
+                key={address?._id}
+                  address={address}
+                  index={i}
+                  getProfileDetails={getProfileDetails}
+                />
               ))}
             </div>
           </div>
@@ -123,6 +129,14 @@ const MyProfile = () => {
           getProfileDetails={getProfileDetails}
         />
       }
+
+      {isAddAddressModalOpen && (
+        <AddAddressModal
+          setIsAddAddressModalOpen={setIsAddAddressModalOpen}
+          isOpen={isAddAddressModalOpen}
+          getAllAddress={getProfileDetails}
+        />
+      )}
     </>
   )
 }

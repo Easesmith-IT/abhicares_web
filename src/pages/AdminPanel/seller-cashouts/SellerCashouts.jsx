@@ -11,6 +11,7 @@ import classes from "../Shared.module.css";
 const SellerCashouts = () => {
     const [allSellerCashouts, setAllSellerCashouts] = useState([])
     const [isLoading, setIsLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +24,7 @@ const SellerCashouts = () => {
     const getAllSellerCashouts = async () => {
         try {
             const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-cashout`,
+                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-cashout?cashoutId=${searchQuery}`,
                 { withCredentials: true }
             );
 
@@ -38,7 +39,7 @@ const SellerCashouts = () => {
 
     useEffect(() => {
         getAllSellerCashouts();
-    }, [])
+    }, [searchQuery])
 
     return (
         <>
@@ -46,6 +47,16 @@ const SellerCashouts = () => {
                 <div className={classes["report-container"]}>
                     <div className={classes["report-header"]}>
                         <h1 className={classes["recent-Articles"]}>Seller Cashouts</h1>
+                        <div>
+                            <input
+                                type="search"
+                                name="searchQuery"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search by Cashout Id"
+                                className={classes.filter_input}
+                            />
+                        </div>
                     </div>
 
                     <div className={classes["report-body"]}>

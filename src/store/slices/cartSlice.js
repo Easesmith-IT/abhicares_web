@@ -49,6 +49,7 @@ export const addItemToCart = createAsyncThunk(
 
       const response = await res;
       console.log("add-item to cart", response);
+      toast.success("Item added successfully");
       return response.data;
     } catch (error) {
       console.log(error);
@@ -91,6 +92,7 @@ export const deleteItemFromCart = createAsyncThunk(
 
       const response = await res;
       console.log("delete", response.data);
+      toast.success("Item removed successfully");
       return response.data;
     } catch (error) {
       console.log(error);

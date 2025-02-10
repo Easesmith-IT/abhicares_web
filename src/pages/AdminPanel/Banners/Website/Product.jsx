@@ -4,6 +4,7 @@ import Wrapper from "../../../Wrapper";
 import classes from "../Banner.module.css";
 import { useState } from "react";
 import useAuthorization from "../../../../hooks/useAuthorization";
+import toast from "react-hot-toast";
 
 const WebProduct = () => {
   const { checkAuthorization } = useAuthorization();
@@ -45,6 +46,7 @@ const WebProduct = () => {
       );
       console.log(response);
     } catch (err) {
+      toast.error(err.message);
       console.log("ERROR", err.message);
       checkAuthorization(err);
     }
