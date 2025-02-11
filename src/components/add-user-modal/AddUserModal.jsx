@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './AddUserModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 
 const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
+    const { res: addUserRes, fetchData: addUser, isLoading: addUserLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     const [userInfo, setUserInfo] = useState({
         name: user?.name || "",
@@ -47,19 +48,18 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
             }
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-user`, { ...userInfo }, { withCredentials: true });
-                console.log(data);
-                toast.success("User added successfully");
-                getAllUsers();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            }
+            addUser("/admin/create-user", { ...userInfo })
         }
     }
+
+    useEffect(() => {
+        if (addUserRes?.status === 200 || addUserRes?.status === 201) {
+            toast.success("User added successfully");
+            getAllUsers();
+            setIsModalOpen(false);
+        }
+    }, [addUserRes])
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

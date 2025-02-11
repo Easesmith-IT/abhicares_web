@@ -6,8 +6,10 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import useAuthorization from '../../../hooks/useAuthorization';
 import toast from 'react-hot-toast';
+import usePostApiReq from '../../../hooks/usePostApiReq';
 
 const OrderDetails = () => {
+    const { res: changeOrderStatusRes, fetchData: changeOrderStatus, isLoading: changeOrderStatusLoading } = usePostApiReq();
     const { state: stateData } = useLocation();
     const [isLoading, setIsLoading] = useState(false)
     const [totalTaxRs, setTotalTaxRs] = useState(0);
@@ -17,9 +19,7 @@ const OrderDetails = () => {
     const [state, setState] = useState(stateData || "");
     const [status, setStatus] = useState(stateData?.status);
     const { id } = useParams();
-    console.log(state);
 
-    const { checkAuthorization } = useAuthorization();
 
     const getOrderDetails = async () => {
         try {
@@ -45,20 +45,17 @@ const OrderDetails = () => {
 
 
     const handleChange = async (e) => {
-        setStatus(() => e.target.value);
-        try {
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/change-order-status/${state?._id}`, { status: e.target.value }, { withCredentials: true }
-            );
-            console.log('status', data);
+        const orderStatus = e.target.value;
+        setStatus(() => orderStatus);
+        changeOrderStatus(`/admin/change-order-status/${state?._id}`, { status: orderStatus })
+    }
+
+    useEffect(() => {
+        if (changeOrderStatusRes?.status === 200 || changeOrderStatusRes?.status === 201) {
             toast.success("Order status changed successfully");
             getOrderDetails();
-        } catch (error) {
-            console.log(error);
-            setStatus(() => state?.status);
-            checkAuthorization(error);
         }
-    }
+    }, [changeOrderStatusRes])
 
     useEffect(() => {
         if (state?.items && state?.items.length > 0) {
@@ -120,7 +117,7 @@ const OrderDetails = () => {
                             <p>Refund Status: {state?.refundInfo?.status}</p>
                         </div>
                     </div>
-                    <p style={{marginTop:"20px"}}>Admin Comment: {state?.adminComment}</p>
+                    <p style={{ marginTop: "20px" }}>Admin Comment: {state?.adminComment}</p>
                     {/* <h5 className={classes.heading}>Packages</h5>
                     <div className={classes.container}>
                         <div className={classes.item}>

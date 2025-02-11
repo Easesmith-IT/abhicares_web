@@ -1,13 +1,15 @@
 import { AiOutlineClose } from 'react-icons/ai'
 import classes from './RaiseTicketModal.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { readCookie } from '../../utils/readCookie'
+import usePostApiReq from '../../hooks/usePostApiReq'
 
 const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booking, item }) => {
+    const { res: raiseTicketRes, fetchData: raiseTicket, isLoading: raiseTicketLoading } = usePostApiReq();
     const token = readCookie("userInfo");
     const userId = token?.id;
 
@@ -40,17 +42,15 @@ const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booki
             return;
         }
 
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/raise-ticket`, ticketInfo, { withCredentials: true });
+        raiseTicket("/shopping/raise-ticket", ticketInfo);
+    }
+
+    useEffect(() => {
+        if (raiseTicketRes?.status === 200 || raiseTicketRes?.status === 201) {
             setIsAddTicketModalOpen(false);
             toast.success("Ticket raised successfully");
-            console.log(data);
-        } catch (error) {
-            // setIsReviewModalOpen(false);
-            toast.error(error?.response?.data?.message);
-            console.log(error);
         }
-    }
+    }, [raiseTicketRes])
 
 
     return (
@@ -98,7 +98,7 @@ const RaiseTicketModal = ({ isAddTicketModalOpen, setIsAddTicketModalOpen, booki
                     </div>
 
                     <button onClick={handleAddTicket} className={classes.button}>
-                        Proceed
+                        {raiseTicketLoading ? "Loading..." : " Proceed"}
                     </button>
                 </div>
             </div>

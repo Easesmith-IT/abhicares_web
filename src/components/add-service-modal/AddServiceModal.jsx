@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddServiceModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -9,8 +9,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategoryServices }) => {
+  const { res: addServiceRes, fetchData: addService, isLoading: addServiceLoading } = usePostApiReq();
   const { checkAuthorization } = useAuthorization();
   const [description, setDescription] = useState(service?.description || "");
   const [serviceInfo, setServiceInfo] = useState({
@@ -79,17 +81,17 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
       }
     }
     else {
-      try {
-        const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-service`, formData, { withCredentials: true });
-        toast.success("Service added successfully");
-        getCategoryServices();
-        setIsModalOpen(false);
-      } catch (error) {
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      addService("/admin/create-service", formData)
     }
   }
+
+  useEffect(() => {
+    if (addServiceRes?.status === 200 || addServiceRes?.status === 201) {
+      toast.success("Service added successfully");
+      getCategoryServices();
+      setIsModalOpen(false);
+    }
+  }, [addServiceRes])
 
 
   return (
@@ -188,7 +190,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
                     </div> */}
           <div className={classes.button_wrapper}>
             <button className={classes.button}>
-              {service ? "Update" : "Add"}
+              {addServiceLoading ? "Loading..." : service ? "Update" : "Add"}
             </button>
           </div>
         </form>

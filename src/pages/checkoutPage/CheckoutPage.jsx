@@ -25,8 +25,11 @@ import { Button } from "@mui/material";
 import { convertTimeToDate } from "../../utils/timeToDate";
 import { parse } from "date-fns";
 import { readCookie } from "../../utils/readCookie";
+import usePostApiReq from "../../hooks/usePostApiReq";
 
 const CheckoutPage = () => {
+  const { res: calculateChargeRes, fetchData: calculateCharge, isLoading: calculateChargeLoading } = usePostApiReq();
+  const { res: getReferralCreditsRes, fetchData: getReferralCredits, isLoading: getReferralCreditsLoading } = usePostApiReq();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -123,25 +126,21 @@ const CheckoutPage = () => {
       quantity: item?.quantity,
       prodId: item?.type === "package" ? item?.packageId?._id : item?.productId?._id
     }))
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/caluclate-charge`, { items: modifiedItems },
-        { withCredentials: true }
-      );
-      console.log("caluclateCharge", data);
-      setTotalTaxRs(data?.totalTax)
-      setTotal(data?.totalPayable)
+    console.log("modifiedItems", modifiedItems);
 
-    } catch (error) {
-      console.log(error);
-    }
+    calculateCharge("/shopping/caluclate-charge", { items: modifiedItems })
   };
 
   useEffect(() => {
     caluclateCharge()
   }, [cart])
 
-
+  useEffect(() => {
+    if (calculateChargeRes?.status === 200 || calculateChargeRes?.status === 201) {
+      setTotalTaxRs(calculateChargeRes?.data?.totalTax)
+      setTotal(calculateChargeRes?.data?.totalPayable)
+    }
+  }, [calculateChargeRes])
 
   // useEffect(() => {
   //   const totalTaxRupee = (cart.totalPrice * 18) / 100;
@@ -175,7 +174,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
+      const { data } = await `${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
@@ -348,24 +347,20 @@ const CheckoutPage = () => {
   }
 
   const getReferralCodeData = async () => {
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/get-referralCredits`, {}, { withCredentials: true });
-      console.log("referral details", res?.data);
-      if (res?.status === 200) {
-        setCredits(res?.data?.credits);
-        setCreditsAvailable(res?.data?.creditsAvailable);
-        setIsCelebrationModalOpen(res?.data?.creditsAvailable);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    getReferralCredits("/shopping/get-referralCredits")
   }
 
   useEffect(() => {
     getReferralCodeData();
   }, [])
 
-
+  useEffect(() => {
+    if (getReferralCreditsRes?.status === 200 || getReferralCreditsRes?.status === 201) {
+      setCredits(getReferralCreditsRes?.data?.credits);
+      setCreditsAvailable(getReferralCreditsRes?.data?.creditsAvailable);
+      setIsCelebrationModalOpen(getReferralCreditsRes?.data?.creditsAvailable);
+    }
+  }, [getReferralCreditsRes])
 
   return (
     <WebsiteWrapper>

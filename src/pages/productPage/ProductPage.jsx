@@ -82,7 +82,7 @@ const ProductPage = () => {
     })();
   }, []);
 
-  // console.log("cart",cart);
+  console.log("cart",cart);
 
   return (
     <HelmetProvider>
@@ -159,7 +159,7 @@ const ProductPage = () => {
 
               {cart?.items?.length !== 0 && (
                 <div className={classes.sm_cart}>
-                  <span className={classes.sm_cart_span}>₹{cart.totalPrice}</span>
+                  <span className={classes.sm_cart_span}>₹{cart.totalPrice ||0}</span>
                   <button
                     onClick={() => navigate("/checkout")}
                     className={`${classes.button} ${classes.view_cart_button}`}

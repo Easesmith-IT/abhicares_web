@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddPackageModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -11,8 +11,10 @@ import { IoIosArrowDown } from 'react-icons/io';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
+    const { res: addPackageRes, fetchData: addPackage, isLoading: addPackageLoading } = usePostApiReq();
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
 
@@ -165,20 +167,17 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
             }
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-package`, formData, { withCredentials: true });
-                toast.success("Package added successfully");
-                getAllPackage();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            } finally {
-                setIsLoading(false);
-            }
+            addPackage("/admin/create-package", formData)
         }
     }
+
+    useEffect(() => {
+        if (addPackageRes?.status === 200 || addPackageRes?.status === 201) {
+            toast.success("Package added successfully");
+            getAllPackage();
+            setIsModalOpen(false);
+        }
+    }, [addPackageRes])
 
     console.log("package", packageInfo);
 
@@ -242,7 +241,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                         ))}
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{isLoading ? <img className={classes.loader} src={loader} alt="loader" /> : (selectedPackage ? "Update" : "Add")}</button>
+                        <button className={classes.button}>{addPackageLoading ? <img className={classes.loader} src={loader} alt="loader" /> : (selectedPackage ? "Update" : "Add")}</button>
                     </div>
                 </form>
             </div>

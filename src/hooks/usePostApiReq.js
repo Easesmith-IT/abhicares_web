@@ -53,7 +53,7 @@ const usePostApiReq = () => {
 
     const refreshToken = async () => {
         try {
-            const res1 = await axiosInstance.post("/shoping/refresh", { phone: token?.phone, role: "user" });
+            const res1 = await axiosInstance.post("/shopping/refresh", { phone: token?.phone, role: "user" });
             if (res1?.status === 200 || res1?.status === 201) {
                 dispatch(changeUserAuthStatus({ isAuthenticated: true }));
                 console.log("refresh response:", res1);
@@ -77,7 +77,7 @@ const usePostApiReq = () => {
 
     const handleLogout = async () => {
         try {
-            const logoutRes = await axiosInstance.post("/shoping/logout-all", { phone: token?.phone, role: "user" });
+            const logoutRes = await axiosInstance.post("/shopping/logout-all", { phone: token?.phone, role: "user" });
             if (logoutRes?.status === 200 || logoutRes?.status === 201) {
                 console.log("Logout response:", logoutRes);
                 dispatch(changeUserAuthStatus({ isAuthenticated: false }));
@@ -107,7 +107,7 @@ const usePostApiReq = () => {
             console.log("res", response);
             if (response.status === 200 || response.status === 201) {
                 setRes(response);
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
             }
         } catch (error) {
             console.log("post api error =>", error);

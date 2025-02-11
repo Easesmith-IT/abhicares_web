@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
@@ -29,6 +30,7 @@ function formatCouponCode(input) {
 }
 
 const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
+    const { res: addOfferRes, fetchData: addOffer, isLoading: addOfferLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(offer?.description || "");
     const [selectedItems, setSelectedItems] = useState(offer?.categoryType || []);
@@ -112,6 +114,11 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             return;
         }
 
+        if (!validateCouponCode(offerInfo.name)) {
+            toast.error('Please enter valid coupon code');
+            return;
+        }
+
         if (offer) {
             try {
                 const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id }, { withCredentials: true });
@@ -126,24 +133,17 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             }
         }
         else {
-            try {
-                if (!validateCouponCode(offerInfo.name)) {
-                    toast.error('Please enter valid coupon code');
-                    return;
-                }
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage }, { withCredentials: true });
-                console.log("add offer res", data);
-                toast.success("Offer added successfully");
-                getAllOffers();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            addOffer("/admin/create-coupon", { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage })
         }
     }
 
+    useEffect(() => {
+        if (addOfferRes?.status === 200 || addOfferRes?.status === 201) {
+            toast.success("Offer added successfully");
+            getAllOffers();
+            setIsModalOpen(false);
+        }
+    }, [addOfferRes])
 
     return (
         <div className={classes.wrapper}>
@@ -237,7 +237,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                         <ReactQuill theme="snow" value={description} onChange={setDescription} />
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{offer ? "Update" : "Add"}</button>
+                        <button className={classes.button}>{addOfferLoading ? "Loading..." : offer ? "Update" : "Add"}</button>
                     </div>
                 </form>
             </div>

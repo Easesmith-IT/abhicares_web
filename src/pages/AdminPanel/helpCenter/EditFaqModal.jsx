@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import toast from "react-hot-toast";
 import classes from "../../../components/add-resoulation-modal/AddResoulationModal.module.css";
 import useAuthorization from '../../../hooks/useAuthorization';
+import usePostApiReq from '../../../hooks/usePostApiReq';
 
 const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
+  const { res: createFaqRes, fetchData: createFaq, isLoading: createFaqLoading } = usePostApiReq();
   const { checkAuthorization } = useAuthorization();
   const [faqInfo, setfaqInfo] = useState({
     ques: faq.ques || "",
@@ -41,22 +43,17 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
       }
     }
     else {
-      try {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_APP_ADMIN_API_URL}/create-faq`,
-          { ...faqInfo },
-          { withCredentials: true }
-        );
-        toast.success("Faq created successfully");
-        getAllFaqs();
-        setIsModalOpen(false);
-      } catch (error) {
-        console.log(error);
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      createFaq("/admin/create-faq", { ...faqInfo })
     }
   };
+
+  useEffect(() => {
+    if (createFaqRes?.status === 200 || createFaqRes?.status === 201) {
+      toast.success("Faq created successfully");
+      getAllFaqs();
+      setIsModalOpen(false);
+    }
+  }, [createFaqRes])
 
 
   return (
@@ -97,7 +94,7 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
           </div>
           <div className={classes.button_wrapper}>
             <button onClick={handleOnSubmit} className={classes.button}>
-              {faq ? "Update" : "Add"}
+              {createFaqLoading ? "Loading..." : faq ? "Update" : "Add"}
             </button>
           </div>
         </form>

@@ -10,8 +10,11 @@ import SellerOrderInfoModal from '../../../components/seller-info-modal/SellerOr
 import { RiWalletLine } from "react-icons/ri";
 import WalletViewModal from '../../../components/wallet-view-modal/WalletViewModal';
 import CashOutReq from '../../../components/cash-out-req/CashOutReq';
+import usePostApiReq from '../../../hooks/usePostApiReq';
 
 const SellerAssignedOrders = () => {
+    const { res: orderbyStatusRes, fetchData: orderbyStatus, isLoading: orderbyStatusLoading } = usePostApiReq();
+    const { res: updatePartnerStatusRes, fetchData: updatePartnerStatus, isLoading: updatePartnerStatusLoading } = usePostApiReq();
     const [state, setState] = useState("");
     const [sellerOrders, setSellerOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -87,25 +90,22 @@ const SellerAssignedOrders = () => {
 
     const handleChange = async (e) => {
         setIsLoading(true);
-        setStatus(e.target.value);
-        if (e.target.value === "") {
+        const orderStatus = e.target.value;
+        setStatus(orderStatus);
+        if (orderStatus === "") {
             getSellerOrders();
             return;
         }
-        try {
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-order-by-status/${params.partnerId}`,
-                { status: e.target.value },
-                { withCredentials: true }
-            );
-            setIsLoading(false);
-            setSellerOrders(data.sellerOrders);
-            console.log("order by status", data);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-        }
+
+        orderbyStatus(`/admin/get-seller-order-by-status/${params.partnerId}`, { status: orderStatus })
     };
+
+    useEffect(() => {
+        if (orderbyStatusRes?.status === 200 || orderbyStatusRes?.status === 201) {
+            setIsLoading(false);
+            setSellerOrders(orderbyStatusRes?.data.sellerOrders);
+        }
+    }, [orderbyStatusRes])
 
     const handleSellerOrderInfoModal = (data) => {
         setSellerOrder(data);
@@ -132,19 +132,18 @@ const SellerAssignedOrders = () => {
     }, [])
 
     const handleStatusChange = async (e) => {
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-partner-status`, { sellerId: params.partnerId, status: partnerstatus }, { withCredentials: true });
-            console.log("seller orders", data);
-            getSeller();
-        } catch (error) {
-            console.log(error);
-        }
+        updatePartnerStatus("/admin/update-partner-status", { sellerId: params.partnerId, status: partnerstatus })
     };
 
     useEffect(() => {
         partnerstatus && handleStatusChange()
     }, [partnerstatus])
 
+    useEffect(() => {
+        if (updatePartnerStatusRes?.status === 200 || updatePartnerStatusRes?.status === 201) {
+            getSeller();
+        }
+    }, [updatePartnerStatusRes])
 
     return (
         <>

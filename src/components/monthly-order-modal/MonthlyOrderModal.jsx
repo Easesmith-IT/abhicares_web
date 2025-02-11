@@ -2,11 +2,13 @@ import monthlyOrderModalClasses from './MonthlyOrderModal.module.css';
 import classes from '../../pages/AdminPanel/Shared.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { format } from 'date-fns';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import html2PDF from 'jspdf-html2canvas';
 import axios from 'axios';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const MonthlyOrderModal = ({ setIsModalOpen }) => {
+    const { res: monthlyOrdersRes, fetchData: getMonthlyOrders, isLoading: monthlyOrdersLoading } = usePostApiReq();
     const [dateYearInfo, setDateYearInfo] = useState("");
     const [monthlyOrders, setMonthlyOrders] = useState([]);
 
@@ -39,25 +41,19 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
         if (!dateYearInfo) {
             return;
         }
-        try {
-            const arr = dateYearInfo.split("-");
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-monthly-orders`,
-                {
-                    month: arr[1],
-                    year: arr[0],
-                },
-                { withCredentials: true }
-            );
-            // if (data.data.length > 0) {
-            setIsModalOpen(true);
-            // }
-            setMonthlyOrders(data.data);
-            console.log("orders-month", data);
-        } catch (error) {
-            console.log(error);
-        }
+        const arr = dateYearInfo.split("-");
+        getMonthlyOrders("/admin/get-monthly-orders", {
+            month: arr[1],
+            year: arr[0],
+        })
     };
+
+    useEffect(() => {
+        if (monthlyOrdersRes?.status === 200 || monthlyOrdersRes?.status === 201) {
+            setIsModalOpen(true);
+            setMonthlyOrders(monthlyOrdersRes?.data.data);
+        }
+    }, [monthlyOrdersRes])
 
     return (
         <div className={monthlyOrderModalClasses.wrapper}>

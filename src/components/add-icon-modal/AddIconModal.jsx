@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddIconModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -7,8 +7,10 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
+    const { res: addIconRes, fetchData: addIcon, isLoading: addIconLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     const [iconInfo, setIconInfo] = useState({
         icon: "",
@@ -37,17 +39,17 @@ const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
         const formData = new FormData();
         formData.append("img", iconInfo.icon);
 
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/upload-service-icon/${serviceId}`, formData, { withCredentials: true });
+        addIcon(`/admin/upload-service-icon/${serviceId}`, formData)
+    }
+
+    useEffect(() => {
+        if (addIconRes?.status === 200 || addIconRes?.status === 201) {
             toast.success("Icon added successfully");
             setIsModalOpen(false);
             getServiceDetails();
-        } catch (error) {
-            setIsModalOpen(false);
-            checkAuthorization(error);
-            console.log(error);
         }
-    }
+    }, [addIconRes])
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>
@@ -79,7 +81,7 @@ const AddIconModal = ({ setIsModalOpen, serviceId, getServiceDetails }) => {
                             </div>}
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>Upload</button>
+                        <button className={classes.button}>{addIconLoading ? "Uploading..." : "Upload"}</button>
                     </div>
                 </form>
             </div>

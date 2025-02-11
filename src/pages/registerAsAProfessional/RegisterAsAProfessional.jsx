@@ -4,8 +4,10 @@ import ProfessionalImg from '../../assets/professional_img.png'
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import WebsiteWrapper from "../WebsiteWrapper";
-import { Helmet,HelmetProvider  } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import usePostApiReq from "../../hooks/usePostApiReq";
 const RegisterAsAProfessional = () => {
+    const { res: registerAsProfessionalRes, fetchData: registerAsProfessional, isLoading: registerAsProfessionalLoading } = usePostApiReq();
     const [registrationInfo, setRegistrationInfo] = useState({
         name: "",
         phone: "",
@@ -15,25 +17,25 @@ const RegisterAsAProfessional = () => {
 
     });
 
-      const [seoData, setSeoData] = useState({
-    title: "",
-    description: "",
-  });
-  const getSeoForSellerPage = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=register-as-professional`
-      );
-      const { seoTitle, seoDescription } = data?.seo;
-      setSeoData({ title: seoTitle, description: seoDescription });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const [seoData, setSeoData] = useState({
+        title: "",
+        description: "",
+    });
+    const getSeoForSellerPage = async () => {
+        try {
+            const { data } = await axios.get(
+                `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=register-as-professional`
+            );
+            const { seoTitle, seoDescription } = data?.seo;
+            setSeoData({ title: seoTitle, description: seoDescription });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-  useEffect(() => {
-    getSeoForSellerPage();
-  }, []);
+    useEffect(() => {
+        getSeoForSellerPage();
+    }, []);
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -50,9 +52,12 @@ const RegisterAsAProfessional = () => {
         ) {
             return;
         }
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/create-enquiry`, { ...registrationInfo });
-            console.log(data);
+
+        registerAsProfessional("/shopping/create-enquiry", { ...registrationInfo })
+    };
+
+    useEffect(() => {
+        if (registerAsProfessionalRes?.status === 200 || registerAsProfessionalRes?.status === 201) {
             setRegistrationInfo({
                 name: "",
                 phone: "",
@@ -61,56 +66,53 @@ const RegisterAsAProfessional = () => {
                 state: ""
             })
             toast.success("Thank you! We will get back to you soon");
-        } catch (error) {
-            console.log(error);
         }
-    };
-
+    }, [registerAsProfessionalRes])
 
     return (
         <HelmetProvider>
-        <WebsiteWrapper>
-                  <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-      </Helmet>
-            <div>
-                <div className={classes.hero_section}>
-                    <div className={classes.container}>
-                        <div className={classes.hero_section_top}>
-                            <div className={classes.hero_section_left} style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+            <WebsiteWrapper>
+                <Helmet>
+                    <title>{seoData.title}</title>
+                    <meta name="description" content={seoData.description} />
+                </Helmet>
+                <div>
+                    <div className={classes.hero_section}>
+                        <div className={classes.container}>
+                            <div className={classes.hero_section_top}>
+                                <div className={classes.hero_section_left} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <div>
+                                        <h1 className={classes.hero_section_h1}>Earn More. Earn Respect.</h1>
+                                        <p className={classes.hero_section_p}>
+                                            Join 100+ partners across Darbhanga
+                                        </p>
+                                    </div>
+
+                                </div>
                                 <div>
-                                <h1 className={classes.hero_section_h1}>Earn More. Earn Respect.</h1>
-                                <p className={classes.hero_section_p}>
-                                    Join 100+ partners across Darbhanga
-                                </p>
+                                    <img className={classes.hero_section_img} src={ProfessionalImg} alt="heroImg" />
                                 </div>
-                                
                             </div>
-                            <div>
-                                <img className={classes.hero_section_img} src={ProfessionalImg} alt="heroImg" />
+                            <div className={classes.hero_section_bottom}>
+                                <h2 className={classes.hero_section_bottom_h2}>Share your WhatsApp number and we'll reach out via our WhatsApp Business Account.</h2>
+                                <form onSubmit={handleOnSubmit}>
+                                    <div className={classes.input_container}>
+                                        <input className={classes.input} onChange={handleOnChange} value={registrationInfo.name} name="name" id="name" type="text" placeholder="Your name" />
+                                        <input className={classes.input} onChange={handleOnChange} value={registrationInfo.phone} name="phone" id="phone" type="text" placeholder="Your phone number" />
+                                        <input className={classes.input} onChange={handleOnChange} value={registrationInfo.serviceType} name="serviceType" id="serviceType" type="text" placeholder="Service type" />
+                                        <input className={classes.input} onChange={handleOnChange} value={registrationInfo.city} name="city" id="city" type="text" placeholder="Your city" />
+                                        <input className={classes.input} onChange={handleOnChange} value={registrationInfo.state} name="state" id="state" type="text" placeholder="Your state" />
+                                    </div>
+                                    <button className={classes.button}>{registerAsProfessionalLoading?"Loading...":"Join Us"}</button>
+                                </form>
                             </div>
-                        </div>
-                        <div className={classes.hero_section_bottom}>
-                            <h2 className={classes.hero_section_bottom_h2}>Share your WhatsApp number and we'll reach out via our WhatsApp Business Account.</h2>
-                            <form onSubmit={handleOnSubmit}>
-                                <div className={classes.input_container}>
-                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.name} name="name" id="name" type="text" placeholder="Your name" />
-                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.phone} name="phone" id="phone" type="text" placeholder="Your phone number" />
-                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.serviceType} name="serviceType" id="serviceType" type="text" placeholder="Service type" />
-                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.city} name="city" id="city" type="text" placeholder="Your city" />
-                                    <input className={classes.input} onChange={handleOnChange} value={registrationInfo.state} name="state" id="state" type="text" placeholder="Your state" />
-                                </div>
-                                <button className={classes.button}>Join Us</button>
-                            </form>
                         </div>
                     </div>
-                </div>
-                <div className={classes.company_info}>
-                    <div className={classes.container}>
-                        <h2 className={classes.company_info_h3}>Join AbhiCares to change your life</h2>
-                        <p className={classes.company_info_p}>AbhiCares is an app-based marketplace that empowers professionals like you to become your own boss</p>
-                        {/* <ul className={classes.list_container}>
+                    <div className={classes.company_info}>
+                        <div className={classes.container}>
+                            <h2 className={classes.company_info_h3}>Join AbhiCares to change your life</h2>
+                            <p className={classes.company_info_p}>AbhiCares is an app-based marketplace that empowers professionals like you to become your own boss</p>
+                            {/* <ul className={classes.list_container}>
                             <li className={classes.list_item}>
                                 <h3 className={classes.list_item_h3}>40,000+</h3>
                                 <p className={classes.list_item_p}>Partners already on board</p>
@@ -124,11 +126,11 @@ const RegisterAsAProfessional = () => {
                                 <p className={classes.list_item_p}>Services delivered each month</p>
                             </li>
                         </ul> */}
+                        </div>
                     </div>
                 </div>
-            </div>
             </WebsiteWrapper>
-            </HelmetProvider>
+        </HelmetProvider>
     );
 };
 

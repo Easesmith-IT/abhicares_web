@@ -8,9 +8,11 @@ import { RxCross2 } from 'react-icons/rx';
 import { IoIosArrowDown } from "react-icons/io";
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
+    const { res: addSellerRes, fetchData: addSeller, isLoading: addSellerLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     console.log('seller', seller)
     const [sellerInfo, setSellerInfo] = useState({
@@ -20,7 +22,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         phone: seller?.phone || "",
         password: seller?.password || "",
         categoryId: seller?.categoryId?._id || "",
-        services: seller?.services?.map((service)=> ({ serviceId: service?.serviceId?._id, name:service?.serviceId?.name })) || [],
+        services: seller?.services?.map((service) => ({ serviceId: service?.serviceId?._id, name: service?.serviceId?.name })) || [],
         status: seller?.status
     });
 
@@ -49,14 +51,14 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const handleServiceOnChange = (e, name) => {
         const { value, checked } = e.target;
         console.log("value: " + value);
-        
+
         if (checked) {
             setSellerInfo({ ...sellerInfo, services: [...sellerInfo.services, { serviceId: value, name }] })
         }
         else {
             const filtered = sellerInfo.services.filter((service) => service.serviceId !== value);
-            console.log("filtered",filtered);
-            
+            console.log("filtered", filtered);
+
             setSellerInfo({ ...sellerInfo, services: filtered })
         }
     }
@@ -201,19 +203,17 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
             }
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-seller`, allData, { withCredentials: true });
-                toast.success("Seller added successfully");
-                console.log("add seller", data);
-                getAllSellers();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            }
+            addSeller("/admin/create-seller", allData)
         }
     }
+
+    useEffect(() => {
+        if (addSellerRes?.status === 200 || addSellerRes?.status === 201) {
+            toast.success("Seller added successfully");
+            getAllSellers();
+            setIsModalOpen(false);
+        }
+    }, [addSellerRes])
 
 
     return (
@@ -329,7 +329,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
                     <div className={classes.button_wrapper}>
                         <button type="submit" className={classes.button}>
-                            {seller ? "Update" : "Add"}
+                            {addSellerLoading ? "Loading..." : seller ? "Update" : "Add"}
                         </button>
                     </div>
                 </form>
