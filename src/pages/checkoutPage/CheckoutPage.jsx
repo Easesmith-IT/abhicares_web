@@ -174,7 +174,7 @@ const CheckoutPage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await `${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
       setIsLoading(false);
       navigate("/success");
 
