@@ -34,10 +34,6 @@ const usePostApiReq = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (token?.role === "user") getStatus();
-    // }, [token?.role]);
-
     const getAdminStatus = async () => {
         try {
             const res1 = await axiosInstance.get("/admin/status");
@@ -54,10 +50,6 @@ const usePostApiReq = () => {
             console.error("Error fetching admin status:", error);
         }
     };
-
-    // useEffect(() => {
-    //     if (adminInfo?.role === "admin") getAdminStatus();
-    // }, [adminInfo]);
 
     const refreshToken = async () => {
         try {
@@ -121,9 +113,8 @@ const usePostApiReq = () => {
             console.log("post api error =>", error);
             toast.error(error.response?.data?.message || "An error occurred.")
             if (error.response.status === 401) {
-                // if (token?.role === "user") getStatus();
-                // if (adminInfo?.role === "admin") 
-                getAdminStatus();
+                if (token?.role === "user") getStatus();
+                if (adminInfo?.role === "admin") getAdminStatus();
             }
         } finally {
             setIsLoading(false);
