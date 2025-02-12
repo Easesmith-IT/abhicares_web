@@ -9,10 +9,13 @@ import { IoIosArrowDown } from "react-icons/io";
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
 import usePostApiReq from '../../hooks/usePostApiReq';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const { res: addSellerRes, fetchData: addSeller, isLoading: addSellerLoading } = usePostApiReq();
+    const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
+    const { res: getServicesRes, fetchData: getServices, isLoading: getServicesLoading } = useGetApiReq();
     const { checkAuthorization } = useAuthorization();
     console.log('seller', seller)
     const [sellerInfo, setSellerInfo] = useState({
@@ -88,35 +91,32 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const navigate = useNavigate()
 
     const getAllCategories = async () => {
-
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-            console.log('categories', data.data)
-            setAllCategories(data.data);
-        } catch (error) {
-            console.log(error);
-        }
+        getCategories("/admin/get-all-category")
     };
 
     useEffect(() => {
         getAllCategories();
     }, [])
 
-    const getCategoryServices = async () => {
-        try {
-            console.log(sellerInfo);
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-category-service/${sellerInfo.categoryId}`, { withCredentials: true });
-            console.log("allCategoryServices", data.data);
-            setAllCategoryServices(data.data);
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        if (getCategoriesRes?.status === 200 || getCategoriesRes?.status === 201) {
+            setAllCategories(getCategoriesRes?.data?.data);
         }
+    }, [getCategoriesRes])
+
+    const getCategoryServices = async () => {
+        getServices(`/admin/get-category-service/${sellerInfo.categoryId}`)
     };
 
     useEffect(() => {
-        getCategoryServices();
+        sellerInfo.categoryId && getCategoryServices();
     }, [sellerInfo.categoryId])
 
+    useEffect(() => {
+        if (getServicesRes?.status === 200 || getServicesRes?.status === 201) {
+            setAllCategoryServices(getServicesRes?.data?.data);
+        }
+    }, [getServicesRes])
 
 
     console.log("seller state", sellerInfo);
@@ -307,6 +307,13 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
                                     <input style={{ width: "20px", height: "20px" }} checked={sellerInfo.services.some((item) => item?.serviceId?._id ? item.serviceId._id === service._id : item.serviceId === service._id)} onChange={(e) => handleServiceOnChange(e, service.name)} type="checkbox" value={service._id} name={service.name} id={service.name} />
                                 </div>
                             ))}
+                            {allCategoryServices.length === 0 && getServicesLoading &&
+                                <p>Loading...</p>
+                            }
+
+                            {allCategoryServices.length === 0 && !getServicesLoading &&
+                                <p>No service found</p>
+                            }
                         </div>
                         {/* <div className={classes.service_container}>
                             {sellerInfo.services.length > 0 && sellerInfo.services.map((item) => (

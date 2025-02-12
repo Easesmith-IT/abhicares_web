@@ -34,11 +34,11 @@ const BookingDetails = () => {
   }
 
   useEffect(() => {
-    if (addBookingReviewRes?.status === 200 || addBookingReviewRes?.status === 201) {
+    if (changeOrderStatusRes?.status === 200 || changeOrderStatusRes?.status === 201) {
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
     }
-  }, [addBookingReviewRes])
+  }, [changeOrderStatusRes])
 
   useEffect(() => {
     getOrderInvoice();

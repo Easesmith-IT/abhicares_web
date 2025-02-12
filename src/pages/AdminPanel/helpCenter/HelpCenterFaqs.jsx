@@ -15,8 +15,10 @@ import { FiEdit } from "react-icons/fi";
 import { format } from "date-fns";
 import EditFaqModal from "./EditFaqModal";
 import useAuthorization from "../../../hooks/useAuthorization";
+import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
 
 const HelpCenterFaqs = () => {
+  const { res: deleteFaqRes, fetchData: deleteFaq, isLoading: deleteFaqLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [faq, setFaq] = useState({});
@@ -53,20 +55,16 @@ const HelpCenterFaqs = () => {
 
 
   const handleDelete = async () => {
-    try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}//delete-faq/${faq}`,
-        { withCredentials: true }
-      );
-      toast.success("Issue deleted successfully");
+    deleteFaq(`/admin/delete-faq/${faq}`)
+  };
+
+  useEffect(() => {
+    if (deleteFaqRes?.status === 200 || deleteFaqRes?.status === 201) {
+      toast.success("Faq deleted successfully");
       getAllFaqs();
       setIsDeleteModalOpen(!isDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deleteFaqRes])
 
   const handleEditFaq = (faq) => {
     setFaq(faq);

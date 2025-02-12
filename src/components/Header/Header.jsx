@@ -20,8 +20,10 @@ import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from "axios";
 import { FaCartShopping } from "react-icons/fa6";
 import { readCookie } from "../../utils/readCookie";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 export const Header = () => {
+  const { res: logoutUserRes, fetchData: logoutUser, isLoading } = useGetApiReq();
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [toggle, setToggle] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -40,23 +42,24 @@ export const Header = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/logout-user`, { withCredentials: true });
+    logoutUser("/shopping/logout-user");
+  }
+
+  useEffect(() => {
+    if (logoutUserRes?.status === 200 || logoutUserRes?.status === 201) {
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
       localStorage.removeItem("userId");
-      localStorage.setItem("user-status",false);
+      localStorage.setItem("user-status", false);
 
       navigate("/");
-      await dispatch(changeUserStatus(null));
-      await dispatch(getCartDetails());
+      (async () => {
+        await dispatch(changeUserStatus(null));
+        await dispatch(getCartDetails());
+      })()
       setIsLogoutModalOpen(false);
-      // window.location.reload();
-
-    } catch (error) {
-      console.log(error);
     }
-  }
+  }, [logoutUserRes])
 
   const handleLogoutModal = () => {
     setIsUserModalOpen(false);
@@ -118,7 +121,7 @@ export const Header = () => {
               </div>
             </div>
           </div> */}
-        <div style={{ display: "flex", gap: "20px",alignItems:"center" }}>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
 
           <FaCartShopping
             onClick={() => navigate("/checkout")}
@@ -136,7 +139,7 @@ export const Header = () => {
                   backgroundColor: "transparent",
                   color: "white",
                   // fontSize:"1.1rem",
-                  padding:"0"
+                  padding: "0"
                 }}
                 variant="contained"
               >

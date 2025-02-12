@@ -15,8 +15,10 @@ import { PaginationControl } from 'react-bootstrap-pagination-control';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useAuthorization from '../../../hooks/useAuthorization';
 import { FaEye } from 'react-icons/fa';
+import useDeleteApiReq from '../../../hooks/useDeleteApiReq';
 
 const HelpCenterTickets = () => {
+  const { res: deleteTicketRes, fetchData: deleteTicket, isLoading: deleteTicketLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [issue, setIssue] = useState("");
@@ -125,21 +127,16 @@ const HelpCenterTickets = () => {
   };
 
   const handleDelete = async () => {
-    try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-ticket?ticketId=${issue}`,
-        { withCredentials: true }
-      );
+    deleteTicket(`/admin/delete-ticket?ticketId=${issue}`)
+  };
+
+  useEffect(() => {
+    if (deleteTicketRes?.status === 200 || deleteTicketRes?.status === 201) {
       toast.success("Ticket deleted successfully");
       getAllIssues();
       setIsDeleteModalOpen(!isDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
-
+  }, [deleteTicketRes])
 
   return (
     <>

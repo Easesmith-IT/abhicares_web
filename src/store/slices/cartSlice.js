@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { readCookie } from "../../utils/readCookie";
 
 const initialState = {
   userId: "",
@@ -12,19 +13,22 @@ const initialState = {
 };
 
 export const getCartDetails = createAsyncThunk("/cart/details", async () => {
+  const userInfo = readCookie("userInfo");
+  console.log("userInfo", userInfo);
+
   try {
-    const res = axios.get(`${import.meta.env.VITE_APP_API_URL}/cart-details`, {
+    const res = axios.get(`${import.meta.env.VITE_APP_API_URL}/cart-details?userId=${userInfo.id}`, {
       withCredentials: true,
     });
 
     const response = await res;
-    // console.log("cart details", response.data);
+    console.log("cart details", response);
     return response.data;
   } catch (error) {
     if (error?.response?.data?.tokenExpired) {
       localStorage.removeItem("userName");
       localStorage.removeItem("userPhone");
-    //   toast.error("Your session was expired!");
+      //   toast.error("Your session was expired!");
       return;
     }
     toast.error(error?.response?.data?.message);
@@ -111,6 +115,8 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getCartDetails.fulfilled, (state, action) => {
+      console.log("action?.payload",action?.payload);
+      
       if (action?.payload?.data) {
         state.isCart = true;
         state.items = action?.payload?.data;

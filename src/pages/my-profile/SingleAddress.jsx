@@ -1,34 +1,32 @@
-import { Box } from '@mui/material'
-import classes from './MyProfile.module.css';
-import React, { useState } from 'react'
-import AddAddressModal from '../../components/addAddressModal/AddAddressModal';
-import { MdDelete, MdEdit } from 'react-icons/md';
-import DeleteModal from '../../components/deleteModal/DeleteModal';
-import axios from 'axios';
+import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import AddAddressModal from '../../components/addAddressModal/AddAddressModal';
+import DeleteModal from '../../components/deleteModal/DeleteModal';
+import useDeleteApiReq from '../../hooks/useDeleteApiReq';
+import classes from './MyProfile.module.css';
 
 const SingleAddress = ({ address, index, getProfileDetails }) => {
+    const { res: deleteAddressRes, fetchData: deleteAddress, isLoading: deleteAddressLoading } = useDeleteApiReq();
 
     const [isUpdateModal, setIsUpdateModal] = useState(false);
     const [isDeleteModal, setIsDeleteModal] = useState(false);
 
 
     const handleDelete = async () => {
-        try {
-            const res = await axios.delete(
-                `${import.meta.env.VITE_APP_API_URL}/delete-user-address/${address._id}`,
-                {
-                    withCredentials: true,
-                }
-            );
+        deleteAddress(`/shopping/delete-user-address/${address._id}`)
+    };
+
+    useEffect(() => {
+        if (deleteAddressRes?.status === 200 || deleteAddressRes?.status === 201) {
             toast.success("Address deleted successfully");
-            console.log(res.data);
             setIsDeleteModal(false);
             getProfileDetails();
-        } catch (error) {
-            console.log(error);
         }
-    };
+    }, [deleteAddressRes])
+
+
     return (
         <>
             <div className={classes.address}>

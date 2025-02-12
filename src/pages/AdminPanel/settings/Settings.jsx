@@ -13,8 +13,10 @@ import Loader from "../../../components/loader/Loader";
 import UpdateReferEarnModal from "../../../components/update-refer-and-earn-modal/UpdateRefer&EarnModal";
 import DeleteModal from "../../../components/deleteModal/DeleteModal";
 import { useNavigate } from "react-router-dom";
+import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
 
 const Settings = () => {
+  const { res: deleteSubAdminRes, fetchData: deleteSubAdmin, isLoading: deleteSubAdminLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSeoModalOpen, setIsSeoModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -39,20 +41,16 @@ const Settings = () => {
   };
 
   const handleDelete = async () => {
-    try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-sub-admin?subAdminId=${subAdmin?._id}&role=${subAdmin?.role}`,
-        { withCredentials: true }
-      );
+    deleteSubAdmin(`/admin/delete-sub-admin?subAdminId=${subAdmin?._id}&role=${subAdmin?.role}`)
+  };
+
+  useEffect(() => {
+    if (deleteSubAdminRes?.status === 200 || deleteSubAdminRes?.status === 201) {
+      getSubadmins()
       toast.success("Subadmin deleted successfully");
       setIsDeleteModalOpen(!isDeleteModalOpen);
-      getSubadmins()
-    } catch (error) {
-      console.log(error);
-      // setIsModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deleteSubAdminRes])
 
   const getSubadmins = async () => {
     try {

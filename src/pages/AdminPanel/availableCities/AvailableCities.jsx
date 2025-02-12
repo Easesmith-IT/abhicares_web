@@ -14,8 +14,10 @@ import AddCityModal from '../../../components/add-city-modal/AddCityModal'
 import toast from 'react-hot-toast'
 import DeleteModal from '../../../components/deleteModal/DeleteModal'
 import useAuthorization from '../../../hooks/useAuthorization'
+import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
 
 const AvailableCities = () => {
+    const { res: deleteCityRes, fetchData: deleteCity, isLoading: deleteCityLoading } = useDeleteApiReq();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -54,17 +56,16 @@ const AvailableCities = () => {
     };
 
     const handleDelete = async () => {
-        try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-availabe-city/${city}`, { withCredentials: true });
+        deleteCity(`/admin/delete-availabe-city/${city}`)
+    };
+
+    useEffect(() => {
+        if (deleteCityRes?.status === 200 || deleteCityRes?.status === 201) {
             toast.success("City deleted successfully");
             getAllCities();
             setIsDeleteModalOpen(!isDeleteModalOpen);
-        } catch (error) {
-            console.log(error);
-            setIsDeleteModalOpen(false);
-            checkAuthorization(error);
         }
-    };
+    }, [deleteCityRes])
 
     return (
         <>

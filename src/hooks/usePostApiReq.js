@@ -9,6 +9,7 @@ import { changeAdminStatus, changeUserAuthStatus } from "../store/slices/userSli
 const usePostApiReq = () => {
     const [res, setRes] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const dispatch = useDispatch();
     const isApiCalled = useRef(false);
@@ -110,6 +111,7 @@ const usePostApiReq = () => {
                 // toast.success(response.data.message);
             }
         } catch (error) {
+            setError(error);
             console.log("post api error =>", error);
             toast.error(error.response?.data?.message || "An error occurred.")
             if (error.response.status === 401) {
@@ -121,7 +123,7 @@ const usePostApiReq = () => {
         }
     };
 
-    return { res, isLoading, fetchData };
+    return { res, isLoading, fetchData,error };
 
 
 };

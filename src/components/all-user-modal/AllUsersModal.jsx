@@ -6,27 +6,26 @@ import { useEffect, useRef, useState } from 'react';
 import html2PDF from 'jspdf-html2canvas';
 import axios from 'axios';
 import Loader from '../loader/Loader';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const AllUsersModal = ({ setIsModalOpen }) => {
     const [allUsers, setAllUsers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const { res: getUsersDataRes, fetchData: getUsersData, isLoading } = useGetApiReq();
 
     const getAllUsers = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-users-data`, { withCredentials: true });
-            console.log("all users", data);
-            setAllUsers(data?.users);
-        } catch (error) {
-            console.log(error);
-        }
-        finally {
-            setIsLoading(false);
-        }
+        getUsersData("/admin/get-users-data")
     }
 
     useEffect(() => {
         getAllUsers();
     }, [])
+
+    useEffect(() => {
+        if (getUsersDataRes?.status === 200 || getUsersDataRes?.status === 201) {
+            console.log("getUsersDataRes",getUsersDataRes);
+            setAllUsers(getUsersDataRes?.data?.users);
+        }
+    }, [getUsersDataRes])
 
 
     const downloadUserData = () => {
@@ -64,12 +63,12 @@ const AllUsersModal = ({ setIsModalOpen }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {allUsers.map((item,i) => (
+                                    {allUsers.map((item, i) => (
                                         <tr key={i}>
                                             <td style={{ width: "200px", textAlign: "left", paddingInline: "10px" }}>{item?.userInfo?.name}</td>
                                             <td style={{ textAlign: "left", paddingInline: "10px" }}>{item?.userInfo?.phone}</td>
-                                            {item?.add ?<td style={{ textAlign: "left", paddingInline: "10px" }}>{`${item?.add?.city}, ${item?.add?.pincode}`}</td>
-                                            :<td style={{ textAlign: "left", paddingInline: "10px" }}>No address found.</td>}
+                                            {item?.add ? <td style={{ textAlign: "left", paddingInline: "10px" }}>{`${item?.add?.city}, ${item?.add?.pincode}`}</td>
+                                                : <td style={{ textAlign: "left", paddingInline: "10px" }}>No address found.</td>}
                                         </tr>
                                     ))}
                                 </tbody>

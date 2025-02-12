@@ -30,6 +30,10 @@ import usePostApiReq from "../../hooks/usePostApiReq";
 const CheckoutPage = () => {
   const { res: calculateChargeRes, fetchData: calculateCharge, isLoading: calculateChargeLoading } = usePostApiReq();
   const { res: getReferralCreditsRes, fetchData: getReferralCredits, isLoading: getReferralCreditsLoading } = usePostApiReq();
+  const { res: getCouponDetailsRes, fetchData: getCouponDetails, isLoading: getCouponDetailsLoading, error } = usePostApiReq();
+  const { res: getApiKeyRes, fetchData: getApiKey, isLoading: getApiKeyLoading, error: getApiKeyError } = usePostApiReq();
+  const { res: createOnlineOrderRes, fetchData: createOnlineOrderFun, isLoading: createOnlineOrderLoading, error: createOnlineOrderError } = usePostApiReq();
+  const { res: placeCodOrderRes, fetchData: placeCodOrder, isLoading: placeCodOrderLoading, error: placeCodOrderError } = usePostApiReq();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -171,21 +175,14 @@ const CheckoutPage = () => {
       toast.error("Select payment method");
       return;
     }
-
-    try {
-      setIsLoading(true);
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/place-cod-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits }, { withCredentials: true });
-      setIsLoading(false);
-      navigate("/success");
-
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message)
-      setIsLoading(false);
-    }
+    placeCodOrder("/shopping/place-cod-order", { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: parse(item?.bookingTime, 'HH:mm', new Date()) })), city: "Lucknow", couponId, referalDiscount: credits })
   };
 
-
+  useEffect(() => {
+    if (placeCodOrderRes?.status === 200 || placeCodOrderRes?.status === 201) {
+      navigate("/success");
+    }
+  }, [placeCodOrderRes])
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -218,15 +215,13 @@ const CheckoutPage = () => {
       toast.error("Enter coupon code");
       return
     }
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/get-coupon-details`, { name: offerCode, serviceCategoryType, userId },
-        { withCredentials: true }
-      );
 
-      console.log("coupon details", data);
+    getCouponDetails("/shopping/get-coupon-details", { name: offerCode, serviceCategoryType, userId })
+  }
 
-      const { discountType, status, _id, couponFixedValue, offPercentage, maxDiscount } = data?.data || {};
+  useEffect(() => {
+    if (getCouponDetailsRes?.status === 200 || getCouponDetailsRes?.status === 201) {
+      const { discountType, status, _id, couponFixedValue, offPercentage, maxDiscount } = getCouponDetailsRes?.data?.data || {};
 
 
       if (offerValue > 0) {
@@ -256,7 +251,11 @@ const CheckoutPage = () => {
         const totalValue = total - Number(0);
         setTotal(totalValue);
       }
-    } catch (error) {
+    }
+  }, [getCouponDetailsRes])
+
+  useEffect(() => {
+    if (error) {
       setMessage("Enter valid coupon code");
       const totalValue = total + Number(offerValue);
       setOfferValue(0);
@@ -264,7 +263,7 @@ const CheckoutPage = () => {
       console.log(error);
       toast.error(error?.response?.data?.message)
     }
-  }
+  }, [error])
 
 
   const handlePaymentTypeChange = (e) => {
@@ -282,76 +281,99 @@ const CheckoutPage = () => {
       toast.error("Select payment method");
       return;
     }
-
-    try {
-      setIsLoading(true);
-      const { data: { apiKey } } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/get-api-key`, {},
-        { withCredentials: true }
-      );
-      console.log("tax", totalTaxRs);
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/create-online-order`, { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })), couponId, referalDiscount: credits },
-        { withCredentials: true }
-      );
-      console.log("razor", data);
-
-      const options = {
-        key: apiKey,
-        amount: data.razorpayOrder.amount,
-        currency: "INR",
-        name: "Abhicares Corp.",
-        description: "Test Transaction",
-        image: logo,
-        order_id: data.razorpayOrder.id,
-        handler: async function (response) {
-          paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
-          paymentDetails.razorpay_order_id = response.razorpay_order_id;
-          paymentDetails.razorpay_signature = response.razorpay_signature;
-
-          try {
-            setIsLoader(true);
-            const res = await axios.post(
-              `${import.meta.env.VITE_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id, orderId: data?.order?.orderId },
-              { withCredentials: true }
-            );
-            console.log("handler", res.data);
-            if (res.data.success) {
-              navigate("/success");
-            }
-          } catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.message);
-          }
-          finally {
-            setIsLoader(false);
-          }
-        },
-        prefill: {
-          name: userName,
-          contact: token?.phone
-        },
-        notes: {
-          address: "Abhicares Corporate Office"
-        },
-        theme: {
-          color: "#3399cc"
-        }
-      };
-      const razor = new window.Razorpay(options);
-      razor.open();
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    setIsLoading(true);
+    getApiKey("/shopping/get-api-key")
   }
+
+  const createOnlineOrder = async () => {
+    createOnlineOrderFun("/shopping/create-online-order", { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })), couponId, referalDiscount: credits })
+  }
+
+  useEffect(() => {
+    if (getApiKeyRes?.status === 200 || getApiKeyRes?.status === 201) {
+      createOnlineOrder()
+    }
+  }, [getApiKeyRes])
+
+  useEffect(() => {
+    if (getApiKeyError) {
+      setIsLoading(false);
+    }
+  }, [getApiKeyError])
+
+
+  useEffect(() => {
+    if (createOnlineOrderRes?.status === 200 || createOnlineOrderRes?.status === 201) {
+      (async () => {
+        try {
+          console.log("tax", totalTaxRs);
+          const { data } = createOnlineOrderRes || {};
+          console.log("razor", data);
+
+          const options = {
+            key: getApiKeyRes?.data?.apiKey,
+            amount: data.razorpayOrder.amount,
+            currency: "INR",
+            name: "Abhicares Corp.",
+            description: "Test Transaction",
+            image: logo,
+            order_id: data.razorpayOrder.id,
+            handler: async function (response) {
+              paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
+              paymentDetails.razorpay_order_id = response.razorpay_order_id;
+              paymentDetails.razorpay_signature = response.razorpay_signature;
+
+              try {
+                setIsLoader(true);
+                const res = await axios.post(
+                  `${import.meta.env.VITE_APP_API_URL}/payment-verification`, { ...paymentDetails, productId: data.order._id, orderId: data?.order?.orderId },
+                  { withCredentials: true }
+                );
+                console.log("handler", res.data);
+                if (res.data.success) {
+                  navigate("/success");
+                }
+              } catch (error) {
+                console.log(error);
+                toast.error(error?.response?.data?.message);
+              }
+              finally {
+                setIsLoader(false);
+              }
+            },
+            prefill: {
+              name: userName,
+              contact: token?.phone
+            },
+            notes: {
+              address: "Abhicares Corporate Office"
+            },
+            theme: {
+              color: "#3399cc"
+            }
+          };
+          const razor = new window.Razorpay(options);
+          razor.open();
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
+      })()
+    }
+  }, [createOnlineOrderRes])
+
+  useEffect(() => {
+    if (createOnlineOrderError) {
+      setIsLoading(false);
+    }
+  }, [createOnlineOrderError])
 
   const getReferralCodeData = async () => {
     getReferralCredits("/shopping/get-referralCredits")
   }
 
   useEffect(() => {
-    getReferralCodeData();
+    userId && getReferralCodeData();
   }, [])
 
   useEffect(() => {

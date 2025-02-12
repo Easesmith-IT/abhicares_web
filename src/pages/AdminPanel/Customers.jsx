@@ -14,8 +14,10 @@ import { FaEye } from "react-icons/fa6";
 import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
 import useAuthorization from "../../hooks/useAuthorization";
 import AllUsersModal from "../../components/all-user-modal/AllUsersModal";
+import useDeleteApiReq from "../../hooks/useDeleteApiReq";
 
 const Customers = () => {
+  const { res: deleteUserRes, fetchData: deleteUser, isLoading: deleteUserLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -58,7 +60,7 @@ const Customers = () => {
   //     handleUpdateModal(state)
   //   }
   // }, [state])
-  
+
 
   const handleUserInfoModal = (seller) => {
     setUser(seller);
@@ -71,18 +73,16 @@ const Customers = () => {
   };
 
   const handleDelete = async () => {
-    try {
-      const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-user/${user}`, { withCredentials: true });
-      console.log(data);
+    deleteUser(`/admin/delete-user/${user}`)
+  };
+
+  useEffect(() => {
+    if (deleteUserRes?.status === 200 || deleteUserRes?.status === 201) {
       toast.success("User deleted successfully");
       getAllUsers();
       setIsDeleteModalOpen(!isDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deleteUserRes])
 
   const handleSerach = async (e) => {
     const value = e.target.value;

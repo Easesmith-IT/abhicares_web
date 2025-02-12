@@ -13,10 +13,12 @@ import { MdDelete } from 'react-icons/md';
 import Wrapper from '../Wrapper';
 import useAuthorization from '../../hooks/useAuthorization';
 import { FaSearch } from 'react-icons/fa';
+import useDeleteApiReq from '../../hooks/useDeleteApiReq';
 
 const Enquiry = () => {
     const { checkAuthorization } = useAuthorization();
     const navigate = useNavigate();
+    const { res: deleteInquiryRes, fetchData: deleteInquiry, isLoading: deleteInquiryLoading } = useDeleteApiReq();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [allInquiries, setAllInquiries] = useState([]);
@@ -33,18 +35,16 @@ const Enquiry = () => {
 
 
     const handleDelete = async () => {
-        try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-enquiry/${enquiryId}`, { withCredentials: true });
-            console.log(data);
+        deleteInquiry(`/admin/delete-enquiry/${enquiryId}`)
+    };
+
+    useEffect(() => {
+        if (deleteInquiryRes?.status === 200 || deleteInquiryRes?.status === 201) {
             toast.success("Enquiry deleted successfully");
             getAllInquiries();
             setIsDeleteModalOpen(!isDeleteModalOpen);
-        } catch (error) {
-            console.log(error);
-            setIsDeleteModalOpen(false);
-            checkAuthorization(error);
         }
-    };
+    }, [deleteInquiryRes])
 
     const getAllInquiries = async () => {
         try {
