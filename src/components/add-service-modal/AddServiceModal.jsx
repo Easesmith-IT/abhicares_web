@@ -9,7 +9,11 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
+
+import usePatchApiReq from '../../hooks/usePatchApiReq';
+
 import usePostApiReq from '../../hooks/usePostApiReq';
+
 
 const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategoryServices }) => {
   const { res: addServiceRes, fetchData: addService, isLoading: addServiceLoading } = usePostApiReq();
@@ -54,6 +58,8 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
   const navigate = useNavigate()
 
+  const { res: addServiceRes, fetchData: addServiceFetchData } = usePatchApiReq()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!serviceInfo.name || !serviceInfo.startingPrice || !serviceInfo.img || !description) {
@@ -70,15 +76,8 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     formData.append("categoryId", categoryId);
 
     if (service) {
-      try {
-        const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service/${service._id}`, formData, { withCredentials: true });
-        toast.success("Service updated successfully");
-        getCategoryServices();
-        setIsModalOpen(false);
-      } catch (error) {
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      await addServiceFetchData(`/admin/update-service/${service._id}`, formData)
+
     }
     else {
       addService("/admin/create-service", formData)
@@ -87,12 +86,14 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
   useEffect(() => {
     if (addServiceRes?.status === 200 || addServiceRes?.status === 201) {
-      toast.success("Service added successfully");
+
+      console.log("addServiceRes", addServiceRes);
+      toast.success("Service updated successfully");
+
       getCategoryServices();
       setIsModalOpen(false);
     }
   }, [addServiceRes])
-
 
   return (
     <div className={classes.wrapper}>

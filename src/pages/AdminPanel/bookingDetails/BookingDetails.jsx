@@ -1,19 +1,16 @@
-import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
-import useAuthorization from "../../../hooks/useAuthorization";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 import Wrapper from "../../Wrapper";
 import classes from "./BookingDetails.module.css";
 import MapContainer from "./MapContainer";
-import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const BookingDetails = () => {
   const { res: getBookingDetailsRes, fetchData: getBookingDetails, isLoading } = useGetApiReq();
   const { res: getDistanceRes, fetchData: getDistance, isLoading:isDistanceLoading } = useGetApiReq();
-  const { checkAuthorization } = useAuthorization();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [mapData, setMapData] = useState({
@@ -41,21 +38,9 @@ const BookingDetails = () => {
   const updateStatus = async () => {
     
     if (status === '') return
-    
-    try {
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
-        { status: status },
-        { withCredentials: true }
-      );
-      toast.success("Booking status changed successfully");
-      console.log("status", data);
-      getBooking();
-    } catch (error) {
-      console.log(error);
-      setStatus(() => booking?.status);
-      checkAuthorization(error);
-    }
+
+    await bookingDetailFetchData(`/admin/update-seller-order-status/${booking._id}`, { status: status })
+
   };
   
   
@@ -111,6 +96,13 @@ const BookingDetails = () => {
   let hours = localTime && localTime?.getHours();
   console.log("hours", hours);
 
+  useEffect(() => {
+    if (bookingDetailRes?.status === 200 || bookingDetailRes?.status === 201) {
+      console.log("bookingDetailRes", bookingDetailRes);
+      toast.success("Booking status changed successfully");
+      getBooking();
+    }
+  }, [bookingDetailRes])
 
   return (
     <>

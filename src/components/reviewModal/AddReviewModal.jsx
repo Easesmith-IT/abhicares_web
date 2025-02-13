@@ -5,6 +5,8 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { readCookie } from '../../utils/readCookie'
+
+import usePatchApiReq from '../../hooks/usePatchApiReq'
 import usePostApiReq from '../../hooks/usePostApiReq'
 
 const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser, isBooking = false, bookingId, serviceType, serviceId }) => {
@@ -41,6 +43,8 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
         setHoverValue(undefined);
     }
 
+    const { res: addReviewRes, fetchData: addReviewFetchData } = usePatchApiReq()
+
     const handleAddReview = async () => {
         if (!reviewInfo.title || !reviewInfo.content || !reviewInfo.rating) {
             return;
@@ -51,17 +55,19 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
         }
         else {
             if (review) {
-                try {
-                    const { data } = await axios.patch(`${import.meta.env.VITE_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
-                    setIsReviewModalOpen(false);
-                    toast.success("Review updated successfully");
-                    getAllReviewsOfUser();
-                    console.log(data);
-                } catch (error) {
-                    // setIsReviewModalOpen(false);
-                    toast.error(error?.response?.data?.message);
-                    console.log(error);
-                }
+                await addReviewFetchData(`/shopping/update-product-review/${id}`, { ...reviewInfo })
+
+                // try {
+                //     const { data } = await axios.patch(`${import.meta.env.VITE_APP_API_URL}/update-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
+                //     setIsReviewModalOpen(false);
+                //     toast.success("Review updated successfully");
+                //     getAllReviewsOfUser();
+                //     console.log(data);
+                // } catch (error) {
+                //     // setIsReviewModalOpen(false);
+                //     toast.error(error?.response?.data?.message);
+                //     console.log(error);
+                // }
             }
             else {
                 addProductReview(`/shopping/add-product-review/${id}`, { ...reviewInfo })
@@ -85,7 +91,14 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
     }, [addProductReviewRes])
     console.log(reviewInfo);
 
-
+    useEffect(() => {
+        if (addReviewRes?.status === 200 || addReviewRes?.status === 201) {
+            console.log("addReviewRes", addReviewRes);
+            setIsReviewModalOpen(false);
+            toast.success("Review updated successfully");
+            getAllReviewsOfUser();
+        }
+    }, [addReviewRes])
     return (
         <div
             className={`${classes.modal_overlay} ${isReviewModalOpen ? classes.modal_open : classes.modal_close

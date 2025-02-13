@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "../seo-modal/SeoModal.module.css";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useAuthorization from "../../hooks/useAuthorization";
+import usePatchApiReq from "../../hooks/usePatchApiReq";
 
 const UpdatePwd = ({ setIsModalOpen, adminId }) => {
   const currentPwdRef = useRef();
@@ -11,6 +12,8 @@ const UpdatePwd = ({ setIsModalOpen, adminId }) => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { checkAuthorization } = useAuthorization();
+  const { res: updatePwdRes, fetchData: updatePwdFetchData } = usePatchApiReq()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     console.log("password updated");
@@ -18,23 +21,17 @@ const UpdatePwd = ({ setIsModalOpen, adminId }) => {
     const currentPassword = currentPwdRef.current.value;
     const newPassword = updatePwdRef.current.value;
 
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-admin-password`,
-        { currentPassword, newPassword, adminId },
-        { withCredentials: true }
-      );
+    await updatePwdFetchData(`/admin/update-admin-password`, { currentPassword, newPassword, adminId })
 
-      if (res.status === 200) {
+  };
+
+  useEffect(() => {
+    if (updatePwdRes?.status === 200 || updatePwdRes?.status === 201) {
+        console.log("updatePwdRes", updatePwdRes);
         toast.success("Password Updated Successfully!");
         setIsModalOpen(false);
-      }
-    } catch (error) {
-      console.log(error);
-      setErrorMessage(error?.response?.data?.message);
-      checkAuthorization(error);
     }
-  };
+}, [updatePwdRes])
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>

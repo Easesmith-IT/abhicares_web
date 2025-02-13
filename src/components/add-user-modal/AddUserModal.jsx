@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
     const { res: addUserRes, fetchData: addUser, isLoading: addUserLoading } = usePostApiReq();
@@ -24,6 +25,7 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
     }
     const navigate = useNavigate()
 
+    const { res: addUserRes, fetchData: addUserFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -35,17 +37,8 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
             return;
         }
         if (user) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-user/${user._id}`, { ...userInfo }, { withCredentials: true });
-                console.log(data);
-                toast.success("User updated successfully");
-                getAllUsers();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            }
+            await addUserFetchData(`/admin/update-user/${user._id}`, { ...userInfo })
+
         }
         else {
             addUser("/admin/create-user", { ...userInfo })
@@ -54,12 +47,14 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
 
     useEffect(() => {
         if (addUserRes?.status === 200 || addUserRes?.status === 201) {
-            toast.success("User added successfully");
+
+            console.log("addUserRes", addUserRes);
+            toast.success("User updated successfully");
+
             getAllUsers();
             setIsModalOpen(false);
         }
     }, [addUserRes])
-
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

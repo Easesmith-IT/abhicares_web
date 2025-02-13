@@ -10,7 +10,9 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 import usePostApiReq from '../../hooks/usePostApiReq';
+
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
     const { res: addProductRes, fetchData: addProduct, isLoading: addProductLoading } = usePostApiReq();
@@ -105,6 +107,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr, uploadedImages: uploadedImgArr });
     }
 
+    const { res: addProductRes, fetchData: addProductFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -126,18 +129,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
 
         if (product) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-product/${product._id}`, formData, { withCredentials: true });
-                toast.success("Product updated successfully");
-                getAllProducts();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            } finally {
-                setIsLoading(false);
-            }
+            await addProductFetchData(`/admin/update-product/${product._id}`, formData)
+
         }
         else {
             addProduct("/admin/create-product", formData)
@@ -146,7 +139,9 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
     useEffect(() => {
         if (addProductRes?.status === 200 || addProductRes?.status === 201) {
-            toast.success("Product added successfully");
+            console.log("addProductRes", addProductRes);
+            toast.success("Product updated successfully");
+
             getAllProducts();
             setIsModalOpen(false);
         }

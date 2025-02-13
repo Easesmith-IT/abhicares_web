@@ -7,6 +7,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 import useGetApiReq from '../../hooks/useGetApiReq';
 
 const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) => {
@@ -26,24 +27,25 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) =
         }
     }, [getInReviewSellerRes])
 
+    const { res: unapprovedSellerRes, fetchData: unapprovedSellerFetchData } = usePatchApiReq()
+
     const handleOnChange = async (id) => {
-        try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-status/${id}`, { status: "APPROVED" }, { withCredentials: true });
-            console.log(data);
-            toast.success("Seller approved");
-            getAllSellers();
-            getSellers();
-        } catch (error) {
-            console.log(error);
-            setIsUnapprovedSellerModalOpen(false);
-            checkAuthorization(error);
-        }
+        await unapprovedSellerFetchData(`/admin/update-seller-status/${id}`, { status: "APPROVED" })
+
     }
 
     useEffect(() => {
         getAllSellers();
     }, [])
 
+    useEffect(() => {
+        if (unapprovedSellerRes?.status === 200 || unapprovedSellerRes?.status === 201) {
+            console.log("unapprovedSellerRes", unapprovedSellerRes);
+            toast.success("Seller approved");
+            getAllSellers();
+            getSellers();
+        }
+    }, [unapprovedSellerRes])
     return (
         <div className={unapprovedSellerModalClasses.wrapper}>
             <div className={unapprovedSellerModalClasses.modal}>

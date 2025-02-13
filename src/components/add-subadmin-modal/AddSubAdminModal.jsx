@@ -6,10 +6,16 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import UpdatePwd from '../update-password-modal/UpdatePwd';
+
+import usePatchApiReq from '../../hooks/usePatchApiReq';
+
+const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
+
 import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
   const { res: addSubAdminRes, fetchData: addSubAdmin, isLoading: addSubAdminLoading } = usePostApiReq();
+
   const [info, setInfo] = useState({
     name: subAdmin?.name || "",
     password: subAdmin?.password || "",
@@ -54,6 +60,51 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     setPermissions({ ...permissions, [key]: value });
   };
 
+
+  const { res: addSubAdminRes, fetchData: addSubAdminFetchData } = usePatchApiReq()
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    if (!info.adminId
+      || !info.name
+      || !info.password
+      || !info.role
+      || !permissions.dashboard
+      || !permissions.banners
+      || !permissions.orders
+      || !permissions.bookings
+      || !permissions.services
+      || !permissions.partners
+      || !permissions.customers
+      || !permissions.offers
+      || !permissions.availableCities
+      || !permissions.payments
+      || !permissions.enquiry
+      || !permissions.helpCenter
+      || !permissions.settings
+      || !permissions.reviews
+      || !permissions.notifications
+      || !permissions.sellerCashout
+    ) {
+      toast.error("All fields are required")
+      return;
+    }
+    if (subAdmin) {
+      await addSubAdminFetchData(`/admin/update-sub-admin/${subAdmin._id}`, { ...info, permissions })
+    }
+    else {
+      try {
+        const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-Admin`, { ...info, permissions }, { withCredentials: true });
+        toast.success("SubAdmin added successfully");
+        setIsModalOpen(false);
+        getSubadmins();
+      } catch (error) {
+        console.log(error);
+        setIsModalOpen(false);
+        checkAuthorization(error);
+      }
+    }
+  }
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!info.adminId
@@ -105,6 +156,15 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
     }
   }, [addSubAdminRes])
 
+
+  useEffect(() => {
+    if (addSubAdminRes?.status === 200 || addSubAdminRes?.status === 201) {
+      console.log("addSubAdminRes", addSubAdminRes);
+      toast.success("SubAdmin updated successfully");
+      setIsModalOpen(false);
+      getSubadmins();
+    }
+  }, [addSubAdminRes])
 
   return (
     <div className={classes.wrapper}>
@@ -237,7 +297,9 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
               </button>
             )}
             <button className={classes.button} onClick={handleOnSubmit}>
+
               {addSubAdminLoading ? "Loading..." : subAdmin ? "Update" : "Add"}
+
             </button>
           </div>
         </form>
