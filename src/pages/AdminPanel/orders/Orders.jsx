@@ -8,10 +8,12 @@ import Loader from "../../../components/loader/Loader";
 import { format } from "date-fns";
 import MonthlyOrderModal from "../../../components/monthly-order-modal/MonthlyOrderModal";
 import { PaginationControl } from "react-bootstrap-pagination-control";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Orders = () => {
+  const { res: getOrdersRes, fetchData: getOrders, isLoading } = useGetApiReq();
+  const { res: getOrderByIDRes, fetchData: getOrderByID,error } = useGetApiReq();
   const [allOrders, setAllOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchMessage, setSearchMessage] = useState(null)
   const [pageCount, setPageCount] = useState(1);
@@ -37,48 +39,41 @@ const Orders = () => {
   };
 
   const getAllOrders = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-orders?page=${page}&status=${filters.status}&startDate=${filters.startDate}&endDate=${filters.endDate}`,
-        { withCredentials: true }
-      );
-      setAllOrders(data.data);
-      setPageCount(Number(data?.pagination?.totalPages))
-      console.log("allOrders", data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getOrders(`/admin/get-all-orders?page=${page}&status=${filters.status}&startDate=${filters.startDate}&endDate=${filters.endDate}`)
   };
 
   useEffect(() => {
     getAllOrders();
   }, [page, filters.status, filters.startDate, filters.endDate]);
 
-  const getOrderById = async () => {
-    try {
-      const orderId = searchRef.current.value;
-      if (!orderId) {
-        getAllOrders();
-        return;
-      }
-
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-order-by-id?orderId=${orderId}`,
-        { withCredentials: true }
-      );
-
-      console.log('orderbyid', data)
-      setAllOrders([data.data]);
-    } catch (error) {
-      console.log(error);
-      if (error?.response?.status === 404) {
-        // setSearchMessage('No order found')
-        setAllOrders([]);
-      }
+  useEffect(() => {
+    if (getOrdersRes?.status === 200 || getOrdersRes?.status === 201) {
+      setAllOrders(getOrdersRes?.data.data);
+      setPageCount(Number(getOrdersRes?.data?.pagination?.totalPages))
     }
+  }, [getOrdersRes])
+
+  const getOrderById = async () => {
+    const orderId = searchRef.current.value;
+    if (!orderId) {
+      getAllOrders();
+      return;
+    }
+
+    getOrderByID(`/admin/get-order-by-id?orderId=${orderId}`)
   };
+
+  useEffect(() => {
+    if (getOrderByIDRes?.status === 200 || getOrderByIDRes?.status === 201) {
+      setAllOrders([getOrderByIDRes?.data.data]);
+    }
+  }, [getOrderByIDRes])
+
+  useEffect(() => {
+    if (error) {
+      setAllOrders([]);
+    }
+  }, [error])
 
 
   return (

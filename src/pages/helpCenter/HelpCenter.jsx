@@ -11,9 +11,12 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import HistoryModal from './HistoryModal';
 import usePostApiReq from '../../hooks/usePostApiReq';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const HelpCenter = () => {
   const { res: createHelpRes, fetchData: createHelp, isLoading: createHelpLoading } = usePostApiReq();
+  const { res: getUserHelpRes, fetchData: getUserHelp, isLoading } = useGetApiReq();
+
   const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
   const [isOtherOpen, setIsOtherOpen] = useState(false);
   const [helpCenterInfo, setHelpCenterInfo] = useState({
@@ -25,7 +28,6 @@ const HelpCenter = () => {
   const [issue, setIssue] = useState({});
   const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleView = (data) => {
     setIssue(data);
@@ -80,23 +82,18 @@ const HelpCenter = () => {
   }, [createHelpRes])
 
   const getAllIssues = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-user-help `, { withCredentials: true });
-      console.log("issues", data);
-      setAllIssues(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    getUserHelp("/shopping/get-user-help")
   }
 
   useEffect(() => {
     getAllIssues();
   }, [])
 
-
+  useEffect(() => {
+    if (getUserHelpRes?.status === 200 || getUserHelpRes?.status === 201) {
+      setAllIssues(getUserHelpRes?.data.data);
+    }
+  }, [getUserHelpRes])
 
 
 

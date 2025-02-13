@@ -11,14 +11,17 @@ import { RiWalletLine } from "react-icons/ri";
 import WalletViewModal from '../../../components/wallet-view-modal/WalletViewModal';
 import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 import usePostApiReq from '../../../hooks/usePostApiReq';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const SellerAssignedOrders = () => {
     const { res: orderbyStatusRes, fetchData: orderbyStatus, isLoading: orderbyStatusLoading } = usePostApiReq();
     const { res: updatePartnerStatusRes, fetchData: updatePartnerStatus, isLoading: updatePartnerStatusLoading } = usePostApiReq();
+    const { res: getSellerOrdersListRes, fetchData: getSellerOrdersList, isLoading } = useGetApiReq();
+    const { res: getWalletRes, fetchData: getWallet, isLoading: getWalletLoading } = useGetApiReq();
+    const { res: getRequestsRes, fetchData: getRequests, isLoading: getRequestsLoading } = useGetApiReq();
+    const { res: getSellersRes, fetchData: getSellers, isLoading: getSellersLoading } = useGetApiReq();
     const [state, setState] = useState("");
     const [sellerOrders, setSellerOrders] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isCashReqLoading, setCashReqIsLoading] = useState(true);
     const [status, setStatus] = useState("");
     const [partnerstatus, setPartnerStatus] = useState("");
     const [sellerOrder, setSellerOrder] = useState({})
@@ -39,48 +42,31 @@ const SellerAssignedOrders = () => {
 
 
     const getSellerOrders = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-order-list/${params.partnerId}`, { withCredentials: true });
-            setIsLoading(false);
-            setSellerOrders(data.sellerOrders);
-            console.log("seller orders", data);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-        }
+        getSellerOrdersList(`/admin/get-seller-order-list/${params.partnerId}`)
     };
+
+    useEffect(() => {
+        if (getSellerOrdersListRes?.status === 200 || getSellerOrdersListRes?.status === 201) {
+            setSellerOrders(getSellerOrdersListRes?.data.sellerOrders);
+        }
+    }, [getSellerOrdersListRes])
 
 
     const getSellerWallet = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-wallet/${params?.partnerId}`, { withCredentials: true }
-            );
-            if (data.wallet._id) {
-                getCashOutRequests(data.wallet._id);
-                setWallet(data.wallet);
-            }
-            setCashReqIsLoading(false)
-            console.log("wallet", data);
-        } catch (error) {
-            setCashReqIsLoading(false)
-            console.log(error);
-        }
+        getWallet(`/admin/get-seller-wallet/${params?.partnerId}`)
     };
 
+    useEffect(() => {
+        if (getWalletRes?.status === 200 || getWalletRes?.status === 201) {
+            if (getWalletRes?.data.wallet._id) {
+                getCashOutRequests(getWalletRes?.data.wallet._id);
+                setWallet(getWalletRes?.data.wallet);
+            }
+        }
+    }, [getWalletRes])
+
     const getCashOutRequests = async (id) => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-wallet-recent-cashout-requests/${id}`, { withCredentials: true }
-            );
-            setCashOutRequests(data.cashouts);
-            console.log("cash req", data);
-        } catch (error) {
-            console.log(error);
-        }
-        finally {
-            setCashReqIsLoading(false);
-        }
+        getRequests(`/admin/get-seller-wallet-recent-cashout-requests/${id}`)
     };
 
     useEffect(() => {
@@ -88,8 +74,13 @@ const SellerAssignedOrders = () => {
         getSellerWallet();
     }, [])
 
+    useEffect(() => {
+        if (getRequestsRes?.status === 200 || getRequestsRes?.status === 201) {
+            setCashOutRequests(getRequestsRes?.data.cashouts);
+        }
+    }, [getRequestsRes])
+
     const handleChange = async (e) => {
-        setIsLoading(true);
         const orderStatus = e.target.value;
         setStatus(orderStatus);
         if (orderStatus === "") {
@@ -102,7 +93,6 @@ const SellerAssignedOrders = () => {
 
     useEffect(() => {
         if (orderbyStatusRes?.status === 200 || orderbyStatusRes?.status === 201) {
-            setIsLoading(false);
             setSellerOrders(orderbyStatusRes?.data.sellerOrders);
         }
     }, [orderbyStatusRes])
@@ -114,22 +104,18 @@ const SellerAssignedOrders = () => {
 
 
     const getSeller = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller?sellerId=${params?.partnerId}`, { withCredentials: true }
-            );
-            console.log("partnerDetails", data);
-            setState(data.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getSellers(`/admin/get-seller?sellerId=${params?.partnerId}`)
     };
 
     useEffect(() => {
         getSeller();
     }, [])
+
+    useEffect(() => {
+        if (getSellersRes?.status === 200 || getSellersRes?.status === 201) {
+            setState(getSellersRes?.data.data);
+        }
+    }, [getSellersRes])
 
     const handleStatusChange = async (e) => {
         updatePartnerStatus("/admin/update-partner-status", { sellerId: params.partnerId, status: partnerstatus })
@@ -198,10 +184,10 @@ const SellerAssignedOrders = () => {
                                     <h3 className={classes["t-op"]}>Status</h3>
                                     <h3 className={classes["t-op"]}>Details</h3>
                                 </div>
-                                {isLoading && <Loader />}
+                                {(isLoading || orderbyStatusLoading) && <Loader />}
 
                                 <div className={classes.items}>
-                                    {!isLoading
+                                    {!isLoading && !orderbyStatusLoading
                                         && sellerOrders.length === 0
                                         && <p>No seller order found</p>
                                     }
@@ -234,11 +220,11 @@ const SellerAssignedOrders = () => {
                             </div>
                             <button className={sellerAssignedOrdersClasses.cash_btn}>Cashout Request</button>
                             <div className={sellerAssignedOrdersClasses.tran_contianer}>
-                                {isCashReqLoading
+                                {(getWalletLoading || getRequestsLoading)
                                     && cashOutRequests.length === 0
                                     && <Loader />
                                 }
-                                {!isCashReqLoading
+                                {!getWalletLoading && !getRequestsLoading
                                     && cashOutRequests.length === 0
                                     && <p>No cashOut Requests found</p>
                                 }

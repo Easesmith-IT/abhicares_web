@@ -6,32 +6,28 @@ import Loader from '../../components/loader/Loader';
 import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
 import { readCookie } from '../../utils/readCookie';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const MyBookings = () => {
+  const { res: getUserOrdersRes, fetchData: getUserOrders, isLoading:loading } = useGetApiReq();
   const [allOrders, setAllOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const token = readCookie("userInfo");
   const userId = token?.id;
 
   const getAllOrders = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-user-orders?userId=${userId}`, { withCredentials: true });
-      console.log(data);
-      setAllOrders(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setLoading(false);
-    }
+    getUserOrders(`/shopping/get-user-orders?userId=${userId}`)
   }
 
   useEffect(() => {
     getAllOrders();
   }, [])
 
-
+  useEffect(() => {
+    if (getUserOrdersRes?.status === 200 || getUserOrdersRes?.status === 201) {
+      setAllOrders(getUserOrdersRes?.data.data);
+    }
+}, [getUserOrdersRes])
 
   return (
     <WebsiteWrapper>

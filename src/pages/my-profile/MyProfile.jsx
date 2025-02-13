@@ -1,45 +1,38 @@
-import classes from './MyProfile.module.css';
-import WebsiteWrapper from '../WebsiteWrapper'
-import { FaLocationDot } from "react-icons/fa6";
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { MdOutlineContentCopy } from "react-icons/md";
 import Skeleton from 'react-loading-skeleton';
 import AddEmailModal from '../../components/add-email-modal/AddEmailModal';
-import { MdOutlineContentCopy } from "react-icons/md";
-import { Box, Button } from '@mui/material';
 import AddAddressModal from '../../components/addAddressModal/AddAddressModal';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import useGetApiReq from '../../hooks/useGetApiReq';
+import WebsiteWrapper from '../WebsiteWrapper';
+import classes from './MyProfile.module.css';
 import SingleAddress from './SingleAddress';
 
 const MyProfile = () => {
+  const { res: getUserInfoRes, fetchData: getUserInfo, isLoading } = useGetApiReq();
   const [profileDetails, setProfileDetails] = useState("");
   const [userAddresses, setUserAddresses] = useState([]);
   const [isAddEmailModalOpen, setIsAddEmailModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [userReferral, setUserReferral] = useState("");
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
 
   const getProfileDetails = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/user-info`, { withCredentials: true });
-      console.log("profile details", res?.data);
-      if (res?.status === 200) {
-        setProfileDetails(res?.data?.userInfo?.user)
-        setUserAddresses(res?.data?.userInfo?.userAddresses)
-        setUserReferral(res?.data?.userInfo?.userRefDoc)
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getUserInfo("/shopping/user-info")
   }
 
   useEffect(() => {
     getProfileDetails();
   }, [])
+
+  useEffect(() => {
+    if (getUserInfoRes?.status === 200 || getUserInfoRes?.status === 201) {
+      setProfileDetails(getUserInfoRes?.data?.userInfo?.user)
+      setUserAddresses(getUserInfoRes?.data?.userInfo?.userAddresses)
+      setUserReferral(getUserInfoRes?.data?.userInfo?.userRefDoc)
+    }
+  }, [getUserInfoRes])
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileDetails.referralCode);
@@ -78,7 +71,7 @@ const MyProfile = () => {
                       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "10px" }}>
                         <h6>Referral Code:</h6>
                         <div className={classes.referral_code_wrapper}>
-                          <p style={{marginBottom:"0"}}>{profileDetails?.referralCode}</p>
+                          <p style={{ marginBottom: "0" }}>{profileDetails?.referralCode}</p>
                           <MdOutlineContentCopy onClick={copyToClipboard} cursor={"pointer"} />
                         </div>
                       </div>
@@ -112,7 +105,7 @@ const MyProfile = () => {
               }
               {userAddresses?.map((address, i) => (
                 <SingleAddress
-                key={address?._id}
+                  key={address?._id}
                   address={address}
                   index={i}
                   getProfileDetails={getProfileDetails}

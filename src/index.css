@@ -137,3 +137,7 @@ code {
   font-size: 20px;
   font-weight: 600;
 }
+
+p {
+  margin-bottom: 0;
+}

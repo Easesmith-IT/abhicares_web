@@ -1,45 +1,37 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "../Wrapper";
 import classes from "./Shared.module.css";
 import { PaginationControl } from "react-bootstrap-pagination-control";
 
 import axios from "axios";
+import useGetApiReq from "../../hooks/useGetApiReq";
 const Payments = () => {
-    const [allPayments, setAllPayments] = useState([]);
+  const { res: getPaymentsRes, fetchData: getPayments, isLoading: getPaymentsLoading } = useGetApiReq();
+  const [allPayments, setAllPayments] = useState([]);
   const [pageCount, setPageCount] = useState(1);
   const [page, setPage] = useState(1);
 
-  
+
 
   const getAllPayments = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-payments`,
-        { withCredentials: true }
-      );
-      setAllPayments(data.payments);
-      console.log('length',data.docsLength);
-      setPageCount(data.docsLength);
-      console.log("payments", data.payments);
-    } catch (error) {
-      console.log(error);
-    }
-
+    getPayments(`/admin/get-all-payments?page=${page}`);
   }
 
-      useEffect(() => {
-        getAllPayments();
-      }, []);
+  useEffect(() => {
+    getAllPayments();
+  }, [page]);
 
-  
+  useEffect(() => {
+    if (getPaymentsRes?.status === 200 || getPaymentsRes?.status === 201) {
+      setAllPayments(getPaymentsRes?.data.payments);
+      setPageCount(getPaymentsRes?.data.docsLength);
+    }
+  }, [getPaymentsRes])
+
   const handlePageClick = async (page) => {
     setPage(page);
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-payments?page=${page}`,
-      { withCredentials: true }
-    );
-   setAllPayments(data.payments);
   };
+
   return (
     <Wrapper>
       <div className={classes["report-container"]}>
@@ -55,7 +47,7 @@ const Payments = () => {
             <h3 className={classes["t-op"]}>Amount</h3>
           </div>
 
-        {allPayments.length===0 && <h5 style={{textAlign:'center',marginTop:'30px'}}>No payments available</h5>}
+          {allPayments.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '30px' }}>No payments available</h5>}
           <div className={classes.items}>
             {allPayments.length > 0 &&
               allPayments.map((payment) => (

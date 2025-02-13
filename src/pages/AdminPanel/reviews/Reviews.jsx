@@ -10,6 +10,7 @@ import { PaginationControl } from "react-bootstrap-pagination-control";
 import { FaStar } from "react-icons/fa";
 import Review from "../../../components/review/Review";
 import { format } from "date-fns";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Reviews = () => {
   const reviewData = [
@@ -56,9 +57,10 @@ const Reviews = () => {
       "content": "Quick and easy pickup. The restaurant staff was helpful."
     }
   ]
-
+  const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
+  const { res: getReviewsRes, fetchData: getReviews, isLoading } = useGetApiReq();
+  const { res: filterReviewsRes, fetchData: filterReviewsFun, isLoading: filterReviewsLoading } = useGetApiReq();
   const [reviews, setReviews] = useState(reviewData);
-  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState({
@@ -71,42 +73,33 @@ const Reviews = () => {
 
   console.log("filter", filters);
   const getAllCategories = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-      setAllCategories(data.data);
-      console.log("allCategories", data);
-    } catch (error) {
-      console.log(error);
-    }
+    getCategories("/admin/get-all-category")
   };
 
   useEffect(() => {
     getAllCategories();
   }, [])
 
+  useEffect(() => {
+    if (getCategoriesRes?.status === 200 || getCategoriesRes?.status === 201) {
+      setAllCategories(getCategoriesRes?.data.data);
+    }
+  }, [getCategoriesRes])
+
   const handlePageClick = async (page) => {
     setCurrentPage(page);
   };
 
   const fetchReviews = async () => {
-    setIsLoading(true);
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-reviews?page=${currentPage}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("reviews", data);
-      setReviews(data.data);
-      setTotalPages(data.totalPages);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch reviews");
-    } finally {
-      setIsLoading(false);
-    }
+    getReviews(`/admin/get-all-reviews?page=${currentPage}`)
   };
+
+  useEffect(() => {
+    if (getReviewsRes?.status === 200 || getReviewsRes?.status === 201) {
+      setReviews(getReviewsRes?.data.data);
+      setTotalPages(getReviewsRes?.data.totalPages);
+    }
+  }, [getReviewsRes])
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -114,16 +107,7 @@ const Reviews = () => {
   };
 
   const filterReviews = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`, { withCredentials: true });
-      console.log("filter reviews", data);
-      setTotalPages(data.totalPages);
-      setReviews(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    filterReviewsFun(`/admin/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`)
   };
 
 
@@ -141,6 +125,13 @@ const Reviews = () => {
     filters.serviceType,
     filters.type
   ]);
+
+  useEffect(() => {
+    if (filterReviewsRes?.status === 200 || filterReviewsRes?.status === 201) {
+      setTotalPages(filterReviewsRes?.data.totalPages);
+      setReviews(filterReviewsRes?.data.data);
+    }
+  }, [filterReviewsRes])
 
   return (
     <Wrapper>
@@ -182,7 +173,7 @@ const Reviews = () => {
           </div>
         </div>
 
-        {isLoading ? (
+        {(isLoading || filterReviewsLoading) ? (
           <Loader />
         ) : reviews.length === 0 ? (
           <p>No reviews found</p>

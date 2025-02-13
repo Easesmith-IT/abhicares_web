@@ -5,8 +5,10 @@ import CancelledOrdersIcn from "../../../assets/admin-panel/cancelled-orders.png
 
 import classes from "../Shared.module.css";
 import axios from "axios";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Shared = () => {
+  const { res: getOrderCountByStatusRes, fetchData: getOrderCountByStatus, isLoading: getOrderCountByStatusLoading } = useGetApiReq();
   const [orderCount, setOrderCount] = useState({
     completed: 0,
     cancelled: 0,
@@ -15,32 +17,28 @@ const Shared = () => {
   });
 
   const getOrderCount = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-order-count-by-status`,
-        { withCredentials: true }
-      );
-
-      let totalval = 0;
-      data?.data?.forEach(element => {
-        totalval += element.count
-      });
-
-      setOrderCount({
-        cancelled: data?.data?.find((item) => item.status === "Cancelled")?.count || 0,
-        completed: data?.data?.find((item) => item.status === "Completed")?.count || 0,
-        pending: data?.data?.find((item) => item.status === "Pending")?.count || 0,
-        total: totalval || 0,
-      })
-      console.log("count", data);
-    } catch (error) {
-      console.log(error);
-    };
+    getOrderCountByStatus("/admin/get-order-count-by-status")
   }
 
   useEffect(() => {
     getOrderCount();
   }, [])
+
+  useEffect(() => {
+    if (getOrderCountByStatusRes?.status === 200 || getOrderCountByStatusRes?.status === 201) {
+      let totalval = 0;
+      getOrderCountByStatusRes?.data?.data?.forEach(element => {
+        totalval += element.count
+      });
+
+      setOrderCount({
+        cancelled: getOrderCountByStatusRes?.data?.data?.find((item) => item.status === "Cancelled")?.count || 0,
+        completed: getOrderCountByStatusRes?.data?.data?.find((item) => item.status === "Completed")?.count || 0,
+        pending: getOrderCountByStatusRes?.data?.data?.find((item) => item.status === "Pending")?.count || 0,
+        total: totalval || 0,
+      })
+    }
+  }, [getOrderCountByStatusRes])
 
   return (
     <div className={classes.main}>

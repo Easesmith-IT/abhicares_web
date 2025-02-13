@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
-import classes from "../AdminPanel/Shared.module.css";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import classes from "../AdminPanel/Shared.module.css";
 
 
 import DeleteModal from '../../components/deleteModal/DeleteModal';
 import Loader from '../../components/loader/Loader';
 
-import { MdDelete } from 'react-icons/md';
-import Wrapper from '../Wrapper';
-import useAuthorization from '../../hooks/useAuthorization';
 import { FaSearch } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
 import useDeleteApiReq from '../../hooks/useDeleteApiReq';
+import Wrapper from '../Wrapper';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const Enquiry = () => {
-    const { checkAuthorization } = useAuthorization();
-    const navigate = useNavigate();
     const { res: deleteInquiryRes, fetchData: deleteInquiry, isLoading: deleteInquiryLoading } = useDeleteApiReq();
+    const { res: getInquiriesRes, fetchData: getInquiries, isLoading } = useGetApiReq();
+    const { res: searchInquiriesRes, fetchData: searchInquiries, isLoading: searchInquiriesLoading } = useGetApiReq();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [allInquiries, setAllInquiries] = useState([]);
     const [enquiryId, setEnquiryId] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
 
 
     const handleDeleteModal = (e, id) => {
@@ -47,21 +45,18 @@ const Enquiry = () => {
     }, [deleteInquiryRes])
 
     const getAllInquiries = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-enquiry`, { withCredentials: true });
-            console.log(data);
-            setAllInquiries(data.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getInquiries("/admin/get-all-enquiry")
     };
 
     useEffect(() => {
         getAllInquiries()
     }, [])
 
+    useEffect(() => {
+        if (getInquiriesRes?.status === 200 || getInquiriesRes?.status === 201) {
+            setAllInquiries(getInquiriesRes?.data.data);
+        }
+    }, [getInquiriesRes])
 
     const handleSerach = async (e) => {
         const value = e.target.value;
@@ -73,14 +68,14 @@ const Enquiry = () => {
             return;
         }
 
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-enquiries?query=${value}`, { withCredentials: true });
-            console.log("search", data);
-            setAllInquiries(data.data);
-        } catch (error) {
-            console.log(error);
-        }
+        searchInquiries(`/admin/search-enquiries?query=${value}`)
     }
+
+    useEffect(() => {
+        if (searchInquiriesRes?.status === 200 || searchInquiriesRes?.status === 201) {
+            setAllInquiries(searchInquiriesRes?.data.data);
+        }
+    }, [searchInquiriesRes])
 
 
     function debounce(fx, time) {

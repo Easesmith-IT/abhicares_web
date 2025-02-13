@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from "react";
 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo .png";
-import classes from "../Shared.module.css";
 import LogoutModal from "../../../components/logoutModal/LogoutModal";
-import axios from "axios";
-import toast from "react-hot-toast";
+import useGetApiReq from "../../../hooks/useGetApiReq";
+import classes from "../Shared.module.css";
+import { useDispatch } from "react-redux";
+import { changeAdminStatus } from "../../../store/slices/userSlice";
 
 const Header = (props) => {
+  const { res, fetchData, isLoading } = useGetApiReq();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleLogout = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/logout-Admin`,
-        { withCredentials: true }
-      );
-      console.log("admin logout", data);
-      localStorage.removeItem("perm");
-      localStorage.setItem("admin-status",false);
-      setIsLogoutModalOpen(false);
-      navigate("/admin/login");
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+    fetchData("/admin/logout-Admin")
   };
+
+  useEffect(() => {
+    if (res?.status === 200 || res?.status === 201) {
+      dispatch(changeAdminStatus({ isAdminAuthenticated: false }))
+      localStorage.removeItem("perm");
+      localStorage.setItem("admin-status", false);
+      navigate("/admin/login");
+      setIsLogoutModalOpen(false);
+    }
+  }, [res])
 
   const handleLogoutModal = () => {
     setIsLogoutModalOpen(true);

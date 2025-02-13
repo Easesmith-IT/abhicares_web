@@ -9,34 +9,29 @@ import { format } from 'date-fns';
 import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
 import { Button } from '@mui/material';
 import ServiceDetailsModal from './ServiceDetailsModal';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const HelpCenterTicketDetails = () => {
-    const [status, setStatus] = useState("in-progress");
-    const steps = ["Raised", "In Progress", "Completed"];
+    const { res: getTicketRes, fetchData: getTicket, isLoading: getTicketLoading } = useGetApiReq();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isServiceDetailsModalOpen, setIsServiceDetailsModalOpen] = useState(false);
     const params = useParams();
 
     const [ticketDetails, setTicketDetails] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
 
     const getTicketDetails = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-single-ticket?ticketId=${params?.ticketId}`, { withCredentials: true }
-            );
-            console.log("details of ticket", data);
-            setTicketDetails(data.ticket);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getTicket(`/admin/get-single-ticket?ticketId=${params?.ticketId}`);
     };
 
     useEffect(() => {
         getTicketDetails();
     }, [])
+
+    useEffect(() => {
+        if (getTicketRes?.status === 200 || getTicketRes?.status === 201) {
+            setTicketDetails(getTicketRes?.data.ticket);
+        }
+    }, [getTicketRes])
 
     const history = (val) => ticketDetails?.ticketHistory?.find((ticket) => ticket?.status === val)
     const { addressLine: addressLine1, city: city1, pincode: pincode1, landmark } = ticketDetails?.bookingId?.userAddress || {};

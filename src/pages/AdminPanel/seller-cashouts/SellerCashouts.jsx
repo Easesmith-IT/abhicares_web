@@ -1,16 +1,14 @@
-import axios from 'axios';
 import Wrapper from '../../Wrapper';
 // import classes from './Bookings.module.css'
 import { format } from 'date-fns';
-import { useEffect, useRef, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Loader from '../../../components/loader/Loader';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 import classes from "../Shared.module.css";
 
 const SellerCashouts = () => {
+    const { res: getSellerCashoutsRes, fetchData: getSellerCashouts, isLoading } = useGetApiReq();
     const [allSellerCashouts, setAllSellerCashouts] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleFilterChange = (e) => {
@@ -18,28 +16,19 @@ const SellerCashouts = () => {
         setFilters({ ...filters, [name]: value });
     };
 
-    const navigate = useNavigate();
-    const searchRef = useRef();
-
     const getAllSellerCashouts = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-cashout?cashoutId=${searchQuery}`,
-                { withCredentials: true }
-            );
-
-            setAllSellerCashouts(data.data);
-            console.log("SellerCashouts", data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getSellerCashouts(`/admin/get-seller-cashout?cashoutId=${searchQuery}`)
     };
 
     useEffect(() => {
         getAllSellerCashouts();
     }, [searchQuery])
+
+    useEffect(() => {
+        if (getSellerCashoutsRes?.status === 200 || getSellerCashoutsRes?.status === 201) {
+            setAllSellerCashouts(getSellerCashoutsRes?.data.data);
+        }
+    }, [getSellerCashoutsRes])
 
     return (
         <>

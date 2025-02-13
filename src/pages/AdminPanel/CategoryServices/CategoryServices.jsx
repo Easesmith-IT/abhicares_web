@@ -16,15 +16,16 @@ import { FiEdit } from "react-icons/fi";
 import Wrapper from '../../Wrapper';
 import useAuthorization from '../../../hooks/useAuthorization';
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const CategoryServices = () => {
+  const { res: getServiceRes, fetchData: getService, isLoading } = useGetApiReq();
   const { res: deleteServiceRes, fetchData: deleteService, isLoading: deleteServiceLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [allCategoryServices, setAllCategoryServices] = useState([]);
   const [service, setService] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -44,22 +45,18 @@ const CategoryServices = () => {
     setIsDeleteModalOpen(!isDeleteModalOpen);
   };
   const getCategoryServices = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-category-service/${params?.categoryId}`, { withCredentials: true });
-      console.log('services', data);
-
-      setAllCategoryServices(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    getService(`/admin/get-category-service/${params?.categoryId}`)
   };
 
   useEffect(() => {
     getCategoryServices();
   }, [])
+
+  useEffect(() => {
+    if (getServiceRes?.status === 200 || getServiceRes?.status === 201) {
+      setAllCategoryServices(getServiceRes?.data.data);
+    }
+  }, [getServiceRes])
 
   const handleDelete = async () => {
     deleteService(`/admin/delete-service/${service}`)

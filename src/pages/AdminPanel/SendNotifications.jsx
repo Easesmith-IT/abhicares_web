@@ -4,67 +4,49 @@ import Wrapper from '../Wrapper';
 import classes from "../AdminPanel/Shared.module.css";
 import SendNotificationModal from '../../components/send-notification-modal/SendNotificationModal';
 import NotificationComp from '../../components/notification/NotificationComp';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const SendNotifications = () => {
+    const { res: getAllNotificationsRes, fetchData: getAllNotifications, isLoading } = useGetApiReq();
+    const { res: searchNotificationRes, fetchData: searchNotification, isLoading: searchNotificationLoading } = useGetApiReq();
+    const { res: filterNotificationRes, fetchData: filterNotification, isLoading: filterNotificationLoading } = useGetApiReq();
     const [isSendNotificationModalOpen, setIsSendNotificationModalOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDate, setFilterDate] = useState('');
 
     // Fetch notifications
     const getNotifications = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-notifications`);
-
-            setNotifications(data?.data);
-        } catch (err) {
-            setError('Failed to fetch notifications. Please try again later.');
-            console.error('Error fetching notifications:', err);
-        } finally {
-            setLoading(false);
-        }
+        getAllNotifications("/admin/get-all-notifications")
     };
 
+    useEffect(() => {
+        if (getAllNotificationsRes?.status === 200 || getAllNotificationsRes?.status === 201) {
+            setNotifications(getAllNotificationsRes?.data?.data);
+        }
+    }, [getAllNotificationsRes])
     console.log("searchTerm", searchTerm);
 
     const searchNotifications = async () => {
-
-        console.log("in search function");
-        try {
-            setLoading(true);
-            setError(null);
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-notifications?title=${searchTerm}`);
-            console.log("response", data);
-
-            setNotifications(data?.data);
-        } catch (err) {
-            setError('Failed to fetch notifications. Please try again later.');
-            console.error('Error fetching notifications:', err);
-        } finally {
-            setLoading(false);
-        }
+        searchNotification(`/admin/search-notifications?title=${searchTerm}`)
     };
+
+    useEffect(() => {
+        if (searchNotificationRes?.status === 200 || searchNotificationRes?.status === 201) {
+            setNotifications(searchNotificationRes?.data?.data);
+        }
+    }, [searchNotificationRes])
 
     const filterNotifications = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-notifications?date=${filterDate}`);
-            console.log("filterNotifications response", data);
-
-            setNotifications(data?.data);
-        } catch (err) {
-            setError('Failed to fetch notifications. Please try again later.');
-            console.error('Error fetching notifications:', err);
-        } finally {
-            setLoading(false);
-        }
+        filterNotification(`/admin/filter-notifications?date=${filterDate}`)
     };
 
+    useEffect(() => {
+        if (filterNotificationRes?.status === 200 || filterNotificationRes?.status === 201) {
+            setNotifications(filterNotificationRes?.data?.data);
+        }
+    }, [filterNotificationRes])
 
     useEffect(() => {
         !searchTerm && getNotifications();
@@ -104,15 +86,14 @@ const SendNotifications = () => {
                         <button
                             onClick={() => setIsSendNotificationModalOpen(true)}
                             className={classes.sendNotificationBtn}
-                            disabled={loading}
                         >
                             Send Notification
                         </button>
                     </div>
 
                     <div className={classes["report-body"]}>
-                        {error && <div className="error-message">{error}</div>}
-                        {loading ? (
+                        {/* {notifications.length === 0 && !isLoading && !searchNotificationLoading && !filterNotificationLoading && <div className="error-message">Notification not found</div>} */}
+                        {(isLoading || searchNotificationLoading || filterNotificationLoading) ? (
                             <div>Loading notifications...</div>
                         ) : (
                             <div className={classes.notifications}>

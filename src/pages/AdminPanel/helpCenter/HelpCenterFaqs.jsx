@@ -1,51 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { MdDelete } from "react-icons/md";
-import Wrapper from "../../Wrapper";
-import classes from "./HelpCenter.module.css";
-import AddBtn from "../../../assets/add-icon-nobg.png";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import Loader from "../../../components/loader/Loader";
-import AddResoulationModal from "../../../components/add-resoulation-modal/AddResoulationModal";
-import DeleteModal from "../../../components/deleteModal/DeleteModal";
-import { FiEdit } from "react-icons/fi";
 import { format } from "date-fns";
-import EditFaqModal from "./EditFaqModal";
-import useAuthorization from "../../../hooks/useAuthorization";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import AddBtn from "../../../assets/add-icon-nobg.png";
+import DeleteModal from "../../../components/deleteModal/DeleteModal";
+import Loader from "../../../components/loader/Loader";
 import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
+import Wrapper from "../../Wrapper";
+import EditFaqModal from "./EditFaqModal";
+import classes from "./HelpCenter.module.css";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const HelpCenterFaqs = () => {
   const { res: deleteFaqRes, fetchData: deleteFaq, isLoading: deleteFaqLoading } = useDeleteApiReq();
+  const { res: getFaqsRes, fetchData: getFaqs, isLoading } = useGetApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [faq, setFaq] = useState({});
   const [allFaqs, setallFaqs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isCreateFaqModalOpen, setIsCreateFaqModalOpen] = useState(false);
 
-  const { checkAuthorization } = useAuthorization();
-
-
   const getAllFaqs = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-faq`,
-        { withCredentials: true }
-      );
-      console.log('faqs', data);
-      setallFaqs(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getFaqs("/admin/get-all-faq")
   };
   useEffect(() => {
     getAllFaqs();
   }, []);
+
+  useEffect(() => {
+    if (getFaqsRes?.status === 200 || getFaqsRes?.status === 201) {
+      setallFaqs(getFaqsRes?.data.data);
+    }
+  }, [getFaqsRes])
 
   const handleDeleteModal = (id) => {
     setFaq(id);

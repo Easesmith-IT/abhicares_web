@@ -7,29 +7,27 @@ import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { format } from 'date-fns';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
+    const { res: getReviewDetailsRes, fetchData: getReviewDetails, isLoading: getReviewDetailsLoading } = useGetApiReq();
     const [reviewDetails, setReviewDetails] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     const getReviews = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/review-detail?reviewId=${review._id}`, { withCredentials: true }
-            );
-            console.log("details reviews", data);
-            setReviewDetails(data.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getReviewDetails(`/admin/review-detail?reviewId=${review._id}`)
     };
 
     useEffect(() => {
         getReviews();
     }, [])
+
+    useEffect(() => {
+        if (getReviewDetailsRes?.status === 200 || getReviewDetailsRes?.status === 201) {
+            setReviewDetails(getReviewDetailsRes?.data.data);
+        }
+    }, [getReviewDetailsRes])
 
 
     return (
@@ -101,7 +99,7 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                                     <button onClick={() => navigate(`/admin/bookings/${reviewDetails?.bookingId?._id}`, { state: reviewDetails?.bookingId })} className={classes.viewBtn}>View</button>
                                 </div>
                                 <p><b>Order Value:</b> {reviewDetails?.bookingId?.orderValue}</p>
-                                <p><b>Booking Date:</b> {reviewDetails?.bookingId?.bookingDate && format(new Date(reviewDetails?.bookingId?.bookingDate),"dd-MM-yyyy")}</p>
+                                <p><b>Booking Date:</b> {reviewDetails?.bookingId?.bookingDate && format(new Date(reviewDetails?.bookingId?.bookingDate), "dd-MM-yyyy")}</p>
                                 <p><b>Booking Time:</b> {reviewDetails?.bookingId?.bookingTime}</p>
                                 {/* <p>Email : {reviewDetails?.bookingId?.sellerId?.name}</p> */}
                             </div>}

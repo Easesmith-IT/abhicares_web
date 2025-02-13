@@ -12,12 +12,13 @@ import { format } from "date-fns";
 import Loader from "../../components/loader/Loader";
 import axios from "axios";
 import { PaginationControl } from "react-bootstrap-pagination-control";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const AdminPage = () => {
   const navigate = useNavigate()
+  const { res: getRecentOrdersRes, fetchData: getRecentOrders, isLoading } = useGetApiReq();
 
   const [allOrders, setAllOrders] = useState([])
-  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     startDate: "",
     endDate: "",
@@ -38,24 +39,19 @@ const AdminPage = () => {
 
 
   const getAllOrders = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-recent-orders?page=${page}&status=${filters.status}`,
-        { withCredentials: true }
-      );
-      setAllOrders(data.data);
-      setPageCount(Number(data?.pagination?.totalPages))
-      console.log("allOrders", data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getRecentOrders(`/admin/get-recent-orders?page=${page}&status=${filters.status}`)
   };
 
   useEffect(() => {
     getAllOrders();
   }, [filters.status, page, filters.startDate, filters.endDate])
+
+  useEffect(() => {
+    if (getRecentOrdersRes?.status === 200 || getRecentOrdersRes?.status === 201) {
+      setAllOrders(getRecentOrdersRes?.data.data);
+      setPageCount(Number(getRecentOrdersRes?.data?.pagination?.totalPages))
+    }
+  }, [getRecentOrdersRes])
 
 
   return (

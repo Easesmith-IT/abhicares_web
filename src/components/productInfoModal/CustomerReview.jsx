@@ -1,14 +1,13 @@
-import classes from "./Modal.module.css";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import AddReviewModal from "../reviewModal/AddReviewModal";
-import { useState } from "react";
-import DeleteModal from "../deleteModal/DeleteModal";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { readCookie } from "../../utils/readCookie";
 import useDeleteApiReq from "../../hooks/useDeleteApiReq";
+import { readCookie } from "../../utils/readCookie";
+import DeleteModal from "../deleteModal/DeleteModal";
+import AddReviewModal from "../reviewModal/AddReviewModal";
+import classes from "./Modal.module.css";
 
 const CustomerReview = ({ review, isUser = false, getAllReviews }) => {
     const { res: deleteProductReviewRes, fetchData: deleteProductReview, isLoading: deleteProductReviewLoading } = useDeleteApiReq();

@@ -6,27 +6,25 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Loader from '../loader/Loader';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const UserAddressModal = ({ setIsModalOpen, userId }) => {
+    const { res: getAddressesRes, fetchData: getAddresses, isLoading } = useGetApiReq();
     const [allAddresses, setAllAddresses] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     const getAllAddress = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-addresses/${userId}`, { withCredentials: true });
-            setAllAddresses(data.addresses)
-            console.log("address", data);
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-        }
+        getAddresses(`/admin/get-all-addresses/${userId}`);
     }
 
     useEffect(() => {
         getAllAddress()
     }, [])
 
+    useEffect(() => {
+        if (getAddressesRes?.status === 200 || getAddressesRes?.status === 201) {
+            setAllAddresses(getAddressesRes?.data.addresses)
+        }
+    }, [getAddressesRes])
 
     return (
         <div className={classes.wrapper}>

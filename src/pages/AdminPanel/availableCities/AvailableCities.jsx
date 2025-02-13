@@ -1,49 +1,41 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import AddBtn from "../../../assets/add-icon-nobg.png"
+import Loader from '../../../components/loader/Loader'
 import classes from '../Shared.module.css'
 import citiesClasses from './AvailableCities.module.css'
-import Loader from '../../../components/loader/Loader'
-import axios from 'axios'
-import AddBtn from "../../../assets/add-icon-nobg.png";
 
 import { FiEdit } from 'react-icons/fi'
 import { MdDelete } from 'react-icons/md'
 
-import Wrapper from '../../Wrapper'
-import AddCityModal from '../../../components/add-city-modal/AddCityModal'
 import toast from 'react-hot-toast'
+import AddCityModal from '../../../components/add-city-modal/AddCityModal'
 import DeleteModal from '../../../components/deleteModal/DeleteModal'
-import useAuthorization from '../../../hooks/useAuthorization'
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
+import useGetApiReq from '../../../hooks/useGetApiReq'
+import Wrapper from '../../Wrapper'
 
 const AvailableCities = () => {
     const { res: deleteCityRes, fetchData: deleteCity, isLoading: deleteCityLoading } = useDeleteApiReq();
+    const { res: getCitiesRes, fetchData: getCities, isLoading } = useGetApiReq();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [city, setCity] = useState({});
     const [allCities, setAllCities] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
-    const navigate = useNavigate()
-    const { checkAuthorization } = useAuthorization();
 
     const getAllCities = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-availabe-city`, { withCredentials: true });
-            console.log(data);
-            setAllCities(data.data);
-        } catch (error) {
-            console.log(error);
-        }
-        finally {
-            setIsLoading(false);
-        }
+        getCities("/admin/get-availabe-city")
     };
     useEffect(() => {
         getAllCities();
     }, [])
 
+    useEffect(() => {
+        if (getCitiesRes?.status === 200 || getCitiesRes?.status === 201) {
+            setAllCities(getCitiesRes?.data.data);
+        }
+    }, [getCitiesRes])
 
     const handleUpdateModal = (city) => {
         setCity(city);

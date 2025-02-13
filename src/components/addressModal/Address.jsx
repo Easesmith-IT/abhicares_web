@@ -1,7 +1,7 @@
 import { CiMenuKebab } from "react-icons/ci";
 import classes from "./AddressModal.module.css";
 import AddAddressModal from "../addAddressModal/AddAddressModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";

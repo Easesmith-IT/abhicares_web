@@ -7,10 +7,13 @@ import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../../components/loader/Loader';
 import classes from "../Shared.module.css";
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const Bookings = () => {
+    const { res: getBookingListRes, fetchData: getBookingList, isLoading } = useGetApiReq();
+    const { res: filterBookingRes, fetchData: filterBooking, isLoading: filterBookingLoading } = useGetApiReq();
+    const { res: searchBookingRes, fetchData: searchBooking, isLoading: searchBookingLoading } = useGetApiReq();
     const [allBookings, setAllBookings] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState({
         date: "",
         status: "",
@@ -28,40 +31,28 @@ const Bookings = () => {
     const searchRef = useRef();
 
     const getAllBookings = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-booking-list`,
-                { withCredentials: true }
-            );
-
-            setAllBookings(data.data);
-            console.log("allBookings", data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getBookingList("/admin/get-booking-list")
     };
 
     useEffect(() => {
         getAllBookings();
     }, [])
 
-    const filterBookings = async () => {
-        try {
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/search-filter-bookings?status=${filters.status}&bookingDate=${filters.date}`,
-                { withCredentials: true }
-            );
-
-            setAllBookings(data.data);
-            console.log("filterBookings", data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
+    useEffect(() => {
+        if (getBookingListRes?.status === 200 || getBookingListRes?.status === 201) {
+            setAllBookings(getBookingListRes?.data.data);
         }
+    }, [getBookingListRes])
+
+    const filterBookings = async () => {
+        filterBooking(`/admin/search-filter-bookings?status=${filters.status}&bookingDate=${filters.date}`)
     };
+
+    useEffect(() => {
+        if (filterBookingRes?.status === 200 || filterBookingRes?.status === 201) {
+            setAllBookings(filterBookingRes?.data.data);
+        }
+    }, [filterBookingRes])
 
     useEffect(() => {
         if (filters.date || filters.status) {
@@ -70,27 +61,20 @@ const Bookings = () => {
     }, [filters.date, filters.status])
 
     const getOrderById = async () => {
-        try {
-            const orderId = searchRef.current.value;
-            if (!orderId) {
-                getAllBookings();
-                return;
-            }
-
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-booking-by-id?bookingId=${orderId}`,
-                { withCredentials: true }
-            );
-
-            console.log('bookingId data', data)
-            setAllBookings(data.data);
-        } catch (error) {
-            console.log(error);
-            if (error?.response?.status === 404) {
-                setAllBookings([]);
-            }
+        const orderId = searchRef.current.value;
+        if (!orderId) {
+            getAllBookings();
+            return;
         }
+
+        searchBooking(`/admin/get-booking-by-id?bookingId=${orderId}`)
     };
+
+    useEffect(() => {
+        if (searchBookingRes?.status === 200 || searchBookingRes?.status === 201) {
+            setAllBookings(searchBookingRes?.data.data);
+        }
+    }, [searchBookingRes])
 
     return (
         <>
@@ -156,9 +140,9 @@ const Bookings = () => {
                         </div>
 
                         <div className={classes.items}>
-                            {!isLoading && allBookings?.length === 0 && <p>No bookings found</p>}
+                            {!isLoading && !filterBookingLoading && allBookings?.length === 0 && <p>No bookings found</p>}
 
-                            {isLoading && allBookings?.length === 0 && <Loader />}
+                            {(isLoading || filterBookingLoading) && allBookings?.length === 0 && <Loader />}
 
                             {allBookings?.map((order, i) => (
                                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>

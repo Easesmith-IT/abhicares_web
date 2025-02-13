@@ -18,12 +18,13 @@ import Product from "../Product";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
 import { readCookie } from "../../utils/readCookie";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
+    const { res: getProductReviewRes, fetchData: getProductReview, isLoading: isReviewLoading } = useGetApiReq();
     const [allProducts, setAllProducts] = useState([]);
     const [allReviews, setAllReviews] = useState([]);
     const [userReviews, setUserReviews] = useState([]);
-    const [isReviewLoading, setIsReviewLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [isReviewBtn, setIsReviewBtn] = useState(false);
@@ -31,7 +32,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const token = readCookie("userInfo");
     const userId = token?.id;
 
-    const { rating, ratingDistribution,totalReviews } = Data || {}
+    const { rating, ratingDistribution, totalReviews } = Data || {}
 
     console.log("modal open", Data);
     useEffect(() => {
@@ -87,15 +88,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
 
 
     const getAllReviews = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`);
-            console.log("get reviews", data);
-            setAllReviews(data.reviews);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsReviewLoading(false);
-        }
+        getProductReview(`/shopping/get-product-review/${Data._id}?type=${isProduct ? "product" : "package"}`)
     };
 
 
@@ -105,6 +98,11 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
         // getAllReviewsOfUser();
     }, [])
 
+    useEffect(() => {
+        if (getProductReviewRes?.status === 200 || getProductReviewRes?.status === 201) {
+            setAllReviews(getProductReviewRes?.data.reviews);
+        }
+    }, [getProductReviewRes])
 
 
     return (

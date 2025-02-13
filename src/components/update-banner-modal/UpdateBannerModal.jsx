@@ -7,9 +7,12 @@ import { RxCross2 } from 'react-icons/rx';
 import useAuthorization from '../../hooks/useAuthorization';
 import { useAuthStatus } from '../../hooks/useAuthStatus';
 import usePostApiReq from '../../hooks/usePostApiReq';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 
 const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
+    const { res: getAllCategoryRes, fetchData: getAllCategory, isLoading: getAllCategoryLoading } = useGetApiReq();
+    const { res: getServicesRes, fetchData: getServices, isLoading: getServicesLoading } = useGetApiReq();
     const [info, setInfo] = useState({
         serviceId: "",
         categoryId: ""
@@ -35,33 +38,32 @@ const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
     }
 
     const getAllCategories = async () => {
-
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-            console.log('categories', data.data)
-            setAllCategories(data.data);
-        } catch (error) {
-            console.log(error);
-        }
+        getAllCategory("/admin/get-all-category")
     };
 
     useEffect(() => {
         getAllCategories();
     }, [])
 
-    const getCategoryServices = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-category-service/${info.categoryId}`, { withCredentials: true });
-            console.log("allCategoryServices", data.data);
-            setAllCategoryServices(data.data);
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        if (getAllCategoryRes?.status === 200 || getAllCategoryRes?.status === 201) {
+            setAllCategories(getAllCategoryRes?.data.data);
         }
+    }, [getAllCategoryRes])
+
+    const getCategoryServices = async () => {
+        getServices(`/admin/get-category-service/${info.categoryId}`)
     };
 
     useEffect(() => {
-        getCategoryServices();
+        info.categoryId && getCategoryServices();
     }, [info.categoryId])
+
+    useEffect(() => {
+        if (getServicesRes?.status === 200 || getServicesRes?.status === 201) {
+            setAllCategoryServices(getServicesRes?.data.data);
+        }
+    }, [getServicesRes])
 
 
     const handleOnSubmit = async (e) => {

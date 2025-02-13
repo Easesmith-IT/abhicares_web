@@ -8,8 +8,11 @@ import usePostApiReq from '../../hooks/usePostApiReq';
 import WebsiteWrapper from '../WebsiteWrapper';
 import classes from './BookingDetails.module.css';
 import SingleBooking from './SingleBooking';
+import useGetApiReq from '../../hooks/useGetApiReq';
+
 const BookingDetails = () => {
   const { res: changeOrderStatusRes, fetchData: changeOrderStatus, isLoading: changeOrderStatusLoading } = usePostApiReq();
+  const { res: getProductInvoiceRes, fetchData: getProductInvoice, isLoading } = useGetApiReq();
   const { state } = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -22,13 +25,17 @@ const BookingDetails = () => {
   const [discount, setDiscount] = useState(0);
 
   const getOrderInvoice = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-invoice/${state._id}`, { withCredentials: true });
-      setInvoice(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    getProductInvoice(`/shopping/get-product-invoice/${state._id}`);
   }
+
+  useEffect(() => {
+    if (getProductInvoiceRes?.status === 200 || getProductInvoiceRes?.status === 201) {
+      console.log("getProductInvoiceRes",getProductInvoiceRes);
+      
+      setInvoice(getProductInvoiceRes?.data?.data);
+    }
+  }, [getProductInvoiceRes])
+
   const handleCancelOrder = async () => {
     changeOrderStatus(`/shopping/change-order-status/${state._id}`, { status: "Cancelled" })
   }

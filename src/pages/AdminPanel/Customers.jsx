@@ -15,40 +15,34 @@ import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
 import useAuthorization from "../../hooks/useAuthorization";
 import AllUsersModal from "../../components/all-user-modal/AllUsersModal";
 import useDeleteApiReq from "../../hooks/useDeleteApiReq";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const Customers = () => {
   const { res: deleteUserRes, fetchData: deleteUser, isLoading: deleteUserLoading } = useDeleteApiReq();
+  const { res: getUsersRes, fetchData: getUsers, isLoading } = useGetApiReq();
+  const { res: searchUserRes, fetchData: searchUser, isLoading: isSearchUserLoading } = useGetApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [user, setUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
   const [isAllUsersModalOpen, setIsAllUsersModalOpen] = useState(false);
 
-  const navigate = useNavigate()
-  const { checkAuthorization } = useAuthorization();
-  const { state } = useLocation()
-
 
   const getAllUsers = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-user`, { withCredentials: true });
-      console.log("all users", data);
-      setAllUsers(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    getUsers("/admin/get-all-user")
   };
 
   useEffect(() => {
     getAllUsers();
   }, [])
 
+  useEffect(() => {
+    if (getUsersRes?.status === 200 || getUsersRes?.status === 201) {
+      setAllUsers(getUsersRes?.data.data);
+    }
+  }, [getUsersRes])
 
   const handleUpdateModal = (seller) => {
     setUser(seller);
@@ -86,15 +80,14 @@ const Customers = () => {
 
   const handleSerach = async (e) => {
     const value = e.target.value;
-
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-user?search=${value}`, { withCredentials: true });
-      setAllUsers(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    searchUser(`/admin/search-user?search=${value}`)
   }
 
+  useEffect(() => {
+    if (searchUserRes?.status === 200 || searchUserRes?.status === 201) {
+      setAllUsers(searchUserRes?.data.data);
+    }
+  }, [searchUserRes])
 
   function debounce(fx, time) {
     let id = null;

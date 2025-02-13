@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import Wrapper from "../../Wrapper";
-import classes from "./BookingDetails.module.css";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
-import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
-import MapContainer from "./MapContainer";
-import useAuthorization from "../../../hooks/useAuthorization";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import AssignedPartnerModal from "../../../components/assigned-partner-modal/AssignedPartnerModal";
+import useAuthorization from "../../../hooks/useAuthorization";
+import Wrapper from "../../Wrapper";
+import classes from "./BookingDetails.module.css";
+import MapContainer from "./MapContainer";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const BookingDetails = () => {
-  // const { state } = useLocation();
-  // console.log(state);
+  const { res: getBookingDetailsRes, fetchData: getBookingDetails, isLoading } = useGetApiReq();
+  const { res: getDistanceRes, fetchData: getDistance, isLoading:isDistanceLoading } = useGetApiReq();
   const { checkAuthorization } = useAuthorization();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
   const [mapData, setMapData] = useState({
     time: '',
     distance: ''
@@ -28,26 +28,20 @@ const BookingDetails = () => {
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
 
   const getBooking = async () => {
-    try {
-      setIsLoading(true)
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-booking-details/${id}`,
-        { withCredentials: true }
-      );
-
-      setBooking(data.bookingDetails);
-      setIsLoading(false)
-      setStatus(data.bookingDetails.status);
-      console.log("booking", data);
-    } catch (error) {
-      console.log(error);
-    }
+    getBookingDetails(`/admin/get-booking-details/${id}`)
   };
 
+  useEffect(() => {
+    if (getBookingDetailsRes?.status === 200 || getBookingDetailsRes?.status === 201) {
+      setBooking(getBookingDetailsRes?.data.bookingDetails);
+      setStatus(getBookingDetailsRes?.data.bookingDetails.status);
+    }
+  }, [getBookingDetailsRes])
+  
   const updateStatus = async () => {
-
+    
     if (status === '') return
-
+    
     try {
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
@@ -63,35 +57,38 @@ const BookingDetails = () => {
       checkAuthorization(error);
     }
   };
-
-
+  
+  
   const getDistanceAndTimeBetweenTwoPoints = async () => {
     try {
       console.log("booking 123", booking);
       if (booking) {
         const sourceCoordinates = `${booking.currentLocation.location[0]},${booking.currentLocation.location[1]}`;
         const destinationCoordinates = `${booking.userAddress.location.coordinates[0]},${booking.userAddress.location.coordinates[1]}`;
-
+        
         //  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${sourceCoordinates}&destinations=${destinationCoordinates}&key=AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I`;
-        const apiUrl = `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`;
-        const res = await axios.get(apiUrl, { withCredentials: true });
-
-        setMapData({
-          distance: res?.data?.rows[0]?.elements[0]?.distance?.text,
-          time: res?.data?.rows[0]?.elements[0]?.duration?.text,
-        });
+        getDistance(`/admin/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`)
       }
-
+      
     } catch (error) {
       console.log(error);
     }
   };
-
+  
   useEffect(() => {
     if (!isLoading) {
       getDistanceAndTimeBetweenTwoPoints();
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (getDistanceRes?.status === 200 || getDistanceRes?.status === 201) {
+      setMapData({
+        distance: getDistanceRes?.data?.rows[0]?.elements[0]?.distance?.text,
+        time: getDistanceRes?.data?.rows[0]?.elements[0]?.duration?.text,
+      });
+    }
+  }, [getDistanceRes])
 
   useEffect(() => {
     getBooking();
@@ -152,9 +149,9 @@ const BookingDetails = () => {
                         Update
                       </button>
                     </div>
-                    <p style={{marginTop:"10px"}}>Payment Status: {booking?.paymentStatus}</p>
-                    <p style={{marginTop:"10px"}}>Refund Amount: {booking?.refundInfo?.amount}</p>
-                    <p style={{marginTop:"10px"}}>Refund Status: {booking?.refundInfo?.status}</p>
+                    <p style={{ marginTop: "10px" }}>Payment Status: {booking?.paymentStatus}</p>
+                    <p style={{ marginTop: "10px" }}>Refund Amount: {booking?.refundInfo?.amount}</p>
+                    <p style={{ marginTop: "10px" }}>Refund Status: {booking?.refundInfo?.status}</p>
                   </div>
                   <div>
                     <p>

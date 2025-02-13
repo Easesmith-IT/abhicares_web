@@ -1,32 +1,32 @@
-import { MdDelete } from 'react-icons/md'
-import Wrapper from '../../Wrapper'
-import helpCenterClasses from './HelpCenter.module.css'
-import classes from '../Shared.module.css'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { MdDelete } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../../../components/loader/Loader';
+import Wrapper from '../../Wrapper';
+import classes from '../Shared.module.css';
+import helpCenterClasses from './HelpCenter.module.css';
 // import AddResoulationModal from '../../../components/add-resoulation-modal/AddResoulationModal';
-import DeleteModal from '../../../components/deleteModal/DeleteModal';
 import { format } from 'date-fns';
+import DeleteModal from '../../../components/deleteModal/DeleteModal';
 
-import { PaginationControl } from 'react-bootstrap-pagination-control';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import useAuthorization from '../../../hooks/useAuthorization';
+import { PaginationControl } from 'react-bootstrap-pagination-control';
 import { FaEye } from 'react-icons/fa';
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const HelpCenterTickets = () => {
   const { res: deleteTicketRes, fetchData: deleteTicket, isLoading: deleteTicketLoading } = useDeleteApiReq();
+  const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
+  const { res: getTicketsRes, fetchData: getTickets, isLoading } = useGetApiReq();
+  const { res: filterTicketRes, fetchData: filterTicket, isLoading:filterTicketLoading } = useGetApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [issue, setIssue] = useState("");
   const [allIssues, setAllIssues] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
-  const { checkAuthorization } = useAuthorization();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -42,18 +42,20 @@ const HelpCenterTickets = () => {
 
   console.log("filter", filters);
   const getAllCategories = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-      setAllCategories(data.data);
-      console.log("allCategories", data);
-    } catch (error) {
-      console.log(error);
-    }
+    getCategories("/admin/get-all-category");
   };
 
   useEffect(() => {
     getAllCategories();
   }, [])
+
+  useEffect(() => {
+    if (getCategoriesRes?.status === 200 || getCategoriesRes?.status === 201) {
+      console.log("getCategoriesRes", getCategoriesRes);
+
+      setAllCategories(getCategoriesRes?.data.data);
+    }
+  }, [getCategoriesRes])
 
   const handlePageClick = async (page) => {
     setCurrentPage(page);
@@ -66,23 +68,17 @@ const HelpCenterTickets = () => {
 
 
   const getAllIssues = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-tickets?page=${currentPage}&ticketId=${filters.searchQuery}`,
-        { withCredentials: true }
-      );
-      console.log("tickets", data);
-      setTotalPages(data.totalPages);
-      setAllIssues(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getTickets(`/admin/get-all-tickets?page=${currentPage}&ticketId=${filters.searchQuery}`)
   };
 
-
-
+  useEffect(() => {
+    if (getTicketsRes?.status === 200 || getTicketsRes?.status === 201) {
+      setTotalPages(getTicketsRes?.data.totalPages);
+      setAllIssues(getTicketsRes?.data.data);
+    }
+  }, [getTicketsRes])
+  
+  
   useEffect(() => {
     if (!filters.date &&
       !filters.raisedBy &&
@@ -100,21 +96,17 @@ const HelpCenterTickets = () => {
     filters.serviceType,
     filters.searchQuery,
     filters.status]);
+    
+    const filterTickets = async () => {
+      filterTicket(`/admin/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`)
+    };
 
-  const filterTickets = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`, { withCredentials: true }
-      );
-      console.log("filter tickets", data);
-      setTotalPages(data.totalPages);
-      setAllIssues(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    useEffect(() => {
+      if (filterTicketRes?.status === 200 || filterTicketRes?.status === 201) {
+        setTotalPages(filterTicketRes?.data.totalPages);
+        setAllIssues(filterTicketRes?.data.data);
+      }
+    }, [filterTicketRes])
 
   const handleDeleteModal = (id) => {
     setIssue(id);

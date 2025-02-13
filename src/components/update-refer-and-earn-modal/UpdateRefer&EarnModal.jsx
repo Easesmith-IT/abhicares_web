@@ -5,27 +5,27 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import usePostApiReq from '../../hooks/usePostApiReq';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
     const { res: updateReferAmountRes, fetchData: updateReferAmount, isLoading: updateReferAmountLoading } = usePostApiReq();
+    const { res: getReferAmountRes, fetchData: getReferAmount, isLoading: getReferAmountLoading } = useGetApiReq();
     const [amount, setAmount] = useState("");
 
-    const { checkAuthorization } = useAuthorization();
 
     const referAndEarnData = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-refer-and-earn-amount`, { withCredentials: true })
-            console.log('amount', data)
-            setAmount(data?.doc[0]?.amount);
-        } catch (error) {
-            console.log(error);
-        }
+        getReferAmount(`/admin/get-refer-and-earn-amount`)
     }
 
     useEffect(() => {
         referAndEarnData();
     }, [])
 
+    useEffect(() => {
+        if (getReferAmountRes?.status === 200 || getReferAmountRes?.status === 201) {
+            setAmount(getReferAmountRes?.data?.doc[0]?.amount);
+        }
+    }, [getReferAmountRes])
 
     const handleOnChange = async (e) => {
         const { name, value } = e.target;

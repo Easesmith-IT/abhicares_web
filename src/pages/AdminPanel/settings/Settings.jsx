@@ -14,9 +14,12 @@ import UpdateReferEarnModal from "../../../components/update-refer-and-earn-moda
 import DeleteModal from "../../../components/deleteModal/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Settings = () => {
   const { res: deleteSubAdminRes, fetchData: deleteSubAdmin, isLoading: deleteSubAdminLoading } = useDeleteApiReq();
+  const { res: getSubAdminsRes, fetchData: getSubAdmins, isLoading } = useGetApiReq();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSeoModalOpen, setIsSeoModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -24,7 +27,6 @@ const Settings = () => {
   const [updatePwdModal, setUpdatePwdModal] = useState(false);
   const [subAdmin, setSubadmin] = useState({});
   const [allSubadmins, setAllSubadmins] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isUpdateReferAndEarnModalOpen, setIsUpdateReferAndEarnModalOpen] = useState(false);
 
   const { checkAuthorization } = useAuthorization();
@@ -53,23 +55,18 @@ const Settings = () => {
   }, [deleteSubAdminRes])
 
   const getSubadmins = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-sub-admins`,
-        { withCredentials: true }
-      );
-      console.log("data", data);
-      setAllSubadmins(data?.admins);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    getSubAdmins("/admin/get-sub-admins")
   };
 
   useEffect(() => {
     getSubadmins();
   }, []);
+
+  useEffect(() => {
+    if (getSubAdminsRes?.status === 200 || getSubAdminsRes?.status === 201) {
+      setAllSubadmins(getSubAdminsRes?.data?.admins);
+    }
+  }, [getSubAdminsRes])
 
   return (
     <>

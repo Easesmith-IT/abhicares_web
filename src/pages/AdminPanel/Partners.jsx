@@ -1,73 +1,65 @@
 import React, { useEffect, useState } from "react";
 
-import classes from "./Shared.module.css";
-import AddBtn from "../../assets/add-icon-nobg.png";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AddSellerModal from "../../components/add-seller-modal/AddSellerModal";
+import toast from "react-hot-toast";
 import { FiEdit, FiEye } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import AddBtn from "../../assets/add-icon-nobg.png";
+import AddSellerModal from "../../components/add-seller-modal/AddSellerModal";
 import DeleteModal from "../../components/deleteModal/DeleteModal";
-import Wrapper from "../Wrapper";
-import SellerInfoModal from "../../components/seller-info-modal/SellerOrderInfoModal";
 import Loader from "../../components/loader/Loader";
 import UnapprovedSellerModal from "../../components/unapproved-seller-modal/UnapprovedSellerModal";
-import useAuthorization from "../../hooks/useAuthorization";
 import useDeleteApiReq from "../../hooks/useDeleteApiReq";
+import Wrapper from "../Wrapper";
+import classes from "./Shared.module.css";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const Partners = () => {
   const { res: deleteSellerRes, fetchData: deleteSeller, isLoading: deleteSellerLoading } = useDeleteApiReq();
+  const { res: getSellersRes, fetchData: getSellers, isLoading } = useGetApiReq();
+  const { res: filterSellersRes, fetchData: filterSellers, isLoading:isFilterSellersLoading } = useGetApiReq();
+  const { res: searchSellersRes, fetchData: searchSellers, isLoading:isSearchSellersLoading } = useGetApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSellerInfoModalOpen, setIsSellerInfoModalOpen] = useState(false);
   const [seller, setSeller] = useState({});
   const [allSellers, setAllSellers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isUnapprovedSellerModalOpen, setIsUnapprovedSellerModalOpen] = useState(false);
   const [status, setStatus] = useState("")
 
 
   const navigate = useNavigate()
-  const { checkAuthorization } = useAuthorization();
 
 
   const getAllSellers = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-seller`, { withCredentials: true });
-      setAllSellers(data.data);
-      console.log("seller", data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    getSellers("/admin/get-all-seller")
   };
 
   useEffect(() => {
     getAllSellers();
   }, [])
 
+  useEffect(() => {
+    if (getSellersRes?.status === 200 || getSellersRes?.status === 201) {
+      setAllSellers(getSellersRes?.data.data);
+    }
+  }, [getSellersRes])
+  
   const handleFilterChange = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/filter-seller?status=${status}`, { withCredentials: true });
-      console.log("seller filtered", data);
-      setAllSellers(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    filterSellers(`/admin/filter-seller?status=${status}`)
   };
-
+  
   useEffect(() => {
     status && handleFilterChange();
   }, [status])
-
+  
+  useEffect(() => {
+    if (filterSellersRes?.status === 200 || filterSellersRes?.status === 201) {
+      setAllSellers(filterSellersRes?.data.data);
+    }
+  }, [filterSellersRes])
 
 
   const handleUpdateModal = (e, seller) => {
@@ -104,15 +96,14 @@ const Partners = () => {
       return;
     }
 
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/search-seller?search=${value}`, { withCredentials: true });
-      console.log("search", data);
-      setAllSellers(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    searchSellers(`/admin/search-seller?search=${value}`);
   }
 
+  useEffect(() => {
+    if (searchSellersRes?.status === 200 || searchSellersRes?.status === 201) {
+      setAllSellers(searchSellersRes?.data.data);
+    }
+}, [searchSellersRes])
 
   function debounce(fx, time) {
     let id = null;
@@ -168,12 +159,12 @@ const Partners = () => {
             </div>
 
             <div className={classes.items}>
-              {!isLoading
+              {(!isLoading && !isFilterSellersLoading)
                 && allSellers.length === 0
                 && <p>No sellers found</p>
               }
 
-              {isLoading
+              {(isLoading || isFilterSellersLoading)
                 && allSellers.length === 0
                 && <Loader />
               }

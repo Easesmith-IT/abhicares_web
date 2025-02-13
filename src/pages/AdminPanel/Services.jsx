@@ -6,31 +6,28 @@ import Loader from "../../components/loader/Loader";
 import classes from "./Shared.module.css";
 import axios from "axios";
 import Wrapper from "../Wrapper";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const Services = () => {
+  const { res: getCategoriesRes, fetchData: getCategories, isLoading } = useGetApiReq();
   const [allCategories, setAllCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
 
   const getAllCategories = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials:true })
-      setAllCategories(data.data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    getCategories("/admin/get-all-category")
   };
 
   useEffect(() => {
     getAllCategories();
   }, [])
 
+  useEffect(() => {
+    if (getCategoriesRes?.status === 200 || getCategoriesRes?.status === 201) {
+      setAllCategories(getCategoriesRes?.data.data);
+    }
+  }, [getCategoriesRes])
 
 
   return (

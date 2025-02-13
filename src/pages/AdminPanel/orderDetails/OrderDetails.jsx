@@ -7,11 +7,12 @@ import { format } from 'date-fns';
 import useAuthorization from '../../../hooks/useAuthorization';
 import toast from 'react-hot-toast';
 import usePostApiReq from '../../../hooks/usePostApiReq';
+import useGetApiReq from '../../../hooks/useGetApiReq';
 
 const OrderDetails = () => {
     const { res: changeOrderStatusRes, fetchData: changeOrderStatus, isLoading: changeOrderStatusLoading } = usePostApiReq();
+    const { res: getOrderRes, fetchData: getOrder, isLoading: getOrderLoading } = useGetApiReq();
     const { state: stateData } = useLocation();
-    const [isLoading, setIsLoading] = useState(false)
     const [totalTaxRs, setTotalTaxRs] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [discount, setDiscount] = useState(0);
@@ -19,30 +20,24 @@ const OrderDetails = () => {
     const [state, setState] = useState(stateData || "");
     const [status, setStatus] = useState(stateData?.status);
     const { id } = useParams();
+console.log("stateData",stateData);
 
 
-    const getOrderDetails = async () => {
-        try {
-            setIsLoading(true)
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-order-details?orderId=${id}`,
-                { withCredentials: true }
-            );
-            console.log("Order details", data);
+const getOrderDetails = async () => {
+    getOrder(`/admin/get-order-details?orderId=${id}`)
+};
 
-            setState(data?.data);
-            setIsLoading(false)
-            setStatus(data?.data?.status);
-        } catch (error) {
-            console.log(error);
+useEffect(() => {
+    getOrderDetails()
+}, [state?._id])
+
+useEffect(() => {
+    if (getOrderRes?.status === 200 || getOrderRes?.status === 201) {
+            console.log("getOrderRes",getOrderRes);
+            setState(getOrderRes?.data?.data);
+            setStatus(getOrderRes?.data?.data?.status);
         }
-    };
-
-    useEffect(() => {
-        getOrderDetails()
-    }, [state?._id])
-
-
+    }, [getOrderRes])
 
     const handleChange = async (e) => {
         const orderStatus = e.target.value;

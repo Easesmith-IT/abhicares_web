@@ -7,7 +7,8 @@ import { changeAdminStatus, changeUserAuthStatus } from "../store/slices/userSli
 
 const useGetApiReq = () => {
     const [res, setRes] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const dispatch = useDispatch();
     const isApiCalled = useRef(false);
@@ -107,6 +108,7 @@ const useGetApiReq = () => {
                 setRes(response);
             }
         } catch (error) {
+            setError(error);
             console.log("error", error);
             toast.error(error.response?.data?.message || "An error occurred.")
             if (error.response.status === 401) {
@@ -119,7 +121,7 @@ const useGetApiReq = () => {
         }
     };
 
-    return { res, isLoading, fetchData };
+    return { res, isLoading, fetchData,error };
 
 
 };

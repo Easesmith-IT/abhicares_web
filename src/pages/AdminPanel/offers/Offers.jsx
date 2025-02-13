@@ -1,33 +1,30 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { format } from 'date-fns'
-import classes from '../Shared.module.css'
-import parse from 'html-react-parser'
-import offersClasses from './Offers.module.css'
-import toast from 'react-hot-toast'
 import axios from 'axios'
+import parse from 'html-react-parser'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import classes from '../Shared.module.css'
+import offersClasses from './Offers.module.css'
 
 import { FiEdit } from 'react-icons/fi'
 import { MdDelete } from 'react-icons/md'
 
-import AddBtn from "../../../assets/add-icon-nobg.png";
-import Loader from '../../../components/loader/Loader'
-import Wrapper from '../../Wrapper'
-import DeleteModal from '../../../components/deleteModal/DeleteModal'
+import AddBtn from "../../../assets/add-icon-nobg.png"
 import AddOfferModal from '../../../components/add-offer-modal/AddOfferModal'
-import useAuthorization from '../../../hooks/useAuthorization'
+import DeleteModal from '../../../components/deleteModal/DeleteModal'
+import Loader from '../../../components/loader/Loader'
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
+import useGetApiReq from '../../../hooks/useGetApiReq'
+import Wrapper from '../../Wrapper'
 
 const Offers = () => {
     const { res: deleteCouponRes, fetchData: deleteCoupon, isLoading: deleteCouponLoading } = useDeleteApiReq();
+    const { res: getCouponsRes, fetchData: getCoupons, isLoading } = useGetApiReq();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [offer, setOffer] = useState({});
     const [allOffers, setAllOffers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
-    const { checkAuthorization } = useAuthorization();
 
     const [filterdResults, setFilterdResults] = useState([]);
     // const [status, setStatus] = useState("all")
@@ -46,21 +43,17 @@ const Offers = () => {
 
 
     const getAllOffers = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-coupons`, { withCredentials: true });
-            console.log(data);
-            setAllOffers(data.data);
-        } catch (error) {
-            console.log(error);
-        }
-        finally {
-            setIsLoading(false);
-        }
+        getCoupons("/admin/get-coupons")
     };
     useEffect(() => {
         getAllOffers();
     }, [])
 
+    useEffect(() => {
+        if (getCouponsRes?.status === 200 || getCouponsRes?.status === 201) {
+            setAllOffers(getCouponsRes?.data.data);
+        }
+    }, [getCouponsRes])
 
     const handleUpdateModal = (city) => {
         setOffer(city);

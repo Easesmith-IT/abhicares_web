@@ -7,25 +7,24 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
-const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen,getSellers }) => {
+const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) => {
+    const { res: getInReviewSellerRes, fetchData: getInReviewSeller, isLoading } = useGetApiReq();
     const [allSellers, setAllSellers] = useState([]);
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
-    const [isLoading, setIsLoading] = useState(true);
 
 
     const getAllSellers = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/in-review-seller`, { withCredentials: true });
-            console.log("appppp", data);
-            setAllSellers(data.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getInReviewSeller("/admin/in-review-seller")
     };
+
+    useEffect(() => {
+        if (getInReviewSellerRes?.status === 200 || getInReviewSellerRes?.status === 201) {
+            setAllSellers(getInReviewSellerRes?.data.data);
+        }
+    }, [getInReviewSellerRes])
 
     const handleOnChange = async (id) => {
         try {

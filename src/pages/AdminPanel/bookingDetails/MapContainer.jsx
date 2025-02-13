@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Map, GoogleApiWrapper, Marker, Polyline } from "google-maps-react";
 import axios from "axios";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const MapContainer = ({ google, location, sellerStatus, bookingStatus }) => {
-
+  const { res: getPathRes, fetchData: getPath, isLoading: getPathLoading } = useGetApiReq();
   const [directions, setDirections] = useState(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const mapStyles = {
@@ -24,25 +25,18 @@ const MapContainer = ({ google, location, sellerStatus, bookingStatus }) => {
   const getDirections = async () => {
     const sourceCoordinates = `${location.seller[0]},${location.seller[1]}`;
     const destinationCoordinates = `${location.user[0]},${location.user[1]}`;
-    try {
-      // (origin = 41.43206), -81.38992;
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-the-path-from-source-to-destination?sourceCoordinates=${sourceCoordinates}&destinationCoordinates=${destinationCoordinates}`, { withCredentials: true }
-      );
-
-      if (data.routes && data.routes.length > 0) {
-        setDirections(data.routes[0].overview_polyline.points);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    getPath(`/admin/get-the-path-from-source-to-destination?sourceCoordinates=${sourceCoordinates}&destinationCoordinates=${destinationCoordinates}`)
   };
 
   useEffect(() => {
     getDirections();
-
-
   }, []);
+
+  useEffect(() => {
+    if (getPathRes?.status === 200 || getPathRes?.status === 201) {
+      setDirections(getPathRes?.data.routes[0]?.overview_polyline?.points);
+    }
+}, [getPathRes])
 
   useEffect(() => {
     if (sellerStatus === "out-of-delivery" && bookingStatus === "started") {

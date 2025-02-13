@@ -1,30 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import classes from "../../AdminPanel/Shared.module.css";
 import axios from "axios";
 import parse from "html-react-parser";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import classes from "../../AdminPanel/Shared.module.css";
 
-import AddBtn from "../../../assets/add-icon-nobg.png";
 import { useNavigate } from "react-router-dom";
-import serviceInfoPageClasses from "./ServiceInfoPage.module.css";
+import AddBtn from "../../../assets/add-icon-nobg.png";
 import AddProductModal from "../../../components/add-product-modal/AddProductModal";
-import ProductInfoModal from "../../../components/product-info-modal/ProductInfoModal";
 import DeleteModal from "../../../components/deleteModal/DeleteModal";
 import Loader from "../../../components/loader/Loader";
+import ProductInfoModal from "../../../components/product-info-modal/ProductInfoModal";
+import serviceInfoPageClasses from "./ServiceInfoPage.module.css";
 
-import { MdDelete } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import AddPackageModal from "../../../components/add-package-modal/AddPackageModal";
-import Wrapper from "../../Wrapper";
-import useAuthorization from "../../../hooks/useAuthorization";
+import { MdDelete } from "react-icons/md";
 import AddIconModal from "../../../components/add-icon-modal/AddIconModal";
+import AddPackageModal from "../../../components/add-package-modal/AddPackageModal";
 import FeaturesModal from "../../../components/feature-modal/FeaturesModal";
 import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
+import useGetApiReq from "../../../hooks/useGetApiReq";
+import Wrapper from "../../Wrapper";
 
 const ServiceInfoPage = () => {
   const { res: deleteProductRes, fetchData: deleteProduct, isLoading: deleteProductLoading } = useDeleteApiReq();
   const { res: deletePackageRes, fetchData: deletePackage, isLoading: deletePackageLoading } = useDeleteApiReq();
+  const { res: getServiceDetailRes, fetchData: getServiceDetail, isLoading } = useGetApiReq();
+  const { res: getServiceProductRes, fetchData: getServiceProduct, isLoading: getServiceProductLoading } = useGetApiReq();
+  const { res: getServicePackageRes, fetchData: getServicePackage, isLoading: getServicePackageLoading } = useGetApiReq();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploadIcnModal, setIsUploadIcnModal] = useState(false);
@@ -43,12 +46,9 @@ const ServiceInfoPage = () => {
   const [isPackageLoading, setIsPackageLoading] = useState(true);
   const [isProductLoading, setIsProductLoading] = useState(true);
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
-  const [isServiceDetailLoading, setIsServiceDetailLoading] = useState(true);
   const [serviceDetail, setServiceDetail] = useState("");
 
-  const { state } = useLocation();
   const params = useParams();
-  const { checkAuthorization } = useAuthorization();
 
   const handleProductInfoModal = (e, product) => {
     e.stopPropagation();
@@ -77,54 +77,40 @@ const ServiceInfoPage = () => {
   };
 
   const getServiceDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-service-details/${params?.serviceId}`,
-        { withCredentials: true }
-      );
-      console.log("service details", data);
-      setServiceDetail(data?.service);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsServiceDetailLoading(false);
-    }
+    getServiceDetail(`/admin/get-service-details/${params?.serviceId}`)
   };
+
+  useEffect(() => {
+    if (getServiceDetailRes?.status === 200 || getServiceDetailRes?.status === 201) {
+      setServiceDetail(getServiceDetailRes?.data?.service);
+    }
+  }, [getServiceDetailRes])
 
   const getAllProducts = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-service-product/${params?.serviceId}`,
-        { withCredentials: true }
-      );
-      setAllProducts(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsProductLoading(false);
-    }
+    getServiceProduct(`/admin/get-service-product/${params?.serviceId}`)
   };
 
+  useEffect(() => {
+    if (getServiceProductRes?.status === 200 || getServiceProductRes?.status === 201) {
+      setAllProducts(getServiceProductRes?.data.data);
+    }
+  }, [getServiceProductRes])
+  
   const getAllPackage = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/get-service-package/${params?.serviceId}`,
-        { withCredentials: true }
-      );
-      console.log(data);
-      setAllPackages(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsPackageLoading(false);
-    }
+    getServicePackage(`/admin/get-service-package/${params?.serviceId}`)
   };
-
+  
   useEffect(() => {
     getAllProducts();
     getAllPackage();
     getServiceDetails();
   }, []);
+
+  useEffect(() => {
+    if (getServicePackageRes?.status === 200 || getServicePackageRes?.status === 201) {
+      setAllPackages(getServicePackageRes?.data.data);
+    }
+  }, [getServicePackageRes])
 
   const handleDelete = async () => {
     deleteProduct(`/admin/delete-product/${product}`)
@@ -202,11 +188,11 @@ const ServiceInfoPage = () => {
             </button>
           </div>
           <div className={classes.card_container}>
-            {!isProductLoading && allProducts.length === 0 && (
+            {!getServiceProductLoading && allProducts.length === 0 && (
               <p>No products found</p>
             )}
 
-            {isProductLoading && allProducts.length === 0 && <Loader />}
+            {getServiceProductLoading && allProducts.length === 0 && <Loader />}
 
             {allProducts?.map((product) => (
               <div
@@ -248,11 +234,11 @@ const ServiceInfoPage = () => {
             </button>
           </div>
           <div className={classes.card_container}>
-            {!isPackageLoading && allPackages.length === 0 && (
+            {!getServicePackageLoading && allPackages.length === 0 && (
               <p>No packages found</p>
             )}
 
-            {isPackageLoading && allPackages.length === 0 && <Loader />}
+            {getServicePackageLoading && allPackages.length === 0 && <Loader />}
             {allPackages?.map((singlePackage) => (
               <div
                 key={singlePackage._id}

@@ -26,6 +26,7 @@ import { convertTimeToDate } from "../../utils/timeToDate";
 import { parse } from "date-fns";
 import { readCookie } from "../../utils/readCookie";
 import usePostApiReq from "../../hooks/usePostApiReq";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const CheckoutPage = () => {
   const { res: calculateChargeRes, fetchData: calculateCharge, isLoading: calculateChargeLoading } = usePostApiReq();
@@ -34,6 +35,7 @@ const CheckoutPage = () => {
   const { res: getApiKeyRes, fetchData: getApiKey, isLoading: getApiKeyLoading, error: getApiKeyError } = usePostApiReq();
   const { res: createOnlineOrderRes, fetchData: createOnlineOrderFun, isLoading: createOnlineOrderLoading, error: createOnlineOrderError } = usePostApiReq();
   const { res: placeCodOrderRes, fetchData: placeCodOrder, isLoading: placeCodOrderLoading, error: placeCodOrderError } = usePostApiReq();
+  const { res: getUserAddressRes, fetchData: getUserAddress } = useGetApiReq();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -73,24 +75,23 @@ const CheckoutPage = () => {
   const userName = token?.name;
 
   const getAllAddress = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/get-user-address`,
-        { withCredentials: true }
-      );
-      setAllAddress(data.data);
+    getUserAddress("/shopping/get-user-address")
+  };
+
+  useEffect(() => {
+    if (getUserAddressRes?.status === 200 || getUserAddressRes?.status === 201) {
+      setAllAddress(getUserAddressRes?.data.data);
       if (!address) {
-        let defaultAddress = data.data.find((add) => add.defaultAddress === true);
+        let defaultAddress = getUserAddressRes?.data.data.find((add) => add.defaultAddress === true);
 
         if (!defaultAddress) {
-          defaultAddress = data.data[data.data.length - 1];
+          defaultAddress = getUserAddressRes?.data.data[data.data.length - 1];
         }
         setAddress(defaultAddress);
       }
-    } catch (error) {
-      console.log(error);
     }
-  };
+}, [getUserAddressRes])
+
   useEffect(() => {
     (async () => {
       await dispatch(getCartDetails());
@@ -132,17 +133,20 @@ const CheckoutPage = () => {
     }))
     console.log("modifiedItems", modifiedItems);
 
-    calculateCharge("/shopping/caluclate-charge", { items: modifiedItems })
+    calculateCharge("/shopping/caluclate-charge", { items: modifiedItems, couponId })
   };
 
   useEffect(() => {
     caluclateCharge()
-  }, [cart])
+  }, [cart, couponId])
 
   useEffect(() => {
     if (calculateChargeRes?.status === 200 || calculateChargeRes?.status === 201) {
+      console.log("calculateChargeRes", calculateChargeRes);
+
       setTotalTaxRs(calculateChargeRes?.data?.totalTax)
       setTotal(calculateChargeRes?.data?.totalPayable)
+      setOfferValue(calculateChargeRes?.data?.totalDiscount)
     }
   }, [calculateChargeRes])
 
@@ -221,7 +225,10 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (getCouponDetailsRes?.status === 200 || getCouponDetailsRes?.status === 201) {
-      const { discountType, status, _id, couponFixedValue, offPercentage, maxDiscount } = getCouponDetailsRes?.data?.data || {};
+      console.log("getCouponDetailsRes", getCouponDetailsRes);
+
+      caluclateCharge();
+      const { status } = getCouponDetailsRes?.data?.data || {};
 
 
       if (offerValue > 0) {
@@ -229,27 +236,13 @@ const CheckoutPage = () => {
       }
 
       if (status === "active") {
-        if (discountType === "fixed") {
-          setOfferValue(Number(couponFixedValue));
-          const totalValue = total - Number(couponFixedValue);
-          setTotal(totalValue);
-        }
-        else {
-          setCouponId(_id);
-          setMessage("Offer available");
-          let offerTotal = Math.ceil(cart.totalPrice * (Number(offPercentage) / 100));
-          offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
-          console.log("offerTotal", offerTotal);
-          setOfferValue(offerTotal);
-          const totalValue = total - Number(offerTotal);
-          setTotal(totalValue);
-        }
+        setMessage("Offer available");
       }
       else {
         setMessage("Offer not available");
         setOfferValue(0);
-        const totalValue = total - Number(0);
-        setTotal(totalValue);
+        // const totalValue = total - Number(0);
+        // setTotal(totalValue);
       }
     }
   }, [getCouponDetailsRes])
