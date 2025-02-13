@@ -5,7 +5,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import classes from "../../../components/add-resoulation-modal/AddResoulationModal.module.css";
 import useAuthorization from '../../../hooks/useAuthorization';
+
+import usePatchApiReq from '../../../hooks/usePatchApiReq';
 import usePostApiReq from '../../../hooks/usePostApiReq';
+
 
 const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
   const { res: createFaqRes, fetchData: createFaq, isLoading: createFaqLoading } = usePostApiReq();
@@ -21,26 +24,16 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
   };
   const navigate = useNavigate();
 
+  const { res: feqRes, fetchData: feqFetchData } = usePatchApiReq()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!faqInfo.ques || !faqInfo.ans) {
       return;
     }
     if (faq) {
-      try {
-        const { data } = await axios.patch(
-          `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-faq/${faq._id}`,
-          { ...faqInfo },
-          { withCredentials: true }
-        );
-        toast.success("Faq updated successfully");
-        getAllFaqs();
-        setIsModalOpen(false);
-      } catch (error) {
-        console.log(error);
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      await feqFetchData(`/admin/update-faq/${faq._id}`, { ...faqInfo })
+
     }
     else {
       createFaq("/admin/create-faq", { ...faqInfo })
@@ -48,12 +41,23 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
   };
 
   useEffect(() => {
+
+    if (feqRes?.status === 200 || feqRes?.status === 201) {
+        console.log("feqRes", feqRes);
+        toast.success("Faq updated successfully");
+        getAllFaqs();
+        setIsModalOpen(false);
+    }
+}, [feqRes])
+  
+ useEffect(() => 
     if (createFaqRes?.status === 200 || createFaqRes?.status === 201) {
       toast.success("Faq created successfully");
       getAllFaqs();
       setIsModalOpen(false);
     }
   }, [createFaqRes])
+
 
 
   return (

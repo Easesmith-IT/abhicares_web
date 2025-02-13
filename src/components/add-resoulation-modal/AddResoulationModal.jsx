@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './AddResoulationModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddResoulationModal = ({ setIsModalOpen, id, getTicketDetails }) => {
     const getFormattedDate = () => {
@@ -35,24 +36,25 @@ const AddResoulationModal = ({ setIsModalOpen, id, getTicketDetails }) => {
 
     const navigate = useNavigate()
 
+    const { res: addResoulationRes, fetchData: addResoulationFetchData } = usePatchApiReq()
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!resoulationInfo.resolution || !resoulationInfo.status) {
             return;
         }
-        try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-ticket`, { ...resoulationInfo }, { withCredentials: true });
-            toast.success("Ticket updated successfully");
-            console.log("dataxghu :", data)
-            getTicketDetails();
-            setIsModalOpen(false);
-        } catch (error) {
-            console.log(error);
-            setIsModalOpen(false);
-            checkAuthorization(error);
-        }
+        await addResoulationFetchData(`/admin/update-ticket`, { ...resoulationInfo })
+
     }
 
+    useEffect(() => {
+        if (addResoulationRes?.status === 200 || addResoulationRes?.status === 201) {
+            console.log("addResoulationRes", addResoulationRes);
+            toast.success("Ticket updated successfully");
+            getTicketDetails();
+            setIsModalOpen(false);
+        }
+    }, [addResoulationRes])
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

@@ -8,6 +8,7 @@ import AssignedPartnerModal from "../../../components/assigned-partner-modal/Ass
 import MapContainer from "./MapContainer";
 import useAuthorization from "../../../hooks/useAuthorization";
 import toast from "react-hot-toast";
+import usePatchApiReq from "../../../hooks/usePatchApiReq";
 
 const BookingDetails = () => {
   // const { state } = useLocation();
@@ -44,24 +45,14 @@ const BookingDetails = () => {
     }
   };
 
+  const { res: bookingDetailRes, fetchData: bookingDetailFetchData } = usePatchApiReq()
+
   const updateStatus = async () => {
 
     if (status === '') return
 
-    try {
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller-order-status/${booking._id}`,
-        { status: status },
-        { withCredentials: true }
-      );
-      toast.success("Booking status changed successfully");
-      console.log("status", data);
-      getBooking();
-    } catch (error) {
-      console.log(error);
-      setStatus(() => booking?.status);
-      checkAuthorization(error);
-    }
+    await bookingDetailFetchData(`/admin/update-seller-order-status/${booking._id}`, { status: status })
+
   };
 
 
@@ -114,6 +105,13 @@ const BookingDetails = () => {
   let hours = localTime && localTime?.getHours();
   console.log("hours", hours);
 
+  useEffect(() => {
+    if (bookingDetailRes?.status === 200 || bookingDetailRes?.status === 201) {
+      console.log("bookingDetailRes", bookingDetailRes);
+      toast.success("Booking status changed successfully");
+      getBooking();
+    }
+  }, [bookingDetailRes])
 
   return (
     <>
@@ -152,9 +150,9 @@ const BookingDetails = () => {
                         Update
                       </button>
                     </div>
-                    <p style={{marginTop:"10px"}}>Payment Status: {booking?.paymentStatus}</p>
-                    <p style={{marginTop:"10px"}}>Refund Amount: {booking?.refundInfo?.amount}</p>
-                    <p style={{marginTop:"10px"}}>Refund Status: {booking?.refundInfo?.status}</p>
+                    <p style={{ marginTop: "10px" }}>Payment Status: {booking?.paymentStatus}</p>
+                    <p style={{ marginTop: "10px" }}>Refund Amount: {booking?.refundInfo?.amount}</p>
+                    <p style={{ marginTop: "10px" }}>Refund Status: {booking?.refundInfo?.status}</p>
                   </div>
                   <div>
                     <p>

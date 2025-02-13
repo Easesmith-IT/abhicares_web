@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './UpdateCashoutReqModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const UpdateCashoutReqModal = ({
   setIsUpdateModalOpen,
@@ -27,6 +28,7 @@ const UpdateCashoutReqModal = ({
     const { name, value } = e.target;
     setCashOutInfo({ ...cashOutInfo, [name]: value });
   };
+  const { res: updateCashoutRes, fetchData: updateCashoutFetchData } = usePatchApiReq()
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -49,22 +51,33 @@ const UpdateCashoutReqModal = ({
       return;
     }
 
-    try {
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/approve-cashout/${cashOutReq._id}`,
-        { ...cashOutInfo },
-        { withCredentials: true }
-      );
-      toast.success("Cashout request updated successfully");
+    await updateCashoutFetchData(`/admin/approve-cashout/${cashOutReq._id}`, { ...cashOutInfo })
+
+    // try {
+    //   const { data } = await axios.patch(
+    //     `${import.meta.env.VITE_APP_ADMIN_API_URL}/approve-cashout/${cashOutReq._id}`,
+    //     { ...cashOutInfo },
+    //     { withCredentials: true }
+    //   );
+    //   toast.success("Cashout request updated successfully");
+    //   setIsUpdateModalOpen(false);
+    //   getSellerWallet();
+    // } catch (error) {
+    //     setIsUpdateModalOpen(false);
+    //     setIsViewWalletModalOpen(false);
+    //   checkAuthorization(error);
+    //   console.log(error);
+    // }
+  };
+
+  useEffect(() => {
+    if (updateCashoutRes?.status === 200 || updateCashoutRes?.status === 201) {
+        console.log("updateCashoutRes", updateCashoutRes);
+        toast.success("Cashout request updated successfully");
       setIsUpdateModalOpen(false);
       getSellerWallet();
-    } catch (error) {
-        setIsUpdateModalOpen(false);
-        setIsViewWalletModalOpen(false);
-      checkAuthorization(error);
-      console.log(error);
     }
-  };
+}, [updateCashoutRes])
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>

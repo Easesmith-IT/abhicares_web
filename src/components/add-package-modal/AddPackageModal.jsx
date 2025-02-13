@@ -11,6 +11,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
@@ -126,6 +127,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         setPackageInfo({ ...packageInfo, products: filtered })
     }
 
+    const { res: addPackageRes, fetchData: addPackageFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -153,18 +155,8 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
 
 
         if (selectedPackage) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-package/${selectedPackage._id}`, formData, { withCredentials: true });
-                toast.success("Package updated successfully");
-                getAllPackage();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            } finally {
-                setIsLoading(false);
-            }
+            await addPackageFetchData(`/admin/update-package/${selectedPackage._id}`, formData)
+
         }
         else {
             addPackage("/admin/create-package", formData)
@@ -180,6 +172,15 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     }, [addPackageRes])
 
     console.log("package", packageInfo);
+
+    useEffect(() => {
+        if (addPackageRes?.status === 200 || addPackageRes?.status === 201) {
+            console.log("addPackageRes", addPackageRes);
+            toast.success("Package updated successfully");
+            getAllPackage();
+            setIsModalOpen(false);
+        }
+    }, [addPackageRes])
 
     return (
         <div className={classes.wrapper}>

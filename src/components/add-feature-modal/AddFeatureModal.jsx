@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId, index }) => {
@@ -50,6 +51,9 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
         setFeatureInfo({ ...featureInfo, img: "", previewImage: "" });
     }
 
+
+    const { res: addFeatureRes, fetchData: addFeatureFetchData } = usePatchApiReq()
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (
@@ -70,16 +74,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
 
         if (feature) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service-feature/${serviceId}`, formData, { withCredentials: true });
-                toast.success("Feature updated successfully");
-                setIsModalOpen(false);
-                getServiceDetails();
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            await addFeatureFetchData(`/admin/update-service-feature/${serviceId}`, formData)
         }
         else {
             addFeature(`/admin/add-service-feature/${serviceId}`, formData);
@@ -88,12 +83,13 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
     useEffect(() => {
         if (addFeatureRes?.status === 200 || addFeatureRes?.status === 201) {
-            toast.success("Feature added successfully");
+
+            console.log("addFeatureRes", addFeatureRes);
+            toast.success("Feature updated successfully");
             setIsModalOpen(false);
             getServiceDetails();
         }
     }, [addFeatureRes])
-
 
     return (
         <div className={classes.wrapper}>
