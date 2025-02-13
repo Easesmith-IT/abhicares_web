@@ -1,5 +1,6 @@
 .wrapper {
-    z-index: 99999 !important;
+    /* z-index: 99999 !important; */
+    z-index: 10 !important;
     width: 100%;
     height: 100vh;
     position: fixed;

@@ -11,8 +11,11 @@ import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import usePostApiReq from '../../hooks/usePostApiReq';
+
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
+    const { res: addProductRes, fetchData: addProduct, isLoading: addProductLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(product?.description || "");
 
@@ -130,18 +133,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-product`, formData, { withCredentials: true });
-                toast.success("Product added successfully");
-                getAllProducts();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            } finally {
-                setIsLoading(false);
-            }
+            addProduct("/admin/create-product", formData)
         }
     }
 
@@ -149,6 +141,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         if (addProductRes?.status === 200 || addProductRes?.status === 201) {
             console.log("addProductRes", addProductRes);
             toast.success("Product updated successfully");
+
             getAllProducts();
             setIsModalOpen(false);
         }
@@ -193,7 +186,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
                         ))}
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{isLoading ? <img className={classes.loader} src={loader} alt="loader" /> : (product ? "Update" : "Add")}</button>
+                        <button className={classes.button}>{addProductLoading ? <img className={classes.loader} src={loader} alt="loader" /> : (product ? "Update" : "Add")}</button>
                     </div>
                 </form>
             </div>

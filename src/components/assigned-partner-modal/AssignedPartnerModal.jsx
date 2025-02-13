@@ -8,31 +8,31 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
+
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+
+import useGetApiReq from '../../hooks/useGetApiReq';
+
 
 const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBooking }) => {
     const [allSeller, setAllSeller] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const { res: getSellerListRes, fetchData: getSellerList, isLoading } = useGetApiReq();
 
-    const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
 
     const getAllSeller = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-seller-list/${serviceId}`, { withCredentials: true });
-            setAllSeller(data.data)
-            console.log("seller to assign", data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
+        getSellerList(`/admin/get-seller-list/${serviceId}`)
     }
 
     useEffect(() => {
         getAllSeller()
     }, [])
 
+    useEffect(() => {
+        if (getSellerListRes?.status === 200 || getSellerListRes?.status === 201) {
+            setAllSeller(getSellerListRes?.data.data)
+        }
+    }, [getSellerListRes])
 
     const { res: assignPartnerRes, fetchData: assignPartnerFetchData } = usePatchApiReq()
 

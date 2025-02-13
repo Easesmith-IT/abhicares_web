@@ -8,8 +8,10 @@ import DeleteModal from "../deleteModal/DeleteModal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { readCookie } from "../../utils/readCookie";
+import useDeleteApiReq from "../../hooks/useDeleteApiReq";
 
 const CustomerReview = ({ review, isUser = false, getAllReviews }) => {
+    const { res: deleteProductReviewRes, fetchData: deleteProductReview, isLoading: deleteProductReviewLoading } = useDeleteApiReq();
     const [isUpdateReviewModalOpen, setIsUpdateReviewModalOpen] = useState(false);
     const [isDeleteReviewModalOpen, setIsDeleteReviewModalOpen] = useState(false);
     const token = readCookie("userInfo");
@@ -18,21 +20,16 @@ const CustomerReview = ({ review, isUser = false, getAllReviews }) => {
     console.log("review", review);
 
     const handleDelete = async () => {
-        try {
-            const res = await axios.delete(
-                `${import.meta.env.VITE_APP_API_URL}/delete-product-review/${review._id}`,
-                {
-                    withCredentials: true,
-                }
-            );
+        deleteProductReview(`/shopping/delete-product-review/${review._id}`);
+    };
+
+    useEffect(() => {
+        if (deleteProductReviewRes?.status === 200 || deleteProductReviewRes?.status === 201) {
             toast.success("Review deleted successfully");
-            console.log("review res", res.data);
             setIsDeleteReviewModalOpen(false);
             getAllReviews();
-        } catch (error) {
-            console.log(error);
         }
-    };
+    }, [deleteProductReviewRes])
 
     return (
         <>

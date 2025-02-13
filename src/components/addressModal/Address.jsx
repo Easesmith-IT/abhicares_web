@@ -5,28 +5,24 @@ import { useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useDeleteApiReq from "../../hooks/useDeleteApiReq";
 
 const Address = ({ data, getAllAddress, setTemporaryAddress }) => {
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
-
+  const { res: deleteUserAddressRes, fetchData: deleteUserAddress, isLoading: deleteUserAddressLoading } = useDeleteApiReq();
 
   const handleDelete = async () => {
-    try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_APP_API_URL}/delete-user-address/${data._id}`,
-        {
-          withCredentials: true,
-        }
-      );
+    deleteUserAddress(`/shopping/delete-user-address/${data._id}`)
+  };
+
+  useEffect(() => {
+    if (deleteUserAddressRes?.status === 200 || deleteUserAddressRes?.status === 201) {
       toast.success("Address deleted successfully");
-      console.log(res.data);
       setIsDeleteModal(false);
       getAllAddress();
-    } catch (error) {
-      console.log(error);
     }
-  };
+  }, [deleteUserAddressRes])
 
   const handleOnChange = (e) => {
     setTemporaryAddress(data);

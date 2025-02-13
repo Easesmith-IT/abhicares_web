@@ -9,6 +9,7 @@ import { changeAdminStatus, changeUserAuthStatus } from "../store/slices/userSli
 const usePostApiReq = () => {
     const [res, setRes] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const dispatch = useDispatch();
     const isApiCalled = useRef(false);
@@ -53,7 +54,7 @@ const usePostApiReq = () => {
 
     const refreshToken = async () => {
         try {
-            const res1 = await axiosInstance.post("/shoping/refresh", { phone: token?.phone, role: "user" });
+            const res1 = await axiosInstance.post("/shopping/refresh", { phone: token?.phone, role: "user" });
             if (res1?.status === 200 || res1?.status === 201) {
                 dispatch(changeUserAuthStatus({ isAuthenticated: true }));
                 console.log("refresh response:", res1);
@@ -77,7 +78,7 @@ const usePostApiReq = () => {
 
     const handleLogout = async () => {
         try {
-            const logoutRes = await axiosInstance.post("/shoping/logout-all", { phone: token?.phone, role: "user" });
+            const logoutRes = await axiosInstance.post("/shopping/logout-all", { phone: token?.phone, role: "user" });
             if (logoutRes?.status === 200 || logoutRes?.status === 201) {
                 console.log("Logout response:", logoutRes);
                 dispatch(changeUserAuthStatus({ isAuthenticated: false }));
@@ -107,9 +108,10 @@ const usePostApiReq = () => {
             console.log("res", response);
             if (response.status === 200 || response.status === 201) {
                 setRes(response);
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
             }
         } catch (error) {
+            setError(error);
             console.log("post api error =>", error);
             toast.error(error.response?.data?.message || "An error occurred.")
             if (error.response.status === 401) {
@@ -121,7 +123,7 @@ const usePostApiReq = () => {
         }
     };
 
-    return { res, isLoading, fetchData };
+    return { res, isLoading, fetchData,error };
 
 
 };

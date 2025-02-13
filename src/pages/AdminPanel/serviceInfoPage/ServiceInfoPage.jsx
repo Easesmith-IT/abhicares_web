@@ -20,8 +20,11 @@ import Wrapper from "../../Wrapper";
 import useAuthorization from "../../../hooks/useAuthorization";
 import AddIconModal from "../../../components/add-icon-modal/AddIconModal";
 import FeaturesModal from "../../../components/feature-modal/FeaturesModal";
+import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
 
 const ServiceInfoPage = () => {
+  const { res: deleteProductRes, fetchData: deleteProduct, isLoading: deleteProductLoading } = useDeleteApiReq();
+  const { res: deletePackageRes, fetchData: deletePackage, isLoading: deletePackageLoading } = useDeleteApiReq();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploadIcnModal, setIsUploadIcnModal] = useState(false);
@@ -124,21 +127,16 @@ const ServiceInfoPage = () => {
   }, []);
 
   const handleDelete = async () => {
-    try {
-      console.log(product);
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-product/${product}`,
-        { withCredentials: true }
-      );
+    deleteProduct(`/admin/delete-product/${product}`)
+  };
+
+  useEffect(() => {
+    if (deleteProductRes?.status === 200 || deleteProductRes?.status === 201) {
       toast.success("Product deleted successfully");
       getAllProducts();
       setIsDeleteModalOpen(!isDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deleteProductRes])
 
   const handleDeleteModal = (e, id) => {
     e.stopPropagation();
@@ -153,21 +151,16 @@ const ServiceInfoPage = () => {
   };
 
   const handlePackageDelete = async () => {
-    try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-package/${singlePackage}`,
-        { withCredentials: true }
-      );
-      console.log(data);
+    deletePackage(`/admin/delete-package/${singlePackage}`)
+  };
+
+  useEffect(() => {
+    if (deletePackageRes?.status === 200 || deletePackageRes?.status === 201) {
       toast.success("Package deleted successfully");
       getAllPackage();
       setIsPackageDeleteModalOpen(!isPackageDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsPackageDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deletePackageRes])
 
   return (
     <>

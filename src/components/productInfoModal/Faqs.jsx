@@ -4,39 +4,27 @@ import FaqLi from "./FaqLi";
 import classes from "./Modal.module.css";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const Faqs = () => {
     const [allFaqs, setAllFaqs] = useState([]);
+    const { res, fetchData, isLoading } = useGetApiReq();
 
     const getAllFaqs = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-all-faq`, { withCredentials: true });
-            console.log(data);
-            setAllFaqs(data.data);
-        } catch (error) {
-            console.log(error);
-        }
+        fetchData("/shopping/get-all-faq")
     }
 
     useEffect(() => {
         getAllFaqs();
     }, [])
 
-
-    const faqData = [
-        {
-            ques: "Will the professional bring the tools needed for the service?",
-            ans: "Yes, all the tools required during the process will be brought in by the professional. However, the technician do not carry a ladder, please arrange for one if the AC is at a height."
-        },
-        {
-            ques: "Will the professional bring the tools needed for the service?",
-            ans: "Yes, all the tools required during the process will be brought in by the professional. However, the technician do not carry a ladder, please arrange for one if the AC is at a height."
-        },
-        {
-            ques: "Will the professional bring the tools needed for the service?",
-            ans: "Yes, all the tools required during the process will be brought in by the professional. However, the technician do not carry a ladder, please arrange for one if the AC is at a height."
-        },
-    ];
+    useEffect(() => {
+        if (res?.status === 200 || res?.status === 201) {
+            console.log("faqs",res);
+            
+            setAllFaqs(res?.data.data);
+        }
+    }, [res])
 
     return (
         <div className={classes.faq}>
@@ -48,6 +36,13 @@ const Faqs = () => {
                         index={index}
                     />
                 ))}
+
+                {allFaqs.length === 0 && isLoading &&
+                    <span>Loading...</span>
+                }
+                {allFaqs.length === 0 && !isLoading &&
+                    <span>No Faqs Found</span>
+                }
             </ul>
 
         </div>

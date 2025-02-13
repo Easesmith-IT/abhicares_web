@@ -16,8 +16,10 @@ import Wrapper from '../../Wrapper'
 import DeleteModal from '../../../components/deleteModal/DeleteModal'
 import AddOfferModal from '../../../components/add-offer-modal/AddOfferModal'
 import useAuthorization from '../../../hooks/useAuthorization'
+import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
 
 const Offers = () => {
+    const { res: deleteCouponRes, fetchData: deleteCoupon, isLoading: deleteCouponLoading } = useDeleteApiReq();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -36,7 +38,7 @@ const Offers = () => {
     useEffect(() => {
         const filteredCoupons = allOffers.filter((coupon) => coupon.status === statusFilter);
         setFilterdResults(statusFilter === "all" ? allOffers : filteredCoupons);
-    }, [statusFilter,allOffers])
+    }, [statusFilter, allOffers])
 
 
     console.log("filteredCoupons", filterdResults);
@@ -71,17 +73,16 @@ const Offers = () => {
     };
 
     const handleDelete = async () => {
-        try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-coupon/${offer}`, { withCredentials: true });
+        deleteCoupon(`/admin/delete-coupon/${offer}`)
+    };
+
+    useEffect(() => {
+        if (deleteCouponRes?.status === 200 || deleteCouponRes?.status === 201) {
             toast.success("Offer deleted successfully");
             getAllOffers();
             setIsDeleteModalOpen(!isDeleteModalOpen);
-        } catch (error) {
-            console.log(error);
-            setIsDeleteModalOpen(false);
-            checkAuthorization(error);
         }
-    };
+    }, [deleteCouponRes])
 
     return (
         <>
@@ -112,7 +113,7 @@ const Offers = () => {
                             && filterdResults?.length === 0
                             && <Loader />
                         }
-                        
+
                         {filterdResults?.map((offer) => (
                             <div key={offer._id} className={offersClasses.city}>
                                 <div className={offersClasses.city_left}>

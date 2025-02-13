@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import classes from './SendNotificationModal.module.css';
+import { useEffect, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
+import classes from './SendNotificationModal.module.css';
 
-import { useNavigate } from 'react-router-dom'
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import 'react-quill/dist/quill.snow.css';
+import usePostApiReq from '../../hooks/usePostApiReq';
 import { generateTimeOptions } from '../../utils/generateTimeOptions';
 
 const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
+    const { res: sendNotificationRes, fetchData: sendNotification, isLoading: sendNotificationLoading } = usePostApiReq();
     const [notificationInfo, setNotificationInfo] = useState({
         image: "",
         imagePrev: "",
@@ -38,42 +38,37 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
         const { name, value } = e.target;
         setNotificationInfo({ ...notificationInfo, [name]: value });
     }
-    const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(false)
 
     console.log("notificationInfo", notificationInfo);
     const handleOnSubmit = async (e) => {
-        try {
-            e.preventDefault();
-            if (!notificationInfo.title
-                || !notificationInfo.desc
-                || !notificationInfo.appType
-            ) {
-                console.log("error");
+        e.preventDefault();
+        if (!notificationInfo.title
+            || !notificationInfo.desc
+            || !notificationInfo.appType
+        ) {
+            console.log("error");
 
-                return;
-            }
+            return;
+        }
 
-            const formData = new FormData();
-            formData.append("title", notificationInfo.title);
-            formData.append("description", notificationInfo.desc);
-            formData.append("date", notificationInfo.date);
-            formData.append("time", notificationInfo.time);
-            formData.append("image", notificationInfo.image);
-            formData.append("appType", notificationInfo.appType);
+        const formData = new FormData();
+        formData.append("title", notificationInfo.title);
+        formData.append("description", notificationInfo.desc);
+        formData.append("date", notificationInfo.date);
+        formData.append("time", notificationInfo.time);
+        formData.append("image", notificationInfo.image);
+        formData.append("appType", notificationInfo.appType);
 
-            setIsLoading(true)
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/send-notification`, formData);
-            setIsLoading(false)
-            console.log(data);
+        sendNotification("/admin/send-notification", formData);
+    }
+
+    useEffect(() => {
+        if (sendNotificationRes?.status === 200 || sendNotificationRes?.status === 201) {
             toast.success("Notification sent successfully");
             getNotifications();
             setIsModalOpen(false);
-        } catch (error) {
-            setIsLoading(false)
-            console.log(error);
         }
-    }
+    }, [sendNotificationRes])
 
     return (
         <div className={classes.wrapper}>
@@ -143,7 +138,7 @@ const SendNotificationModal = ({ setIsModalOpen, getNotifications }) => {
 
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{isLoading ? "Sending..." : "Send"}</button>
+                        <button className={classes.button}>{sendNotificationLoading ? "Sending..." : "Send"}</button>
                     </div>
                 </form>
             </div>

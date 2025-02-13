@@ -4,16 +4,18 @@ import { RxCross2 } from 'react-icons/rx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
-   const [amount, setAmount] = useState("");
+    const { res: updateReferAmountRes, fetchData: updateReferAmount, isLoading: updateReferAmountLoading } = usePostApiReq();
+    const [amount, setAmount] = useState("");
 
     const { checkAuthorization } = useAuthorization();
 
-    const referAndEarnData =async ()=>{
+    const referAndEarnData = async () => {
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-refer-and-earn-amount`, { withCredentials: true })
-            console.log('amount',data)
+            console.log('amount', data)
             setAmount(data?.doc[0]?.amount);
         } catch (error) {
             console.log(error);
@@ -21,9 +23,9 @@ const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
     }
 
     useEffect(() => {
-      referAndEarnData();
+        referAndEarnData();
     }, [])
-    
+
 
     const handleOnChange = async (e) => {
         const { name, value } = e.target;
@@ -35,20 +37,15 @@ const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
         if (!amount) {
             return;
         }
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-refer-and-earn-amount`, { amount }, { withCredentials: true });
-            console.log("update refer and earn", res);
-            if (res.status === 201) {
-                toast.success(res?.data.message);
-                setIsModalOpen(false);
-            }
-        } catch (error) {
-            console.log(error);
-            setIsModalOpen(false);
-            checkAuthorization(error);
-        }
+        updateReferAmount("/admin/update-refer-and-earn-amount", { amount });
     }
 
+    useEffect(() => {
+        if (updateReferAmountRes?.status === 200 || updateReferAmountRes?.status === 201) {
+            toast.success(updateReferAmountRes?.data.message);
+            setIsModalOpen(false);
+        }
+    }, [updateReferAmountRes])
 
 
     return (
@@ -66,7 +63,7 @@ const UpdateReferEarnModal = ({ setIsModalOpen, subAdmin }) => {
                         <input className={classes.input} onChange={handleOnChange} value={amount} type="number" name="amount" id="amount" placeholder="enter amount" />
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>Update</button>
+                        <button className={classes.button}>{updateReferAmountLoading ? "Loading..." : "Update"}</button>
                     </div>
                 </form>
             </div>

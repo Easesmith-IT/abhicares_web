@@ -8,10 +8,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
     const { checkAuthorization } = useAuthorization();
     const { res, fetchData } = usePatchApiReq()
+    const { res: addCityRes, fetchData: addCity, isLoading: addCityLoading } = usePostApiReq();
     const [cityInfo, setCityInfo] = useState({
         city: city?.city || "",
         state: city?.state || "",
@@ -56,18 +58,17 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
             updateCityFetchData(`/admin/update-availabe-city/${city._id}`, { ...cityInfo, pinCodes })
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-availabe-city`, { ...cityInfo, pinCode: pinCodes }, { withCredentials: true });
-                toast.success("City added successfully");
-                getAllCities();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            addCity("/admin/create-availabe-city", { ...cityInfo, pinCode: pinCodes })
         }
     }
+
+    useEffect(() => {
+        if (addCityRes?.status === 200 || addCityRes?.status === 201) {
+            toast.success("City added successfully");
+            getAllCities();
+            setIsModalOpen(false);
+        }
+    }, [addCityRes])
 
     const handleRemovePincode = (i) => {
         let pincodesArr = [...pinCodes];
@@ -123,7 +124,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
                             </div>}
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{city ? "Update" : "Add"}</button>
+                        <button className={classes.button}>{addCityLoading ? "Loading..." : city ? "Update" : "Add"}</button>
                     </div>
                 </form>
             </div>

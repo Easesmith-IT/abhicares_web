@@ -1,11 +1,13 @@
 import { AiOutlineClose } from 'react-icons/ai';
 import classes from './AddEmailModal.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddEmailModal = ({ isAddEmailModalOpen, setIsAddEmailModalOpen, getProfileDetails }) => {
     const [email, setEmail] = useState("");
+    const { res: addEmailRes, fetchData: addEmail, isLoading } = usePostApiReq();
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -19,16 +21,16 @@ const AddEmailModal = ({ isAddEmailModalOpen, setIsAddEmailModalOpen, getProfile
             return;
         }
 
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/update-email`, { email }, { withCredentials: true });
-            console.log(data);
+        addEmail(`/shopping/update-email`, { email });
+    }
+
+    useEffect(() => {
+        if (addEmailRes?.status === 200 || addEmailRes?.status === 201) {
             toast.success("Email added successfully");
             setIsAddEmailModalOpen(false);
             getProfileDetails();
-        } catch (error) {
-            console.log(error);
         }
-    }
+    }, [addEmailRes])
 
     return (
         <div
@@ -60,7 +62,7 @@ const AddEmailModal = ({ isAddEmailModalOpen, setIsAddEmailModalOpen, getProfile
                             </div>
                         </div>
                         <button type="submit" className={classes.button}>
-                            Add
+                            {isLoading ? "Loading..." : "Add"}
                         </button>
                     </form>
                 </div>

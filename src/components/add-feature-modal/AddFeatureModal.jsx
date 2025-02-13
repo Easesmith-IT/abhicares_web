@@ -7,9 +7,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId, index }) => {
-
+    const { res: addFeatureRes, fetchData: addFeature, isLoading: addFeatureLoading } = usePostApiReq();
     console.log("index", index);
 
     const navigate = useNavigate()
@@ -50,6 +51,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
         setFeatureInfo({ ...featureInfo, img: "", previewImage: "" });
     }
 
+
     const { res: addFeatureRes, fetchData: addFeatureFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
@@ -73,34 +75,15 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
         if (feature) {
             await addFeatureFetchData(`/admin/update-service-feature/${serviceId}`, formData)
-
-            // try {
-            //     const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service-feature/${serviceId}`, formData, { withCredentials: true });
-            //     toast.success("Feature updated successfully");
-            //     setIsModalOpen(false);
-            //     getServiceDetails();
-            // } catch (error) {
-            //     setIsModalOpen(false);
-            //     checkAuthorization(error);
-            //     console.log(error);
-            // }
         }
         else {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/add-service-feature/${serviceId}`, formData, { withCredentials: true });
-                toast.success("Feature added successfully");
-                setIsModalOpen(false);
-                getServiceDetails();
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            addFeature(`/admin/add-service-feature/${serviceId}`, formData);
         }
     }
 
     useEffect(() => {
         if (addFeatureRes?.status === 200 || addFeatureRes?.status === 201) {
+
             console.log("addFeatureRes", addFeatureRes);
             toast.success("Feature updated successfully");
             setIsModalOpen(false);
@@ -149,7 +132,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
                     <div className={classes.button_wrapper}>
                         <button className={classes.button} onClick={() => setIsModalOpen(false)}>Cancel</button>
-                        <button className={classes.button}>{feature ? "Update" : "Add"}</button>
+                        <button className={classes.button}>{addFeatureLoading ? "Loading..." : feature ? "Update" : "Add"}</button>
                     </div>
                 </form>
             </div>

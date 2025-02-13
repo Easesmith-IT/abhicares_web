@@ -10,8 +10,10 @@ import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import HistoryModal from './HistoryModal';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const HelpCenter = () => {
+  const { res: createHelpRes, fetchData: createHelp, isLoading: createHelpLoading } = usePostApiReq();
   const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false);
   const [isOtherOpen, setIsOtherOpen] = useState(false);
   const [helpCenterInfo, setHelpCenterInfo] = useState({
@@ -61,9 +63,12 @@ const HelpCenter = () => {
       toast.error("Please fill all fields");
       return;
     }
-    try {
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/create-help`, { ...helpCenterInfo }, { withCredentials: true });
-      console.log(data);
+
+    createHelp("/shopping/create-help", { ...helpCenterInfo })
+  }
+
+  useEffect(() => {
+    if (createHelpRes?.status === 200 || createHelpRes?.status === 201) {
       toast.success("Issue submited successfully");
       setHelpCenterInfo({
         description: "",
@@ -71,10 +76,8 @@ const HelpCenter = () => {
         others: ""
       });
       getAllIssues()
-    } catch (error) {
-      console.log(error);
     }
-  }
+  }, [createHelpRes])
 
   const getAllIssues = async () => {
     try {
@@ -155,7 +158,7 @@ const HelpCenter = () => {
                 />
               </div>
               <div className={classes.button_wrapper}>
-                <button className={classes.button}>Submit</button>
+                <button className={classes.button}>{createHelpLoading ? "Submitting..." : "Submit"}</button>
               </div>
             </form>
           </div>

@@ -4,26 +4,27 @@ import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import InvoiceModal from '../invoiceModal/InvoiceModal'
+import useGetApiReq from '../../hooks/useGetApiReq'
 
 const OrderInfoModal = ({ setIsInfoModalOpen, order }) => {
+    const { res: getProductInvoiceRes, fetchData: getProductInvoice, isLoading: getProductInvoiceLoading } = useGetApiReq();
     console.log(order._id);
     const [invoice, setInvoice] = useState({});
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
 
     const getOrderInvoice = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-product-invoice/${order._id}`, { withCredentials: true });
-            console.log("invoice", data);
-            setInvoice(data.data);
-        } catch (error) {
-            console.log(error);
-        }
+        getProductInvoice(`/shopping/get-product-invoice/${order._id}`)
     }
 
     useEffect(() => {
         getOrderInvoice();
     }, [])
 
+    useEffect(() => {
+        if (getProductInvoiceRes?.status === 200 || getProductInvoiceRes?.status === 201) {
+            setInvoice(getProductInvoiceRes?.data.data);
+        }
+    }, [getProductInvoiceRes])
 
     return (
         <>

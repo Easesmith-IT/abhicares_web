@@ -5,9 +5,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import classes from "../../../components/add-resoulation-modal/AddResoulationModal.module.css";
 import useAuthorization from '../../../hooks/useAuthorization';
+
 import usePatchApiReq from '../../../hooks/usePatchApiReq';
+import usePostApiReq from '../../../hooks/usePostApiReq';
+
 
 const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
+  const { res: createFaqRes, fetchData: createFaq, isLoading: createFaqLoading } = usePostApiReq();
   const { checkAuthorization } = useAuthorization();
   const [faqInfo, setfaqInfo] = useState({
     ques: faq.ques || "",
@@ -32,24 +36,12 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
 
     }
     else {
-      try {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_APP_ADMIN_API_URL}/create-faq`,
-          { ...faqInfo },
-          { withCredentials: true }
-        );
-        toast.success("Faq created successfully");
-        getAllFaqs();
-        setIsModalOpen(false);
-      } catch (error) {
-        console.log(error);
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      createFaq("/admin/create-faq", { ...faqInfo })
     }
   };
 
   useEffect(() => {
+
     if (feqRes?.status === 200 || feqRes?.status === 201) {
         console.log("feqRes", feqRes);
         toast.success("Faq updated successfully");
@@ -57,6 +49,17 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
         setIsModalOpen(false);
     }
 }, [feqRes])
+  
+ useEffect(() => 
+    if (createFaqRes?.status === 200 || createFaqRes?.status === 201) {
+      toast.success("Faq created successfully");
+      getAllFaqs();
+      setIsModalOpen(false);
+    }
+  }, [createFaqRes])
+
+
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>
@@ -95,7 +98,7 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
           </div>
           <div className={classes.button_wrapper}>
             <button onClick={handleOnSubmit} className={classes.button}>
-              {faq ? "Update" : "Add"}
+              {createFaqLoading ? "Loading..." : faq ? "Update" : "Add"}
             </button>
           </div>
         </form>

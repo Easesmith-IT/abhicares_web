@@ -9,6 +9,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import usePostApiReq from '../../hooks/usePostApiReq';
+import useGetApiReq from '../../hooks/useGetApiReq';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
@@ -30,6 +32,8 @@ function formatCouponCode(input) {
 }
 
 const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
+    const { res: addOfferRes, fetchData: addOffer, isLoading: addOfferLoading } = usePostApiReq();
+    const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
     const { checkAuthorization } = useAuthorization();
     const [description, setDescription] = useState(offer?.description || "");
     const [selectedItems, setSelectedItems] = useState(offer?.categoryType || []);
@@ -56,21 +60,18 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
 
 
     const getAllCategories = async () => {
-        setIsLoading(true);
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_ADMIN_API_URL}/get-all-category`, { withCredentials: true })
-            setAllCategories(data.data);
-            setIsLoading(false);
-            console.log("allCategories", data);
-        } catch (error) {
-            console.log(error);
-            setIsLoading(false);
-        }
+        getCategories("/admin/get-all-category")
     };
 
     useEffect(() => {
         getAllCategories();
     }, [])
+
+    useEffect(() => {
+        if (getCategoriesRes?.status === 200 || getCategoriesRes?.status === 201) {
+            setAllCategories(getCategoriesRes?.data?.data);
+        }
+    }, [getCategoriesRes])
 
     const navigate = useNavigate()
 
@@ -115,25 +116,16 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             return;
         }
 
+        if (!validateCouponCode(offerInfo.name)) {
+            toast.error('Please enter valid coupon code');
+            return;
+        }
+
         if (offer) {
             await updateOfferFetchData(`/admin/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id })
         }
         else {
-            try {
-                if (!validateCouponCode(offerInfo.name)) {
-                    toast.error('Please enter valid coupon code');
-                    return;
-                }
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage }, { withCredentials: true });
-                console.log("add offer res", data);
-                toast.success("Offer added successfully");
-                getAllOffers();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            addOffer("/admin/create-coupon", { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage })
         }
     }
 
@@ -145,6 +137,15 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
             setIsModalOpen(false);
         }
     }, [updateOfferRes])
+  
+useEffect(() => {
+        if (addOfferRes?.status === 200 || addOfferRes?.status === 201) {
+            toast.success("Offer added successfully");
+            getAllOffers();
+            setIsModalOpen(false);
+        }
+    }, [addOfferRes])
+
 
     return (
         <div className={classes.wrapper}>
@@ -163,7 +164,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                     <div className={classes.input_container}>
                         <label htmlFor="categoryType">Category</label>
                         <div className={classes.categories}>
-                            {allCategories.length > 0 && !isLoading && allCategories?.map((item) => (
+                            {allCategories.length > 0 && !getCategoriesLoading && allCategories?.map((item) => (
                                 <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                                     <input
                                         style={{ width: "20px", height: "20px" }}
@@ -178,11 +179,11 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                                 </div>
                             ))}
 
-                            {allCategories.length === 0 && isLoading &&
+                            {allCategories.length === 0 && getCategoriesLoading &&
                                 <p>Loading...</p>
                             }
 
-                            {allCategories.length === 0 && !isLoading &&
+                            {allCategories.length === 0 && !getCategoriesLoading &&
                                 <p>No Categories found</p>
                             }
                         </div>
@@ -238,7 +239,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
                         <ReactQuill theme="snow" value={description} onChange={setDescription} />
                     </div>
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>{offer ? "Update" : "Add"}</button>
+                        <button className={classes.button}>{addOfferLoading ? "Loading..." : offer ? "Update" : "Add"}</button>
                     </div>
                 </form>
             </div>

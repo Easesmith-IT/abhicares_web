@@ -11,7 +11,11 @@ import useGeolocation from "../../hooks/usegelocation";
 
 import CurrentLocationAddInfo from "./CurrentLocationAddInfo";
 import { GoogleApiWrapper } from "google-maps-react";
+
 import usePatchApiReq from "../../hooks/usePatchApiReq";
+
+import usePostApiReq from "../../hooks/usePostApiReq";
+
 
 const AddAddressModal = ({
   isOpen,
@@ -19,7 +23,7 @@ const AddAddressModal = ({
   getAllAddress,
   Data = "",
 }) => {
-
+  const { res: addAddressRes, fetchData: addAddress, isLoading: addAddressLoading } = usePostApiReq();
   const { location, status } = useGeolocation();
 
   console.log("status", status);
@@ -63,28 +67,23 @@ const AddAddressModal = ({
       await addAddressFetchData(`/shopping/update-user-address/${Data._id}`, { ...addressInfo })
 
     } else {
-      try {
-        const geometry = {
-          coordinates: [location.geometry.lat, location.geometry.lng],
-        };
+      const geometry = {
+        coordinates: [location.geometry.lat, location.geometry.lng],
+      };
 
-        const body = { ...addressInfo, location: geometry, city: location.city };
-        console.log('body', body)
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_APP_API_URL}/create-user-address`,
-          { ...body },
-          { withCredentials: true }
-        );
-        toast.success("Address created successfully");
-        getAllAddress();
-        setIsAddAddressModalOpen(false);
-        console.log(data);
-      } catch (error) {
-        setMessage(error?.response?.data?.message);
-        console.log(error);
-      }
+      const body = { ...addressInfo, location: geometry, city: location.city };
+
+      addAddress("/shopping/create-user-address", body)
     }
+
   };
+  useEffect(() => {
+    if (addAddressRes?.status === 200 || addAddressRes?.status === 201) {
+      setIsAddAddressModalOpen(false);
+      toast.success("Address created successfully");
+      getAllAddress();
+    }
+  }, [addAddressRes])
 
   const handleCurrentLocation = () => {
 
@@ -223,10 +222,10 @@ const AddAddressModal = ({
                   ? "Use Current Location"
                   : "Location Disabled"}
               </button>
-              {message && <p style={{color:"red",marginTop:"10px"}}>*{message}</p>}
+              {message && <p style={{ color: "red", marginTop: "10px" }}>*{message}</p>}
               {/* {status !== "granted" && <button onClick={getLocation}>Enable location</button>} */}
               <button type="submit" className={classes.button}>
-                {Data ? "Update" : "Proceed"}
+                {addAddressLoading ? "Loading..." : Data ? "Update" : "Proceed"}
               </button>
             </form>
           </div>

@@ -78,30 +78,6 @@ const UpdateBannerModal = ({ setIsModalOpen, getBannersFromServer, data }) => {
         formDataHero.append("section", data.section);
 
         fetchData("/content/upload-banners", formDataHero)
-
-        // try {
-        //     const response = await axios.post(
-        //         `${import.meta.env.VITE_APP_CMS_URL}/upload-banners`,
-        //         formDataHero,
-        //         { withCredentials: true }
-        //     );
-
-        //     if (response.status === 200) {
-        //         setIsModalOpen(false);
-        //         getBannersFromServer();
-        //         toast.success("Updated successfully!");
-        //     }
-        // } catch (err) {
-        //     toast.error(err.message);
-
-        //     if (err.response.status === 401) {
-        //         console.log("error", err);
-        //         checkAuthStatus()
-        //     }
-        //     console.log("ERROR", err.message);
-        //     checkAuthorization(err);
-        //     setIsModalOpen(false);
-        // }
     }
 
     useEffect(() => {

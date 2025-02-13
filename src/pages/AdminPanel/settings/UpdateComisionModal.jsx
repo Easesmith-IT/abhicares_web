@@ -9,8 +9,10 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../../hooks/useAuthorization';
+import usePostApiReq from '../../../hooks/usePostApiReq';
 
 const UpdateComisionModal = ({ setIsModalOpen, commission = "", getAllCategories }) => {
+    const { res: updateCategoryDataRes, fetchData: updateCategoryData, isLoading: updateCategoryDataLoading } = usePostApiReq();
     const { checkAuthorization } = useAuthorization();
     const [isLoading, setIsLoading] = useState(false);
     const [commissionInfo, setCommissionInfo] = useState({
@@ -49,22 +51,20 @@ const UpdateComisionModal = ({ setIsModalOpen, commission = "", getAllCategories
             return;
         }
 
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-category-data`, {
-                categoryId: commission?._id,
-                commission: commissionInfo.comissionRate,
-                convenience: commissionInfo.convienceAmount
-            }, { withCredentials: true });
+        updateCategoryData("/admin/update-category-data", {
+            categoryId: commission?._id,
+            commission: commissionInfo.comissionRate,
+            convenience: commissionInfo.convienceAmount
+        })
+    }
 
+    useEffect(() => {
+        if (updateCategoryDataRes?.status === 200 || updateCategoryDataRes?.status === 201) {
             toast.success("Updated successfully");
             getAllCategories();
             setIsModalOpen(false);
-        } catch (error) {
-            console.log(error);
-            setIsModalOpen(false);
-            checkAuthorization(error);
         }
-    }
+    }, [updateCategoryDataRes])
 
     return (
         <div className={classes.wrapper}>
@@ -87,7 +87,7 @@ const UpdateComisionModal = ({ setIsModalOpen, commission = "", getAllCategories
                     </div>
 
                     <div className={classes.button_wrapper}>
-                        <button className={classes.button}>Update</button>
+                        <button className={classes.button}>{updateCategoryDataLoading?"Loading...":"Update"}</button>
                     </div>
                 </form>
             </div>

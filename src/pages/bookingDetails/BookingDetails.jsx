@@ -1,19 +1,19 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import classes from './BookingDetails.module.css'
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import InvoiceModal from '../../components/invoiceModal/InvoiceModal';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import InvoiceModal from '../../components/invoiceModal/InvoiceModal';
+import usePostApiReq from '../../hooks/usePostApiReq';
 import WebsiteWrapper from '../WebsiteWrapper';
-import AddReviewModal from '../../components/reviewModal/AddReviewModal';
+import classes from './BookingDetails.module.css';
 import SingleBooking from './SingleBooking';
-import RaiseTicketModal from '../../components/raiseTicketModal/RaiseTicketModal';
 const BookingDetails = () => {
+  const { res: changeOrderStatusRes, fetchData: changeOrderStatus, isLoading: changeOrderStatusLoading } = usePostApiReq();
   const { state } = useLocation();
   const params = useParams();
   const navigate = useNavigate();
-  console.log("state",state);
+  console.log("state", state);
   const [invoice, setInvoice] = useState({});
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
@@ -30,14 +30,16 @@ const BookingDetails = () => {
     }
   }
   const handleCancelOrder = async () => {
-    try {
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/change-order-status/${state._id}`, { status: "Cancelled" }, { withCredentials: true });
+    changeOrderStatus(`/shopping/change-order-status/${state._id}`, { status: "Cancelled" })
+  }
+
+  useEffect(() => {
+    if (changeOrderStatusRes?.status === 200 || changeOrderStatusRes?.status === 201) {
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
-    } catch (error) {
-      console.log(error);
     }
-  }
+  }, [changeOrderStatusRes])
+
   useEffect(() => {
     getOrderInvoice();
     let value = 0;

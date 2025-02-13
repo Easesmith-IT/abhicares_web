@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEye, FaStar } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import classes from "../../pages/AdminPanel/reviews/Reviews.module.css";
@@ -7,22 +7,23 @@ import toast from 'react-hot-toast';
 import DeleteModal from '../deleteModal/DeleteModal';
 import ReviewDetailsModal from './ReviewDetailsModal';
 import ReactStars from 'react-stars'
+import useDeleteApiReq from '../../hooks/useDeleteApiReq';
 
 const Review = ({ review, fetchReviews }) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+    const { res: deleteReviewRes, fetchData: deleteReview, isLoading: deleteReviewLoading } = useDeleteApiReq();
 
     const handleDelete = async () => {
-        try {
-            await axios.delete(
-                `${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-review?reviewId=${review?._id}`, { withCredentials: true });
+        deleteReview(`/admin/delete-review?reviewId=${review?._id}`)
+    };
+
+    useEffect(() => {
+        if (deleteReviewRes?.status === 200 || deleteReviewRes?.status === 201) {
             toast.success("Review deleted successfully");
             fetchReviews();
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to delete review");
         }
-    };
+    }, [deleteReviewRes])
 
     return (
         <>

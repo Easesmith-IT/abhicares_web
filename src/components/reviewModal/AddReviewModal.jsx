@@ -5,9 +5,13 @@ import { FaStar } from 'react-icons/fa'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { readCookie } from '../../utils/readCookie'
+
 import usePatchApiReq from '../../hooks/usePatchApiReq'
+import usePostApiReq from '../../hooks/usePostApiReq'
 
 const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, getAllReviewsOfUser, isBooking = false, bookingId, serviceType, serviceId }) => {
+    const { res: addBookingReviewRes, fetchData: addBookingReview, isLoading: addBookingReviewLoading } = usePostApiReq();
+    const { res: addProductReviewRes, fetchData: addProductReview, isLoading: addProductReviewLoading } = usePostApiReq();
     const token = readCookie("userInfo");
     const userId = token?.id;
     console.log("userId", userId);
@@ -47,15 +51,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
         }
 
         if (isBooking) {
-            try {
-                const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/add-booking-review`, { ...reviewInfo, bookingId, serviceType, serviceId, userId }, { withCredentials: true });
-                setIsReviewModalOpen(false);
-                toast.success("Review added successfully");
-                console.log(data);
-            } catch (error) {
-                toast.error(error?.response?.data?.message);
-                console.log(error);
-            }
+            addBookingReview("/shopping/add-booking-review", { ...reviewInfo, bookingId, serviceType, serviceId, userId })
         }
         else {
             if (review) {
@@ -74,21 +70,25 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
                 // }
             }
             else {
-                try {
-                    const { data } = await axios.post(`${import.meta.env.VITE_APP_API_URL}/add-product-review/${id}`, { ...reviewInfo }, { withCredentials: true });
-                    setIsReviewModalOpen(false);
-                    toast.success("Review added successfully");
-                    getAllReviewsOfUser();
-                    console.log(data);
-                } catch (error) {
-                    // setIsReviewModalOpen(false);
-                    toast.error(error?.response?.data?.message);
-                    console.log(error);
-                }
+                addProductReview(`/shopping/add-product-review/${id}`, { ...reviewInfo })
             }
         }
     }
 
+    useEffect(() => {
+        if (addBookingReviewRes?.status === 200 || addBookingReviewRes?.status === 201) {
+            setIsReviewModalOpen(false);
+            toast.success("Review added successfully");
+        }
+    }, [addBookingReviewRes])
+
+    useEffect(() => {
+        if (addProductReviewRes?.status === 200 || addProductReviewRes?.status === 201) {
+            setIsReviewModalOpen(false);
+            toast.success("Review added successfully");
+            getAllReviewsOfUser();
+        }
+    }, [addProductReviewRes])
     console.log(reviewInfo);
 
     useEffect(() => {
@@ -145,7 +145,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
                     </div>
 
                     <button onClick={handleAddReview} className={classes.button}>
-                        Proceed
+                        {(addBookingReviewLoading || addProductReviewLoading) ? "Loading..." : "Proceed"}
                     </button>
                 </div>
             </div>

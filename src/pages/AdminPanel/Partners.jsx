@@ -14,8 +14,10 @@ import SellerInfoModal from "../../components/seller-info-modal/SellerOrderInfoM
 import Loader from "../../components/loader/Loader";
 import UnapprovedSellerModal from "../../components/unapproved-seller-modal/UnapprovedSellerModal";
 import useAuthorization from "../../hooks/useAuthorization";
+import useDeleteApiReq from "../../hooks/useDeleteApiReq";
 
 const Partners = () => {
+  const { res: deleteSellerRes, fetchData: deleteSeller, isLoading: deleteSellerLoading } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -81,17 +83,16 @@ const Partners = () => {
   };
 
   const handleDelete = async () => {
-    try {
-      const { data } = await axios.delete(`${import.meta.env.VITE_APP_ADMIN_API_URL}/delete-seller/${seller}`, { withCredentials: true });
+    deleteSeller(`/admin/delete-seller/${seller}`)
+  };
+
+  useEffect(() => {
+    if (deleteSellerRes?.status === 200 || deleteSellerRes?.status === 201) {
       toast.success("Seller deleted successfully");
       getAllSellers();
       setIsDeleteModalOpen(!isDeleteModalOpen);
-    } catch (error) {
-      console.log(error);
-      setIsDeleteModalOpen(false);
-      checkAuthorization(error);
     }
-  };
+  }, [deleteSellerRes])
 
   const handleSerach = async (e) => {
     const value = e.target.value;
