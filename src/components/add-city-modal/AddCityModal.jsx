@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './AddCityModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -7,9 +7,11 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
     const { checkAuthorization } = useAuthorization();
+    const { res, fetchData } = usePatchApiReq()
     const [cityInfo, setCityInfo] = useState({
         city: city?.city || "",
         state: city?.state || "",
@@ -40,7 +42,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
     }
     const navigate = useNavigate()
 
-
+    const { res: updateCityRes, fetchData: updateCityFetchData } = usePatchApiReq()
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!cityInfo.city
@@ -51,16 +53,7 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
             return;
         }
         if (city) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-availabe-city/${city._id}`, { ...cityInfo, pinCodes }, { withCredentials: true });
-                toast.success("City updated successfully");
-                getAllCities();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            updateCityFetchData(`/admin/update-availabe-city/${city._id}`, { ...cityInfo, pinCodes })
         }
         else {
             try {
@@ -81,6 +74,15 @@ const AddCityModal = ({ setIsModalOpen, city = "", getAllCities }) => {
         pincodesArr.splice(i, 1);
         setPinCodes(pincodesArr);
     }
+
+    useEffect(() => {
+        if (updateCityRes?.status === 200 || updateCityRes?.status === 201) {
+            console.log("updateCityRes", updateCityRes);
+            toast.success("City updated successfully");
+            getAllCities();
+            setIsModalOpen(false);
+        }
+    }, [updateCityRes])
 
     return (
         <div className={classes.wrapper}>

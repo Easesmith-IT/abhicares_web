@@ -11,6 +11,7 @@ import useGeolocation from "../../hooks/usegelocation";
 
 import CurrentLocationAddInfo from "./CurrentLocationAddInfo";
 import { GoogleApiWrapper } from "google-maps-react";
+import usePatchApiReq from "../../hooks/usePatchApiReq";
 
 const AddAddressModal = ({
   isOpen,
@@ -44,6 +45,8 @@ const AddAddressModal = ({
     setAddressInfo({ ...addressInfo, [name]: value });
   };
 
+  const { res: addAddressRes, fetchData: addAddressFetchData } = usePatchApiReq()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -57,19 +60,8 @@ const AddAddressModal = ({
     }
     setMessage("");
     if (Data) {
-      try {
-        const { data } = await axios.patch(
-          `${import.meta.env.VITE_APP_API_URL}/update-user-address/${Data._id}`,
-          { ...addressInfo },
-          { withCredentials: true }
-        );
-        toast.success("Address updated successfully");
-        getAllAddress();
-        setIsAddAddressModalOpen(false);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
+      await addAddressFetchData(`/shopping/update-user-address/${Data._id}`, { ...addressInfo })
+
     } else {
       try {
         const geometry = {
@@ -110,7 +102,14 @@ const AddAddressModal = ({
     setShowCurrentLocationAdd(false);
   };
 
-
+  useEffect(() => {
+    if (addAddressRes?.status === 200 || addAddressRes?.status === 201) {
+        console.log("addAddressRes", addAddressRes);
+        toast.success("Address updated successfully");
+        getAllAddress();
+        setIsAddAddressModalOpen(false);
+    }
+}, [addAddressRes])
 
   return (
     <>

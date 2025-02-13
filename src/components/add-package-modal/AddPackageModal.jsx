@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddPackageModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +11,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts, selectedPackage }) => {
     const navigate = useNavigate()
@@ -124,6 +125,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         setPackageInfo({ ...packageInfo, products: filtered })
     }
 
+    const { res: addPackageRes, fetchData: addPackageFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -151,18 +153,8 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
 
 
         if (selectedPackage) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-package/${selectedPackage._id}`, formData, { withCredentials: true });
-                toast.success("Package updated successfully");
-                getAllPackage();
-                setIsModalOpen(false);
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            } finally {
-                setIsLoading(false);
-            }
+            await addPackageFetchData(`/admin/update-package/${selectedPackage._id}`, formData)
+
         }
         else {
             try {
@@ -181,6 +173,15 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     }
 
     console.log("package", packageInfo);
+
+    useEffect(() => {
+        if (addPackageRes?.status === 200 || addPackageRes?.status === 201) {
+            console.log("addPackageRes", addPackageRes);
+            toast.success("Package updated successfully");
+            getAllPackage();
+            setIsModalOpen(false);
+        }
+    }, [addPackageRes])
 
     return (
         <div className={classes.wrapper}>

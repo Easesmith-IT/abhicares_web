@@ -4,6 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const SeoModal = ({ setIsModalOpen, subAdmin }) => {
     const [info, setInfo] = useState({
@@ -31,27 +32,24 @@ const SeoModal = ({ setIsModalOpen, subAdmin }) => {
         setInfo({ ...info, [name]: value })
     };
 
+    const { res: seoRes, fetchData: seoFetchData } = usePatchApiReq()
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         console.log("page", info.page);
         if (!info.title || !info.desc) {
             return;
         }
-        try {
-            const res = await axios.patch(`${import.meta.env.VITE_APP_CMS_URL}/update-seo-by-page`, { page: info.page, seoDescription: info.desc, seoTitle: info.title }, { withCredentials: true });
-            console.log("update seo", res.data);
-            if (res.status === 200) {
-                toast.success("Seo updated successfully");
-                setIsModalOpen(false);
-            }
-        } catch (error) {
-            console.log(error);
-            setIsModalOpen(false);
-            checkAuthorization(error);
-        }
+        await seoFetchData(`/content/update-seo-by-page`, { page: info.page, seoDescription: info.desc, seoTitle: info.title })
     }
 
-
+    useEffect(() => {
+        if (seoRes?.status === 200 || seoRes?.status === 201) {
+            console.log("seoRes", seoRes);
+            toast.success("Seo updated successfully");
+            setIsModalOpen(false);
+        }
+    }, [seoRes])
 
     return (
         <div className={classes.wrapper}>

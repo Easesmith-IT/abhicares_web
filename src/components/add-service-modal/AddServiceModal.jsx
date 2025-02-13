@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddServiceModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -9,6 +9,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategoryServices }) => {
   const { checkAuthorization } = useAuthorization();
@@ -52,6 +53,8 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
   const navigate = useNavigate()
 
+  const { res: addServiceRes, fetchData: addServiceFetchData } = usePatchApiReq()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!serviceInfo.name || !serviceInfo.startingPrice || !serviceInfo.img || !description) {
@@ -68,15 +71,8 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     formData.append("categoryId", categoryId);
 
     if (service) {
-      try {
-        const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service/${service._id}`, formData, { withCredentials: true });
-        toast.success("Service updated successfully");
-        getCategoryServices();
-        setIsModalOpen(false);
-      } catch (error) {
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
+      await addServiceFetchData(`/admin/update-service/${service._id}`, formData)
+
     }
     else {
       try {
@@ -91,7 +87,14 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
     }
   }
 
-
+  useEffect(() => {
+    if (addServiceRes?.status === 200 || addServiceRes?.status === 201) {
+      console.log("addServiceRes", addServiceRes);
+      toast.success("Service updated successfully");
+      getCategoryServices();
+      setIsModalOpen(false);
+    }
+  }, [addServiceRes])
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>

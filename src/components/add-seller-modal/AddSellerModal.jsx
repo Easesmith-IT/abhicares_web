@@ -8,6 +8,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { IoIosArrowDown } from "react-icons/io";
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from "react-icons/md";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 
 const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
@@ -20,7 +21,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         phone: seller?.phone || "",
         password: seller?.password || "",
         categoryId: seller?.categoryId?._id || "",
-        services: seller?.services?.map((service)=> ({ serviceId: service?.serviceId?._id, name:service?.serviceId?.name })) || [],
+        services: seller?.services?.map((service) => ({ serviceId: service?.serviceId?._id, name: service?.serviceId?.name })) || [],
         status: seller?.status
     });
 
@@ -49,14 +50,14 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     const handleServiceOnChange = (e, name) => {
         const { value, checked } = e.target;
         console.log("value: " + value);
-        
+
         if (checked) {
             setSellerInfo({ ...sellerInfo, services: [...sellerInfo.services, { serviceId: value, name }] })
         }
         else {
             const filtered = sellerInfo.services.filter((service) => service.serviceId !== value);
-            console.log("filtered",filtered);
-            
+            console.log("filtered", filtered);
+
             setSellerInfo({ ...sellerInfo, services: filtered })
         }
     }
@@ -140,6 +141,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     }
 
 
+    const { res: addSellerRes, fetchData: addSellerFetchData } = usePatchApiReq()
 
 
     const handleOnSubmit = async (e) => {
@@ -189,16 +191,8 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         }
 
         if (seller) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-seller/${seller._id}`, allData, { withCredentials: true });
-                toast.success("Seller updated successfully");
-                getAllSellers();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            }
+            await addSellerFetchData(`/admin/update-seller/${seller._id}`, allData)
+
         }
         else {
             try {
@@ -215,7 +209,14 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
         }
     }
 
-
+    useEffect(() => {
+        if (addSellerRes?.status === 200 || addSellerRes?.status === 201) {
+            console.log("addSellerRes", addSellerRes);
+            toast.success("Seller updated successfully");
+            getAllSellers();
+            setIsModalOpen(false);
+        }
+    }, [addSellerRes])
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

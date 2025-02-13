@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
@@ -88,6 +89,8 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         }
     };
 
+    const { res: updateOfferRes, fetchData: updateOfferFetchData } = usePatchApiReq()
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
 
@@ -113,17 +116,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         }
 
         if (offer) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id }, { withCredentials: true });
-
-                toast.success("Offer updated successfully");
-                getAllOffers();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            }
+            await updateOfferFetchData(`/admin/update-coupon`, { ...offerInfo, description, maxDiscount: offerInfo.type === "fixed" ? "" : offerInfo.upTo, discountType: offerInfo.type, couponFixedValue: offerInfo.type === "fixed" ? offerInfo.offerValue : "", categoryType: selectedItems, offPercentage: offerInfo.type === "fixed" ? "" : offerInfo.offPercentage, id: offer._id })
         }
         else {
             try {
@@ -144,6 +137,14 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         }
     }
 
+    useEffect(() => {
+        if (updateOfferRes?.status === 200 || updateOfferRes?.status === 201) {
+            console.log("updateOfferRes", updateOfferRes);
+            toast.success("Offer updated successfully");
+            getAllOffers();
+            setIsModalOpen(false);
+        }
+    }, [updateOfferRes])
 
     return (
         <div className={classes.wrapper}>

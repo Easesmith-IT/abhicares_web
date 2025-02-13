@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import classes from './AddProductModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import { MdClose } from 'react-icons/md';
 import loader from "../../assets/rolling-white.gif";
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProducts }) => {
     const { checkAuthorization } = useAuthorization();
@@ -103,6 +104,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr, uploadedImages: uploadedImgArr });
     }
 
+    const { res: addProductRes, fetchData: addProductFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -124,18 +126,8 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
 
         if (product) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-product/${product._id}`, formData, { withCredentials: true });
-                toast.success("Product updated successfully");
-                getAllProducts();
-                setIsModalOpen(false);
-            } catch (error) {
-                console.log(error);
-                setIsModalOpen(false);
-                checkAuthorization(error);
-            } finally {
-                setIsLoading(false);
-            }
+            await addProductFetchData(`/admin/update-product/${product._id}`, formData)
+
         }
         else {
             try {
@@ -152,6 +144,15 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
             }
         }
     }
+
+    useEffect(() => {
+        if (addProductRes?.status === 200 || addProductRes?.status === 201) {
+            console.log("addProductRes", addProductRes);
+            toast.success("Product updated successfully");
+            getAllProducts();
+            setIsModalOpen(false);
+        }
+    }, [addProductRes])
 
     return (
         <div className={classes.wrapper}>

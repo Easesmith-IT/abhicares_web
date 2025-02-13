@@ -8,6 +8,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBooking }) => {
     const [allSeller, setAllSeller] = useState([]);
@@ -33,21 +34,21 @@ const AssignedPartnerModal = ({ setIsModalOpen, serviceId = "", bookingId, getBo
     }, [])
 
 
+    const { res: assignPartnerRes, fetchData: assignPartnerFetchData } = usePatchApiReq()
+
     const handleAssign = async (sellerId) => {
-        try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/allot-seller-order/${sellerId}`, { bookingId }, { withCredentials: true });
-            console.log(data);
+        await assignPartnerFetchData(`/admin/allot-seller-order/${sellerId}`, {bookingId })
+
+    }
+
+    useEffect(() => {
+        if (assignPartnerRes?.status === 200 || assignPartnerRes?.status === 201) {
+            console.log("assignPartnerRes", assignPartnerRes);
             toast.success("Order assigned to seller successfully");
             getBooking()
             setIsModalOpen(false);
-        } catch (error) {
-            console.log(error);
-            setIsModalOpen(false);
-            checkAuthorization(error);
         }
-    }
-
-
+    }, [assignPartnerRes])
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

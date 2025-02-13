@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './AddFeatureModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom'
@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
+import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId, index }) => {
 
-    console.log("index",index);
-    
+    console.log("index", index);
+
     const navigate = useNavigate()
     const { checkAuthorization } = useAuthorization();
 
@@ -22,7 +23,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
     });
     const [isImgPrev, setIsImgPrev] = useState(feature ? false : true)
     const fileInputRef = useRef(null);
-    
+
     const getImage = (e) => {
         e.preventDefault();
         const uploadedImage = e.target.files[0];
@@ -48,7 +49,9 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
     const handleDbImgDelete = () => {
         setFeatureInfo({ ...featureInfo, img: "", previewImage: "" });
     }
-    
+
+    const { res: addFeatureRes, fetchData: addFeatureFetchData } = usePatchApiReq()
+
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (
@@ -69,16 +72,18 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
 
         if (feature) {
-            try {
-                const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service-feature/${serviceId}`, formData, { withCredentials: true });
-                toast.success("Feature updated successfully");
-                setIsModalOpen(false);
-                getServiceDetails();
-            } catch (error) {
-                setIsModalOpen(false);
-                checkAuthorization(error);
-                console.log(error);
-            }
+            await addFeatureFetchData(`/admin/update-service-feature/${serviceId}`, formData)
+
+            // try {
+            //     const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-service-feature/${serviceId}`, formData, { withCredentials: true });
+            //     toast.success("Feature updated successfully");
+            //     setIsModalOpen(false);
+            //     getServiceDetails();
+            // } catch (error) {
+            //     setIsModalOpen(false);
+            //     checkAuthorization(error);
+            //     console.log(error);
+            // }
         }
         else {
             try {
@@ -94,6 +99,14 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
         }
     }
 
+    useEffect(() => {
+        if (addFeatureRes?.status === 200 || addFeatureRes?.status === 201) {
+            console.log("addFeatureRes", addFeatureRes);
+            toast.success("Feature updated successfully");
+            setIsModalOpen(false);
+            getServiceDetails();
+        }
+    }, [addFeatureRes])
 
     return (
         <div className={classes.wrapper}>
