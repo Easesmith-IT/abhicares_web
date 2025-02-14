@@ -58,7 +58,7 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
   const navigate = useNavigate()
 
-  const { res: addServiceRes, fetchData: addServiceFetchData } = usePatchApiReq()
+  const { res: updateServiceRes, fetchData: addServiceFetchData } = usePatchApiReq()
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -86,14 +86,19 @@ const AddServiceModal = ({ setIsModalOpen, categoryId, service = "", getCategory
 
   useEffect(() => {
     if (addServiceRes?.status === 200 || addServiceRes?.status === 201) {
-
-      console.log("addServiceRes", addServiceRes);
-      toast.success("Service updated successfully");
-
+      toast.success("Service added successfully");
       getCategoryServices();
       setIsModalOpen(false);
     }
   }, [addServiceRes])
+
+  useEffect(() => {
+    if (updateServiceRes?.status === 200 || updateServiceRes?.status === 201) {
+      toast.success("Service updated successfully");
+      getCategoryServices();
+      setIsModalOpen(false);
+    }
+  }, [updateServiceRes])
 
   return (
     <div className={classes.wrapper}>

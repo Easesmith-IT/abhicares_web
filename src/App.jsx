@@ -1,21 +1,17 @@
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // import { Toaster } from "react-hot-toast";
 import { GoogleApiWrapper } from "google-maps-react";
-import useGeolocation from "./hooks/usegelocation";
-import { getCartDetails } from "./store/slices/cartSlice";
 import PrivateRoute from "./components/private-route/PrivateRoute";
-import useGetApiReq from "./hooks/useGetApiReq";
-import usePostApiReq from "./hooks/usePostApiReq";
-import { readCookie } from "./utils/readCookie";
 import ProtectedRoute from "./components/private-route/ProtectedRoute";
-import { changeAdminStatus, changeUserAuthStatus } from "./store/slices/userSlice";
+import { getCartDetails } from "./store/slices/cartSlice";
 
 
+const SellerCashoutDetails = lazy(() => import('./pages/AdminPanel/seller-cashouts/SellerCashoutDetails'));
 const HomePage = lazy(() => import('./pages/Home'));
 const AboutUs = lazy(() => import('./pages/aboutUs/AboutUs'));
 const ContactUs = lazy(() => import('./pages/contactUs/ContactUs'));
@@ -98,100 +94,6 @@ function App() {
   const { isOpen } = useSelector((state) => state.auth);
   console.log("env var ==>", import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY);
 
-  const { res, fetchData } = useGetApiReq();
-  const { res: refreshRes, fetchData: fetchRefreshData, } = usePostApiReq();
-  const { res: logoutRes, fetchData: fetchLogoutData, } = usePostApiReq();
-
-  const { res: res1, fetchData: fetchData1 } = useGetApiReq();
-  const { res: refreshRes1, fetchData: fetchRefreshData1, } = usePostApiReq();
-  const { res: logoutRes1, fetchData: fetchLogoutData1, } = usePostApiReq();
-
-  const getStatus = () => {
-    fetchData("/shopping/status");
-  }
-
-  const token = readCookie("userInfo");
-  const adminInfo = readCookie("adminInfo");
-  console.log("token", token);
-
-  const refreshToken = () => {
-    fetchRefreshData("/shopping/refresh");
-  }
-
-  const logout = () => {
-    fetchLogoutData("/shopping/logout-all", { phone: token?.phone, role: "user" });
-  }
-
-  useEffect(() => {
-    token?.role === "user" && getStatus();
-  }, [])
-
-  useEffect(() => {
-    if (res?.status === 200 || res?.status === 201) {
-      dispatch(changeUserAuthStatus({ isAuthenticated: res?.data?.isAuthenticated }))
-      console.log("status response", res);
-      res?.data?.shouldLogOut && logout();
-      !res?.data?.isAuthenticated && !res?.data?.shouldLogOut && refreshToken();
-    }
-  }, [res])
-
-
-  useEffect(() => {
-    if (refreshRes?.status === 200 || refreshRes?.status === 201) {
-      console.log("refreshRes", refreshRes);
-      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
-      // window.location.reload();
-    }
-  }, [refreshRes])
-
-  useEffect(() => {
-    if (logoutRes?.status === 200 || logoutRes?.status === 201) {
-      console.log("logoutRes", logoutRes);
-      dispatch(changeUserAuthStatus({ isAuthenticated: false }))
-    }
-  }, [logoutRes])
-
-
-  // admin 
-  const getAdminStatus = () => {
-    fetchData1("/admin/status");
-  }
-
-  const refreshAdminToken = () => {
-    fetchRefreshData1("/admin/refresh");
-  }
-
-  const logoutAdmin = () => {
-    fetchLogoutData1("/admin/logout-all", { adminId: adminInfo?.id, role: "admin" });
-  }
-
-  useEffect(() => {
-    adminInfo?.role === "admin" && getAdminStatus();
-  }, [])
-
-  useEffect(() => {
-    if (res1?.status === 200 || res1?.status === 201) {
-      dispatch(changeAdminStatus({ isAdminAuthenticated: res1?.data?.isAuthenticated }))
-      console.log("status response admin", res1);
-      res1?.data?.shouldLogOut && logoutAdmin();
-      !res1?.data?.isAuthenticated && !res1?.data?.shouldLogOut && refreshAdminToken();
-    }
-  }, [res1])
-
-
-  useEffect(() => {
-    if (refreshRes1?.status === 200 || refreshRes1?.status === 201) {
-      console.log("refreshRes1", refreshRes1);
-      dispatch(changeAdminStatus({ isAdminAuthenticated: true }))
-    }
-  }, [refreshRes1])
-
-  useEffect(() => {
-    if (logoutRes1?.status === 200 || logoutRes1?.status === 201) {
-      console.log("logoutRes1", logoutRes1);
-      dispatch(changeAdminStatus({ isAdminAuthenticated: false }))
-    }
-  }, [logoutRes1])
 
   return (
     <>
@@ -356,6 +258,7 @@ function App() {
               />
               <Route path="/admin/send-notifications" element={<SendNotifications />} />
               <Route path="/admin/seller-cashouts" element={<SellerCashouts />} />
+              <Route path="/admin/seller-cashouts/:cashoutId" element={<SellerCashoutDetails />} />
             </Route>
 
             <Route path="/*" element={<ErrorPage />} />

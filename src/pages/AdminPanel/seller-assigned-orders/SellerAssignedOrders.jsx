@@ -12,6 +12,7 @@ import WalletViewModal from '../../../components/wallet-view-modal/WalletViewMod
 import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 import usePostApiReq from '../../../hooks/usePostApiReq';
 import useGetApiReq from '../../../hooks/useGetApiReq';
+import AddCashoutReqModal from '../../../components/update-cashoutReq-modal/AddCashoutReqModal';
 
 const SellerAssignedOrders = () => {
     const { res: orderbyStatusRes, fetchData: orderbyStatus, isLoading: orderbyStatusLoading } = usePostApiReq();
@@ -27,6 +28,7 @@ const SellerAssignedOrders = () => {
     const [sellerOrder, setSellerOrder] = useState({})
     const [sellerOrderInfoModal, setSellerOrderInfoModal] = useState(false);
     const [isViewWalletModalOpen, setIsViewWalletModalOpen] = useState(false);
+    const [isAddCashoutReqModalOpen, setIsAddCashoutReqModalOpen] = useState(false);
     const [wallet, setWallet] = useState("");
     const [cashOutRequests, setCashOutRequests] = useState([]);
 
@@ -47,6 +49,8 @@ const SellerAssignedOrders = () => {
 
     useEffect(() => {
         if (getSellerOrdersListRes?.status === 200 || getSellerOrdersListRes?.status === 201) {
+            console.log("getSellerOrdersListRes", getSellerOrdersListRes);
+
             setSellerOrders(getSellerOrdersListRes?.data.sellerOrders);
         }
     }, [getSellerOrdersListRes])
@@ -76,6 +80,9 @@ const SellerAssignedOrders = () => {
 
     useEffect(() => {
         if (getRequestsRes?.status === 200 || getRequestsRes?.status === 201) {
+
+            console.log("getRequestsRes", getRequestsRes);
+
             setCashOutRequests(getRequestsRes?.data.cashouts);
         }
     }, [getRequestsRes])
@@ -211,11 +218,14 @@ const SellerAssignedOrders = () => {
                                     <h3 className={sellerAssignedOrdersClasses.h3}><RiWalletLine size={50} /> Wallet</h3>
                                     <div className={sellerAssignedOrdersClasses.d_flex}>
                                         <h4>Balance</h4>
-                                        <p>₹ {wallet?.balance || 0}</p>
+                                        <p style={{ marginLeft: "10px" }}>₹{wallet?.balance || 0}</p>
                                     </div>
                                 </div>
                                 <div className={sellerAssignedOrdersClasses.right}>
-                                    <button onClick={() => setIsViewWalletModalOpen(true)} className={sellerAssignedOrdersClasses.button}>View Wallet</button>
+                                    <div>
+                                        <button onClick={() => setIsViewWalletModalOpen(true)} className={sellerAssignedOrdersClasses.button}>View Wallet History</button>
+                                        <button onClick={() => setIsAddCashoutReqModalOpen(true)} className={sellerAssignedOrdersClasses.button} style={{ color: "black" }}>Add Cashout</button>
+                                    </div>
                                 </div>
                             </div>
                             <button className={sellerAssignedOrdersClasses.cash_btn}>Cashout Request</button>
@@ -256,6 +266,13 @@ const SellerAssignedOrders = () => {
                     setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                     getSellerWallet={getSellerWallet}
                     id={wallet?._id}
+                />
+            }
+
+            {isAddCashoutReqModalOpen &&
+                <AddCashoutReqModal
+                    getSellerWallet={getSellerWallet}
+                    setIsUpdateModalOpen={setIsAddCashoutReqModalOpen}
                 />
             }
         </>

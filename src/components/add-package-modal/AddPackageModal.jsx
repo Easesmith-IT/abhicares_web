@@ -127,7 +127,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         setPackageInfo({ ...packageInfo, products: filtered })
     }
 
-    const { res: addPackageRes, fetchData: addPackageFetchData } = usePatchApiReq()
+    const { res: updatePackageRes, fetchData: addPackageFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -174,13 +174,12 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     console.log("package", packageInfo);
 
     useEffect(() => {
-        if (addPackageRes?.status === 200 || addPackageRes?.status === 201) {
-            console.log("addPackageRes", addPackageRes);
+        if (updatePackageRes?.status === 200 || updatePackageRes?.status === 201) {
             toast.success("Package updated successfully");
             getAllPackage();
             setIsModalOpen(false);
         }
-    }, [addPackageRes])
+    }, [updatePackageRes])
 
     return (
         <div className={classes.wrapper}>

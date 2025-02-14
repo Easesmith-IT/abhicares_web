@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
-import classes from './AddUserModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
+import classes from './AddUserModal.module.css';
 
-import ReactQuill from 'react-quill';
-import { useNavigate } from 'react-router-dom'
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 import toast from 'react-hot-toast';
-import useAuthorization from '../../hooks/useAuthorization';
+import 'react-quill/dist/quill.snow.css';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
     const { res: addUserRes, fetchData: addUser, isLoading: addUserLoading } = usePostApiReq();
-    const { checkAuthorization } = useAuthorization();
     const [userInfo, setUserInfo] = useState({
         name: user?.name || "",
         phone: user?.phone || "",
@@ -23,9 +19,8 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
         const { name, value } = e.target;
         setUserInfo({ ...userInfo, [name]: value });
     }
-    const navigate = useNavigate()
 
-    const { res: addUserRes, fetchData: addUserFetchData } = usePatchApiReq()
+    const { res: updateUserRes, fetchData: addUserFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -47,14 +42,19 @@ const AddUserModal = ({ setIsModalOpen, user = "", getAllUsers }) => {
 
     useEffect(() => {
         if (addUserRes?.status === 200 || addUserRes?.status === 201) {
-
-            console.log("addUserRes", addUserRes);
-            toast.success("User updated successfully");
-
+            toast.success("User created successfully");
             getAllUsers();
             setIsModalOpen(false);
         }
     }, [addUserRes])
+
+    useEffect(() => {
+        if (updateUserRes?.status === 200 || updateUserRes?.status === 201) {
+            toast.success("User updated successfully");
+            getAllUsers();
+            setIsModalOpen(false);
+        }
+    }, [updateUserRes])
     return (
         <div className={classes.wrapper}>
             <div className={classes.modal}>

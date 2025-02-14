@@ -9,8 +9,6 @@ import UpdatePwd from '../update-password-modal/UpdatePwd';
 
 import usePatchApiReq from '../../hooks/usePatchApiReq';
 
-const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
-
 import usePostApiReq from '../../hooks/usePostApiReq';
 
 const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
@@ -61,7 +59,7 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
   };
 
 
-  const { res: addSubAdminRes, fetchData: addSubAdminFetchData } = usePatchApiReq()
+  const { res: updateSubAdminRes, fetchData: addSubAdminFetchData } = usePatchApiReq()
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -93,60 +91,10 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
       await addSubAdminFetchData(`/admin/update-sub-admin/${subAdmin._id}`, { ...info, permissions })
     }
     else {
-      try {
-        const { data } = await axios.post(`${import.meta.env.VITE_APP_ADMIN_API_URL}/create-Admin`, { ...info, permissions }, { withCredentials: true });
-        toast.success("SubAdmin added successfully");
-        setIsModalOpen(false);
-        getSubadmins();
-      } catch (error) {
-        console.log(error);
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
-    }
-  }
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    if (!info.adminId
-      || !info.name
-      || !info.password
-      || !info.role
-      || !permissions.dashboard
-      || !permissions.banners
-      || !permissions.orders
-      || !permissions.bookings
-      || !permissions.services
-      || !permissions.partners
-      || !permissions.customers
-      || !permissions.offers
-      || !permissions.availableCities
-      || !permissions.payments
-      || !permissions.enquiry
-      || !permissions.helpCenter
-      || !permissions.settings
-      || !permissions.reviews
-      || !permissions.notifications
-      || !permissions.sellerCashout
-    ) {
-      toast.error("All fields are required")
-      return;
-    }
-    if (subAdmin) {
-      try {
-        const { data } = await axios.patch(`${import.meta.env.VITE_APP_ADMIN_API_URL}/update-sub-admin/${subAdmin._id}`, { ...info, permissions }, { withCredentials: true });
-        toast.success("SubAdmin updated successfully");
-        setIsModalOpen(false);
-        getSubadmins();
-      } catch (error) {
-        console.log(error);
-        setIsModalOpen(false);
-        checkAuthorization(error);
-      }
-    }
-    else {
       addSubAdmin("/admin/create-Admin", { ...info, permissions })
     }
   }
+  
 
   useEffect(() => {
     if (addSubAdminRes?.status === 200 || addSubAdminRes?.status === 201) {
@@ -158,13 +106,12 @@ const AddSubAdminModal = ({ setIsModalOpen, subAdmin, getSubadmins }) => {
 
 
   useEffect(() => {
-    if (addSubAdminRes?.status === 200 || addSubAdminRes?.status === 201) {
-      console.log("addSubAdminRes", addSubAdminRes);
+    if (updateSubAdminRes?.status === 200 || updateSubAdminRes?.status === 201) {
       toast.success("SubAdmin updated successfully");
       setIsModalOpen(false);
       getSubadmins();
     }
-  }, [addSubAdminRes])
+  }, [updateSubAdminRes])
 
   return (
     <div className={classes.wrapper}>

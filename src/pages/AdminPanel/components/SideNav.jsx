@@ -1,21 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import ServiceIcn from "../../../assets/admin-panel/services-icon.png";
-import PaymentsIcn from "../../../assets/admin-panel/bank-icon.png";
-import DashboardIcn from "../../../assets/admin-panel/dashboard-icon.png";
-import PartnersIcn from "../../../assets/admin-panel/partners-icon.png";
 import CustomersIcn from "../../../assets/admin-panel/customer-icon.png";
+import DashboardIcn from "../../../assets/admin-panel/dashboard-icon.png";
 import OffersIcn from "../../../assets/admin-panel/offer-icon.png";
+import PartnersIcn from "../../../assets/admin-panel/partners-icon.png";
 
 import classes from "../Shared.module.css";
 
-import { MdAnnouncement, MdCategory, MdFeedback, MdHelpOutline, MdNotifications, MdPayment, MdSettings } from 'react-icons/md';
-import { FaCalendarCheck, FaLifeRing, FaQuestionCircle, FaRegImages, FaShoppingCart } from "react-icons/fa";
-import { GiCash, GiWorld } from 'react-icons/gi';
 import { AiOutlineCustomerService } from "react-icons/ai";
+import { FaCalendarCheck, FaQuestionCircle, FaRegImages, FaShoppingCart } from "react-icons/fa";
+import { GiCash, GiWorld } from 'react-icons/gi';
+import { MdCategory, MdFeedback, MdNotifications, MdPayment, MdSettings } from 'react-icons/md';
 
 const SideNav = () => {
+
   const permissions = JSON.parse(localStorage.getItem("perm"));
   // {permissions.dashboard!=='none' && }
   return (

@@ -35,25 +35,25 @@
   gap: 7px;
 }
 
-.sendNotificationBtn{
+.sendNotificationBtn {
   padding: 8px 20px;
   border-radius: 8px;
   background: black;
   color: white;
 }
 
-.notifications{
+.notifications {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 }
 
-.filterSend{
+.filterSend {
   display: flex;
   flex-direction: column;
 }
 
-.filterSend span{
+.filterSend span {
   font-size: 10px;
 }
 
@@ -384,15 +384,15 @@
   padding: 4px 10px;
 }
 
-.enquiries{
+.enquiries {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 60px;
   gap: 10px;
 }
 
-.sellers{
+.sellers {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 200px ;
+  grid-template-columns: 1fr 1fr 1fr 200px;
   gap: 10px;
 }
 
@@ -847,4 +847,24 @@ ul.pagination {
   color: white;
   border-radius: 6px;
   padding: 4px 10px;
+}
+
+.red,
+.green,
+.blue {
+  color: white;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.red {
+  background: rgb(227, 26, 26);
+}
+
+.green {
+  background: rgb(1, 191, 1);
+}
+
+.blue {
+  background: rgb(32, 142, 233);
 }

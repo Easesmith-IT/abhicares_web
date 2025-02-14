@@ -35,3 +35,8 @@
     border-radius: 20px;
     padding: 20px;
 }
+
+.d_flex{
+    display: flex;
+    gap: 20px;
+}

@@ -52,7 +52,7 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
     }
 
 
-    const { res: addFeatureRes, fetchData: addFeatureFetchData } = usePatchApiReq()
+    const { res: updateFeatureRes, fetchData: addFeatureFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -83,13 +83,19 @@ const AddFeatureModal = ({ setIsModalOpen, feature, getServiceDetails, serviceId
 
     useEffect(() => {
         if (addFeatureRes?.status === 200 || addFeatureRes?.status === 201) {
-
-            console.log("addFeatureRes", addFeatureRes);
-            toast.success("Feature updated successfully");
+            toast.success("Feature added successfully");
             setIsModalOpen(false);
             getServiceDetails();
         }
     }, [addFeatureRes])
+
+    useEffect(() => {
+        if (updateFeatureRes?.status === 200 || updateFeatureRes?.status === 201) {
+            toast.success("Feature updated successfully");
+            setIsModalOpen(false);
+            getServiceDetails();
+        }
+    }, [updateFeatureRes])
 
     return (
         <div className={classes.wrapper}>

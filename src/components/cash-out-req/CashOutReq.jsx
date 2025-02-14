@@ -3,14 +3,14 @@ import classes from './CashOutReq.module.css'
 import UpdateCashoutReqModal from '../update-cashoutReq-modal/UpdateCashoutReqModal';
 import { format } from 'date-fns';
 
-const CashOutReq = ({ item = "", getSellerWallet,setIsViewWalletModalOpen }) => {
+const CashOutReq = ({ item = "", getSellerWallet, setIsViewWalletModalOpen }) => {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
     return (
         <>
             <div className={classes.card}>
                 <div>
-                    <h6>{item?._id}</h6>
+                    <h6>{item?.cashoutId}</h6>
                     <p>Date : {item.createdAt && format(new Date(item?.createdAt), "dd-MM-yyyy")}</p>
                 </div>
                 <div>
@@ -24,8 +24,8 @@ const CashOutReq = ({ item = "", getSellerWallet,setIsViewWalletModalOpen }) => 
                 <UpdateCashoutReqModal
                     setIsUpdateModalOpen={setIsUpdateModalOpen}
                     cashOutReq={item}
-                getSellerWallet={getSellerWallet}
-                setIsViewWalletModalOpen={setIsViewWalletModalOpen}
+                    getSellerWallet={getSellerWallet}
+                    setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                 />
             }
         </>

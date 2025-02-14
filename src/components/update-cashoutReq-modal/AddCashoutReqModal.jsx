@@ -1,28 +1,22 @@
 import { useEffect, useState } from 'react';
-import classes from './UpdateCashoutReqModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
+import classes from './UpdateCashoutReqModal.module.css';
 
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 import toast from 'react-hot-toast';
-import useAuthorization from '../../hooks/useAuthorization';
+import 'react-quill/dist/quill.snow.css';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
 
-const UpdateCashoutReqModal = ({
+const AddCashoutReqModal = ({
   setIsUpdateModalOpen,
-  setIsViewWalletModalOpen,
-  cashOutReq = "",
   getSellerWallet,
 }) => {
-  const { checkAuthorization } = useAuthorization();
   const [cashOutInfo, setCashOutInfo] = useState({
-    status: cashOutReq?.status || "",
-    description: cashOutReq?.description || "",
-    paymentId: cashOutReq?.paymentId || "",
-    date: cashOutReq?.date || "",
+    date: "",
+    amount: "",
+    description: "",
+    paymentId: "",
   });
 
-  console.log("cashOutReq", cashOutReq);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -56,17 +50,18 @@ const UpdateCashoutReqModal = ({
 
   useEffect(() => {
     if (updateCashoutRes?.status === 200 || updateCashoutRes?.status === 201) {
-        console.log("updateCashoutRes", updateCashoutRes);
-        toast.success("Cashout request updated successfully");
+      console.log("updateCashoutRes", updateCashoutRes);
+      toast.success("Cashout request updated successfully");
       setIsUpdateModalOpen(false);
       getSellerWallet();
     }
-}, [updateCashoutRes])
+  }, [updateCashoutRes])
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>
         <div className={classes.heading_container}>
-          <h4>Update CashOut Request</h4>
+          <h4>Add CashOut Request</h4>
           <div className={classes.d_flex}>
             <RxCross2
               onClick={() => setIsUpdateModalOpen(false)}
@@ -77,58 +72,50 @@ const UpdateCashoutReqModal = ({
         </div>
         <form onSubmit={handleOnSubmit} className={classes.form}>
           <div className={classes.input_container}>
-            <label htmlFor="status">Status</label>
-            <select
-              onChange={handleOnChange}
-              value={cashOutInfo.status}
-              className={classes.input}
-              name="status"
-              id="status"
-            >
-              <option value="">Select</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-          {cashOutInfo.status !== "cancelled" && (
-            <>
-              <div className={classes.input_container}>
-                <label htmlFor="paymentId">Payment Id</label>
-                <input
-                  className={classes.input}
-                  onChange={handleOnChange}
-                  value={cashOutInfo.paymentId}
-                  type="text"
-                  name="paymentId"
-                  id="paymentId"
-                />
-              </div>
-              <div className={classes.input_container}>
-                <label htmlFor="date">Date</label>
-                <input
-                  className={classes.input}
-                  onChange={handleOnChange}
-                  value={cashOutInfo.date}
-                  type="date"
-                  name="date"
-                  id="date"
-                />
-              </div>
-            </>
-          )}
-          <div className={classes.input_container}>
-            <label htmlFor="description">Description</label>
+            <label htmlFor="date">Date</label>
             <input
               className={classes.input}
               onChange={handleOnChange}
+              value={cashOutInfo.date}
+              type="date"
+              name="date"
+              id="date"
+            />
+          </div>
+          <div className={classes.input_container}>
+            <label htmlFor="amount">Amount</label>
+            <input
+              className={classes.input}
+              onChange={handleOnChange}
+              value={cashOutInfo.amount}
+              type="number"
+              name="amount"
+              id="amount"
+            />
+          </div>
+          <div className={classes.input_container}>
+            <label htmlFor="description">Description</label>
+            <textarea
+              className={classes.input}
+              onChange={handleOnChange}
               value={cashOutInfo.description}
-              type="text"
               name="description"
               id="description"
             />
           </div>
+          <div className={classes.input_container}>
+            <label htmlFor="paymentId">Payment Id</label>
+            <input
+              className={classes.input}
+              onChange={handleOnChange}
+              value={cashOutInfo.paymentId}
+              type="text"
+              name="paymentId"
+              id="paymentId"
+            />
+          </div>
           <div className={classes.button_wrapper}>
-            <button className={classes.button}>Update</button>
+            <button className={classes.button}>Add</button>
           </div>
         </form>
       </div>
@@ -136,4 +123,4 @@ const UpdateCashoutReqModal = ({
   );
 };
 
-export default UpdateCashoutReqModal
+export default AddCashoutReqModal

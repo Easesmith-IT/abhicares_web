@@ -49,7 +49,7 @@ const AddAddressModal = ({
     setAddressInfo({ ...addressInfo, [name]: value });
   };
 
-  const { res: addAddressRes, fetchData: addAddressFetchData } = usePatchApiReq()
+  const { res: updateAddressRes, fetchData: addAddressFetchData } = usePatchApiReq()
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -102,13 +102,12 @@ const AddAddressModal = ({
   };
 
   useEffect(() => {
-    if (addAddressRes?.status === 200 || addAddressRes?.status === 201) {
-        console.log("addAddressRes", addAddressRes);
+    if (updateAddressRes?.status === 200 || updateAddressRes?.status === 201) {
         toast.success("Address updated successfully");
         getAllAddress();
         setIsAddAddressModalOpen(false);
     }
-}, [addAddressRes])
+}, [updateAddressRes])
 
   return (
     <>

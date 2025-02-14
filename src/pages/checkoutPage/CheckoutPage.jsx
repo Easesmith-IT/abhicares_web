@@ -236,10 +236,10 @@ const CheckoutPage = () => {
       }
 
       if (status === "active") {
-        setMessage("Offer available");
+        setMessage("Valid coupon");
       }
       else {
-        setMessage("Offer not available");
+        setMessage("Not valid coupon");
         setOfferValue(0);
         // const totalValue = total - Number(0);
         // setTotal(totalValue);
@@ -279,7 +279,7 @@ const CheckoutPage = () => {
   }
 
   const createOnlineOrder = async () => {
-    createOnlineOrderFun("/shopping/create-online-order", { itemTotal: cart.totalPrice, discount: offerValue, tax: totalTaxRs, total: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })), couponId, referalDiscount: credits })
+    createOnlineOrderFun("/shopping/create-online-order", { itemTotal: cart.totalPrice, discount: offerValue, totalTax: totalTaxRs, totalPayable: total, userAddressId: address._id, bookings: bookingInfo.map((item) => ({ ...item, bookingTime: convertTimeToDate(item.bookingTime) })), couponId, referalDiscount: credits })
   }
 
   useEffect(() => {
@@ -529,7 +529,7 @@ const CheckoutPage = () => {
                   <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
                   <button onClick={handleCheck}>Apply</button>
                 </div>
-                {message && <p className={message === "Offer available" ? classes.green : classes.red}>{message}</p>}
+                {message && <p className={message === "Valid coupon" ? classes.green : classes.red}>{message}</p>}
               </div>
             </div>
 

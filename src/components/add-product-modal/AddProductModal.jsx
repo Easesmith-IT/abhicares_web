@@ -107,7 +107,7 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
         setProductInfo({ ...productInfo, img: imgArr, previewImages: prevImgArr, uploadedImages: uploadedImgArr });
     }
 
-    const { res: addProductRes, fetchData: addProductFetchData } = usePatchApiReq()
+    const { res: updateProductRes, fetchData: addProductFetchData } = usePatchApiReq()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -139,13 +139,21 @@ const AddProductModal = ({ setIsModalOpen, serviceId, product = "", getAllProduc
 
     useEffect(() => {
         if (addProductRes?.status === 200 || addProductRes?.status === 201) {
-            console.log("addProductRes", addProductRes);
-            toast.success("Product updated successfully");
+            toast.success("Product added successfully");
 
             getAllProducts();
             setIsModalOpen(false);
         }
     }, [addProductRes])
+
+    useEffect(() => {
+        if (updateProductRes?.status === 200 || updateProductRes?.status === 201) {
+            toast.success("Product updated successfully");
+
+            getAllProducts();
+            setIsModalOpen(false);
+        }
+    }, [updateProductRes])
 
     return (
         <div className={classes.wrapper}>

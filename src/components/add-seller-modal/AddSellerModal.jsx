@@ -146,7 +146,7 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
     }
 
 
-    const { res: addSellerRes, fetchData: addSellerFetchData } = usePatchApiReq()
+    const { res: updateSellerRes, fetchData: addSellerFetchData } = usePatchApiReq()
 
 
     const handleOnSubmit = async (e) => {
@@ -206,14 +206,21 @@ const AddSellerModal = ({ setIsModalOpen, seller = "", getAllSellers }) => {
 
     useEffect(() => {
         if (addSellerRes?.status === 200 || addSellerRes?.status === 201) {
-
-            console.log("addSellerRes", addSellerRes);
-            toast.success("Seller updated successfully");
+            toast.success("Seller created successfully");
 
             getAllSellers();
             setIsModalOpen(false);
         }
     }, [addSellerRes])
+
+    useEffect(() => {
+        if (updateSellerRes?.status === 200 || updateSellerRes?.status === 201) {
+            toast.success("Seller updated successfully");
+
+            getAllSellers();
+            setIsModalOpen(false);
+        }
+    }, [updateSellerRes])
 
     return (
         <div className={classes.wrapper}>

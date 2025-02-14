@@ -50,7 +50,7 @@ const EditFaqModal = ({ setIsModalOpen, faq = "", getAllFaqs }) => {
     }
 }, [feqRes])
   
- useEffect(() => 
+ useEffect(() => {
     if (createFaqRes?.status === 200 || createFaqRes?.status === 201) {
       toast.success("Faq created successfully");
       getAllFaqs();

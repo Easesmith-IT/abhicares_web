@@ -20,7 +20,7 @@ const usePatchApiReq = () => {
         try {
             const statusRes = await axiosInstance.get("/shopping/status");
             if (statusRes?.status === 200 || statusRes?.status === 201) {
-                dispatch(changeUserAuthStatus({ isAuthenticated: statusRes?.data?.isAuthenticated }));
+                // dispatch(changeUserAuthStatus({ isAuthenticated: statusRes?.data?.isAuthenticated }));
                 console.log("User status response:", statusRes);
                 if (statusRes?.data?.shouldLogOut) {
                     await handleLogout();
