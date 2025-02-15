@@ -24,7 +24,7 @@
 }
 
 .checkout_container_left {
-    padding: 0 15px;
+    /* padding: 0 15px; */
     display: flex;
     flex-direction: column;
     width: 100%;
