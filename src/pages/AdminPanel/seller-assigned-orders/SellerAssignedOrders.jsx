@@ -62,6 +62,8 @@ const SellerAssignedOrders = () => {
 
     useEffect(() => {
         if (getWalletRes?.status === 200 || getWalletRes?.status === 201) {
+            console.log("getWalletRes",getWalletRes);
+            
             if (getWalletRes?.data.wallet._id) {
                 getCashOutRequests(getWalletRes?.data.wallet._id);
                 setWallet(getWalletRes?.data.wallet);
@@ -271,8 +273,9 @@ const SellerAssignedOrders = () => {
 
             {isAddCashoutReqModalOpen &&
                 <AddCashoutReqModal
-                    getSellerWallet={getSellerWallet}
+                getCashOutRequests={getCashOutRequests}
                     setIsUpdateModalOpen={setIsAddCashoutReqModalOpen}
+                    walletId={wallet?._id}
                 />
             }
         </>

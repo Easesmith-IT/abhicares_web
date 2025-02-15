@@ -89,7 +89,7 @@ const useDeleteApiReq = () => {
 
     const handleAdminLogout = async () => {
         try {
-            const logoutRes1 = await fetchLogoutData1("/admin/logout-all", { adminId: adminInfo?.id, role: "admin" });
+            const logoutRes1 = await axiosInstance.post("/admin/logout-all", { adminId: adminInfo?.id, role: "admin" });
             if (logoutRes1?.status === 200 || logoutRes1?.status === 201) {
                 console.log("Admin logout response:", logoutRes1);
                 dispatch(changeAdminStatus({ isAdminAuthenticated: false }));

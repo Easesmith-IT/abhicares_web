@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 
 const SellerCashouts = () => {
     const { res: getSellerCashoutsRes, fetchData: getSellerCashouts, isLoading } = useGetApiReq();
-    const { res: getSellerCashoutRes, fetchData: getSellerCashout, isLoading: getSellerCashoutLoading } = useGetApiReq();
     const [allSellerCashouts, setAllSellerCashouts] = useState([])
     const [searchQuery, setSearchQuery] = useState("");
     const [pageCount, setPageCount] = useState(1);
@@ -49,20 +48,6 @@ const SellerCashouts = () => {
             setPage(getSellerCashoutsRes?.data.currentPage);
         }
     }, [getSellerCashoutsRes])
-
-    const getSingleCashout = async () => {
-        getSellerCashout(`/admin/get-seller-cashout-detail?cashoutId=${"67ac920e9d6720bf8a4d0361"}`)
-    };
-
-    // useEffect(() => {
-    //     getSingleCashout();
-    // }, [])
-
-    useEffect(() => {
-        if (getSellerCashoutRes?.status === 200 || getSellerCashoutRes?.status === 201) {
-            console.log("getSellerCashoutRes", getSellerCashoutRes);
-        }
-    }, [getSellerCashoutRes])
 
     return (
         <>

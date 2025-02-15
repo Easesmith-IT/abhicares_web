@@ -1,0 +1,1 @@
+import{i as e,x as i,_ as n}from"./index-A8F5s_OX.js";const h=()=>{const t=e();return{checkAuthorization:async s=>{var o,a;console.log("inside auth hook"),s&&s.response&&s.response.status===403?await t(i(!0)):(n.error((a=(o=s==null?void 0:s.response)==null?void 0:o.data)==null?void 0:a.message),await t(i(!1)))}}};export{h as u};
