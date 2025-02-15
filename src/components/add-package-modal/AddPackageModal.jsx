@@ -31,6 +31,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
     const [packageInfo, setPackageInfo] = useState({
         name: selectedPackage?.name || "",
         price: selectedPackage?.price || "",
+        description: selectedPackage?.description || "",
         offerPrice: selectedPackage?.offerPrice || "",
         img: selectedPackage?.imageUrl || [],
         products: selectedPackage?.products || [],
@@ -146,6 +147,7 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
         formData.append("name", packageInfo.name);
         formData.append("price", packageInfo.price);
         formData.append("offerPrice", packageInfo.offerPrice);
+        formData.append("description", packageInfo.description);
         formData.append("serviceId", serviceId);
         formData.append("products", JSON.stringify(packageInfo.products));
         for (const item of packageInfo.uploadedImages) {
@@ -194,6 +196,10 @@ const AddPackageModal = ({ setIsModalOpen, serviceId, getAllPackage, allProducts
                     <div className={classes.input_container}>
                         <label htmlFor="name">Name</label>
                         <input className={classes.input} onChange={handleOnChange} value={packageInfo.name} type="text" name="name" id="name" />
+                    </div>
+                    <div className={classes.input_container}>
+                        <label htmlFor="description">Description</label>
+                        <textarea style={{ resize: "none" }} className={classes.input} onChange={handleOnChange} value={packageInfo.description} name="description" id="description" />
                     </div>
                     <div className={classes.input_container}>
                         <label htmlFor="price">Price</label>

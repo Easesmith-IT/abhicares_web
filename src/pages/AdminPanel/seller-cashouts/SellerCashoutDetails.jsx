@@ -9,14 +9,14 @@ import { RiWalletLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 import { format } from 'date-fns';
+import UpdateCashoutReqModal from '../../../components/update-cashoutReq-modal/UpdateCashoutReqModal';
 
 const SellerCashoutDetails = () => {
-    const { res: getSellersRes, fetchData: getSellers, isLoading: getSellersLoading } = useGetApiReq();
     const { res: getSellerCashoutRes, fetchData: getSellerCashout, isLoading: getSellerCashoutLoading } = useGetApiReq();
-    const { res: getWalletRes, fetchData: getWallet, isLoading: getWalletLoading } = useGetApiReq();
     const { res: getRequestsRes, fetchData: getRequests, isLoading: getRequestsLoading } = useGetApiReq();
 
     const [state, setState] = useState("");
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [cashout, setCashout] = useState("");
     const [isViewWalletModalOpen, setIsViewWalletModalOpen] = useState(false);
     const [wallet, setWallet] = useState("");
@@ -79,6 +79,7 @@ const SellerCashoutDetails = () => {
                     <div className={sellerAssignedOrdersClasses["reportContainer"]}>
                         <div className={classes["report-header"]}>
                             <h1 className={classes["recent-Articles"]}>Cashout Details</h1>
+                            <button onClick={() => setIsUpdateModalOpen(true)} className={sellerAssignedOrdersClasses.button}>Update</button>
                         </div>
 
                         <div className={sellerAssignedOrdersClasses["report-body"]}>
@@ -111,6 +112,15 @@ const SellerCashoutDetails = () => {
                     setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                     getSellerWallet={getSellerWallet}
                     id={wallet?._id}
+                />
+            }
+
+            {isUpdateModalOpen &&
+                <UpdateCashoutReqModal
+                    setIsUpdateModalOpen={setIsUpdateModalOpen}
+                    cashOutReq={cashout}
+                    getSellerWallet={getSingleCashout}
+                    setIsViewWalletModalOpen={setIsViewWalletModalOpen}
                 />
             }
         </Wrapper>

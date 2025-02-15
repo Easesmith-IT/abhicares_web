@@ -219,7 +219,7 @@ const BookingDetails = () => {
                   <p>₹{booking.orderValue}</p>
                 </div> */}
                   {/* <div className={classes.d_flex}>
-                  <p>Tax (18%) :</p>
+                  <p>Tax and other charges :</p>
                   <p>₹{totalTaxRs}</p>
                 </div> */}
                   {/* <div className={classes.d_flex}>

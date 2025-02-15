@@ -54,6 +54,7 @@ const CheckoutPage = () => {
   const [total, setTotal] = useState(0);
   const [message, setMessage] = useState("");
   const [couponId, setCouponId] = useState("");
+  const [couponCode, setCouponCode] = useState("");
   const [paymentType, setPaymentType] = useState("");
 
   const [info, setInfo] = useState({
@@ -90,7 +91,7 @@ const CheckoutPage = () => {
         setAddress(defaultAddress);
       }
     }
-}, [getUserAddressRes])
+  }, [getUserAddressRes])
 
   useEffect(() => {
     (async () => {
@@ -133,7 +134,7 @@ const CheckoutPage = () => {
     }))
     console.log("modifiedItems", modifiedItems);
 
-    calculateCharge("/shopping/caluclate-charge", { items: modifiedItems, couponId })
+    calculateCharge("/shopping/caluclate-charge", { items: modifiedItems, couponCode })
   };
 
   useEffect(() => {
@@ -228,8 +229,7 @@ const CheckoutPage = () => {
       console.log("getCouponDetailsRes", getCouponDetailsRes);
 
       caluclateCharge();
-      const { status } = getCouponDetailsRes?.data?.data || {};
-
+      const { status, _id, name } = getCouponDetailsRes?.data?.data || {};
 
       if (offerValue > 0) {
         return;
@@ -237,6 +237,8 @@ const CheckoutPage = () => {
 
       if (status === "active") {
         setMessage("Valid coupon");
+        setCouponId(_id)
+        setCouponCode(name)
       }
       else {
         setMessage("Not valid coupon");
@@ -499,6 +501,7 @@ const CheckoutPage = () => {
                     isButton
                     setBookingInfo={setBookingInfo}
                     bookingInfo={bookingInfo}
+                    image
                   />
                 ))}
                 {cart.items.length === 0 &&
@@ -526,7 +529,7 @@ const CheckoutPage = () => {
               <div>
                 <p className={classes.offer_p}>Coupons and offers</p>
                 <div className={classes.input_wrapper}>
-                  <input onChange={(e) => setOfferCode(e.target.value)} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
+                  <input onChange={(e) => setOfferCode(e.target.value.toUpperCase())} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
                   <button onClick={handleCheck}>Apply</button>
                 </div>
                 {message && <p className={message === "Valid coupon" ? classes.green : classes.red}>{message}</p>}
@@ -543,7 +546,7 @@ const CheckoutPage = () => {
                   </p>
                 </div>
                 <div className={classes.payment_summary_div}>
-                  <p className={classes.payment_summary_p}>Tax and Fee(18% GST)</p>
+                  <p className={classes.payment_summary_p}>Tax and other charges</p>
                   <p className={classes.payment_summary_p}> + ₹{totalTaxRs || 0}</p>
                 </div>
                 {offerValue > 0 && <div className={classes.payment_summary_div}>

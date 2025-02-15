@@ -159,10 +159,6 @@ const HelpCenter = () => {
               </div>
             </form>
           </div>
-          <div>
-            <h3 className={classes.h3}>Frequently asked questions</h3>
-          </div>
-          <Faqs />
           <h3 className={classes.h3}>All issues</h3>
           {!isLoading && allIssues?.length === 0 && <p>No issues found</p>}
 
@@ -188,6 +184,12 @@ const HelpCenter = () => {
                 </div>
               ))}
             </div>}
+
+          <div>
+            <h3 className={classes.h3}>Frequently asked questions</h3>
+          </div>
+          <Faqs />
+
         </section>
       </WebsiteWrapper>
 

@@ -44,7 +44,7 @@ const ProductInfo = () => {
                                         <img className={classes.img} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.productId?.imageUrl[0]}`} alt="product" />
                                         <div className={classes.product_info}>
                                             <h5>{item?.productId?.name}</h5>
-                                            <p>{parse(item?.productId?.description)}</p>
+                                            <p>{item?.productId?.description && parse(item?.productId?.description)}</p>
                                             <div className={classes.d_flex}>
                                                 <div className={classes.price_cotainer}>
                                                     <p className={classes.price}>₹{item?.productId?.price}</p>
@@ -53,7 +53,7 @@ const ProductInfo = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <RatingsComp className="col" item={item?.productId} />
+                                    {/* {item?.productId && <RatingsComp className="col" item={item?.productId} />} */}
                                 </div>
                             ))}
                         </div>

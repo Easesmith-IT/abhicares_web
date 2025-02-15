@@ -2,23 +2,21 @@
 import classes from "./Modal.module.css";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { FiChevronRight } from "react-icons/fi";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { BsStarFill } from "react-icons/bs";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+import parse from "html-react-parser";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import parse from "html-react-parser";
 
-import CustomerReview from "./CustomerReview";
-import SpecificStarRating from "./SpecificStarRating";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Product from "../Product";
+import useGetApiReq from "../../hooks/useGetApiReq";
+import { readCookie } from "../../utils/readCookie";
 import Loader from "../loader/Loader";
 import ReviewModal from "../reviewModal/AddReviewModal";
-import { readCookie } from "../../utils/readCookie";
-import useGetApiReq from "../../hooks/useGetApiReq";
+import CustomerReview from "./CustomerReview";
+import SpecificStarRating from "./SpecificStarRating";
 
 const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const { res: getProductReviewRes, fetchData: getProductReview, isLoading: isReviewLoading } = useGetApiReq();
@@ -28,6 +26,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [isReviewBtn, setIsReviewBtn] = useState(false);
+    const [isImgLoading, setIsImgLoading] = useState(true);
 
     const token = readCookie("userInfo");
     const userId = token?.id;
@@ -124,7 +123,7 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
                                     <div className={classes.modal_header_left}>
                                         <h3 className={classes.modal_header_left_h4}>{Data.name}</h3>
                                         <div className={classes.rating}>
-                                            <BsStarFill color="gray" size={11} />
+                                            <BsStarFill color="rgb(255, 138, 0)" size={20} />
                                             <span className={classes.rating_span}>{Data?.rating} ({Data?.totalReviews})</span>
                                         </div>
                                         <div className={classes.price_time_container}>
@@ -154,14 +153,23 @@ const Modal = ({ isOpen, handleOnclick, Data, isProduct, features = [] }) => {
 
 
                             {!isProduct && <div className={classes.products_cotainer}>
-                                <h4>Products</h4>
+                                <h4 style={{ marginBottom: "20px" }}>Included  Services</h4>
                                 {allProducts?.map((product) => (
-                                    <Product
-                                        key={product._id}
-                                        product={product}
-                                        flag={false}
-                                        features={features}
-                                    />
+                                    <div className={classes.singleProduct} key={product._id}>
+                                        <div className={classes.singleProduct_left}>
+                                            <img
+                                                style={{ display: !isImgLoading ? "block" : "none" }}
+                                                onLoad={() => setIsImgLoading(false)}
+                                                className={classes.img}
+                                                src={`${import.meta.env.VITE_APP_IMAGE_URL}/${product?.imageUrl[0]}`}
+                                                alt="product"
+                                            />
+                                        </div>
+                                        <div className={classes.singleProduct_right}>
+                                            <h5>{product?.name}</h5>
+                                            <p>{parse(product.description)}</p>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>}
                             {!isProduct && !isLoading

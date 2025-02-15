@@ -219,7 +219,7 @@ const ServiceInfoPage = () => {
                       />
                     </div>
                   </div>
-                  <p>{parse(product.description)}</p>
+                  {/* <p>{parse(product.description)}</p> */}
                 </div>
               </div>
             ))}

@@ -156,7 +156,7 @@ useEffect(() => {
                             <p>₹{state?.itemTotal}</p>
                         </div>
                         <div className={classes.d_flex}>
-                            <p>Tax (18%) :</p>
+                            <p>Tax and other charges :</p>
                             <p>+ ₹{state?.tax}</p>
                         </div>
                         {state?.discount > 0 && <div className={classes.d_flex}>

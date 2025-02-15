@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import DateTimeModal from "../dateTimeModal/DateTimeModal";
 import toast from "react-hot-toast";
 
-const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
+const CartItem = ({ item, bookingInfo, setBookingInfo, isButton, image = false }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSelectButton, setIsSelectButton] = useState(true);
@@ -26,8 +26,8 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
     bookingTime: ""
   })
 
-  console.log("item",item);
-  
+  console.log("item", item);
+
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -75,8 +75,15 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
   return (
     <>
       <div className={classes.cart_item}>
+        {image && <img
+          style={{ height: "80px", width: "80px", borderRadius: "6px" }}
+          className={classes.img}
+          src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.type === "product" ? item?.productId?.imageUrl[0] : item?.packageId?.imageUrl[0]}`}
+          alt="product"
+        />}
         <div className={classes.cart_item_left}>
           <p className={classes.p}>{item?.type === "product" ? item?.productId?.name : item?.packageId?.name}</p>
+          {isButton && isSelectButton && <button style={{ color: "#005CC8" }} onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
         </div>
 
         <div className={classes.cart_item_right}>
@@ -88,7 +95,6 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton }) => {
           {/* <MdDelete size={20} onClick={handleCartItemDelete} /> */}
           <span className={classes.price}>₹{Number(item?.quantity) * Number(item.type === "product" ? item.productId.offerPrice : item?.packageId?.offerPrice)}</span>
         </div>
-        {isButton && isSelectButton && <button style={{color:"#005CC8"}} onClick={() => setIsModalOpen(true)} className={classes.link}>Select Date and Time</button>}
       </div>
 
       {isModalOpen &&

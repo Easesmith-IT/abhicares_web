@@ -138,7 +138,7 @@ const BookingDetails = () => {
             <div className={classes.d_flex}>
               <div>
                 <p>Subtotal: </p>
-                <p>Tax(18%): </p>
+                <p>Tax and other charges: </p>
                 {state.discount > 0 && <p>Discount: </p>}
                 {state.referalDiscount && <p>Referal Discount: </p>}
                 <p>

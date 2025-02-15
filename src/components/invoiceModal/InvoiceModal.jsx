@@ -90,7 +90,7 @@ const InvoiceModal = ({ setIsInvoiceModalOpen, invoice, state }) => {
                                     <p>₹ {invoice.itemTotal}</p>
                                 </div>
                                 <div className={classes.d_flex}>
-                                    <b>Tax Rate (18%):</b>
+                                    <b>Tax and other charges:</b>
                                     <p>₹{state?.tax}</p>
                                 </div>
                                 {state?.discount > 0 &&

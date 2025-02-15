@@ -36,6 +36,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useSelector((state) => state.user)
+  const cart = useSelector((state) => state.cart);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
@@ -123,12 +124,29 @@ export const Header = () => {
           </div> */}
         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
 
-          <FaCartShopping
-            onClick={() => navigate("/checkout")}
-            size={26}
-            color="white"
-            cursor={"pointer"}
-          />
+          <div style={{ position: "relative" }}>
+            <FaCartShopping
+              onClick={() => navigate("/checkout")}
+              size={26}
+              color="white"
+              cursor={"pointer"}
+            />
+            {cart?.items.length > 0 && <div
+              style={{
+                width: "20px",
+                height: "20px",
+                borderRadius: "50%",
+                background: "red",
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: "-10px",
+                right: "-10px",
+              }}
+            >{cart?.items.length}</div>}
+          </div>
 
           {!isAuthenticated && (
             <div className={classes["button-container"]}>

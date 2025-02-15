@@ -10,7 +10,6 @@ import usePatchApiReq from '../../hooks/usePatchApiReq';
 
 const UpdateCashoutReqModal = ({
   setIsUpdateModalOpen,
-  setIsViewWalletModalOpen,
   cashOutReq = "",
   getSellerWallet,
 }) => {

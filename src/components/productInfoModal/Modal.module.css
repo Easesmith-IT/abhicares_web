@@ -137,6 +137,7 @@ p {
 
 .rating_span {
     margin-bottom: -2px;
+    font-size: 18px;
 }
 
 .price_time_container {
@@ -550,4 +551,25 @@ p {
 .feature .feature_content {
     max-width: 580px;
     width: 100%;
+}
+
+.singleProduct{
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.singleProduct .img{
+    width: 100%;
+    height: 200px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+@media screen and (max-width:420px) {
+    .singleProduct .img{
+        width: 100%;
+        height: 100px;
+    }
 }

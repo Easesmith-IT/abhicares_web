@@ -538,7 +538,8 @@
 
 @media screen and (max-width:420px) {
     .cart_item_right {
-        flex-direction: column;
+        /* flex-direction: column; */
+        margin-top: 20px;
     }
 }
 
