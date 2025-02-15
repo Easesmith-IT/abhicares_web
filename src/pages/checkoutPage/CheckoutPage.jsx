@@ -85,7 +85,7 @@ const CheckoutPage = () => {
         let defaultAddress = getUserAddressRes?.data.data.find((add) => add.defaultAddress === true);
 
         if (!defaultAddress) {
-          defaultAddress = getUserAddressRes?.data.data[data.data.length - 1];
+          defaultAddress = getUserAddressRes?.data.data[getUserAddressRes?.data.data.length - 1];
         }
         setAddress(defaultAddress);
       }
@@ -305,7 +305,7 @@ const CheckoutPage = () => {
 
           const options = {
             key: getApiKeyRes?.data?.apiKey,
-            amount: data.razorpayOrder.amount,
+            amount: `${data.razorpayOrder.amount}00`,
             currency: "INR",
             name: "Abhicares Corp.",
             description: "Test Transaction",
