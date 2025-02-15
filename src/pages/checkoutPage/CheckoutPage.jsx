@@ -98,8 +98,11 @@ const CheckoutPage = () => {
       await dispatch(getCartDetails());
     })();
     setTotalTaxRs((cart.totalPrice * 18) / 100)
-    getAllAddress();
   }, []);
+
+  useEffect(() => {
+    token && getAllAddress();
+  }, [token]);
 
 
   const cart = useSelector((state) => state.cart);

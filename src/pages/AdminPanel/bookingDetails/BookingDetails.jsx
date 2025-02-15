@@ -7,10 +7,12 @@ import useGetApiReq from "../../../hooks/useGetApiReq";
 import Wrapper from "../../Wrapper";
 import classes from "./BookingDetails.module.css";
 import MapContainer from "./MapContainer";
+import usePatchApiReq from "../../../hooks/usePatchApiReq";
 
 const BookingDetails = () => {
   const { res: getBookingDetailsRes, fetchData: getBookingDetails, isLoading } = useGetApiReq();
   const { res: getDistanceRes, fetchData: getDistance, isLoading:isDistanceLoading } = useGetApiReq();
+  const { res: bookingDetailRes, fetchData: bookingDetailFetchData } = usePatchApiReq();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [mapData, setMapData] = useState({

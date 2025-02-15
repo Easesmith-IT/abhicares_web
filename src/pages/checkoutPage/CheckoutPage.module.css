@@ -230,9 +230,10 @@
 .cart_item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     flex-wrap: wrap;
     margin-block: 20px;
+    gap: 20px;
 }
 
 .list_container {
@@ -274,7 +275,7 @@
 }
 
 .price {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .quantity {
