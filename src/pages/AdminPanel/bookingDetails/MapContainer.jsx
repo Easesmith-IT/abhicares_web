@@ -102,7 +102,7 @@ const MapContainer = ({ google, location, sellerStatus, bookingStatus }) => {
             justifyContent: "center",
             color: "#fff",
             fontSize: "24px",
-            zIndex: 100000,
+            zIndex: 10,
           }}
         >
           The Seller is not started yet!

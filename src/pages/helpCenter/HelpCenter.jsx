@@ -91,6 +91,8 @@ const HelpCenter = () => {
 
   useEffect(() => {
     if (getUserHelpRes?.status === 200 || getUserHelpRes?.status === 201) {
+      console.log("getUserHelpRes",getUserHelpRes);
+      
       setAllIssues(getUserHelpRes?.data.data);
     }
   }, [getUserHelpRes])
@@ -210,6 +212,7 @@ const HelpCenter = () => {
               <h4 style={{ fontWeight: "600" }}>Ticket details</h4>
               <b>{issue.issue}</b>
               <p>{issue.description}</p>
+              {issue?.bookingId && <p><b>Booking Id: </b>{issue?.bookingId}</p>}
               <HistoryModal ticketHistory={issue?.ticketHistory} />
             </div>
           </div>

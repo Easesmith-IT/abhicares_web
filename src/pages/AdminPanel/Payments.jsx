@@ -5,7 +5,10 @@ import { PaginationControl } from "react-bootstrap-pagination-control";
 
 import axios from "axios";
 import useGetApiReq from "../../hooks/useGetApiReq";
+import { useNavigate } from "react-router-dom";
 const Payments = () => {
+  const navigate = useNavigate();
+
   const { res: getPaymentsRes, fetchData: getPayments, isLoading: getPaymentsLoading } = useGetApiReq();
   const [allPayments, setAllPayments] = useState([]);
   const [pageCount, setPageCount] = useState(1);
@@ -55,7 +58,7 @@ const Payments = () => {
                   <p className={classes["t-op-nextlvl"]}>
                     {payment.razorpay_payment_id}
                   </p>
-                  <p className={classes["t-op-nextlvl"]}>{payment.orderId}</p>
+                  <p onClick={() => navigate(`/admin/orders/${payment.orderId}`)} style={{ cursor: "pointer" }} className={classes["t-op-nextlvl"]}>{payment.orderId}</p>
                   <p className={classes["t-op-nextlvl"]}>{payment.amount.toFixed(2)}</p>
                 </div>
               ))}

@@ -86,10 +86,10 @@ const WhyUs = lazy(() => import("./pages/whyus/WhyUs"));
 
 function App() {
   // const { location } = useGeolocation();
-  const dispatch = useDispatch();
-  (async () => {
-    await dispatch(getCartDetails());
-  })()
+  // const dispatch = useDispatch();
+  // (async () => {
+  //   await dispatch(getCartDetails());
+  // })()
 
   const { isOpen } = useSelector((state) => state.auth);
   console.log("env var ==>", import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY);

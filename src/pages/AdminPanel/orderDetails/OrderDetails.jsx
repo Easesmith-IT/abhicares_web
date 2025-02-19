@@ -180,11 +180,11 @@ useEffect(() => {
                         </div>
                         <div className={classes.d_flex}>
                             <p>Customer Phone :</p>
-                            <p>{state?.user.phone}</p>
+                            <p>{state?.user?.phone}</p>
                         </div>
                         <div className={classes.d_flex}>
                             <p>Customer Address :</p>
-                            <p>{`${state?.user.address.addressLine},${state?.user.address.landmark},${state?.user.address.pincode}`}</p>
+                            <p>{`${state?.user?.address?.addressLine},${state?.user?.address?.landmark},${state?.user?.address?.pincode}`}</p>
                         </div>
 
                     </div>

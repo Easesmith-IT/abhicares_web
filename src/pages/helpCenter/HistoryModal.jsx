@@ -9,8 +9,8 @@ const HistoryModal = ({ ticketHistory }) => {
                 <Timeline
                     title="Raised"
                     time={history("raised") ? history("raised")?.date : ""}
-                    status={history("raised")?.status || ""}
-                    className={history("raised") ? "bg-green" : "bg-gray"}
+                    status={history("raised")?.status || "raised"}
+                    className={(history("raised") || "raised") ? "bg-green" : "bg-gray"}
                     desc={history("raised")?.resolution || ""}
                 />
                 <div className="vertical-line"></div>

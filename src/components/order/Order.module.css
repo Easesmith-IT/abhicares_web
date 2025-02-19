@@ -1,4 +1,4 @@
-.order{
+.order {
     max-width: 600px;
     width: 90%;
     padding: 20px;
@@ -7,14 +7,14 @@
     cursor: pointer;
 }
 
-.order_top{
+.order_top {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.order_top > div{
+.order_top>div {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -22,36 +22,36 @@
     column-gap: 0px;
 }
 
-.img{
+.img {
     width: 100px;
     height: 60px;
     margin: 0px 8px;
     object-fit: cover;
 }
 
-.info{
+.info {
     width: 90%;
 }
 
-.info > .info_row{
+.info>.info_row {
     width: 90%;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
 
-hr{
+hr {
     margin-block: 10px;
 }
 
-.order_bottom{
+.order_bottom {
     display: flex;
     align-items: flex-start;
     width: 100%;
     gap: 20px;
 }
 
-.progress{
+.progress {
     width: 400px;
     /* width: 100%; */
     height: 5px;
@@ -60,7 +60,7 @@ hr{
     position: relative;
 }
 
-.progress::before{
+.progress::before {
     content: '';
     position: absolute;
     top: 0;
@@ -71,40 +71,70 @@ hr{
     border-radius: 6px;
 }
 
-.d_flex{
+.d_flex {
     display: flex;
     justify-content: space-between;
 }
 
+.status {
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: white !important;
+}
+
+.Cancelled {
+    background: #de6210;
+}
+
+.Completed {
+    background: green;
+    color: white;
+}
+
+.alloted {
+    background: rgb(69, 204, 83);
+    color: white;
+}
+
+.pending {
+    background: rgb(255, 230, 0);
+}
+
+.OutOfDelivery {
+    background: rgb(95, 95, 255);
+    color: white;
+}
+
 @media screen and (max-width:590px) {
-    .progress{
+    .progress {
         width: 300px;
     }
 
-    .p{}
+    .p {}
 }
 
 @media screen and (max-width:525px) {
-    .progress{
+    .progress {
         width: 200px;
     }
 
-    .p{
+    .p {
         display: none;
     }
-    .d_flex{
+
+    .d_flex {
         justify-content: center;
     }
 }
 
 @media screen and (max-width:525px) {
-    .progress{
+    .progress {
         width: 200px;
     }
 }
 
 @media screen and (max-width:365px) {
-    .progress{
+    .progress {
         width: 170px;
     }
 

@@ -45,10 +45,10 @@ const BookingDetails = () => {
 
   };
   
+  console.log("booking 123", booking);
   
   const getDistanceAndTimeBetweenTwoPoints = async () => {
     try {
-      console.log("booking 123", booking);
       if (booking) {
         const sourceCoordinates = `${booking.currentLocation.location[0]},${booking.currentLocation.location[1]}`;
         const destinationCoordinates = `${booking.userAddress.location.coordinates[0]},${booking.userAddress.location.coordinates[1]}`;
@@ -216,18 +216,18 @@ const BookingDetails = () => {
                     <p>Descriptions</p>
                     <p>Amounts</p>
                   </div>
-                  {/* <div className={classes.d_flex}>
+                  <div className={classes.d_flex}>
                   <p>Sub Total :</p>
-                  <p>₹{booking.orderValue}</p>
-                </div> */}
-                  {/* <div className={classes.d_flex}>
+                  <p>₹{booking?.itemTotalValue}</p>
+                </div>
+                  <div className={classes.d_flex}>
                   <p>Tax and other charges :</p>
-                  <p>₹{totalTaxRs}</p>
-                </div> */}
-                  {/* <div className={classes.d_flex}>
-                  <p>Discount ('{booking?.couponId?.name}') :</p>
-                  <p>₹{discount}</p>
-                </div> */}
+                  <p>₹{booking?.itemTotalTax}</p>
+                </div>
+                  <div className={classes.d_flex}>
+                  <p>Discount :</p>
+                  <p>₹{booking?.itemTotalDiscount}</p>
+                </div>
                   <div className={classes.d_flex}>
                     <p>Total Amount :</p>
                     <p>₹{booking.orderValue}</p>

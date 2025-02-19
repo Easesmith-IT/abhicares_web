@@ -206,12 +206,13 @@ const navigaye = useNavigate();
         { withCredentials: true }
       );
       console.log("signup otp verification", data);
+      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
       await dispatch(getCartDetails());
-      // localStorage.setItem("user-status", true);
+      localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);
-      window.location.reload();
+      // window.location.reload();
       handleOnClose();
 
       setIsLoading(false);

@@ -38,7 +38,14 @@ const Order = ({ order, index }) => {
         <hr />
         <div className={classes.order_bottom}>
           <p>Order Status :</p>
-          <div>
+          <div className={` ${classes.status} ${order.status === "Cancelled"
+            ? classes.Cancelled
+            : order.status === "Completed"
+              ? classes.Completed
+              : order.status === "Pending"
+                ? classes.pending
+                : classes.OutOfDelivery
+            }`}>
             {order?.status}
           </div>
         </div>
