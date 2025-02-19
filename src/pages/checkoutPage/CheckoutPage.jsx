@@ -102,7 +102,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     token && getAllAddress();
-  }, [token]);
+  }, []);
 
 
   const cart = useSelector((state) => state.cart);

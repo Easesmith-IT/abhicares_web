@@ -1,0 +1,1 @@
+import{j as s}from"./index-Dv256yl2.js";const o="_img_container_1ngkb_1",n={img_container:o},r="/assets/rolling-ClldXomh.gif",e=()=>s.jsx("div",{className:n.img_container,children:s.jsx("img",{src:r,alt:"loader"})});export{e as L,n as l};

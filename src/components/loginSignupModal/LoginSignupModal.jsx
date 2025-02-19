@@ -11,10 +11,11 @@ import { getCartDetails } from "../../store/slices/cartSlice";
 import CountdownTimer from "../countdown/CountDown";
 import { FaEdit } from "react-icons/fa";
 import { changeUserAuthStatus } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
-
+const navigaye = useNavigate();
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
@@ -170,6 +171,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);
       await dispatch(getCartDetails());
+      navigaye("/")
       // window.location.reload();
       handleOnClose();
 
