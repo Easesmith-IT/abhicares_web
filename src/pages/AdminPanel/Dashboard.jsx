@@ -94,7 +94,7 @@ const AdminPage = () => {
             <div className={classes.items}>
               {!isLoading && allOrders?.length === 0 && <p>No orders found</p>}
 
-              {isLoading && allOrders?.length === 0 && <Loader />}
+              {isLoading && <Loader />}
 
               {allOrders?.map((order, i) => (
                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>

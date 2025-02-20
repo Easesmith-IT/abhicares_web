@@ -9,13 +9,18 @@ import useAuthorization from '../../hooks/useAuthorization';
 import Loader from '../loader/Loader';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import { FaTrash } from 'react-icons/fa';
+import DeleteModal from '../deleteModal/DeleteModal';
 
 const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) => {
     const { res: getInReviewSellerRes, fetchData: getInReviewSeller, isLoading } = useGetApiReq();
     const [allSellers, setAllSellers] = useState([]);
-    const navigate = useNavigate()
-    const { checkAuthorization } = useAuthorization();
+    const [isUnapprovedSellerDeleteModalOpen, setIsUnapprovedSellerDeleteModalOpen] = useState(false);
 
+    const handleDelete = async () => {
+        console.log("handleDelete function called");
+        setIsUnapprovedSellerDeleteModalOpen(false);
+    }
 
     const getAllSellers = async () => {
         getInReviewSeller("/admin/in-review-seller")
@@ -81,7 +86,10 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) =
                                 <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>{seller.phone}</h3>
                                 <h3 className={`${classes["t-op-nextlvl"]}`} style={{ width: "150px" }}>
                                     {seller.status === "IN-REVIEW" ?
-                                        <button onClick={() => handleOnChange(seller._id)} className={unapprovedSellerModalClasses.button}>Approve</button>
+                                        <>
+                                            <button onClick={() => handleOnChange(seller._id)} className={unapprovedSellerModalClasses.button}>Approve</button>
+                                            <FaTrash onClick={() => setIsUnapprovedSellerDeleteModalOpen(true)} style={{ marginLeft: "10px", cursor: "pointer" }} size={22} color='red' />
+                                        </>
                                         : <p>Approved</p>
                                     }
                                 </h3>
@@ -91,6 +99,13 @@ const UnapprovedSellerModal = ({ setIsUnapprovedSellerModalOpen, getSellers }) =
                     </div>
                 </div>
             </div>
+
+            {isUnapprovedSellerDeleteModalOpen &&
+                <DeleteModal
+                    handleDelete={handleDelete}
+                    setState={setIsUnapprovedSellerDeleteModalOpen}
+                />
+            }
         </div>
     )
 }

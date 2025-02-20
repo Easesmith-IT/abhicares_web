@@ -1,20 +1,19 @@
-import classes from "./Settings.module.css";
-import Wrapper from "../../Wrapper";
 import { useEffect, useState } from "react";
-import AddSubAdminModal from "../../../components/add-subadmin-modal/AddSubAdminModal";
+import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import toast from "react-hot-toast";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AddSubAdminModal from "../../../components/add-subadmin-modal/AddSubAdminModal";
+import DeleteModal from "../../../components/deleteModal/DeleteModal";
+import Loader from "../../../components/loader/Loader";
 import SeoModal from "../../../components/seo-modal/SeoModal";
 import UpdatePwdModal from "../../../components/update-password-modal/UpdatePwd";
-import useAuthorization from "../../../hooks/useAuthorization";
-import Loader from "../../../components/loader/Loader";
 import UpdateReferEarnModal from "../../../components/update-refer-and-earn-modal/UpdateRefer&EarnModal";
-import DeleteModal from "../../../components/deleteModal/DeleteModal";
-import { useNavigate } from "react-router-dom";
 import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
 import useGetApiReq from "../../../hooks/useGetApiReq";
+import Wrapper from "../../Wrapper";
+import classes from "./Settings.module.css";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 
 const Settings = () => {
   const { res: deleteSubAdminRes, fetchData: deleteSubAdmin, isLoading: deleteSubAdminLoading } = useDeleteApiReq();
@@ -28,8 +27,13 @@ const Settings = () => {
   const [subAdmin, setSubadmin] = useState({});
   const [allSubadmins, setAllSubadmins] = useState([]);
   const [isUpdateReferAndEarnModalOpen, setIsUpdateReferAndEarnModalOpen] = useState(false);
+  const [pageCount, setPageCount] = useState(1);
+  const [page, setPage] = useState(1);
 
-  const { checkAuthorization } = useAuthorization();
+  const handlePageClick = async (page) => {
+    setPage(page);
+  };
+  
   const navigate = useNavigate();
 
   const handleUpdateModal = (data) => {
@@ -64,6 +68,8 @@ const Settings = () => {
 
   useEffect(() => {
     if (getSubAdminsRes?.status === 200 || getSubAdminsRes?.status === 201) {
+      console.log("getSubAdminsRes", getSubAdminsRes);
+
       setAllSubadmins(getSubAdminsRes?.data?.admins);
     }
   }, [getSubAdminsRes])
@@ -146,6 +152,14 @@ const Settings = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <PaginationControl
+              changePage={handlePageClick}
+              limit={10}
+              page={page}
+              total={pageCount + "0"}
+            />
           </div>
         </div>
       </Wrapper>

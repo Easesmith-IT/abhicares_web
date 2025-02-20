@@ -13,54 +13,10 @@ import { format } from "date-fns";
 import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Reviews = () => {
-  const reviewData = [
-    {
-      "_id": "1",
-      "userName": "John Doe",
-      "serviceType": "delivery",
-      "date": "2024-11-20T10:30:00.000Z",
-      "content": "Great service! The delivery was quick and the food was hot."
-    },
-    {
-      "_id": "2",
-      "userName": "Jane Smith",
-      "serviceType": "pickup",
-      "date": "2024-11-18T15:45:00.000Z",
-      "content": "The staff was friendly, but the order was slightly delayed."
-    },
-    {
-      "_id": "3",
-      "userName": "Mike Johnson",
-      "serviceType": "delivery",
-      "date": "2024-11-19T12:20:00.000Z",
-      "content": "The app is easy to use, and the service is reliable."
-    },
-    {
-      "_id": "4",
-      "userName": "Emily Davis",
-      "serviceType": "pickup",
-      "date": "2024-11-17T18:00:00.000Z",
-      "content": "Good experience, but the packaging could be better."
-    },
-    {
-      "_id": "5",
-      "userName": "David Brown",
-      "serviceType": "delivery",
-      "date": "2024-11-16T20:15:00.000Z",
-      "content": "Excellent delivery timing. The driver was polite and professional."
-    },
-    {
-      "_id": "6",
-      "userName": "Sophia Wilson",
-      "serviceType": "pickup",
-      "date": "2024-11-15T14:10:00.000Z",
-      "content": "Quick and easy pickup. The restaurant staff was helpful."
-    }
-  ]
   const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
   const { res: getReviewsRes, fetchData: getReviews, isLoading } = useGetApiReq();
   const { res: filterReviewsRes, fetchData: filterReviewsFun, isLoading: filterReviewsLoading } = useGetApiReq();
-  const [reviews, setReviews] = useState(reviewData);
+  const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState({

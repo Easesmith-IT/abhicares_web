@@ -111,7 +111,7 @@ const useGetApiReq = () => {
             setError(error);
             console.log("error", error);
             toast.error(error.response?.data?.message || "An error occurred.")
-            if (error.response.status === 401) {
+            if (error?.response?.status === 401) {
                 if (token?.role === "user") getStatus();
                 if (adminInfo?.role === "admin") getAdminStatus();
             }

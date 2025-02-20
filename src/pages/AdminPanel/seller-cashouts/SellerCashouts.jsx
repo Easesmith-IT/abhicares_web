@@ -57,7 +57,7 @@ const SellerCashouts = () => {
                         <h1 className={classes["recent-Articles"]}>Seller Cashouts</h1>
                         <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
                             <div>
-                                <p>Start Date</p>
+                                <span>Start Date</span>
                                 <input
                                     type="date"
                                     name="startDate"
@@ -67,7 +67,7 @@ const SellerCashouts = () => {
                                 />
                             </div>
                             <div>
-                                <p>End Date</p>
+                                <span>End Date</span>
                                 <input
                                     type="date"
                                     name="endDate"

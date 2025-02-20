@@ -12,27 +12,28 @@ import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const Orders = () => {
   const { res: getOrdersRes, fetchData: getOrders, isLoading } = useGetApiReq();
-  const { res: getOrderByIDRes, fetchData: getOrderByID,error } = useGetApiReq();
+  const { res: getOrderByIDRes, fetchData: getOrderByID, error, isLoading: isLoading2 } = useGetApiReq();
   const [allOrders, setAllOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchMessage, setSearchMessage] = useState(null)
-  const [pageCount, setPageCount] = useState(1);
-  const [page, setPage] = useState(1);
-
+  
   const [filters, setFilters] = useState({
     startDate: "",
     endDate: "",
     status: "",
   });
-
+  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
-
+  
   const searchRef = useRef();
-
+  
   const navigate = useNavigate();
+  
+  const [pageCount, setPageCount] = useState(1);
+  const [page, setPage] = useState(1);
 
   const handlePageClick = async (page) => {
     setPage(page);
@@ -156,9 +157,9 @@ const Orders = () => {
             </div>
 
             <div className={classes.items}>
-              {!isLoading && allOrders?.length === 0 && <p>No orders found</p>}
+              {!isLoading && !isLoading2 && allOrders?.length === 0 && <p>No orders found</p>}
 
-              {isLoading && allOrders?.length === 0 && <Loader />}
+              {(isLoading || isLoading2) && <Loader />}
 
               {allOrders?.map((order, i) => (
                 <div key={i} className={`${classes.item1} ${classes.cursor}`}>
@@ -197,7 +198,7 @@ const Orders = () => {
               ))}
             </div>
 
-            <div style={{ marginTop: "100px" }}>
+            <div style={{ marginTop: "20px" }}>
               <PaginationControl
                 changePage={handlePageClick}
                 limit={10}

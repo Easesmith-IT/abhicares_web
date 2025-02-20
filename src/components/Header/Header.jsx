@@ -38,6 +38,12 @@ export const Header = () => {
   const { isAuthenticated } = useSelector((state) => state.user)
   const cart = useSelector((state) => state.cart);
 
+  useEffect(() => {
+    (async () => {
+      await dispatch(getCartDetails());
+    })()
+  }, []);
+
   const handleOnclick = () => {
     setIsOpen(!isOpen);
   };

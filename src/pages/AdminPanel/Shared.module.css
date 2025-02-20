@@ -392,7 +392,13 @@
 
 .sellers {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 200px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 200px;
+  gap: 10px;
+}
+
+.Customer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 200px;
   gap: 10px;
 }
 

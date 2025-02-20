@@ -13,6 +13,7 @@ import { MdDelete } from 'react-icons/md';
 import useDeleteApiReq from '../../hooks/useDeleteApiReq';
 import Wrapper from '../Wrapper';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import { PaginationControl } from 'react-bootstrap-pagination-control';
 
 const Enquiry = () => {
     const { res: deleteInquiryRes, fetchData: deleteInquiry, isLoading: deleteInquiryLoading } = useDeleteApiReq();
@@ -22,7 +23,12 @@ const Enquiry = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [allInquiries, setAllInquiries] = useState([]);
     const [enquiryId, setEnquiryId] = useState("");
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
 
+    const handlePageClick = async (page) => {
+        setPage(page);
+    };
 
     const handleDeleteModal = (e, id) => {
         e.stopPropagation();
@@ -45,16 +51,19 @@ const Enquiry = () => {
     }, [deleteInquiryRes])
 
     const getAllInquiries = async () => {
-        getInquiries("/admin/get-all-enquiry")
+        getInquiries(`/admin/get-all-enquiry?page=${page}`)
     };
 
     useEffect(() => {
         getAllInquiries()
-    }, [])
+    }, [page])
 
     useEffect(() => {
         if (getInquiriesRes?.status === 200 || getInquiriesRes?.status === 201) {
+            console.log("getInquiriesRes", getInquiriesRes);
+
             setAllInquiries(getInquiriesRes?.data.data);
+            setPageCount(parseInt(getInquiriesRes?.data.totalPage));
         }
     }, [getInquiriesRes])
 
@@ -134,13 +143,12 @@ const Enquiry = () => {
                         </div>
 
                         <div className={classes.items}>
-                            {!isLoading
+                            {!isLoading && !searchInquiriesLoading
                                 && allInquiries.length === 0
                                 && <p>No inquiries found</p>
                             }
 
-                            {isLoading
-                                && allInquiries.length === 0
+                            {(isLoading || searchInquiriesLoading)
                                 && <Loader />
                             }
                             {allInquiries?.map((inquiry) => (
@@ -157,6 +165,15 @@ const Enquiry = () => {
                                 </div>
                             ))}
 
+                        </div>
+
+                        <div style={{ marginTop: "20px" }}>
+                            <PaginationControl
+                                changePage={handlePageClick}
+                                limit={10}
+                                page={page}
+                                total={pageCount + "0"}
+                            />
                         </div>
                     </div>
                 </div>

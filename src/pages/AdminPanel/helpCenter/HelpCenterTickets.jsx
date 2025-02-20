@@ -21,7 +21,7 @@ const HelpCenterTickets = () => {
   const { res: deleteTicketRes, fetchData: deleteTicket, isLoading: deleteTicketLoading } = useDeleteApiReq();
   const { res: getCategoriesRes, fetchData: getCategories, isLoading: getCategoriesLoading } = useGetApiReq();
   const { res: getTicketsRes, fetchData: getTickets, isLoading } = useGetApiReq();
-  const { res: filterTicketRes, fetchData: filterTicket, isLoading:filterTicketLoading } = useGetApiReq();
+  const { res: filterTicketRes, fetchData: filterTicket, isLoading: filterTicketLoading } = useGetApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [issue, setIssue] = useState("");
@@ -77,8 +77,8 @@ const HelpCenterTickets = () => {
       setAllIssues(getTicketsRes?.data.data);
     }
   }, [getTicketsRes])
-  
-  
+
+
   useEffect(() => {
     if (!filters.date &&
       !filters.raisedBy &&
@@ -96,17 +96,17 @@ const HelpCenterTickets = () => {
     filters.serviceType,
     filters.searchQuery,
     filters.status]);
-    
-    const filterTickets = async () => {
-      filterTicket(`/admin/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`)
-    };
 
-    useEffect(() => {
-      if (filterTicketRes?.status === 200 || filterTicketRes?.status === 201) {
-        setTotalPages(filterTicketRes?.data.totalPages);
-        setAllIssues(filterTicketRes?.data.data);
-      }
-    }, [filterTicketRes])
+  const filterTickets = async () => {
+    filterTicket(`/admin/filter-ticket?date=${filters.date}&serviceType=${filters.serviceType}&raisedBy=${filters.raisedBy}&page=${currentPage}`)
+  };
+
+  useEffect(() => {
+    if (filterTicketRes?.status === 200 || filterTicketRes?.status === 201) {
+      setTotalPages(filterTicketRes?.data.totalPages);
+      setAllIssues(filterTicketRes?.data.data);
+    }
+  }, [filterTicketRes])
 
   const handleDeleteModal = (id) => {
     setIssue(id);
@@ -195,10 +195,12 @@ const HelpCenterTickets = () => {
             </div>
           </div>
 
+          <div style={{ marginTop: "10px" }}>
+            {(isLoading || filterTicketLoading) && <Loader />}
+          </div>
           <div className={helpCenterClasses.container}>
-            {!isLoading && allIssues?.length === 0 && <p>No tickets found</p>}
+            {!isLoading && !filterTicketLoading && allIssues?.length === 0 && <p>No tickets found</p>}
 
-            {isLoading && allIssues?.length === 0 && <Loader />}
             {allIssues?.map((ticket) => {
               return (
                 <div key={ticket?._id} className={helpCenterClasses.helpCenter}>

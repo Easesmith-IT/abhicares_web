@@ -15,6 +15,7 @@ import Loader from '../../../components/loader/Loader'
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
 import useGetApiReq from '../../../hooks/useGetApiReq'
 import Wrapper from '../../Wrapper'
+import { PaginationControl } from 'react-bootstrap-pagination-control'
 
 const Offers = () => {
     const { res: deleteCouponRes, fetchData: deleteCoupon, isLoading: deleteCouponLoading } = useDeleteApiReq();
@@ -24,7 +25,12 @@ const Offers = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [offer, setOffer] = useState({});
     const [allOffers, setAllOffers] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
 
+    const handlePageClick = async (page) => {
+        setPage(page);
+    };
 
     const [filterdResults, setFilterdResults] = useState([]);
     // const [status, setStatus] = useState("all")
@@ -51,6 +57,8 @@ const Offers = () => {
 
     useEffect(() => {
         if (getCouponsRes?.status === 200 || getCouponsRes?.status === 201) {
+            console.log("getCouponsRes", getCouponsRes);
+
             setAllOffers(getCouponsRes?.data.data);
         }
     }, [getCouponsRes])
@@ -128,6 +136,15 @@ const Offers = () => {
                             </div>
                         ))}
 
+                    </div>
+
+                    <div style={{ marginTop: "20px" }}>
+                        <PaginationControl
+                            changePage={handlePageClick}
+                            limit={10}
+                            page={page}
+                            total={pageCount + "0"}
+                        />
                     </div>
                 </div>
             </Wrapper>

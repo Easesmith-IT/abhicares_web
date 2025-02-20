@@ -151,6 +151,9 @@ const CheckoutPage = () => {
       setTotalTaxRs(calculateChargeRes?.data?.totalTax)
       setTotal(calculateChargeRes?.data?.totalPayable)
       setOfferValue(calculateChargeRes?.data?.totalDiscount)
+      if (calculateChargeRes?.data?.totalDiscount > 0) {
+        setMessage({ message: "Offer available", error: false });
+      }
     }
   }, [calculateChargeRes])
 
@@ -239,12 +242,12 @@ const CheckoutPage = () => {
       }
 
       if (status === "active") {
-        setMessage("Valid coupon");
+        setMessage({ message: "Valid coupon", error: false });
         setCouponId(_id)
         setCouponCode(name)
       }
       else {
-        setMessage("Not valid coupon");
+        setMessage({ message: "Not valid coupon", error: true });
         setOfferValue(0);
         // const totalValue = total - Number(0);
         // setTotal(totalValue);
@@ -254,7 +257,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (error) {
-      setMessage("Enter valid coupon code");
+      setMessage({ message: "Enter valid coupon code", error: true });
       const totalValue = total + Number(offerValue);
       setOfferValue(0);
       setTotal(totalValue);
@@ -412,7 +415,7 @@ const CheckoutPage = () => {
                 <div className={classes.address_container}>
                   {address.defaultAddress && (
                     <span style={{ color: "green", fontWeight: "bold" }}>
-                      default
+                      Default
                     </span>
                   )}
                   <h4 className={classes.mt}>{address?.mobile}</h4>
@@ -535,7 +538,7 @@ const CheckoutPage = () => {
                   <input onChange={(e) => setOfferCode(e.target.value.toUpperCase())} value={offerCode} className={classes.input} placeholder="Enter coupon code" type="text" name="name" id="name" />
                   <button onClick={handleCheck}>Apply</button>
                 </div>
-                {message && <p className={message === "Valid coupon" ? classes.green : classes.red}>{message}</p>}
+                {message && <p className={!message?.error ? classes.green : classes.red}>{message?.message}</p>}
               </div>
             </div>
 

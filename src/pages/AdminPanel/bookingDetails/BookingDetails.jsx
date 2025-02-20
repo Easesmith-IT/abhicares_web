@@ -11,7 +11,7 @@ import usePatchApiReq from "../../../hooks/usePatchApiReq";
 
 const BookingDetails = () => {
   const { res: getBookingDetailsRes, fetchData: getBookingDetails, isLoading } = useGetApiReq();
-  const { res: getDistanceRes, fetchData: getDistance, isLoading:isDistanceLoading } = useGetApiReq();
+  const { res: getDistanceRes, fetchData: getDistance, isLoading: isDistanceLoading } = useGetApiReq();
   const { res: bookingDetailRes, fetchData: bookingDetailFetchData } = usePatchApiReq();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
@@ -36,32 +36,32 @@ const BookingDetails = () => {
       setStatus(getBookingDetailsRes?.data.bookingDetails.status);
     }
   }, [getBookingDetailsRes])
-  
+
   const updateStatus = async () => {
-    
+
     if (status === '') return
 
     await bookingDetailFetchData(`/admin/update-seller-order-status/${booking._id}`, { status: status })
 
   };
-  
+
   console.log("booking 123", booking);
-  
+
   const getDistanceAndTimeBetweenTwoPoints = async () => {
     try {
       if (booking) {
         const sourceCoordinates = `${booking.currentLocation.location[0]},${booking.currentLocation.location[1]}`;
         const destinationCoordinates = `${booking.userAddress.location.coordinates[0]},${booking.userAddress.location.coordinates[1]}`;
-        
+
         //  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${sourceCoordinates}&destinations=${destinationCoordinates}&key=AIzaSyB_ZhYrt0hw7zB74UYGhh4Wt_IkltFzo-I`;
         getDistance(`/admin/get-the-distance-routes?origins=${sourceCoordinates}&destinations=${destinationCoordinates}`)
       }
-      
+
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     if (!isLoading) {
       getDistanceAndTimeBetweenTwoPoints();
@@ -149,14 +149,10 @@ const BookingDetails = () => {
                   </div>
                   <div>
                     <p>
-                      Date of Booking:{" "}
+                      Date of Delivery:{" "}
                       {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
                     </p>
-                    {/* <p>
-                      date of appointment:{" "}
-                      {format(new Date(booking.bookingDate), "dd-MM-yyyy")}
-                    </p> */}
-                    <p>Time of Booking: {booking.bookingTime && format(new Date(booking?.bookingTime), "hh:mm aa")}</p>
+                    <p>Time of Delivery: {booking.bookingTime && format(new Date(booking?.bookingTime), "hh:mm aa")}</p>
                     {(!booking.sellerId || status === "not-alloted") && (
                       <button
                         onClick={handlePartnerModal}
@@ -173,6 +169,12 @@ const BookingDetails = () => {
                         <p>{booking.sellerId.phone}</p>
                       </div>
                     )}
+
+                    <p style={{marginTop:"20px"}}>
+                      Date of Booking:{" "}
+                      {format(new Date(booking.createdAt), "dd-MM-yyyy")}
+                    </p>
+                    <p>Time of Booking: {booking.createdAt && format(new Date(booking?.createdAt), "hh:mm aa")}</p>
                   </div>
                 </div>
 
@@ -217,17 +219,17 @@ const BookingDetails = () => {
                     <p>Amounts</p>
                   </div>
                   <div className={classes.d_flex}>
-                  <p>Sub Total :</p>
-                  <p>₹{booking?.itemTotalValue}</p>
-                </div>
+                    <p>Sub Total :</p>
+                    <p>₹{booking?.itemTotalValue}</p>
+                  </div>
                   <div className={classes.d_flex}>
-                  <p>Tax and other charges :</p>
-                  <p>₹{booking?.itemTotalTax}</p>
-                </div>
+                    <p>Tax and other charges :</p>
+                    <p>₹{booking?.itemTotalTax}</p>
+                  </div>
                   <div className={classes.d_flex}>
-                  <p>Discount :</p>
-                  <p>₹{booking?.itemTotalDiscount}</p>
-                </div>
+                    <p>Discount :</p>
+                    <p>₹{booking?.itemTotalDiscount}</p>
+                  </div>
                   <div className={classes.d_flex}>
                     <p>Total Amount :</p>
                     <p>₹{booking.orderValue}</p>

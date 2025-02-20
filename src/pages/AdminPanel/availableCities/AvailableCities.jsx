@@ -33,6 +33,8 @@ const AvailableCities = () => {
 
     useEffect(() => {
         if (getCitiesRes?.status === 200 || getCitiesRes?.status === 201) {
+            console.log("getCitiesRes", getCitiesRes);
+
             setAllCities(getCitiesRes?.data.data);
         }
     }, [getCitiesRes])

@@ -13,6 +13,8 @@ import CashOutReq from '../../../components/cash-out-req/CashOutReq';
 import usePostApiReq from '../../../hooks/usePostApiReq';
 import useGetApiReq from '../../../hooks/useGetApiReq';
 import AddCashoutReqModal from '../../../components/update-cashoutReq-modal/AddCashoutReqModal';
+import { format } from 'date-fns';
+import SellerAssignedOrdersModal from '../../../components/seller-asigned-orders/SellerAssignedOrdersModal';
 
 const SellerAssignedOrders = () => {
     const { res: orderbyStatusRes, fetchData: orderbyStatus, isLoading: orderbyStatusLoading } = usePostApiReq();
@@ -31,6 +33,7 @@ const SellerAssignedOrders = () => {
     const [isAddCashoutReqModalOpen, setIsAddCashoutReqModalOpen] = useState(false);
     const [wallet, setWallet] = useState("");
     const [cashOutRequests, setCashOutRequests] = useState([]);
+    const [isSellerAssignedModalOpen, setIsSellerAssignedModalOpen] = useState(false);
 
     const params = useParams()
 
@@ -62,8 +65,8 @@ const SellerAssignedOrders = () => {
 
     useEffect(() => {
         if (getWalletRes?.status === 200 || getWalletRes?.status === 201) {
-            console.log("getWalletRes",getWalletRes);
-            
+            console.log("getWalletRes", getWalletRes);
+
             if (getWalletRes?.data.wallet._id) {
                 getCashOutRequests(getWalletRes?.data.wallet._id);
                 setWallet(getWalletRes?.data.wallet);
@@ -148,6 +151,7 @@ const SellerAssignedOrders = () => {
                     <div>
                         <div className={sellerAssignedOrdersClasses.contianer}>
                             <p><b>Name:</b> {state?.name}</p>
+                            <p><b>Joined Date:</b> {state?.createdAt && format(new Date(state?.createdAt), "dd/MM/yyyy")}</p>
                             <p><b>Gst Number:</b> {state?.gstNumber}</p>
                             <p><b>Phone</b>: {state?.phone}</p>
                             <p><b>Legal Name:</b> {state?.legalName}</p>
@@ -172,7 +176,10 @@ const SellerAssignedOrders = () => {
                         <div className={sellerAssignedOrdersClasses["reportContainer"]}>
                             <div className={classes["report-header"]}>
                                 <h1 className={classes["recent-Articles"]}>Seller Assigned Orders</h1>
-                                <select
+                                <div>
+                                    <button onClick={() => setIsSellerAssignedModalOpen(true)} style={{ background: "black", color: "white", padding: "3px 10px" }}>View All</button>
+                                </div>
+                                {/* <select
                                     onChange={handleChange}
                                     value={status}
                                     className={classes.select}
@@ -183,7 +190,7 @@ const SellerAssignedOrders = () => {
                                     <option value="alloted">Alloted</option>
                                     <option value="completed">Completed</option>
                                     <option value="cancelled">Cancelled</option>
-                                </select>
+                                </select> */}
                             </div>
 
                             <div className={sellerAssignedOrdersClasses["report-body"]}>
@@ -263,6 +270,13 @@ const SellerAssignedOrders = () => {
                 />
             }
 
+            {isSellerAssignedModalOpen &&
+                <SellerAssignedOrdersModal
+                    isSellerAssignedModalOpen={isSellerAssignedModalOpen}
+                    setIsSellerAssignedModalOpen={setIsSellerAssignedModalOpen}
+                />
+            }
+
             {isViewWalletModalOpen &&
                 <WalletViewModal
                     setIsViewWalletModalOpen={setIsViewWalletModalOpen}
@@ -273,7 +287,7 @@ const SellerAssignedOrders = () => {
 
             {isAddCashoutReqModalOpen &&
                 <AddCashoutReqModal
-                getCashOutRequests={getCashOutRequests}
+                    getCashOutRequests={getCashOutRequests}
                     setIsUpdateModalOpen={setIsAddCashoutReqModalOpen}
                     walletId={wallet?._id}
                 />

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 
-import classes from "./Shared.module.css";
-import AddUserModal from "../../components/add-user-modal/AddUserModal";
-import axios from "axios";
-import { FiEdit } from "react-icons/fi";
-import { useLocation, useNavigate } from "react-router-dom";
-import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
-import DeleteModal from "../../components/deleteModal/DeleteModal";
-import Wrapper from "../Wrapper";
-import Loader from "../../components/loader/Loader";
 import { FaEye } from "react-icons/fa6";
-import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
-import useAuthorization from "../../hooks/useAuthorization";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import AddUserModal from "../../components/add-user-modal/AddUserModal";
 import AllUsersModal from "../../components/all-user-modal/AllUsersModal";
+import DeleteModal from "../../components/deleteModal/DeleteModal";
+import Loader from "../../components/loader/Loader";
+import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
 import useDeleteApiReq from "../../hooks/useDeleteApiReq";
 import useGetApiReq from "../../hooks/useGetApiReq";
+import Wrapper from "../Wrapper";
+import classes from "./Shared.module.css";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 
 const Customers = () => {
   const { res: deleteUserRes, fetchData: deleteUser, isLoading: deleteUserLoading } = useDeleteApiReq();
@@ -28,7 +26,12 @@ const Customers = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
   const [isAllUsersModalOpen, setIsAllUsersModalOpen] = useState(false);
+  const [pageCount, setPageCount] = useState(1);
+  const [page, setPage] = useState(1);
 
+  const handlePageClick = async (page) => {
+    setPage(page);
+  };
 
   const getAllUsers = async () => {
     getUsers("/admin/get-all-user")
@@ -40,7 +43,10 @@ const Customers = () => {
 
   useEffect(() => {
     if (getUsersRes?.status === 200 || getUsersRes?.status === 201) {
+      console.log("getUsersRes", getUsersRes);
+
       setAllUsers(getUsersRes?.data.data);
+      setPageCount(getUsersRes?.data.totalPage);
     }
   }, [getUsersRes])
 
@@ -122,33 +128,40 @@ const Customers = () => {
           </div>
 
           <div className={classes["report-body"]}>
-            <div className={classes["report-topic-heading"]}>
-              <h3 className={classes["t-op"]}>User Name</h3>
+            <div className={classes.Customer}>
+              <h3 className={classes["t-op"]}>Customer Name</h3>
               <h3 className={classes["t-op"]}>Contact Number</h3>
               <h3 className={classes["t-op"]}>Update/Delete</h3>
             </div>
 
             <div className={classes.items}>
-              {!isLoading
+              {!isLoading && !isSearchUserLoading
                 && allUsers?.length === 0
                 && <p>No users found</p>
               }
 
-              {isLoading
-                && allUsers?.length === 0
+              {(isLoading || isSearchUserLoading)
                 && <Loader />
               }
               {allUsers?.map((user) => (
-                <div key={user._id} className={classes.item1}>
+                <div key={user._id} className={classes.Customer}>
                   <h3 className={classes["t-op-nextlvl"]}>{user.name}</h3>
                   <h3 className={classes["t-op-nextlvl"]}>{user.phone}</h3>
-                  <h3 className={`${classes["t-op-nextlvl"]}`}>
+                  <h3 style={{ display: "flex", gap: "10px" }} className={`${classes["t-op-nextlvl"]}`}>
                     <FaEye onClick={() => handleUserInfoModal(user)} cursor={"pointer"} size={20} />
                     <FiEdit onClick={() => handleUpdateModal(user)} cursor={"pointer"} className="ml-2" size={20} />
                     <MdDelete onClick={() => handleDeleteModal(user._id)} cursor={"pointer"} size={22} color='red' />
                   </h3>
                 </div>
               ))}
+            </div>
+            <div style={{ marginTop: "20px" }}>
+              <PaginationControl
+                changePage={handlePageClick}
+                limit={10}
+                page={page}
+                total={pageCount + "0"}
+              />
             </div>
           </div>
         </div>

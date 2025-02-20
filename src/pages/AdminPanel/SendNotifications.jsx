@@ -5,6 +5,7 @@ import classes from "../AdminPanel/Shared.module.css";
 import SendNotificationModal from '../../components/send-notification-modal/SendNotificationModal';
 import NotificationComp from '../../components/notification/NotificationComp';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import { PaginationControl } from 'react-bootstrap-pagination-control';
 
 const SendNotifications = () => {
     const { res: getAllNotificationsRes, fetchData: getAllNotifications, isLoading } = useGetApiReq();
@@ -15,15 +16,24 @@ const SendNotifications = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDate, setFilterDate] = useState('');
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
+
+    const handlePageClick = async (page) => {
+        setPage(page);
+    };
 
     // Fetch notifications
     const getNotifications = async () => {
-        getAllNotifications("/admin/get-all-notifications")
+        getAllNotifications(`/admin/get-all-notifications?page=${page}`)
     };
 
     useEffect(() => {
         if (getAllNotificationsRes?.status === 200 || getAllNotificationsRes?.status === 201) {
+            console.log("getAllNotificationsRes", getAllNotificationsRes);
+
             setNotifications(getAllNotificationsRes?.data?.data);
+            setPageCount(getAllNotificationsRes?.data?.pagination?.totalPages);
         }
     }, [getAllNotificationsRes])
     console.log("searchTerm", searchTerm);
@@ -35,6 +45,8 @@ const SendNotifications = () => {
     useEffect(() => {
         if (searchNotificationRes?.status === 200 || searchNotificationRes?.status === 201) {
             setNotifications(searchNotificationRes?.data?.data);
+            console.log("searchNotificationRes", searchNotificationRes);
+            setPageCount(searchNotificationRes?.data?.pagination?.totalPages);
         }
     }, [searchNotificationRes])
 
@@ -44,6 +56,8 @@ const SendNotifications = () => {
 
     useEffect(() => {
         if (filterNotificationRes?.status === 200 || filterNotificationRes?.status === 201) {
+            console.log("filterNotificationRes",filterNotificationRes);
+            
             setNotifications(filterNotificationRes?.data?.data);
         }
     }, [filterNotificationRes])
@@ -109,6 +123,14 @@ const SendNotifications = () => {
                                 )}
                             </div>
                         )}
+                    </div>
+                    <div style={{ marginTop: "20px" }}>
+                        <PaginationControl
+                            changePage={handlePageClick}
+                            limit={10}
+                            page={page}
+                            total={pageCount + "0"}
+                        />
                     </div>
                 </div>
             </Wrapper>
