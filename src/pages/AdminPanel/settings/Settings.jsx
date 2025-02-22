@@ -33,7 +33,7 @@ const Settings = () => {
   const handlePageClick = async (page) => {
     setPage(page);
   };
-  
+
   const navigate = useNavigate();
 
   const handleUpdateModal = (data) => {
@@ -59,17 +59,17 @@ const Settings = () => {
   }, [deleteSubAdminRes])
 
   const getSubadmins = async () => {
-    getSubAdmins("/admin/get-sub-admins")
+    getSubAdmins(`/admin/get-sub-admins?page=${page}`)
   };
 
   useEffect(() => {
     getSubadmins();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     if (getSubAdminsRes?.status === 200 || getSubAdminsRes?.status === 201) {
       console.log("getSubAdminsRes", getSubAdminsRes);
-
+      setPageCount(getSubAdminsRes?.data?.pagination?.totalPages);
       setAllSubadmins(getSubAdminsRes?.data?.admins);
     }
   }, [getSubAdminsRes])
@@ -115,7 +115,9 @@ const Settings = () => {
             </div>
           </div>
 
-          {isLoading && allSubadmins.length === 0 && <Loader />}
+          <div style={{ marginTop: "20px" }}>
+            {isLoading && <Loader />}
+          </div>
           <div className={classes.container}>
             {!isLoading && allSubadmins.length === 0 && (
               <p>No subAdmins found</p>

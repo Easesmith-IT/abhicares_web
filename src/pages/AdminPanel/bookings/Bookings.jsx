@@ -38,7 +38,7 @@ const Bookings = () => {
     const searchRef = useRef();
 
     const getAllBookings = async () => {
-        getBookingList("/admin/get-booking-list")
+        getBookingList(`/admin/get-booking-list?page=${page}`)
     };
 
     // useEffect(() => {
@@ -50,15 +50,17 @@ const Bookings = () => {
             console.log("getBookingListRes", getBookingListRes);
 
             setAllBookings(getBookingListRes?.data.data);
+            setPageCount(getBookingListRes?.data?.pagination?.totalPages);
         }
     }, [getBookingListRes])
 
     const filterBookings = async () => {
-        filterBooking(`/admin/search-filter-bookings?status=${filters.status}&bookingDate=${filters.date}`)
+        filterBooking(`/admin/search-filter-bookings?status=${filters.status}&bookingDate=${filters.date}&page=${page}`)
     };
 
     useEffect(() => {
         if (filterBookingRes?.status === 200 || filterBookingRes?.status === 201) {
+            setPageCount(filterBookingRes?.data?.pagination?.totalPages);
             setAllBookings(filterBookingRes?.data.data);
         }
     }, [filterBookingRes])
@@ -70,7 +72,7 @@ const Bookings = () => {
         else {
             getAllBookings()
         }
-    }, [filters.date, filters.status])
+    }, [filters.date, filters.status, page])
 
     const getOrderById = async () => {
         const orderId = searchRef.current.value;

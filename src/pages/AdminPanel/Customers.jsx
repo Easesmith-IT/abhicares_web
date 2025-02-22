@@ -28,18 +28,16 @@ const Customers = () => {
   const [isAllUsersModalOpen, setIsAllUsersModalOpen] = useState(false);
   const [pageCount, setPageCount] = useState(1);
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handlePageClick = async (page) => {
     setPage(page);
   };
 
   const getAllUsers = async () => {
-    getUsers("/admin/get-all-user")
+    getUsers(`/admin/get-all-user?page=${page}`)
   };
 
-  useEffect(() => {
-    getAllUsers();
-  }, [])
 
   useEffect(() => {
     if (getUsersRes?.status === 200 || getUsersRes?.status === 201) {
@@ -86,27 +84,26 @@ const Customers = () => {
 
   const handleSerach = async (e) => {
     const value = e.target.value;
-    searchUser(`/admin/search-user?search=${value}`)
+    setSearchQuery(value);
   }
 
   useEffect(() => {
+    if (!searchQuery) {
+      getAllUsers();
+      return;
+    }
+
+    searchUser(`/admin/search-user?search=${searchQuery}&page=${page}`)
+  }, [page, searchQuery]);
+
+  useEffect(() => {
     if (searchUserRes?.status === 200 || searchUserRes?.status === 201) {
+      console.log("searchUserRes", searchUserRes);
+      setPageCount(searchUserRes?.data?.pagination?.totalPages);
       setAllUsers(searchUserRes?.data.data);
     }
   }, [searchUserRes])
 
-  function debounce(fx, time) {
-    let id = null;
-    return function (data) {
-      if (id) {
-        clearTimeout(id);
-      }
-      id = setTimeout(() => {
-        fx(data);
-        // id = null;
-      }, time);
-    };
-  }
 
   const handleOnSubmit = () => {
     setIsAllUsersModalOpen(true);
@@ -120,7 +117,7 @@ const Customers = () => {
             <h1 className={classes["recent-Articles"]}>Customers</h1>
             <div className={classes.d_flex}>
               <button className={classes.btn} onClick={handleOnSubmit}>Download</button>
-              <input onChange={debounce(handleSerach, 1000)} className={classes.input} type="text" placeholder="Search customers" />
+              <input onChange={handleSerach} className={classes.input} type="text" placeholder="Search customers" />
             </div>
             {/* <button onClick={() => setIsModalOpen(true)} className={classes.services_add_btn}>
                 <img src={AddBtn} alt="add product" />

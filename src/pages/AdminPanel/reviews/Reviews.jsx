@@ -52,6 +52,8 @@ const Reviews = () => {
 
   useEffect(() => {
     if (getReviewsRes?.status === 200 || getReviewsRes?.status === 201) {
+      console.log("getReviewsRes", getReviewsRes);
+
       setReviews(getReviewsRes?.data.data);
       setTotalPages(getReviewsRes?.data.totalPages);
     }
@@ -84,6 +86,8 @@ const Reviews = () => {
 
   useEffect(() => {
     if (filterReviewsRes?.status === 200 || filterReviewsRes?.status === 201) {
+      console.log("filterReviewsRes", filterReviewsRes);
+
       setTotalPages(filterReviewsRes?.data.totalPages);
       setReviews(filterReviewsRes?.data.data);
     }

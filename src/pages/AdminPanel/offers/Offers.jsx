@@ -49,16 +49,16 @@ const Offers = () => {
 
 
     const getAllOffers = async () => {
-        getCoupons("/admin/get-coupons")
+        getCoupons(`/admin/get-coupons?page=${page}`)
     };
     useEffect(() => {
         getAllOffers();
-    }, [])
+    }, [page])
 
     useEffect(() => {
         if (getCouponsRes?.status === 200 || getCouponsRes?.status === 201) {
             console.log("getCouponsRes", getCouponsRes);
-
+            setPageCount(getCouponsRes?.data?.pagination?.totalPages);
             setAllOffers(getCouponsRes?.data.data);
         }
     }, [getCouponsRes])
@@ -104,16 +104,15 @@ const Offers = () => {
                         </div>
                     </div>
 
+                        {isLoading
+                            && <Loader />
+                        }
                     <div className={offersClasses.container}>
                         {!isLoading
                             && filterdResults?.length === 0
                             && <p>No offers found</p>
                         }
 
-                        {isLoading
-                            && filterdResults?.length === 0
-                            && <Loader />
-                        }
 
                         {filterdResults?.map((offer) => (
                             <div key={offer._id} className={offersClasses.city}>

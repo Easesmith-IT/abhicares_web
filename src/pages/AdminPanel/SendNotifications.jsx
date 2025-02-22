@@ -51,28 +51,27 @@ const SendNotifications = () => {
     }, [searchNotificationRes])
 
     const filterNotifications = async () => {
-        filterNotification(`/admin/filter-notifications?date=${filterDate}`)
+        filterNotification(`/admin/filter-notifications?date=${filterDate}&page=${page}`)
     };
 
     useEffect(() => {
         if (filterNotificationRes?.status === 200 || filterNotificationRes?.status === 201) {
-            console.log("filterNotificationRes",filterNotificationRes);
-            
+            console.log("filterNotificationRes", filterNotificationRes);
+            setPageCount(filterNotificationRes?.data?.pagination?.totalPages);
             setNotifications(filterNotificationRes?.data?.data);
         }
     }, [filterNotificationRes])
 
-    useEffect(() => {
-        !searchTerm && getNotifications();
-    }, []);
 
     useEffect(() => {
+        !searchTerm && getNotifications();
         searchTerm && searchNotifications();
-    }, [searchTerm]);
+    }, [searchTerm, page]);
 
     useEffect(() => {
         filterDate && filterNotifications();
-    }, [filterDate]);
+        !filterDate && getNotifications();
+    }, [filterDate, page]);
 
     return (
         <>

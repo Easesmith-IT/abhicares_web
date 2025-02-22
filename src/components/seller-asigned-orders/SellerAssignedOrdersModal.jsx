@@ -33,12 +33,12 @@ const SellerAssignedOrdersModal = ({ setIsSellerAssignedModalOpen }) => {
   };
 
   const getSellerOrders = async () => {
-    getSellerOrdersList(`/admin/get-seller-order-list/${params?.partnerId}`)
+    getSellerOrdersList(`/admin/get-seller-order-list/${params?.partnerId}?startDate=${filters?.startDate}&endDate=${filters?.endDate}`)
   };
 
   useEffect(() => {
     getSellerOrders();
-  }, [])
+  }, [filters?.startDate, filters?.endDate])
 
   useEffect(() => {
     if (getSellerOrdersListRes?.status === 200 || getSellerOrdersListRes?.status === 201) {
@@ -69,7 +69,7 @@ const SellerAssignedOrdersModal = ({ setIsSellerAssignedModalOpen }) => {
     <div className={classes.wrapper}>
       <div className={classes.modal}>
         <div className={classes.heading_container}>
-          <h4>Seller Assigned Orders</h4>
+          <h4>Partner Assigned Orders</h4>
           <div className={classes.d_flex}>
             <div style={{ display: "flex", gap: "20px" }}>
               <div>

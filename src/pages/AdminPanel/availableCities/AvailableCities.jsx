@@ -13,6 +13,7 @@ import DeleteModal from '../../../components/deleteModal/DeleteModal'
 import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
 import useGetApiReq from '../../../hooks/useGetApiReq'
 import Wrapper from '../../Wrapper'
+import { PaginationControl } from 'react-bootstrap-pagination-control'
 
 const AvailableCities = () => {
     const { res: deleteCityRes, fetchData: deleteCity, isLoading: deleteCityLoading } = useDeleteApiReq();
@@ -22,19 +23,24 @@ const AvailableCities = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [city, setCity] = useState({});
     const [allCities, setAllCities] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
 
+    const handlePageClick = async (page) => {
+        setPage(page);
+    };
 
     const getAllCities = async () => {
-        getCities("/admin/get-availabe-city")
+        getCities(`/admin/get-availabe-city?page=${page}`)
     };
     useEffect(() => {
         getAllCities();
-    }, [])
+    }, [page])
 
     useEffect(() => {
         if (getCitiesRes?.status === 200 || getCitiesRes?.status === 201) {
             console.log("getCitiesRes", getCitiesRes);
-
+            setPageCount(getCitiesRes?.data?.pagination?.totalPages);
             setAllCities(getCitiesRes?.data.data);
         }
     }, [getCitiesRes])
@@ -72,16 +78,17 @@ const AvailableCities = () => {
                         </button>
                     </div>
 
+                    <div style={{ marginTop: "20px" }}>
+                        {isLoading
+                            && <Loader />
+                        }
+                    </div>
                     <div className={citiesClasses.container}>
                         {!isLoading
                             && allCities?.length === 0
                             && <p>No cities found</p>
                         }
 
-                        {isLoading
-                            && allCities?.length === 0
-                            && <Loader />
-                        }
                         {allCities?.map((city) => (
                             <div key={city._id} className={citiesClasses.city_wrapper}>
                                 <div className={citiesClasses.city}>
@@ -97,6 +104,14 @@ const AvailableCities = () => {
                                 <p>pincode: {city.pinCodes.map(item => item?.code).join(", ")}</p>
                             </div>
                         ))}
+                    </div>
+                    <div style={{ marginTop: "20px" }}>
+                        <PaginationControl
+                            changePage={handlePageClick}
+                            limit={10}
+                            page={page}
+                            total={pageCount + "0"}
+                        />
                     </div>
                 </div>
             </Wrapper>

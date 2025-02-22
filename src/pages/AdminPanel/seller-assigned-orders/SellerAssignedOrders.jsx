@@ -147,7 +147,7 @@ const SellerAssignedOrders = () => {
         <>
             <Wrapper>
                 <div>
-                    <h2 className={sellerAssignedOrdersClasses.h2}>Seller Info</h2>
+                    <h2 className={sellerAssignedOrdersClasses.h2}>Partner Info</h2>
                     <div>
                         <div className={sellerAssignedOrdersClasses.contianer}>
                             <p><b>Name:</b> {state?.name}</p>
@@ -175,7 +175,7 @@ const SellerAssignedOrders = () => {
                     <div className={sellerAssignedOrdersClasses.flex} style={{ marginBottom: "30px" }}>
                         <div className={sellerAssignedOrdersClasses["reportContainer"]}>
                             <div className={classes["report-header"]}>
-                                <h1 className={classes["recent-Articles"]}>Seller Assigned Orders</h1>
+                                <h1 className={classes["recent-Articles"]}>Partner Assigned Orders</h1>
                                 <div>
                                     <button onClick={() => setIsSellerAssignedModalOpen(true)} style={{ background: "black", color: "white", padding: "3px 10px" }}>View All</button>
                                 </div>
@@ -195,7 +195,7 @@ const SellerAssignedOrders = () => {
 
                             <div className={sellerAssignedOrdersClasses["report-body"]}>
                                 <div className={sellerAssignedOrdersClasses["report-topic-heading"]}>
-                                    <h3 className={classes["t-op"]} style={{ width: "210px" }}>Order Id</h3>
+                                    <h3 className={classes["t-op"]} style={{ width: "180px" }}>Booking Id</h3>
                                     <h3 className={classes["t-op"]} style={{ width: "110px" }}>Order Value</h3>
                                     <h3 className={classes["t-op"]}>Status</h3>
                                     <h3 className={classes["t-op"]}>Details</h3>
@@ -205,12 +205,12 @@ const SellerAssignedOrders = () => {
                                 <div className={classes.items}>
                                     {!isLoading && !orderbyStatusLoading
                                         && sellerOrders.length === 0
-                                        && <p>No seller order found</p>
+                                        && <p>No Partner order found</p>
                                     }
 
                                     {sellerOrders?.map((order) => (
                                         <div key={order._id} className={sellerAssignedOrdersClasses.item1}>
-                                            <h3 className={classes["t-op-nextlvl"]}>{order.orderId}</h3>
+                                            <h3 className={classes["t-op-nextlvl"]} style={{ width: "180px" }}>{order.bookingId}</h3>
                                             <h3 className={classes["t-op-nextlvl"]} style={{ width: "110px", textAlign: "center" }}>{order.orderValue}</h3>
                                             <h3 className={`${classes["t-op-nextlvl"]} ${sellerAssignedOrdersClasses.status}`}>{order.status}</h3>
                                             <button onClick={() => handleSellerOrderInfoModal(order)} className={classes.button} style={{ color: "#2599ff" }}>View Details</button>
