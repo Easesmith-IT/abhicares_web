@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 
+import { PaginationControl } from "react-bootstrap-pagination-control";
 import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import AddUserModal from "../../components/add-user-modal/AddUserModal";
-import AllUsersModal from "../../components/all-user-modal/AllUsersModal";
-import DeleteModal from "../../components/deleteModal/DeleteModal";
-import Loader from "../../components/loader/Loader";
-import UserInfoModal from "../../components/user-info-modal/UserInfoModal";
-import useDeleteApiReq from "../../hooks/useDeleteApiReq";
-import useGetApiReq from "../../hooks/useGetApiReq";
-import Wrapper from "../Wrapper";
-import classes from "./Shared.module.css";
-import { PaginationControl } from "react-bootstrap-pagination-control";
+import { useNavigate } from "react-router-dom";
+import AddUserModal from "../../../components/add-user-modal/AddUserModal";
+import AllUsersModal from "../../../components/all-user-modal/AllUsersModal";
+import DeleteModal from "../../../components/deleteModal/DeleteModal";
+import Loader from "../../../components/loader/Loader";
+import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
+import useGetApiReq from "../../../hooks/useGetApiReq";
+import Wrapper from "../../Wrapper";
+import classes from "../Shared.module.css";
 
 const Customers = () => {
   const { res: deleteUserRes, fetchData: deleteUser, isLoading: deleteUserLoading } = useDeleteApiReq();
@@ -29,6 +29,7 @@ const Customers = () => {
   const [pageCount, setPageCount] = useState(1);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handlePageClick = async (page) => {
     setPage(page);
@@ -145,7 +146,7 @@ const Customers = () => {
                   <h3 className={classes["t-op-nextlvl"]}>{user.name}</h3>
                   <h3 className={classes["t-op-nextlvl"]}>{user.phone}</h3>
                   <h3 style={{ display: "flex", gap: "10px" }} className={`${classes["t-op-nextlvl"]}`}>
-                    <FaEye onClick={() => handleUserInfoModal(user)} cursor={"pointer"} size={20} />
+                    <FaEye onClick={() => navigate(`/admin/customers/${user._id}`,{state: user})} cursor={"pointer"} size={20} />
                     <FiEdit onClick={() => handleUpdateModal(user)} cursor={"pointer"} className="ml-2" size={20} />
                     <MdDelete onClick={() => handleDeleteModal(user._id)} cursor={"pointer"} size={22} color='red' />
                   </h3>
@@ -163,13 +164,6 @@ const Customers = () => {
           </div>
         </div>
       </Wrapper>
-
-      {isUserInfoModalOpen &&
-        <UserInfoModal
-          setIsUserInfoModalOpen={setIsUserInfoModalOpen}
-          user={user}
-        />
-      }
 
       {isModalOpen &&
         <AddUserModal

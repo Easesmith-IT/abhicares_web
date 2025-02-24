@@ -1,26 +1,15 @@
-import monthlyOrderModalClasses from './MonthlyOrderModal.module.css';
-import classes from '../../pages/AdminPanel/Shared.module.css';
-import { RxCross2 } from 'react-icons/rx';
 import { format } from 'date-fns';
-import { useEffect, useRef, useState } from 'react';
 import html2PDF from 'jspdf-html2canvas';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { RxCross2 } from 'react-icons/rx';
 import usePostApiReq from '../../hooks/usePostApiReq';
+import classes from '../../pages/AdminPanel/Shared.module.css';
+import monthlyOrderModalClasses from './MonthlyBookingModal.module.css';
 
-const MonthlyOrderModal = ({ setIsModalOpen }) => {
+const MonthlyBookingModal = ({ setIsModalOpen }) => {
     const { res: monthlyOrdersRes, fetchData: getMonthlyOrders, isLoading: monthlyOrdersLoading } = usePostApiReq();
     const [dateYearInfo, setDateYearInfo] = useState("");
     const [monthlyOrders, setMonthlyOrders] = useState([]);
-
-    const data = monthlyOrders.map((order) => [
-        { OrderId: order._id },
-        { date: format(new Date(order.createdAt), "dd-MM-yyyy") },
-        { value: 0 },
-        { orderValue: order.orderValue },
-        { time: format(new Date(order.createdAt), "hh.mm aaaaa'm'") },
-        { name: order.user.name },
-        { phone: order.user.phone },
-    ])
 
 
     const downloadInvoice = () => {
@@ -42,7 +31,7 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
             return;
         }
         const arr = dateYearInfo.split("-");
-        getMonthlyOrders("/admin/get-monthly-orders", {
+        getMonthlyOrders("/admin/get-monthly-bookings", {
             month: arr[1],
             year: arr[0],
         })
@@ -50,8 +39,6 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
 
     useEffect(() => {
         if (monthlyOrdersRes?.status === 200 || monthlyOrdersRes?.status === 201) {
-            console.log("monthlyOrdersRes",monthlyOrdersRes);
-            
             setIsModalOpen(true);
             setMonthlyOrders(monthlyOrdersRes?.data.data);
         }
@@ -61,7 +48,7 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
         <div className={monthlyOrderModalClasses.wrapper}>
             <div className={monthlyOrderModalClasses.modal}>
                 <div className={monthlyOrderModalClasses.heading_container}>
-                    <h4>Monthly Orders</h4>
+                    <h4>Monthly Bookings</h4>
                     <div className={monthlyOrderModalClasses.d_flex}>
                         <div className={classes.d_flex}>
                             <input
@@ -75,7 +62,7 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
                         <RxCross2 onClick={() => setIsModalOpen(false)} cursor={"pointer"} size={26} />
                     </div>
                 </div>
-                {monthlyOrders.length === 0 && <p style={{ padding: "0px 0px 20px 20px" }}>No orders found.</p>}
+                {monthlyOrders.length === 0 && <p style={{ padding: "0px 0px 20px 20px" }}>No bookings found.</p>}
 
                 {monthlyOrders.length > 0 &&
                     <div className={classes["report-body"]}>
@@ -83,23 +70,25 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
                             <table border={"2px"} className={monthlyOrderModalClasses.table}>
                                 <thead>
                                     <tr>
-                                        <th>OrderId</th>
-                                        <th>Order Date</th>
+                                        <th>Booking Id</th>
+                                        <th>Booking Date</th>
+                                        <th>Delivery Date</th>
                                         <th>Total Value</th>
-                                        <th>Order Time</th>
+                                        <th>Booking Time</th>
                                         <th>User Name</th>
                                         <th>User Mobile</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {monthlyOrders.map((order) => (
+                                    {monthlyOrders.map((booking) => (
                                         <tr>
-                                            <td style={{ width: "210px", paddingInline: "10px" }}>{order?.orderId}</td>
-                                            <td style={{ width: "160px" }}>{format(new Date(order.createdAt), "dd-MM-yyyy")}</td>
-                                            <td>{order.orderValue}</td>
-                                            <td>{format(new Date(order.createdAt), "hh.mm aaaaa'm'")}</td>
-                                            <td>{order.user.name}</td>
-                                            <td>{order.user.phone}</td>
+                                            <td style={{ width: "210px", paddingInline: "10px" }}>{booking?.bookingId}</td>
+                                            <td style={{ width: "160px" }}>{format(new Date(booking?.createdAt), "dd-MM-yyyy")}</td>
+                                            <td style={{ width: "160px" }}>{format(new Date(booking?.bookingDate), "dd-MM-yyyy")}</td>
+                                            <td>{booking?.itemTotalValue}</td>
+                                            <td>{booking?.bookingTime && format(new Date(booking.bookingTime), "hh.mm aaaaa'm'")}</td>
+                                            <td>{booking?.userId?.name}</td>
+                                            <td>{booking?.userId?.phone}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -114,4 +103,4 @@ const MonthlyOrderModal = ({ setIsModalOpen }) => {
     )
 }
 
-export default MonthlyOrderModal
+export default MonthlyBookingModal

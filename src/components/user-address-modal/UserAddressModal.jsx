@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import classes from './UserAddressModal.module.css';
 import { RxCross2 } from 'react-icons/rx';
+import classes from './UserAddressModal.module.css';
 
 import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import Loader from '../loader/Loader';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import Loader from '../loader/Loader';
 
 const UserAddressModal = ({ setIsModalOpen, userId }) => {
     const { res: getAddressesRes, fetchData: getAddresses, isLoading } = useGetApiReq();

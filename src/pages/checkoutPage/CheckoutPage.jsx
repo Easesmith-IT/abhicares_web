@@ -152,7 +152,10 @@ const CheckoutPage = () => {
       setTotal(calculateChargeRes?.data?.totalPayable)
       setOfferValue(calculateChargeRes?.data?.totalDiscount)
       if (calculateChargeRes?.data?.totalDiscount > 0) {
-        setMessage({ message: "Offer available", error: false });
+        setMessage({ message: "Coupon is applied", error: false });
+      }
+      else{
+        setMessage({ message: "Coupon is not applied", error: true });
       }
     }
   }, [calculateChargeRes])

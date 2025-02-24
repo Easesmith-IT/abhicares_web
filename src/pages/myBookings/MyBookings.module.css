@@ -38,6 +38,6 @@ td:first-child{
     display: flex;
     gap: 40px;
     flex-wrap: wrap;
-    justify-content: center;
+    /* justify-content: center; */
     margin-top: 30px;
 }

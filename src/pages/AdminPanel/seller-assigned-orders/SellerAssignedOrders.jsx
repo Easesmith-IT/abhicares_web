@@ -168,6 +168,18 @@ const SellerAssignedOrders = () => {
                             <p><b>Contact Person Name:</b> {state?.contactPerson?.name}</p>
                             <p><b>Contact Person Phone:</b> {state?.contactPerson?.phone}</p>
                             <p><b>Category</b>: {state?.categoryId?.name}</p>
+                            <p><b>Online/Offline</b>: <span style={{
+                                padding: "3px 20px",
+                                backgroundColor: state?.online ? "green" : "red",
+                                color: "white",
+                                width: "100px",
+                                borderRadius: "5px",
+                                display: "inline-block",
+                                textAlign: "center"
+                            }}>
+                                {state?.online ? "Online" : "Offline"}
+                            </span></p>
+
                             <p className={sellerAssignedOrdersClasses.service_container}><b>Services</b>: {state?.services?.map((service) => <span className={sellerAssignedOrdersClasses.status}>{service?.serviceId?.name}</span>)}</p>
                         </div>
                     </div>

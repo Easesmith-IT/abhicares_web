@@ -1,0 +1,89 @@
+.heading_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contianer {
+    margin-top: 20px;
+}
+
+.contianer p {
+    margin-bottom: 10px;
+}
+
+.contianer>div {
+    display: flex;
+    gap: 20px;
+}
+
+.mt {
+    margin-top: 20px;
+}
+
+
+.btn {
+    margin-right: 20px;
+    border: none;
+    background: black;
+    color: white;
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+
+.orders {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.status {
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: white !important;
+}
+
+.Cancelled {
+    background: #de6210;
+}
+
+.Completed {
+    background: green;
+    color: white;
+}
+
+.alloted {
+    background: rgb(69, 204, 83);
+    color: white;
+}
+
+.pending {
+    background: rgb(255, 230, 0);
+}
+
+.OutOfDelivery {
+    background: rgb(95, 95, 255);
+    color: white;
+}
+
+.active {
+    background: green;
+    color: white;
+}
+
+.inactive {
+    background: #de6210;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button{
+    padding: 2px 10px;
+    border-radius: 6px;
+    background: #000;
+    color: white;
+}

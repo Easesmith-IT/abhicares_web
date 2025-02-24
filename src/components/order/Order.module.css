@@ -1,10 +1,13 @@
 .order {
-    max-width: 600px;
-    width: 90%;
+    width: 100%;
     padding: 20px;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
 }
 
 .order_top {
@@ -24,7 +27,7 @@
 
 .img {
     width: 100px;
-    height: 60px;
+    height: 100px;
     margin: 0px 8px;
     object-fit: cover;
 }
@@ -47,7 +50,7 @@ hr {
 .order_bottom {
     display: flex;
     align-items: flex-start;
-    width: 100%;
+    /* width: 100%; */
     gap: 20px;
 }
 
@@ -108,6 +111,10 @@ hr {
 @media screen and (max-width:590px) {
     .progress {
         width: 300px;
+    }
+
+    .order{
+        gap: 10px;
     }
 
     .p {}

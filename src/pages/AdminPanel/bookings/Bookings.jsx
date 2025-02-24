@@ -9,6 +9,8 @@ import Loader from '../../../components/loader/Loader';
 import classes from "../Shared.module.css";
 import useGetApiReq from '../../../hooks/useGetApiReq';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
+import { FaDownload } from 'react-icons/fa6';
+import MonthlyBookingModal from '../../../components/monthly-booking-modal/MonthlyBookingModal';
 
 const Bookings = () => {
     const { res: getBookingListRes, fetchData: getBookingList, isLoading } = useGetApiReq();
@@ -19,6 +21,7 @@ const Bookings = () => {
         date: "",
         status: "",
     });
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
 
@@ -144,6 +147,11 @@ const Bookings = () => {
                                 <option value="completed">Completed</option>
                                 <option value="not-alloted">Not Alloted</option>
                             </select>
+                            <div className={classes.d_flex}>
+                                <button onClick={() => setIsModalOpen(true)}>
+                                    <FaDownload />
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -190,6 +198,11 @@ const Bookings = () => {
 
                 </div>
             </Wrapper >
+            {isModalOpen && (
+                <MonthlyBookingModal
+                    setIsModalOpen={setIsModalOpen}
+                />
+            )}
         </>
     )
 }

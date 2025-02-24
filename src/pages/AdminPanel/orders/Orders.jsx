@@ -15,7 +15,6 @@ const Orders = () => {
   const { res: getOrderByIDRes, fetchData: getOrderByID, error, isLoading: isLoading2 } = useGetApiReq();
   const [allOrders, setAllOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchMessage, setSearchMessage] = useState(null)
   
   const [filters, setFilters] = useState({
     startDate: "",

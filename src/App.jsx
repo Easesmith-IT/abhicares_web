@@ -2,13 +2,12 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import { lazy, Suspense } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // import { Toaster } from "react-hot-toast";
 import { GoogleApiWrapper } from "google-maps-react";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import ProtectedRoute from "./components/private-route/ProtectedRoute";
-import { getCartDetails } from "./store/slices/cartSlice";
 
 
 const SellerCashoutDetails = lazy(() => import('./pages/AdminPanel/seller-cashouts/SellerCashoutDetails'));
@@ -34,7 +33,8 @@ const CategoryServices = lazy(() => import("./pages/AdminPanel/CategoryServices/
 const AdminAboutUs = lazy(() => import('./pages/AdminPanel/cms/about-us/AboutUs'));
 const AdminContactUs = lazy(() => import('./pages/AdminPanel/cms/contact-us/ContactUs'));
 const AdminPrivacyPolicy = lazy(() => import('./pages/AdminPanel/cms/privacy-policy/PrivacyPolicy'));
-const Customers = lazy(() => import("./pages/AdminPanel/Customers"));
+const Customers = lazy(() => import("./pages/AdminPanel/customer/Customers"));
+const CustomerDetails = lazy(() => import("./pages/AdminPanel/customer/CustomerDetails"));
 const Dashboard = lazy(() => import("./pages/AdminPanel/Dashboard"));
 const AdminHelpCenter = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenter"));
 const HelpCenterFaqs = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenterFaqs"));
@@ -85,12 +85,6 @@ const MyProfile = lazy(() => import("./pages/my-profile/MyProfile"));
 const WhyUs = lazy(() => import("./pages/whyus/WhyUs"));
 
 function App() {
-  // const { location } = useGeolocation();
-  // const dispatch = useDispatch();
-  // (async () => {
-  //   await dispatch(getCartDetails());
-  // })()
-
   const { isOpen } = useSelector((state) => state.auth);
   console.log("env var ==>", import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY);
 
@@ -218,6 +212,7 @@ function App() {
               />
 
               <Route path="/admin/customers" element={<Customers />} />
+              <Route path="/admin/customers/:customerId" element={<CustomerDetails />} />
               <Route path="/admin/services" element={<Services />} />
               <Route path="/admin/payments" element={<Payments />} />
               <Route path="/admin/settings" element={<Settings />} />

@@ -16,6 +16,7 @@ import useDeleteApiReq from '../../../hooks/useDeleteApiReq'
 import useGetApiReq from '../../../hooks/useGetApiReq'
 import Wrapper from '../../Wrapper'
 import { PaginationControl } from 'react-bootstrap-pagination-control'
+import { format } from 'date-fns'
 
 const Offers = () => {
     const { res: deleteCouponRes, fetchData: deleteCoupon, isLoading: deleteCouponLoading } = useDeleteApiReq();
@@ -104,9 +105,9 @@ const Offers = () => {
                         </div>
                     </div>
 
-                        {isLoading
-                            && <Loader />
-                        }
+                    {isLoading
+                        && <Loader />
+                    }
                     <div className={offersClasses.container}>
                         {!isLoading
                             && filterdResults?.length === 0
@@ -126,6 +127,7 @@ const Offers = () => {
                                         <p className={`${classes.status} ${offer.status === "active" ? classes.active : classes.inactive}`}>{offer.status}</p>
                                     </div>
                                     <p><b>Type:</b> {offer?.discountType}</p>
+                                    <p><b>Expiry Date:</b> {offer?.expiryDate && format(new Date(offer?.expiryDate),"dd-MM-yyyy")}</p>
                                     <p className={offersClasses.p}>{parse(offer.description)}</p>
                                 </div>
                                 <div className={offersClasses.city_right}>

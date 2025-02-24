@@ -16,26 +16,21 @@ const Order = ({ order, index }) => {
   return (
     <>
       <div onClick={handleOnclick} className={classes.order}>
-        <div className={classes.order_top}>
-          <div>
-            {order.items.map((item, index) => (
-              <img key={index}
-                className={classes.img}
-                src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] : item?.package?.imageUrl[0]}`}
-                alt=""
-              />
-            ))}
-          </div>
-
-          <div className={classes.info}>
-            <p style={{ color: 'grey' }}>#{order.orderId}</p>
-            <div className={classes.info_row}>
-              <p>Date : {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
-              <p>Order Value : ₹{order.orderValue}</p>
-            </div>
-          </div>
+        <div>
+          {order.items.map((item, index) => (
+            <img key={index}
+              className={classes.img}
+              src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item?.product?.imageUrl[0] ? item?.product?.imageUrl[0] : item?.package?.imageUrl[0]}`}
+              alt=""
+            />
+          ))}
         </div>
-        <hr />
+
+        <p style={{ color: 'grey' }}>#{order.orderId}</p>
+        {/* <div className={classes.info_row}> */}
+          <p>Date : {format(new Date(order.createdAt), "dd-MM-yyyy")}</p>
+          <p>Order Value : ₹{order.orderValue}</p>
+        {/* </div> */}
         <div className={classes.order_bottom}>
           <p>Order Status :</p>
           <div className={` ${classes.status} ${order.status === "Cancelled"

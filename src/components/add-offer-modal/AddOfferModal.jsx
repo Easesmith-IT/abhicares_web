@@ -47,6 +47,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
         upTo: offer?.maxDiscount || "",
         offerValue: offer?.fixedCouponValue || "",
         categoryType: selectedItems,
+        expiryDate: offer?.expiryDate || "",
     });
     const [allCategories, setAllCategories] = useState([]);
 
@@ -99,6 +100,7 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
 
         const isOfferMissing =
             !name ||
+            !expiryDate ||
             !type ||
             !noOfTimesPerUser ||
             selectedItems.length === 0 ||
@@ -222,6 +224,10 @@ useEffect(() => {
                     <div className={classes.input_container}>
                         <label htmlFor="noOfTimesPerUser">No of Times Per User</label>
                         <input className={classes.input} onChange={handleOnChange} value={offerInfo.noOfTimesPerUser} type="number" name="noOfTimesPerUser" id="noOfTimesPerUser" />
+                    </div>
+                    <div className={classes.input_container}>
+                        <label htmlFor="expiryDate">Expiry Date</label>
+                        <input className={classes.input} onChange={handleOnChange} value={offerInfo.expiryDate} type="date" name="expiryDate" id="expiryDate" />
                     </div>
                     {/* <div className={classes.input_container}>
                         <label htmlFor="date">Date</label>

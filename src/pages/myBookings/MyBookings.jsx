@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import classes from './MyBookings.module.css';
-import Order from '../../components/order/Order';
-import axios from 'axios';
-import Loader from '../../components/loader/Loader';
-import WebsiteWrapper from '../WebsiteWrapper';
 import { useNavigate } from 'react-router-dom';
-import { readCookie } from '../../utils/readCookie';
+import Loader from '../../components/loader/Loader';
+import Order from '../../components/order/Order';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import { readCookie } from '../../utils/readCookie';
+import WebsiteWrapper from '../WebsiteWrapper';
+import classes from './MyBookings.module.css';
 
 const MyBookings = () => {
   const { res: getUserOrdersRes, fetchData: getUserOrders, isLoading:loading } = useGetApiReq();

@@ -220,7 +220,7 @@ const BookingDetails = () => {
                   </div>
                   <div className={classes.d_flex}>
                     <p>Sub Total :</p>
-                    <p>₹{booking?.itemTotalValue}</p>
+                    <p>₹{booking?.orderValue}</p>
                   </div>
                   <div className={classes.d_flex}>
                     <p>Tax and other charges :</p>
@@ -232,7 +232,7 @@ const BookingDetails = () => {
                   </div>
                   <div className={classes.d_flex}>
                     <p>Total Amount :</p>
-                    <p>₹{booking.orderValue}</p>
+                    <p>₹{booking?.itemTotalValue}</p>
                   </div>
                 </div>
                 <div className={classes.right_div_bottom}>
