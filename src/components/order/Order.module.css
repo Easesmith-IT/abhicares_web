@@ -10,6 +10,10 @@
     gap: 30px;
 }
 
+.order p {
+    font-size: 18px;
+}
+
 .order_top {
     display: flex;
     align-items: center;
@@ -113,7 +117,7 @@ hr {
         width: 300px;
     }
 
-    .order{
+    .order {
         gap: 10px;
     }
 

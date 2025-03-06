@@ -77,7 +77,7 @@ const RecentBlogs = () => {
 
             <div className={classes["recent-blogs-cards"]} key={post.id}>
               <div className={classes["blog-swiper-thumbnail"]}>
-                <Link to={`/single-blog/${(post.id)}`}><img src={post.featured_image.source_url} alt="image" /></Link>
+                <Link to={`/single-blog/${(post.id)}`}><img src={post?.featured_image?.source_url} alt="image" /></Link>
               </div>
               <div className={classes["blog-content"]}>
                 <div className={classes["authoring-date"]}>

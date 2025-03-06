@@ -5,17 +5,17 @@ import axios from "axios";
 
 import { AiOutlineClose } from "react-icons/ai";
 
-
 import loader from "../../assets/rolling-white.gif";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import CountdownTimer from "../countdown/CountDown";
 import { FaEdit } from "react-icons/fa";
 import { changeUserAuthStatus } from "../../store/slices/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
-const navigaye = useNavigate();
+  const navigaye = useNavigate();
+  const [termsAndConditions, setTermsAndConditions] = useState(false);
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
@@ -25,7 +25,7 @@ const navigaye = useNavigate();
 
   const [error, setError] = useState({
     message: null,
-    from: null
+    from: null,
   });
 
   // console.log("signup",loginSignupInfo);
@@ -51,10 +51,10 @@ const navigaye = useNavigate();
     });
     setError({
       message: null,
-      from: null
+      from: null,
     });
     setOtp("");
-  }
+  };
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -69,23 +69,23 @@ const navigaye = useNavigate();
     });
     setError({
       message: null,
-      from: null
+      from: null,
     });
-  }
+  };
 
   const handleSignUp = async () => {
     if (!loginSignupInfo.name) {
-      setError({ message: "Enter name", from: 'signup' });
+      setError({ message: "Enter name", from: "signup" });
       return;
     }
 
     if (!loginSignupInfo.phone) {
-      setError({ message: "Enter phone number", from: 'signup' });
+      setError({ message: "Enter phone number", from: "signup" });
       return;
     }
 
     if (loginSignupInfo.phone.length !== 10) {
-      setError({ message: "Enter a valid phone number", from: 'signup' });
+      setError({ message: "Enter a valid phone number", from: "signup" });
       return;
     }
 
@@ -99,7 +99,7 @@ const navigaye = useNavigate();
       );
       setIsLoading(false);
       console.log(data);
-      setSuccessMessage(data?.message)
+      setSuccessMessage(data?.message);
       // setLoginSignupInfo({
       //   name: "",
       //   phone: "",
@@ -107,20 +107,26 @@ const navigaye = useNavigate();
       setIsSignupOtp(true);
     } catch (error) {
       setIsLoading(false);
-      console.log('NON', error);
-      setError({ message: error.response.data.message, from: 'signup' });
+      console.log("NON", error);
+      setError({ message: error.response.data.message, from: "signup" });
     }
   };
 
   const handleLogin = async () => {
     if (!loginSignupInfo.phone) {
-      setError({ message: "Enter phone number", from: 'login' });
+      setError({ message: "Enter phone number", from: "login" });
       return;
     }
     if (loginSignupInfo.phone.length !== 10) {
-      setError({ message: "Enter a valid phone number", from: 'login' });
+      setError({ message: "Enter a valid phone number", from: "login" });
       return;
     }
+
+    if (!termsAndConditions) {
+      setError({ message: "Accept Terms and Conditions", from: "login" });
+      return;
+    }
+
     try {
       setIsLoading(true);
       setIsTimer(true);
@@ -130,7 +136,7 @@ const navigaye = useNavigate();
         { withCredentials: true }
       );
       console.log("login", data);
-      setSuccessMessage(data?.message)
+      setSuccessMessage(data?.message);
       setIsLoading(false);
       setIsLoginOtp(true);
       // setLoginSignupInfo({
@@ -147,12 +153,15 @@ const navigaye = useNavigate();
   const handleOtpVerification = async () => {
     setSuccessMessage("");
     if (!otp) {
-      setError({ message: "Enter otp", from: 'login otp verification' });
+      setError({ message: "Enter otp", from: "login otp verification" });
       return;
     }
 
     if (otp.length !== 6) {
-      setError({ message: "Enter a valid otp", from: 'login otp verification' });
+      setError({
+        message: "Enter a valid otp",
+        from: "login otp verification",
+      });
       return;
     }
 
@@ -165,13 +174,13 @@ const navigaye = useNavigate();
         { withCredentials: true }
       );
       console.log("login otp verification", data);
-      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
+      dispatch(changeUserAuthStatus({ isAuthenticated: true }));
       localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);
       await dispatch(getCartDetails());
-      navigaye("/")
+      navigaye("/");
       // window.location.reload();
       handleOnClose();
 
@@ -180,7 +189,10 @@ const navigaye = useNavigate();
       setOtp("");
     } catch (error) {
       setIsLoading(false);
-      setError({ message: error?.response?.data?.message, from: 'login otp verification' });
+      setError({
+        message: error?.response?.data?.message,
+        from: "login otp verification",
+      });
       console.log(error);
     }
   };
@@ -188,12 +200,15 @@ const navigaye = useNavigate();
   const handleSignupOtpVerification = async () => {
     setSuccessMessage("");
     if (!otp) {
-      setError({ message: "Enter otp", from: 'signup otp verification' });
+      setError({ message: "Enter otp", from: "signup otp verification" });
       return;
     }
 
     if (otp.length !== 6) {
-      setError({ message: "Enter a valid otp", from: 'signup otp verification' });
+      setError({
+        message: "Enter a valid otp",
+        from: "signup otp verification",
+      });
       return;
     }
 
@@ -206,7 +221,7 @@ const navigaye = useNavigate();
         { withCredentials: true }
       );
       console.log("signup otp verification", data);
-      dispatch(changeUserAuthStatus({ isAuthenticated: true }))
+      dispatch(changeUserAuthStatus({ isAuthenticated: true }));
       await dispatch(getCartDetails());
       localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
@@ -219,7 +234,10 @@ const navigaye = useNavigate();
       setIsLoginOtp(false);
       setOtp("");
     } catch (error) {
-      setError({ message: error?.response?.data?.message, from: 'signup otp verification' });
+      setError({
+        message: error?.response?.data?.message,
+        from: "signup otp verification",
+      });
       setIsLoading(false);
       console.log(error);
     }
@@ -227,20 +245,30 @@ const navigaye = useNavigate();
 
   return (
     <div
-      className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close
-        }`}
+      className={`${classes.modal_overlay} ${
+        isOpen ? classes.modal_open : classes.modal_close
+      }`}
     >
       <div className={classes.modal_wrapper}>
         <button onClick={handleOnClose} className={classes.modal_close}>
           <AiOutlineClose size={20} />
         </button>
         <div className={classes.modal}>
-          {!isSignupOtp && !isLoginOtp &&
+          {!isSignupOtp &&
+            !isLoginOtp &&
             (isLogin ? (
               <>
                 <p className={classes.login_signup_p}>Login</p>
-                {!isLoading && error.from === 'login' && (
-                  <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
+                {!isLoading && error.from === "login" && (
+                  <p
+                    style={{
+                      color: "red",
+                      textAlign: "center",
+                      marginTop: "8px",
+                    }}
+                  >
+                    {error.message}
+                  </p>
                 )}
                 <div className={classes.input_box}>
                   <input
@@ -252,6 +280,27 @@ const navigaye = useNavigate();
                     type="number"
                     placeholder="Enter mobile number"
                   />
+                </div>
+                <div
+                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                >
+                  <input
+                    style={{ width: "20px", height: "20px" }}
+                    type="checkbox"
+                    name="termsAndConditions"
+                    id="termsAndConditions"
+                    onChange={() => setTermsAndConditions((prev) => !prev)}
+                  />
+                  <label htmlFor="termsAndConditions">
+                    I agree to the
+                    <Link
+                      style={{ color: "blue !important" }}
+                      to={"/termsAndConditions"}
+                    >
+                      {" "}
+                      Terms and Conditions
+                    </Link>
+                  </label>
                 </div>
 
                 <p className={classes.p}>
@@ -271,8 +320,16 @@ const navigaye = useNavigate();
             ) : (
               <>
                 <p className={classes.login_signup_p}>Sign up</p>
-                {!isLoading && error.from === 'signup' && (
-                  <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
+                {!isLoading && error.from === "signup" && (
+                  <p
+                    style={{
+                      color: "red",
+                      textAlign: "center",
+                      marginTop: "8px",
+                    }}
+                  >
+                    {error.message}
+                  </p>
                 )}
                 <div className={classes.input_box}>
                   <input
@@ -326,15 +383,31 @@ const navigaye = useNavigate();
           {isLoginOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
-              {!isLoading && error.from === 'login otp verification' && (
-                <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
+              {!isLoading && error.from === "login otp verification" && (
+                <p
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    marginTop: "8px",
+                  }}
+                >
+                  {error.message}
+                </p>
               )}
 
               {successMessage && (
-                <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
+                <p
+                  style={{
+                    color: "green",
+                    textAlign: "center",
+                    marginTop: "8px",
+                  }}
+                >
+                  {successMessage}
+                </p>
               )}
 
-              {isEditNumber &&
+              {isEditNumber && (
                 <div className={classes.input_box}>
                   <input
                     onChange={handleOnChange}
@@ -346,7 +419,7 @@ const navigaye = useNavigate();
                     placeholder="Enter mobile number"
                   />
                 </div>
-              }
+              )}
 
               <div className={classes.input_box}>
                 <input
@@ -359,19 +432,34 @@ const navigaye = useNavigate();
                 />
               </div>
               <div className={classes.flex}>
-                {!isEditNumber &&
+                {!isEditNumber && (
                   <div className={classes.edit_icon_wrapper}>
                     <p>{loginSignupInfo.phone}</p>
-                    <FaEdit onClick={() => setIsEditNumber(!isEditNumber)} className={classes.icon} size={18} />
+                    <FaEdit
+                      onClick={() => setIsEditNumber(!isEditNumber)}
+                      className={classes.icon}
+                      size={18}
+                    />
                   </div>
-                }
+                )}
 
                 <div className={classes.btn_wrapper}>
-                  {isTimer &&
+                  {isTimer && (
                     <CountdownTimer setIsTimer={setIsTimer}>
-                      <button disabled={isTimer} onClick={handleLogin} className={classes.link}>Resend OTP</button>
-                    </CountdownTimer>}
-                  {!isTimer && <button onClick={handleLogin} className={classes.link}>Resend OTP</button>}
+                      <button
+                        disabled={isTimer}
+                        onClick={handleLogin}
+                        className={classes.link}
+                      >
+                        Resend OTP
+                      </button>
+                    </CountdownTimer>
+                  )}
+                  {!isTimer && (
+                    <button onClick={handleLogin} className={classes.link}>
+                      Resend OTP
+                    </button>
+                  )}
                 </div>
               </div>
               <button
@@ -392,15 +480,31 @@ const navigaye = useNavigate();
           {isSignupOtp && (
             <>
               <p className={classes.login_signup_p}>Verify Otp</p>
-              {!isLoading && error.from === 'signup otp verification' && (
-                <p style={{ color: "red", textAlign: "center", marginTop: "8px" }}>{error.message}</p>
+              {!isLoading && error.from === "signup otp verification" && (
+                <p
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    marginTop: "8px",
+                  }}
+                >
+                  {error.message}
+                </p>
               )}
 
               {successMessage && (
-                <p style={{ color: "green", textAlign: "center", marginTop: "8px" }}>{successMessage}</p>
+                <p
+                  style={{
+                    color: "green",
+                    textAlign: "center",
+                    marginTop: "8px",
+                  }}
+                >
+                  {successMessage}
+                </p>
               )}
 
-              {isEditNumber &&
+              {isEditNumber && (
                 <div className={classes.input_box}>
                   <input
                     onChange={handleOnChange}
@@ -412,7 +516,7 @@ const navigaye = useNavigate();
                     placeholder="Enter mobile number"
                   />
                 </div>
-              }
+              )}
 
               <div className={classes.input_box}>
                 <input
@@ -424,17 +528,33 @@ const navigaye = useNavigate();
                 />
               </div>
               <div className={classes.flex}>
-                {!isEditNumber &&
+                {!isEditNumber && (
                   <div className={classes.edit_icon_wrapper}>
                     <p>{loginSignupInfo.phone}</p>
-                    <FaEdit onClick={() => setIsEditNumber(!isEditNumber)} className={classes.icon} size={18} />
-                  </div>}
+                    <FaEdit
+                      onClick={() => setIsEditNumber(!isEditNumber)}
+                      className={classes.icon}
+                      size={18}
+                    />
+                  </div>
+                )}
                 <div className={classes.btn_wrapper}>
-                  {isTimer &&
+                  {isTimer && (
                     <CountdownTimer setIsTimer={setIsTimer}>
-                      <button disabled={isTimer} onClick={handleSignUp} className={classes.link}>Resend OTP</button>
-                    </CountdownTimer>}
-                  {!isTimer && <button onClick={handleSignUp} className={classes.link}>Resend OTP</button>}
+                      <button
+                        disabled={isTimer}
+                        onClick={handleSignUp}
+                        className={classes.link}
+                      >
+                        Resend OTP
+                      </button>
+                    </CountdownTimer>
+                  )}
+                  {!isTimer && (
+                    <button onClick={handleSignUp} className={classes.link}>
+                      Resend OTP
+                    </button>
+                  )}
                 </div>
               </div>
               <button
