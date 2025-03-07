@@ -60,6 +60,7 @@
     outline: none;
     cursor: pointer;
     border-radius: 6px;
+    white-space: nowrap;
 }
 
 .red {
@@ -129,7 +130,7 @@
     width: 90%;
     display: flex;
     justify-content: space-between;
-    gap: 6px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 

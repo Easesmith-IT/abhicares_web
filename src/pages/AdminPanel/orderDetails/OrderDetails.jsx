@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Wrapper from "../../Wrapper";
 import classes from "./OrderDetails.module.css";
+import sharedClasses from "../Shared.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
@@ -163,7 +164,12 @@ const OrderDetails = () => {
           <h5 className={classes.heading}>Products</h5>
           <div className={classes.container}>
             {state?.items?.map((item, i) => (
-              <div onClick={()=> navigate(`/admin/bookings/${item?.bookingId}`)} key={i} style={{cursor:"pointer"}} className={classes.item}>
+              <div
+                onClick={() => navigate(`/admin/bookings/${item?.bookingId}`)}
+                key={i}
+                style={{ cursor: "pointer" }}
+                className={classes.item}
+              >
                 <div>
                   <img
                     className={classes.img}
@@ -180,23 +186,41 @@ const OrderDetails = () => {
                     </h6>
                     <p>{item.package ? "Package" : "Product"}</p>
                   </div>
-                  <div>
-                    <p>
-                      {item.bookingId.bookingDate &&
-                        format(
-                          new Date(item.bookingId.bookingDate),
-                          "dd-MM-yyyy"
-                        )}
-                    </p>
-                    <p>
-                      {item.bookingId.bookingTime &&
-                        format(
-                          new Date(item.bookingId.bookingTime),
-                          "hh:mm aa"
-                        )}
-                    </p>
-                  </div>
                 </div>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <p>
+                    <span>Delivery Date: </span>
+                    {item.bookingId.bookingDate &&
+                      format(
+                        new Date(item.bookingId.bookingDate),
+                        "dd-MM-yyyy"
+                      )}
+                  </p>
+                  <p>
+                      <span>Delivery Time: </span>
+                    {item.bookingId.bookingTime &&
+                      format(new Date(item.bookingId.bookingTime), "hh:mm aa")}
+                  </p>
+                </div>
+                <p>
+                  <span
+                    className={`${sharedClasses["t-op-nextlvl"]} ${
+                      sharedClasses.status
+                    } ${
+                      item?.bookingId?.status === "cancelled"
+                        ? sharedClasses.Cancelled
+                        : item?.bookingId?.status === "completed"
+                        ? sharedClasses.Completed
+                        : item?.bookingId?.status === "alloted"
+                        ? sharedClasses.alloted
+                        : sharedClasses.OutOfDelivery
+                    }`}
+                  >
+                    {item?.bookingId?.status}
+                  </span>
+                </p>
                 <p>Qty: {item.quantity}</p>
                 <p>
                   ₹

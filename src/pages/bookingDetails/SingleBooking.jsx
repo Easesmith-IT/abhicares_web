@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import classes from "./BookingDetails.module.css";
-import AddReviewModal from "../../components/reviewModal/AddReviewModal";
-import RaiseTicketModal from "../../components/raiseTicketModal/RaiseTicketModal";
-import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import React, { useState } from "react";
+import RaiseTicketModal from "../../components/raiseTicketModal/RaiseTicketModal";
+import AddReviewModal from "../../components/reviewModal/AddReviewModal";
+import classes from "./BookingDetails.module.css";
+import sharedClasses from "../AdminPanel/Shared.module.css";
 
 const SingleBooking = ({ item, booking }) => {
   const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
@@ -29,37 +29,56 @@ const SingleBooking = ({ item, booking }) => {
           <h5>{item.package ? item.package.name : item.product.name}</h5>
           <div>
             <p>
+              <span>Delivery Date: </span>
               {item.bookingId.bookingDate &&
                 format(new Date(item.bookingId.bookingDate), "dd-MM-yyyy")}
             </p>
             <p>
+              <span>Delivery Time: </span>
               {item.bookingId.bookingTime &&
                 format(new Date(item.bookingId.bookingTime), "hh:mm aa")}
             </p>
           </div>
           <p>Qty: {item.quantity}</p>
           <p>
+            <span
+              className={`${sharedClasses["t-op-nextlvl"]} ${
+                sharedClasses.status
+              } ${
+                item?.bookingId?.status === "cancelled"
+                  ? sharedClasses.Cancelled
+                  : item?.bookingId?.status === "completed"
+                  ? sharedClasses.Completed
+                  : item?.bookingId?.status === "alloted"
+                  ? sharedClasses.alloted
+                  : sharedClasses.OutOfDelivery
+              }`}
+            >
+              {item?.bookingId?.status}
+            </span>
+          </p>
+          <p>
             ₹
             {Number(
               item.package ? item.package.offerPrice : item.product.offerPrice
             ) * Number(item.quantity)}
           </p>
-          <div
-            style={{ display: "flex", gap: "20px", flexDirection: "column" }}
+          {/* <div
+            style={{ display: "flex", gap: "20px" }}
+          > */}
+          <button
+            onClick={() => setIsAddReviewModalOpen(true)}
+            className={classes.button}
           >
-            <button
-              onClick={() => setIsAddReviewModalOpen(true)}
-              className={classes.button}
-            >
-              Add Review
-            </button>
-            <button
-              onClick={() => setIsAddTicketModalOpen(true)}
-              className={classes.link}
-            >
-              Issue with order?
-            </button>
-          </div>
+            Add Review
+          </button>
+          <button
+            onClick={() => setIsAddTicketModalOpen(true)}
+            className={classes.link}
+          >
+            Issue with order?
+          </button>
+          {/* </div> */}
         </div>
       </div>
 
