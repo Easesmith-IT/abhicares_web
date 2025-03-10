@@ -139,7 +139,9 @@ const Partners = () => {
     <>
       <Wrapper>
         <div>
-          <Stats />
+          <Stats
+          setAllSellers={setAllSellers}
+           />
           <div className={classes["report-container"]}>
             <div className={classes["report-header"]}>
               <h1 className={classes["recent-Articles"]}>Partners</h1>

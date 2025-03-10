@@ -1,0 +1,1 @@
+import{z as i,_ as e}from"./index-eSIAY8Uv.js";import{u as n}from"./useDispatch-BjeBiUzI.js";const p=()=>{const o=n();return{checkAuthorization:async s=>{var t,a;console.log("inside auth hook"),s&&s.response&&s.response.status===403?await o(i(!0)):(e.error((a=(t=s==null?void 0:s.response)==null?void 0:t.data)==null?void 0:a.message),await o(i(!1)))}}};export{p as u};

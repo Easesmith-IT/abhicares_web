@@ -4,7 +4,7 @@ import useGetApiReq from '../hooks/useGetApiReq';
 import { HiStatusOnline } from "react-icons/hi";
 import { TbTargetArrow } from "react-icons/tb";
 
-const Stats = () => {
+const Stats = ({ setAllSellers }) => {
     const { res, fetchData, isLoading } = useGetApiReq();
     const { res: getOnlinePartnersRes, fetchData: getOnlinePartners, isLoading: getOnlinePartnersLoading } = useGetApiReq();
     const [onlinePartners, setOnlinePartners] = useState(0);
@@ -44,14 +44,14 @@ const Stats = () => {
     return (
         <div className={classes.main}>
             <div className={classes["box-container"]}>
-                <div className={`${classes.box} ${classes.box1}`}>
+                <div onClick={() => setAllSellers(getOnlinePartnersRes?.data?.onlineSellers)} className={`${classes.box} ${classes.box1}`}>
                     <div className={classes.text}>
                         <h2 className={classes["topic-heading"]}>{onlinePartners}</h2>
                         <h2 className={classes.topic}>Online Partners</h2>
                     </div>
                     <HiStatusOnline color='white' size={50} />
                 </div>
-                <div className={`${classes.box} ${classes.box1}`}>
+                <div onClick={() => setAllSellers(res?.data?.fulfillingSellers)} className={`${classes.box} ${classes.box1}`}>
                     <div className={classes.text}>
                         <h2 className={classes["topic-heading"]}>{fulfillingSellers}</h2>
                         <h2 className={classes.topic}>Fulfilling Sellers</h2>

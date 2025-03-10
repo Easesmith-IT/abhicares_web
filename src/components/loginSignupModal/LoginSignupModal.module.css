@@ -74,7 +74,7 @@
     color: rgb(56, 56, 230);
     border: none;
     outline: none;
-    margin-left: 5px;
+    margin-left: 15px;
     cursor: pointer;
 }
 
@@ -139,4 +139,8 @@
 .edit_icon_wrapper .icon{
    color: #2e63ff;
    cursor: pointer;
+}
+
+.termsAndConditions{
+    color: blue !important;
 }

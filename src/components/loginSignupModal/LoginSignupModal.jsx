@@ -89,6 +89,11 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       return;
     }
 
+    if (!termsAndConditions) {
+      setError({ message: "Accept Terms and Conditions", from: "signup" });
+      return;
+    }
+
     try {
       setIsLoading(true);
       setIsTimer(true);
@@ -245,9 +250,8 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
   return (
     <div
-      className={`${classes.modal_overlay} ${
-        isOpen ? classes.modal_open : classes.modal_close
-      }`}
+      className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close
+        }`}
     >
       <div className={classes.modal_wrapper}>
         <button onClick={handleOnClose} className={classes.modal_close}>
@@ -294,7 +298,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                   <label htmlFor="termsAndConditions">
                     I agree to the
                     <Link
-                      style={{ color: "blue !important" }}
+                      className={classes.termsAndConditions}
                       to={"/termsAndConditions"}
                     >
                       {" "}
@@ -363,6 +367,27 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     id="referralCode"
                     placeholder="Enter Referral Code"
                   />
+                </div>
+                <div
+                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                >
+                  <input
+                    style={{ width: "20px", height: "20px" }}
+                    type="checkbox"
+                    name="termsAndConditions"
+                    id="termsAndConditions"
+                    onChange={() => setTermsAndConditions((prev) => !prev)}
+                  />
+                  <label htmlFor="termsAndConditions">
+                    I agree to the
+                    <Link
+                      className={classes.termsAndConditions}
+                      to={"/termsAndConditions"}
+                    >
+                      {" "}
+                      Terms and Conditions
+                    </Link>
+                  </label>
                 </div>
                 <p className={classes.p}>
                   Already account?
