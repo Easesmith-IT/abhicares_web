@@ -29,7 +29,7 @@ const OrderDetails = () => {
   const [state, setState] = useState(stateData || "");
   const [status, setStatus] = useState(stateData?.status);
   const { id } = useParams();
-  console.log("stateData", stateData);
+  console.log("stateData items", state.items);
 
   const getOrderDetails = async () => {
     getOrder(`/admin/get-order-details?orderId=${id}`);
@@ -165,7 +165,7 @@ const OrderDetails = () => {
           <div className={classes.container}>
             {state?.items?.map((item, i) => (
               <div
-                onClick={() => navigate(`/admin/bookings/${item?.bookingId}`)}
+                onClick={() => navigate(`/admin/bookings/${item?.bookingId ? item?.bookingId?._id : item?.bookingId}`)}
                 key={i}
                 style={{ cursor: "pointer" }}
                 className={classes.item}
@@ -173,11 +173,10 @@ const OrderDetails = () => {
                 <div>
                   <img
                     className={classes.img}
-                    src={`${import.meta.env.VITE_APP_IMAGE_URL}/${
-                      item.package
+                    src={`${import.meta.env.VITE_APP_IMAGE_URL}/${item.package
                         ? item.package.imageUrl[0]
                         : item.product.imageUrl[0]
-                    }`}
+                      }`}
                     alt="product"
                   />
                   <div>
@@ -192,31 +191,29 @@ const OrderDetails = () => {
                 >
                   <p>
                     <span>Delivery Date: </span>
-                    {item.bookingId.bookingDate &&
+                    {item?.bookingId?.bookingDate &&
                       format(
                         new Date(item.bookingId.bookingDate),
                         "dd-MM-yyyy"
                       )}
                   </p>
                   <p>
-                      <span>Delivery Time: </span>
-                    {item.bookingId.bookingTime &&
+                    <span>Delivery Time: </span>
+                    {item?.bookingId?.bookingTime &&
                       format(new Date(item.bookingId.bookingTime), "hh:mm aa")}
                   </p>
                 </div>
                 <p>
                   <span
-                    className={`${sharedClasses["t-op-nextlvl"]} ${
-                      sharedClasses.status
-                    } ${
-                      item?.bookingId?.status === "cancelled"
+                    className={`${sharedClasses["t-op-nextlvl"]} ${sharedClasses.status
+                      } ${item?.bookingId?.status === "cancelled"
                         ? sharedClasses.Cancelled
                         : item?.bookingId?.status === "completed"
-                        ? sharedClasses.Completed
-                        : item?.bookingId?.status === "alloted"
-                        ? sharedClasses.alloted
-                        : sharedClasses.OutOfDelivery
-                    }`}
+                          ? sharedClasses.Completed
+                          : item?.bookingId?.status === "alloted"
+                            ? sharedClasses.alloted
+                            : sharedClasses.OutOfDelivery
+                      }`}
                   >
                     {item?.bookingId?.status}
                   </span>
