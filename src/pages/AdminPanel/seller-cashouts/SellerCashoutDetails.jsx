@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import Wrapper from '../../Wrapper'
-import classes from "../../AdminPanel/shared.module.css";
-import sellerAssignedOrdersClasses from "../seller-assigned-orders/SellerAssignedOrders.module.css";
-import useGetApiReq from '../../../hooks/useGetApiReq';
-import Loader from '../../../components/loader/Loader';
-import WalletViewModal from '../../../components/wallet-view-modal/WalletViewModal';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { RiWalletLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
-import CashOutReq from '../../../components/cash-out-req/CashOutReq';
-import { format } from 'date-fns';
 import UpdateCashoutReqModal from '../../../components/update-cashoutReq-modal/UpdateCashoutReqModal';
+import WalletViewModal from '../../../components/wallet-view-modal/WalletViewModal';
+import useGetApiReq from '../../../hooks/useGetApiReq';
+import classes from "../shared.module.css";
+import Wrapper from '../../Wrapper';
+import sellerAssignedOrdersClasses from "../seller-assigned-orders/SellerAssignedOrders.module.css";
 
 const SellerCashoutDetails = () => {
     const { res: getSellerCashoutRes, fetchData: getSellerCashout, isLoading: getSellerCashoutLoading } = useGetApiReq();
