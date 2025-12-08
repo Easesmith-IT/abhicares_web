@@ -11,6 +11,7 @@ import useAuthorization from '../../hooks/useAuthorization';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
 import usePostApiReq from '../../hooks/usePostApiReq';
 import useGetApiReq from '../../hooks/useGetApiReq';
+import { format } from 'date-fns';
 
 const validateCouponCode = (code) => {
     const hasSpaces = /\s/.test(code);
@@ -39,17 +40,21 @@ const AddOfferModal = ({ setIsModalOpen, offer = "", getAllOffers }) => {
     const [selectedItems, setSelectedItems] = useState(offer?.categoryType || []);
     const [isLoading, setIsLoading] = useState(false);
     const [offerInfo, setOfferInfo] = useState({
-        name: offer?.name || "",
-        offPercentage: offer?.offPercentage || "",
-        noOfTimesPerUser: offer?.noOfTimesPerUser || 1,
-        status: offer?.status || true,
-        type: offer?.discountType || "",
-        upTo: offer?.maxDiscount || "",
-        offerValue: offer?.fixedCouponValue || "",
-        categoryType: selectedItems,
-        expiryDate: offer?.expiryDate || "",
+      name: offer?.name || "",
+      offPercentage: offer?.offPercentage || "",
+      noOfTimesPerUser: offer?.noOfTimesPerUser || 1,
+      status: offer?.status || true,
+      type: offer?.discountType || "",
+      upTo: offer?.maxDiscount || "",
+      offerValue: offer?.fixedCouponValue || offer?.couponFixedValue || "",
+      categoryType: selectedItems,
+      expiryDate:
+        (offer?.expiryDate &&
+          format(new Date(offer?.expiryDate), "yyyy-MM-dd")) ||
+        "",
     });
     const [allCategories, setAllCategories] = useState([]);
+    
 
     const handleOnChange = (e) => {
         let { name, value } = e.target;

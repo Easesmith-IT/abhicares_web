@@ -17,8 +17,8 @@ const UpdateCashoutReqModal = ({
   const [cashOutInfo, setCashOutInfo] = useState({
     status: cashOutReq?.status || "",
     description: cashOutReq?.description || "",
-    paymentId: cashOutReq?.paymentId || "",
-    date: cashOutReq?.date || "",
+    paymentId: cashOutReq?.accountDetails?.paymentId || "",
+    date: cashOutReq?.accountDetails?.date || "",
   });
 
   console.log("cashOutReq", cashOutReq);

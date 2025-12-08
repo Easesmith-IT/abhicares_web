@@ -5,8 +5,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import useAuthorization from "../../hooks/useAuthorization";
 import usePatchApiReq from "../../hooks/usePatchApiReq";
+import { readCookie } from "../../utils/readCookie";
 
 const UpdatePwd = ({ setIsModalOpen, adminId }) => {
+   const adminInfo = readCookie("adminInfo");
+
   const currentPwdRef = useRef();
   const updatePwdRef = useRef();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -21,7 +24,11 @@ const UpdatePwd = ({ setIsModalOpen, adminId }) => {
     const currentPassword = currentPwdRef.current.value;
     const newPassword = updatePwdRef.current.value;
 
-    await updatePwdFetchData(`/admin/update-admin-password`, { currentPassword, newPassword, adminId })
+    await updatePwdFetchData(`/admin/update-admin-password`, {
+      currentPassword,
+      newPassword,
+      adminId: adminInfo?.id,
+    });
 
   };
 

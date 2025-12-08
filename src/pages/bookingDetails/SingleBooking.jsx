@@ -30,18 +30,18 @@ const SingleBooking = ({ item, booking }) => {
           <div>
             <p>
               <span>Delivery Date: </span>
-              {item.bookingId.bookingDate &&
-                format(new Date(item.bookingId.bookingDate), "dd-MM-yyyy")}
+              {item?.bookingId?.bookingDate &&
+                format(new Date(item?.bookingId?.bookingDate), "dd-MM-yyyy")}
             </p>
             <p>
               <span>Delivery Time: </span>
-              {item.bookingId.bookingTime &&
-                format(new Date(item.bookingId.bookingTime), "hh:mm aa")}
+              {item?.bookingId?.bookingTime &&
+                format(new Date(item?.bookingId?.bookingTime), "hh:mm aa")}
             </p>
           </div>
-          <p>Qty: {item.quantity}</p>
+          <p>Qty: {item?.quantity}</p>
           <p>
-            <span
+            {item?.bookingId?.status && <span
               className={`${sharedClasses["t-op-nextlvl"]} ${
                 sharedClasses.status
               } ${
@@ -55,7 +55,7 @@ const SingleBooking = ({ item, booking }) => {
               }`}
             >
               {item?.bookingId?.status}
-            </span>
+            </span>}
           </p>
           <p>
             ₹

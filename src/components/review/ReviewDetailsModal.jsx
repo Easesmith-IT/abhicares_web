@@ -49,7 +49,8 @@ const ReviewDetailsModal = ({ setIsModalOpen, review }) => {
                             size={24}
                             color2={'#ffd700'} />
                     </p>
-                    <p><b>Date:</b> {review.date}</p>
+                    <p><b>Date:</b> {review?.createdAt &&
+                                    format(new Date(review.createdAt), "dd-MM-yyyy")}</p>
                     <p><b>Review Type:</b> {reviewDetails?.reviewType}</p>
                     <p><b>Review:</b> {review.content}</p>
 

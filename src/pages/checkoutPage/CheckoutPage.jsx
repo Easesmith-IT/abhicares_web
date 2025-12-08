@@ -141,7 +141,7 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    caluclateCharge()
+    couponId && caluclateCharge();
   }, [cart, couponId])
 
   useEffect(() => {
