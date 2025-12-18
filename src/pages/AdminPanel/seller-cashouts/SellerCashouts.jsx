@@ -84,9 +84,9 @@ const SellerCashouts = () => {
                                 className={classes.filter_input}
                             >
                                 <option value="">Select Status</option>
-                                <option value="created">Created</option>
-                                <option value="completed">Completed</option>
-                                <option value="cancelled">Cancelled</option>
+                                <option value="Created">Created</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
                             <input
                                 type="search"

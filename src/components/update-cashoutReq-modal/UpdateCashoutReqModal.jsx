@@ -7,6 +7,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthorization from '../../hooks/useAuthorization';
 import usePatchApiReq from '../../hooks/usePatchApiReq';
+import { format } from 'date-fns';
 
 const UpdateCashoutReqModal = ({
   setIsUpdateModalOpen,
@@ -18,7 +19,7 @@ const UpdateCashoutReqModal = ({
     status: cashOutReq?.status || "",
     description: cashOutReq?.description || "",
     paymentId: cashOutReq?.accountDetails?.paymentId || "",
-    date: cashOutReq?.accountDetails?.date || "",
+    date: cashOutReq?.accountDetails?.date && format(new Date(cashOutReq?.accountDetails?.date), "yyyy-MM-dd") || "",
   });
 
   console.log("cashOutReq", cashOutReq);
@@ -61,6 +62,7 @@ const UpdateCashoutReqModal = ({
       getSellerWallet();
     }
 }, [updateCashoutRes])
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.modal}>
@@ -85,8 +87,8 @@ const UpdateCashoutReqModal = ({
               id="status"
             >
               <option value="">Select</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
           </div>
           {cashOutInfo.status !== "cancelled" && (
