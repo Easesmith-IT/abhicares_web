@@ -1,8 +1,8 @@
-import { Dialog, Box, Typography, Grid } from "@mui/material"
-import classes from './SubCat.module.css'
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CloseIcon from '@mui/icons-material/Close';
-import { useTheme } from '@mui/material/styles';
+import { Dialog, Box, Typography, Grid } from "@mui/material";
+import classes from "./SubCat.module.css";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import CloseIcon from "@mui/icons-material/Close";
+import { useTheme } from "@mui/material/styles";
 // import { Salon } from "../../assets/data";
 // import { Slide } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -10,90 +10,117 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "../loader/Loader";
 import SkeletonCom from "../sekeleton/SkeletonCom";
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import useGetApiReq from "../../hooks/useGetApiReq";
+import useGeolocation from "../../hooks/usegelocation";
 
 export const SubCatPopUp = ({ open, onClose, category }) => {
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-    const navigate = useNavigate();
+  console.log("category", category);
 
-    const [allServices, setAllServices] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isImgLoading, setIsImgLoading] = useState(true);
+  const { location } = useGeolocation();
+  const navigate = useNavigate();
 
-    const handleClose = () => {
-        onClose();
+  const [allServices, setAllServices] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  const [isImgLoading, setIsImgLoading] = useState(true);
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  const { res, fetchData, isLoading } = useGetApiReq();
+
+
+  const getAllServices = async (lat, lng) => {
+    fetchData(`/services/app/get-category-service/${category.id}`, {
+      params: {
+        latitude: lat,
+        longitude: lng,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (location?.geometry?.lat && location?.geometry?.lng && category) {
+      getAllServices(location?.geometry?.lat, location?.geometry?.lng);
     }
+  }, [location.geometry,category]);
 
+  useEffect(() => {
+    if (res?.status === 200 || res?.status === 201) {
+      setAllServices(res?.data?.data || []);
+      console.log("services res", res);
+    }
+  }, [res]);
 
-    const getAllServices = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-all-service/${category?._id}`);
-            console.log(data);
-            setAllServices(data.data);
-        } catch (error) {
-            console.log(error);
-        }
-        finally {
-            setIsLoading(false);
-        }
-    };
+  return (
+    <div className="popup popup-modal">
+      <Dialog
+        fullWidth
+        fullScreen={fullScreen}
+        open={open}
+        onClose={onClose}
+        className={classes["dialog"]}
+      >
+        <div className={classes["wrapper"]}>
+          <CloseIcon onClick={handleClose} className={classes["icon"]} />
+          <div className={classes["dialog-title"]}>
+            <Typography>{category.name}</Typography>
+          </div>
+          &nbsp;
+          <Box>
+            <div className={classes["container"]}>
+              <div className={classes["sub-category"]}>
+                {/* <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div> */}
+                <Grid container spacing={2}>
+                  {!isLoading && allServices.length === 0 && (
+                    <p>No service found</p>
+                  )}
 
-    useEffect(() => {
-        getAllServices();
-    }, [category])
+                  {isLoading && allServices.length === 0 && <Loader />}
 
-
-    return (
-        <div className="popup popup-modal">
-
-            <Dialog
-                fullWidth
-                fullScreen={fullScreen}
-                open={open} onClose={onClose}
-                className={classes['dialog']}
-            >
-                <div className={classes['wrapper']}>
-                    <CloseIcon onClick={handleClose} className={classes['icon']} />
-                    <div className={classes['dialog-title']}><Typography>{category.name}</Typography></div>&nbsp;
-                    <Box>
-                        <div className={classes['container']}>
-                            <div className={classes['sub-category']}>
-                                {/* <div className={classes['sub-category-name']}><Typography>Salon For Men</Typography></div> */}
-                                <Grid container spacing={2}>
-                                    {!isLoading
-                                        && allServices.length === 0
-                                        && <p>No service found</p>
-                                    }
-
-                                    {isLoading
-                                        && allServices.length === 0
-                                        && <Loader />
-                                    }
-
-                                    {
-                                        allServices.map((service) => (
-                                            <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
-                                                <div onClick={() => navigate(`/services/${service._id}`, { state: { name: service.name, features: service.features } })} className={classes['category-cards']} >
-                                                    {isImgLoading && <Skeleton height={100} width={100} />}
-                                                    <div className={classes['image-Box']}>
-                                                        {/* <SkeletonCom
+                  {allServices.map((service) => (
+                    <Grid key={service.id} item xs={4} sm={3} md={3} lg={3}>
+                      <div
+                        onClick={() =>
+                          navigate(`/services/${service._id}`, {
+                            state: {
+                              name: service.name,
+                              features: service.features,
+                            },
+                          })
+                        }
+                        className={classes["category-cards"]}
+                      >
+                        {isImgLoading && <Skeleton height={100} width={100} />}
+                        <div className={classes["image-Box"]}>
+                          {/* <SkeletonCom
                                                             alt={"service"}
                                                             src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`}
                                                             height={60}
                                                         /> */}
-                                                        <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`} alt="img" />
-                                                    </div>
-                                                    <div className={classes['card-name']}><Typography>{service.name}</Typography></div>
-                                                </div>
-                                            </Grid>
-                                        ))
-                                    }
-                                </Grid>
-                            </div>
-                            {/* <div className={classes['sub-category']}>
+                          <img
+                            style={{
+                              display: !isImgLoading ? "block" : "none",
+                            }}
+                            onLoad={() => setIsImgLoading(false)}
+                            src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`}
+                            alt="img"
+                          />
+                        </div>
+                        <div className={classes["card-name"]}>
+                          <Typography>{service.name}</Typography>
+                        </div>
+                      </div>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+              {/* <div className={classes['sub-category']}>
                                 <div className={classes['sub-category-name']}><Typography>Salon For Women</Typography></div>
                                 <Grid container spacing={2}>
 
@@ -109,12 +136,11 @@ export const SubCatPopUp = ({ open, onClose, category }) => {
                                     }
                                 </Grid>
                             </div> */}
-                        </div>
-                    </Box>
-                </div>
-
-            </Dialog >
-        </div >
-    )
-}
-export default SubCatPopUp
+            </div>
+          </Box>
+        </div>
+      </Dialog>
+    </div>
+  );
+};
+export default SubCatPopUp;

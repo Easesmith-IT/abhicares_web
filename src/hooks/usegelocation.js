@@ -102,28 +102,91 @@
 
 // export default useGeoLocation;
 
-
 import { useState, useEffect } from "react";
 
 const useGeolocation = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState({
     geometry: {},
     formattedAddress: "",
-    city:"",
-    state:"",
-    pincode:"",
+    city: "",
+    state: "",
+    pincode: "",
   });
   const [status, setStatus] = useState(null);
-    const getLocation = async () => {
-      try {
-        const status = await navigator.permissions.query({
-          name: "geolocation",
-        });
+  const getLocation = async () => {
+    setIsLoading(true);
+    try {
+      const status = await navigator.permissions.query({
+        name: "geolocation",
+      });
 
-        setStatus(status.state);
+      setStatus(status.state);
 
-        const handlePermission = async () => {
-          if (status.state === "granted") {
+      const handlePermission = async () => {
+        if (status.state === "granted") {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              setLocation((prev) => {
+                return {
+                  ...prev,
+                  geometry: { lat: latitude, lng: longitude },
+                };
+              });
+
+              // Create a LatLng object for the user's location
+              const userLocation = new window.google.maps.LatLng(
+                latitude,
+                longitude,
+              );
+
+              // Use the Geocoder to get address details
+              const geocoder = new window.google.maps.Geocoder();
+              geocoder.geocode(
+                { location: userLocation },
+                (results, status) => {
+                  console.log("results", results);
+                  if (status === "OK" && results[0]) {
+                    const formattedAddress =
+                      getSuitableFormattedAddress(results);
+
+                    const city = extractAddressComponent(results, "locality");
+                    const state = extractAddressComponent(
+                      results,
+                      "administrative_area_level_1",
+                    );
+                    const pincode = extractAddressComponent(
+                      results,
+                      "postal_code",
+                    );
+
+                    setLocation((prev) => {
+                      return {
+                        ...prev,
+                        formattedAddress,
+                        city,
+                        state,
+                        pincode,
+                      };
+                    });
+                  } else {
+                    console.error("Error in geocoding:", status);
+                  }
+                },
+              );
+            },
+            (error) => {
+              console.error("Error in getting location", error.message);
+            },
+          );
+        } else if (status.state === "prompt" || status.state === "denied") {
+          // You can handle UI updates or show a message to the user here
+          console.error("Geolocation permission denied by the user");
+
+          // Example: Show a button in your modal to request location again
+          // This button should trigger the geolocation request
+          const requestLocationAgain = async () => {
             navigator.geolocation.getCurrentPosition(
               async (position) => {
                 const { latitude, longitude } = position.coords;
@@ -134,30 +197,27 @@ const useGeolocation = () => {
                   };
                 });
 
-                // Create a LatLng object for the user's location
                 const userLocation = new window.google.maps.LatLng(
                   latitude,
-                  longitude
+                  longitude,
                 );
 
-                // Use the Geocoder to get address details
                 const geocoder = new window.google.maps.Geocoder();
                 geocoder.geocode(
                   { location: userLocation },
                   (results, status) => {
-                    console.log('results',results)
+                    console.log("results", results);
                     if (status === "OK" && results[0]) {
-                        const formattedAddress =
-                          getSuitableFormattedAddress(results);
-
+                      const formattedAddress =
+                        getSuitableFormattedAddress(results);
                       const city = extractAddressComponent(results, "locality");
                       const state = extractAddressComponent(
                         results,
-                        "administrative_area_level_1"
+                        "administrative_area_level_1",
                       );
                       const pincode = extractAddressComponent(
                         results,
-                        "postal_code"
+                        "postal_code",
                       );
 
                       setLocation((prev) => {
@@ -169,92 +229,33 @@ const useGeolocation = () => {
                           pincode,
                         };
                       });
+                      console.log("formattedAddress", formattedAddress);
+                      console.log("city", city);
+                      console.log("state", state);
+                      console.log("pincode", pincode);
                     } else {
                       console.error("Error in geocoding:", status);
                     }
-                  }
+                  },
                 );
               },
               (error) => {
                 console.error("Error in getting location", error.message);
-              }
+              },
             );
-          } else if (status.state === "prompt" || status.state === "denied") {
-            // You can handle UI updates or show a message to the user here
-            console.error("Geolocation permission denied by the user");
+          };
 
-            // Example: Show a button in your modal to request location again
-            // This button should trigger the geolocation request
-            const requestLocationAgain = async () => {
-              navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                  const { latitude, longitude } = position.coords;
-                  setLocation((prev) => {
-                    return {
-                      ...prev,
-                      geometry: { lat: latitude, lng: longitude },
-                    };
-                  });
+          await requestLocationAgain();
+        }
+      };
 
-                  const userLocation = new window.google.maps.LatLng(
-                    latitude,
-                    longitude
-                  );
-
-                  const geocoder = new window.google.maps.Geocoder();
-                  geocoder.geocode(
-                    { location: userLocation },
-                    (results, status) => {
-                      console.log("results", results);
-                      if (status === "OK" && results[0]) {
-                        const formattedAddress = getSuitableFormattedAddress(results);
-                        const city = extractAddressComponent(
-                          results,
-                          "locality"
-                        );
-                        const state = extractAddressComponent(
-                          results,
-                          "administrative_area_level_1"
-                        );
-                        const pincode = extractAddressComponent(
-                          results,
-                          "postal_code"
-                        );
-
-                        setLocation((prev) => {
-                          return {
-                            ...prev,
-                            formattedAddress,
-                            city,
-                            state,
-                            pincode,
-                          };
-                        });
-                        console.log("formattedAddress", formattedAddress);
-                        console.log("city", city);
-                        console.log("state", state);
-                        console.log("pincode", pincode);
-                      } else {
-                        console.error("Error in geocoding:", status);
-                      }
-                    }
-                  );
-                },
-                (error) => {
-                  console.error("Error in getting location", error.message);
-                }
-              );
-            };
-
-            await requestLocationAgain();
-          }
-        };
-
-        await handlePermission();
-      } catch (error) {
-        console.error("Error checking geolocation permission:", error);
-      }
-    };
+      await handlePermission();
+    } catch (error) {
+      console.error("Error checking geolocation permission:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     getLocation();
   }, []);
@@ -262,7 +263,7 @@ const useGeolocation = () => {
   const extractAddressComponent = (results, type) => {
     for (const result of results) {
       const component = result.address_components.find((component) =>
-        component.types.includes(type)
+        component.types.includes(type),
       );
       if (component) {
         return component.long_name;
@@ -272,17 +273,17 @@ const useGeolocation = () => {
   };
 
   const getSuitableFormattedAddress = (results) => {
-     for (const result of results) {
-       if (
-         result.types.includes("street_address") ||
-         result.types.includes("route")
-       )
-         return result.formatted_address;
-     }
-     return results[0].formatted_address;
-  }
+    for (const result of results) {
+      if (
+        result.types.includes("street_address") ||
+        result.types.includes("route")
+      )
+        return result.formatted_address;
+    }
+    return results[0].formatted_address;
+  };
 
-  return { location, status };
+  return { location, status, isLoading };
 };
 
 export default useGeolocation;

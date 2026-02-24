@@ -106,7 +106,7 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
             <p>{product.rating}</p>
             ({product?.totalReviews})
           </div>
-          <p>{parse(product.description)}</p>
+          <div className={classes.description}>{parse(product.description)}</div>
           <div className={classes.d_flex}>
             <div className={classes.price_cotainer}>
               <p className={classes.price}>₹{product.price}</p>

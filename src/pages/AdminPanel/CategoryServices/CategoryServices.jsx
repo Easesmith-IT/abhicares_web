@@ -1,26 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import classes from "../Shared.module.css";
 import AddBtn from "../../../assets/add-icon-nobg.png";
-import axios from 'axios';
-import parse from 'html-react-parser';
-import toast from 'react-hot-toast';
+import axios from "axios";
+import parse from "html-react-parser";
+import toast from "react-hot-toast";
 
 import categoryServicesClasses from "./CategoryServices.module.css";
-import AddServiceModal from '../../../components/add-service-modal/AddServiceModal';
-import DeleteModal from '../../../components/deleteModal/DeleteModal';
-import Loader from '../../../components/loader/Loader';
+import AddServiceModal from "../../../components/add-service-modal/AddServiceModal";
+import DeleteModal from "../../../components/deleteModal/DeleteModal";
+import Loader from "../../../components/loader/Loader";
 
 import { MdDelete } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import Wrapper from '../../Wrapper';
-import useAuthorization from '../../../hooks/useAuthorization';
-import useDeleteApiReq from '../../../hooks/useDeleteApiReq';
-import useGetApiReq from '../../../hooks/useGetApiReq';
+import Wrapper from "../../Wrapper";
+import useAuthorization from "../../../hooks/useAuthorization";
+import useDeleteApiReq from "../../../hooks/useDeleteApiReq";
+import useGetApiReq from "../../../hooks/useGetApiReq";
 
 const CategoryServices = () => {
-  const { res: getServiceRes, fetchData: getService, isLoading } = useGetApiReq();
-  const { res: deleteServiceRes, fetchData: deleteService, isLoading: deleteServiceLoading } = useDeleteApiReq();
+  const {
+    res: getServiceRes,
+    fetchData: getService,
+    isLoading,
+  } = useGetApiReq();
+  const {
+    res: deleteServiceRes,
+    fetchData: deleteService,
+    isLoading: deleteServiceLoading,
+  } = useDeleteApiReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -32,10 +40,9 @@ const CategoryServices = () => {
   const params = useParams();
   const { checkAuthorization } = useAuthorization();
 
-
   const handleUpdateModal = (e, service) => {
     e.stopPropagation();
-    setService(service)
+    setService(service);
     setIsUpdateModalOpen(!isDeleteModalOpen);
   };
 
@@ -45,21 +52,21 @@ const CategoryServices = () => {
     setIsDeleteModalOpen(!isDeleteModalOpen);
   };
   const getCategoryServices = async () => {
-    getService(`/admin/get-category-service/${params?.categoryId}`)
+    getService(`/admin/get-category-service/${params?.categoryId}`);
   };
 
   useEffect(() => {
     getCategoryServices();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (getServiceRes?.status === 200 || getServiceRes?.status === 201) {
       setAllCategoryServices(getServiceRes?.data.data);
     }
-  }, [getServiceRes])
+  }, [getServiceRes]);
 
   const handleDelete = async () => {
-    deleteService(`/admin/delete-service/${service}`)
+    deleteService(`/admin/delete-service/${service}`);
   };
 
   useEffect(() => {
@@ -68,8 +75,7 @@ const CategoryServices = () => {
       getCategoryServices();
       setIsDeleteModalOpen(!isDeleteModalOpen);
     }
-  }, [deleteServiceRes])
-
+  }, [deleteServiceRes]);
 
   return (
     <>
@@ -78,7 +84,7 @@ const CategoryServices = () => {
           <div className={classes["services-header"]}>
             <div>
               <h3>Sub-Categories</h3>
-              <h4 style={{ marginTop: '30px' }}>{state.categoryName}</h4>
+              <h4 style={{ marginTop: "30px" }}>{state.categoryName}</h4>
             </div>
 
             <button
@@ -101,7 +107,7 @@ const CategoryServices = () => {
                 onClick={() =>
                   navigate(
                     `/admin/services/${params?.categoryId}/product/${service._id}`,
-                    { state: service }
+                    { state: service },
                   )
                 }
                 className={classes.card}
@@ -156,6 +162,6 @@ const CategoryServices = () => {
       )}
     </>
   );
-}
+};
 
-export default CategoryServices
+export default CategoryServices;

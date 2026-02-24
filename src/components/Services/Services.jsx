@@ -1,46 +1,41 @@
-import { useEffect, useState } from "react";
-import classes from "./Services.module.css";
-import styles from "../../components/Header/Header.module.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
-import categories from "../../data/categories.json";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import classes from "./Services.module.css";
 
 import { Grid, Typography } from "@mui/material";
 
-import Photo from "../../assets/hero_img.png";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
 import { GoogleApiWrapper } from "google-maps-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate } from "react-router-dom";
+import Photo from "../../assets/hero_img.png";
+import useGeolocation from "../../hooks/usegelocation";
+import useGetApiReq from "../../hooks/useGetApiReq";
 import Loader from "../loader/Loader";
-import useGeolocation from '../../hooks/usegelocation'
 import SkeletonCom from "../sekeleton/SkeletonCom";
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
-export const Services = ({ open }) => {
+export const Services = ({ open,allCategories }) => {
   const [isShow, setIsShow] = useState(true);
   const [searchInput, setSearchInput] = useState("");
-  const [allCategories, setAllCategories] = useState([]);
+  // const [allCategories, setAllCategories] = useState([]);
   const [allServices, setAllServices] = useState([]);
   const [isMessage, setIsMessage] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userlocation, setUserLocation] = useState(null)
+  const [userlocation, setUserLocation] = useState(null);
   const [isImgLoading, setIsImgLoading] = useState(true);
   const [isImgLoading2, setIsImgLoading2] = useState(true);
 
+  const { res, fetchData, isLoading } = useGetApiReq();
+
   const { location } = useGeolocation();
-  console.log('location', location)
+  console.log("location", location);
 
   useEffect(() => {
     if (location) {
-      console.log('formatted', location.formattedAddress)
+      console.log("formatted", location.formattedAddress);
       setUserLocation(location.formattedAddress);
     }
-
-
   }, [location]);
 
   const navigate = useNavigate();
@@ -55,7 +50,7 @@ export const Services = ({ open }) => {
     }
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/search-service?search=${value}`
+        `${import.meta.env.VITE_APP_API_URL}/search-service?search=${value}`,
       );
       if (data.data.length === 0) {
         setIsMessage(true);
@@ -86,28 +81,34 @@ export const Services = ({ open }) => {
     if (searchInput === "") {
       setIsShow(true);
       setAllServices([]);
-      setIsMessage(false)
+      setIsMessage(false);
     } else {
       setAllServices([]);
       setIsShow(false);
     }
   }, [searchInput]);
 
-  const getAllCategories = async () => {
-    try {
-      // const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/get-all-category`);
-      // console.log('categories',data);
-      setAllCategories(categories.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const getAllCategories = async (lat, lng) => {
+  //   fetchData("/categories/app/get-categories", {
+  //     params: {
+  //       latitude: lat,
+  //       longitude: lng,
+  //     },
+  //   });
+  // };
 
-  useEffect(() => {
-    getAllCategories();
-  }, []);
+  // useEffect(() => {
+  //   if (location?.geometry?.lat && location?.geometry?.lng) {
+  //     getAllCategories(location?.geometry?.lat, location?.geometry?.lng);
+  //   }
+  // }, [location.geometry]);
+
+  // useEffect(() => {
+  //   if (res?.status === 200 || res?.status === 201) {
+  //     setAllCategories(res?.data?.categories || []);
+  //     console.log("category res", res);
+  //   }
+  // }, [res]);
 
   const data = [
     {
@@ -141,10 +142,7 @@ export const Services = ({ open }) => {
       name: "Appliance repair",
       image: `${import.meta.env.VITE_APP_IMAGE_URL}/categories/appliance-repair.png`,
     },
-
-
   ];
-
 
   return (
     <div className={classes["wrapper"]}>
@@ -152,7 +150,12 @@ export const Services = ({ open }) => {
         <div className={classes["right"]}>
           {isImgLoading && <Skeleton height={500} width={500} />}
           <div className={classes["imagecontainer"]}>
-            <img style={{ display: !isImgLoading ? 'block' : 'none' }} onLoad={() => setIsImgLoading(false)} src={Photo} alt="This is a " />
+            <img
+              style={{ display: !isImgLoading ? "block" : "none" }}
+              onLoad={() => setIsImgLoading(false)}
+              src={Photo}
+              alt="This is a "
+            />
           </div>
         </div>
         <div className={classes["left"]}>
@@ -170,12 +173,10 @@ export const Services = ({ open }) => {
             </div>
           </div> */}
           <div className={classes["heading"]}>
-            <h4>
-              Home services at your doorstep
-            </h4>
+            <h4>Home services at your doorstep</h4>
           </div>
           <div className={`${classes.dFlexRow} ${classes.searchBox}`}>
-            <SearchIcon style={{margin:"0 10px"}} />
+            <SearchIcon style={{ margin: "0 10px" }} />
             <div>
               <input
                 onChange={debounce(handleOnChange, 1000)}
@@ -211,7 +212,7 @@ export const Services = ({ open }) => {
                         height={60}
                       /> */}
                       <img
-                        style={{ display: !isImgLoading2 ? 'block' : 'none' }}
+                        style={{ display: !isImgLoading2 ? "block" : "none" }}
                         onLoad={() => setIsImgLoading2(false)}
                         src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`}
                         alt="service"
@@ -243,7 +244,7 @@ export const Services = ({ open }) => {
 
               {isLoading && allCategories.length === 0 && <Loader />}
               <Grid container flex rowGap={3}>
-                {data.map((category) => (
+                {allCategories.map((category) => (
                   <Grid key={category._id} item xs={4} sm={4} md={4} lg={4}>
                     <div
                       className={classes["card"]}

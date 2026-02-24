@@ -13,12 +13,12 @@ import { getCartDetails } from "../../store/slices/cartSlice";
 import Product from "../../components/Product";
 import Loader from "../../components/loader/Loader";
 import WebsiteWrapper from "../WebsiteWrapper";
+import useGeolocation from "../../hooks/usegelocation";
+import useGetApiReq from "../../hooks/useGetApiReq";
 
 const ProductPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [allPackages, setAllPackages] = useState([]);
-  const [isProductLoading, setIsProductLoading] = useState(true);
-  const [isPackageLoading, setIsPackageLoading] = useState(true);
   const [isCartLoading, setIsCartLoading] = useState(false);
   const [seoData, setSeoData] = useState({
     title: "",
@@ -30,13 +30,16 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { location } = useGeolocation();
+  const { res, fetchData, isLoading } = useGetApiReq();
+  const { res:packageRes, fetchData:fetchPackages, isLoading:isPackageLoading } = useGetApiReq();
 
   const params = useParams();
 
   const getSeoForProductPage = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_CMS_URL}/get-seo/${params.serviceId}`
+        `${import.meta.env.VITE_APP_CMS_URL}/get-seo/${params.serviceId}`,
       );
       const { seoTitle, seoDescription } = data?.seo;
       setSeoData({ title: seoTitle, description: seoDescription });
@@ -45,44 +48,58 @@ const ProductPage = () => {
     }
   };
 
-  const getAllProducts = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/get-all-product/${params.serviceId}`
-      );
-      console.log("services", data);
-      setAllProducts(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsProductLoading(false);
-    }
-  };
-
-  const getAllPackages = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/get-service-package/${params?.serviceId}`
-      );
-      console.log("package",data);
-      setAllPackages(data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsPackageLoading(false);
-    }
+  const getAllProducts = async (lat, lng) => {
+    fetchData(`/products/get-all-product/${params.serviceId}`, {
+      params: {
+        latitude: lat,
+        longitude: lng,
+      },
+    });
   };
 
   useEffect(() => {
-    getAllProducts();
-    getAllPackages();
+    if (location?.geometry?.lat && location?.geometry?.lng) {
+      getAllProducts(location?.geometry?.lat, location?.geometry?.lng);
+    }
+  }, [location.geometry, params.serviceId]);
+
+  useEffect(() => {
+    if (res?.status === 200 || res?.status === 201) {
+      setAllProducts(res?.data?.products || []);
+      console.log("products res", res);
+    }
+  }, [res]);
+
+  const getAllPackages = async (lat,lng) => {
+    fetchPackages(`/packages/get-service-package/${params.serviceId}`, {
+      params: {
+        latitude: lat,
+        longitude: lng,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (location?.geometry?.lat && location?.geometry?.lng) {
+      getAllPackages(location?.geometry?.lat, location?.geometry?.lng);
+    }
+  }, [location.geometry, params.serviceId]);
+
+  useEffect(() => {
+    if (packageRes?.status === 200 || packageRes?.status === 201) {
+      setAllPackages(packageRes?.data?.packages || []);
+      console.log("packages res", packageRes);
+    }
+  }, [packageRes]);
+
+  useEffect(() => {
     getSeoForProductPage();
     (async () => {
       await dispatch(getCartDetails());
     })();
   }, []);
 
-  console.log("cart",cart);
+  console.log("cart", cart);
 
   return (
     <HelmetProvider>
@@ -126,7 +143,9 @@ const ProductPage = () => {
                       <p>No packages found</p>
                     )}
 
-                    {isPackageLoading && allPackages?.length === 0 && <Loader />}
+                    {isPackageLoading && allPackages?.length === 0 && (
+                      <Loader />
+                    )}
 
                     {allPackages?.map((singlePackage) => (
                       <SubService
@@ -141,11 +160,11 @@ const ProductPage = () => {
                 </div>
                 <div className={classes.products_cotainer}>
                   <h2>Services</h2>
-                  {!isProductLoading && allProducts?.length === 0 && (
+                  {!isLoading && allProducts?.length === 0 && (
                     <p>No products found</p>
                   )}
 
-                  {isProductLoading && allProducts?.length === 0 && <Loader />}
+                  {isLoading && allProducts?.length === 0 && <Loader />}
 
                   {allProducts?.map((product) => (
                     <Product
@@ -159,7 +178,9 @@ const ProductPage = () => {
 
               {cart?.items?.length !== 0 && (
                 <div className={classes.sm_cart}>
-                  <span className={classes.sm_cart_span}>₹{cart.totalPrice ||0}</span>
+                  <span className={classes.sm_cart_span}>
+                    ₹{cart.totalPrice || 0}
+                  </span>
                   <button
                     onClick={() => navigate("/checkout")}
                     className={`${classes.button} ${classes.view_cart_button}`}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import classes from "./LoginSignupModal.module.css";
 import axios from "axios";
@@ -11,22 +11,51 @@ import CountdownTimer from "../countdown/CountDown";
 import { FaEdit } from "react-icons/fa";
 import { changeUserAuthStatus } from "../../store/slices/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import useGetApiReq from "../../hooks/useGetApiReq";
+import useGeolocation from "../../hooks/usegelocation";
 
 const LoginSignupModal = ({ isOpen, handleOnclick }) => {
   const dispatch = useDispatch();
   const navigaye = useNavigate();
   const [termsAndConditions, setTermsAndConditions] = useState(false);
+  const [cities, setCities] = useState([]);
+  const { res, fetchData, isLoading: isCityLoading } = useGetApiReq();
+  const [coordinates, setCoordinates] = useState("");
+  const { location } = useGeolocation();
+
+  useEffect(() => {
+    setCoordinates({
+      lat: location?.geometry?.lat,
+      lng: location?.geometry?.lng,
+    });
+  }, [location]);
 
   const [loginSignupInfo, setLoginSignupInfo] = useState({
     name: "",
     phone: "",
     referralCode: "",
+    cityId: "",
   });
 
   const [error, setError] = useState({
     message: null,
     from: null,
   });
+
+  const getCities = async () => {
+    fetchData(`/cities/getAllCities`);
+  };
+
+  useEffect(() => {
+    getCities();
+  }, []);
+
+  useEffect(() => {
+    if (res?.status === 200 || res?.status === 201) {
+      console.log("city res", res);
+      setCities(res?.data?.data);
+    }
+  }, [res]);
 
   // console.log("signup",loginSignupInfo);
 
@@ -100,7 +129,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/signup-otp`,
         { ...loginSignupInfo },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setIsLoading(false);
       console.log(data);
@@ -138,7 +167,7 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/generate-otp`,
         { phoneNumber: loginSignupInfo.phone },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       console.log("login", data);
       setSuccessMessage(data?.message);
@@ -175,8 +204,12 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsTimer(false);
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/verify-otp`,
-        { enteredOTP: otp, phoneNumber: loginSignupInfo.phone },
-        { withCredentials: true }
+        {
+          enteredOTP: otp,
+          phoneNumber: loginSignupInfo.phone,
+          
+        },
+        { withCredentials: true },
       );
       console.log("login otp verification", data);
       dispatch(changeUserAuthStatus({ isAuthenticated: true }));
@@ -222,8 +255,13 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       setIsTimer(false);
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/verify-signup`,
-        { enteredOTP: otp, phone: loginSignupInfo.phone },
-        { withCredentials: true }
+        {
+          enteredOTP: otp,
+          phone: loginSignupInfo.phone,
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+        },
+        { withCredentials: true },
       );
       console.log("signup otp verification", data);
       dispatch(changeUserAuthStatus({ isAuthenticated: true }));
@@ -250,8 +288,9 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
 
   return (
     <div
-      className={`${classes.modal_overlay} ${isOpen ? classes.modal_open : classes.modal_close
-        }`}
+      className={`${classes.modal_overlay} ${
+        isOpen ? classes.modal_open : classes.modal_close
+      }`}
     >
       <div className={classes.modal_wrapper}>
         <button onClick={handleOnClose} className={classes.modal_close}>
@@ -367,6 +406,21 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
                     id="referralCode"
                     placeholder="Enter Referral Code"
                   />
+                </div>
+                <div className={classes.input_box}>
+                  <select
+                    onChange={handleOnChange}
+                    value={loginSignupInfo.cityId}
+                    className={classes.input}
+                    name="cityId"
+                    id="cityId"
+                    placeholder="Select cityId"
+                  >
+                    <option value="">Select City Id</option>
+                    {cities.map((city) => (
+                      <option value={city._id}>{city.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div
                   style={{ display: "flex", gap: "10px", alignItems: "center" }}

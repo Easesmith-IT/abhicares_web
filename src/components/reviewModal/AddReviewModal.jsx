@@ -16,6 +16,7 @@ const AddReviewModal = ({ isReviewModalOpen, setIsReviewModalOpen, review, id, g
     const userId = token?.id;
     console.log("userId", userId);
     console.log("bookingId", bookingId);
+    console.log("serviceType", serviceType);
 
 
     const [reviewInfo, setReviewInfo] = useState({

@@ -65,7 +65,7 @@ const Reviews = () => {
   };
 
   const filterReviews = async () => {
-    filterReviewsFun(`/admin/filter-review?date=${filters.date && format(new Date(filters.date), "dd/MM/yyyy")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`)
+    filterReviewsFun(`/admin/filter-review?date=${filters.date && format(new Date(filters.date), "yyyy-MM-dd")}&serviceType=${filters.serviceType}&reviewType=${filters.type}&page=${currentPage}`)
   };
 
 
@@ -109,7 +109,7 @@ const Reviews = () => {
               className={classes.filter_input}
             />
 
-            <select
+            {/* <select
               name="serviceType"
               value={filters.serviceType}
               onChange={handleFilterChange}
@@ -117,9 +117,11 @@ const Reviews = () => {
             >
               <option value="">Select Service</option>
               {allCategories?.map((item) => (
-                <option key={item?._id} value={item?._id}>{item?.name}</option>
+                <option key={item?._id} value={item?._id}>
+                  {item?.name}
+                </option>
               ))}
-            </select>
+            </select> */}
             <select
               name="type"
               value={filters.type}
@@ -127,13 +129,14 @@ const Reviews = () => {
               className={classes.filter_input}
             >
               <option value="">Select Type</option>
-              <option value="service">Service</option>
-              <option value="product">Product</option>
+              <option value="ON-PRODUCT">ON PRODUCT</option>
+              <option value="ON-BOOKING">ON BOOKING</option>
+              <option value="ON-PACKAGE">ON PACKAGE</option>
             </select>
           </div>
         </div>
 
-        {(isLoading || filterReviewsLoading) ? (
+        {isLoading || filterReviewsLoading ? (
           <Loader />
         ) : reviews.length === 0 ? (
           <p>No reviews found</p>

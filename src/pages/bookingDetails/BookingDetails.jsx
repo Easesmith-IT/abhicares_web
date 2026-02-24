@@ -1,18 +1,25 @@
-import axios from 'axios';
-import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import InvoiceModal from '../../components/invoiceModal/InvoiceModal';
-import usePostApiReq from '../../hooks/usePostApiReq';
-import WebsiteWrapper from '../WebsiteWrapper';
-import classes from './BookingDetails.module.css';
-import SingleBooking from './SingleBooking';
-import useGetApiReq from '../../hooks/useGetApiReq';
+import axios from "axios";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import InvoiceModal from "../../components/invoiceModal/InvoiceModal";
+import usePostApiReq from "../../hooks/usePostApiReq";
+import WebsiteWrapper from "../WebsiteWrapper";
+import classes from "./BookingDetails.module.css";
+import SingleBooking from "./SingleBooking";
+import useGetApiReq from "../../hooks/useGetApiReq";
+import { FaSpinner } from "react-icons/fa";
+import { axiosInstance } from "../../utils/axiosInstance";
 
 const BookingDetails = () => {
-  const { res: changeOrderStatusRes, fetchData: changeOrderStatus, isLoading: changeOrderStatusLoading } = usePostApiReq();
-  const { res: getProductInvoiceRes, fetchData: getProductInvoice, isLoading } = useGetApiReq();
+  const {
+    res: changeOrderStatusRes,
+    fetchData: changeOrderStatus,
+    isLoading: changeOrderStatusLoading,
+  } = usePostApiReq();
+  const { res: getProductInvoiceRes, fetchData: getProductInvoice } =
+    useGetApiReq();
   const { state } = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -23,62 +30,123 @@ const BookingDetails = () => {
   const [totalTaxRs, setTotalTaxRs] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getOrderInvoice = async () => {
-    getProductInvoice(`/shopping/get-product-invoice/${state._id}`);
-  }
+    getProductInvoice(`/invoice/download/${state._id}`, {
+      responseType: "blob",
+    });
+  };
+
+  const downloadInvoice = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await axiosInstance.get(
+        `/invoice/download/${state._id}`,
+        {
+          responseType: "blob",
+        },
+      );
+
+      console.log("response", response);
+
+      // Extract filename
+      let filename = "invoice.pdf";
+      const contentDisposition = response.headers["content-disposition"];
+
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="(.+)"/);
+        if (match?.[1]) {
+          filename = match[1];
+        }
+      }
+
+      // Create blob URL
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = window.URL.createObjectURL(blob);
+
+      // Create temporary anchor
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup immediately
+      link.remove();
+      window.URL.revokeObjectURL(fileURL);
+    } catch (error) {
+      console.error("Invoice download failed:", error);
+
+      toast.error(error?.response?.data?.message || "Invoice download failed.");
+
+      if (error?.response?.status === 401) {
+        if (token?.role === "user") getStatus();
+        if (adminInfo?.role === "admin") getAdminStatus();
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (getProductInvoiceRes?.status === 200 || getProductInvoiceRes?.status === 201) {
-      console.log("getProductInvoiceRes",getProductInvoiceRes);
-      
+    if (
+      getProductInvoiceRes?.status === 200 ||
+      getProductInvoiceRes?.status === 201
+    ) {
+      console.log("getProductInvoiceRes", getProductInvoiceRes);
+
       setInvoice(getProductInvoiceRes?.data?.data);
     }
-  }, [getProductInvoiceRes])
+  }, [getProductInvoiceRes]);
 
   const handleCancelOrder = async () => {
-    changeOrderStatus(`/shopping/change-order-status/${state._id}`, { status: "Cancelled" })
-  }
+    changeOrderStatus(`/shopping/change-order-status/${state._id}`, {
+      status: "Cancelled",
+    });
+  };
 
   useEffect(() => {
-    if (changeOrderStatusRes?.status === 200 || changeOrderStatusRes?.status === 201) {
+    if (
+      changeOrderStatusRes?.status === 200 ||
+      changeOrderStatusRes?.status === 201
+    ) {
       toast.success("Your order cancelled successfully");
       navigate("/my_bookings");
     }
-  }, [changeOrderStatusRes])
+  }, [changeOrderStatusRes]);
 
-  useEffect(() => {
-    getOrderInvoice();
-    let value = 0;
-    for (const item of state.items) {
-      if (item?.product) {
-        value = value + Number(item.quantity * item.product.offerPrice);
-      }
-      else if (item?.package) {
-        value = value + Number(item.quantity * item.package.offerPrice);
-      }
-    }
-    const taxRs = (Number(value) * 18) / 100;
-    setTotalTaxRs(taxRs);
-    setSubTotal(() => value);
+  // useEffect(() => {
+  //   getOrderInvoice();
+  //   let value = 0;
+  //   for (const item of state.items) {
+  //     if (item?.product) {
+  //       value = value + Number(item.quantity * item.product.offerPrice);
+  //     } else if (item?.package) {
+  //       value = value + Number(item.quantity * item.package.offerPrice);
+  //     }
+  //   }
+  //   const taxRs = (Number(value) * 18) / 100;
+  //   setTotalTaxRs(taxRs);
+  //   setSubTotal(() => value);
 
-    const { discountType, couponFixedValue, offPercentage, maxDiscount } = state.couponId || {};
+  //   const { discountType, couponFixedValue, offPercentage, maxDiscount } =
+  //     state.couponId || {};
 
-    if (state.couponId) {
-      if (discountType === "fixed") {
-        setDiscount(couponFixedValue);
-        setSubTotal((prev) => prev - Number(couponFixedValue));
-      }
-      else {
-        let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
-        offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
-        console.log("offerTotal", offerTotal);
-        setDiscount(offerTotal);
-        setSubTotal((prev) => prev - Number(offerTotal));
-      }
-    }
-  }, [state.orderValue, state.couponId]);
-
+  //   if (state.couponId) {
+  //     if (discountType === "fixed") {
+  //       setDiscount(couponFixedValue);
+  //       setSubTotal((prev) => prev - Number(couponFixedValue));
+  //     } else {
+  //       let offerTotal = Math.ceil(value * (Number(offPercentage) / 100));
+  //       offerTotal = offerTotal > maxDiscount ? maxDiscount : offerTotal;
+  //       console.log("offerTotal", offerTotal);
+  //       setDiscount(offerTotal);
+  //       setSubTotal((prev) => prev - Number(offerTotal));
+  //     }
+  //   }
+  // }, [state.orderValue, state.couponId]);
 
   return (
     <WebsiteWrapper>
@@ -95,12 +163,19 @@ const BookingDetails = () => {
                 <p>Order Status: {state.status}</p>
               </div>
               <div className={classes.buttons_container}>
-                <button
-                  onClick={() => setIsInvoiceModalOpen(true)}
-                  className={classes.button}
-                >
-                  View Invoice
-                </button>
+                {state.status === "Completed" && (
+                  <button
+                    disabled={isLoading}
+                    onClick={downloadInvoice}
+                    className={classes.button}
+                  >
+                    {isLoading ? (
+                      <FaSpinner className="spin" />
+                    ) : (
+                      "Download Invoice"
+                    )}
+                  </button>
+                )}
                 {state.status !== "Cancelled" && (
                   <button
                     onClick={() => setIsCancelledModalOpen(true)}
@@ -165,7 +240,6 @@ const BookingDetails = () => {
           />
         )}
 
-
         {isCancelledModalOpen && (
           <div className={classes.modal_wrapper}>
             <div className={classes.modal}>
@@ -190,5 +264,5 @@ const BookingDetails = () => {
       </section>
     </WebsiteWrapper>
   );
-}
-export default BookingDetails
+};
+export default BookingDetails;

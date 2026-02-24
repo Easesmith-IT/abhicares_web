@@ -1,3 +1,5 @@
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
@@ -8,79 +10,140 @@ import { useSelector } from "react-redux";
 import { GoogleApiWrapper } from "google-maps-react";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import ProtectedRoute from "./components/private-route/ProtectedRoute";
+import AddCity from "./components/add-city-modal/AddCity";
 
-
-const SellerCashoutDetails = lazy(() => import('./pages/AdminPanel/seller-cashouts/SellerCashoutDetails'));
-const HomePage = lazy(() => import('./pages/Home'));
-const AboutUs = lazy(() => import('./pages/aboutUs/AboutUs'));
-const ContactUs = lazy(() => import('./pages/contactUs/ContactUs'));
-const PrivacyPolicy = lazy(() => import('./pages/privacy&policy/Privacy&Policy'));
-const ProductPage = lazy(() => import('./pages/productPage/ProductPage'));
-const CheckoutPage = lazy(() => import('./pages/checkoutPage/CheckoutPage'));
-const RegisterAsAProfessional = lazy(() => import('./pages/registerAsAProfessional/RegisterAsAProfessional'));
-const TermsAndConditions = lazy(() => import("./pages/termsAndConditions/TermsAndConditions"));
+const SellerCashoutDetails = lazy(
+  () => import("./pages/AdminPanel/seller-cashouts/SellerCashoutDetails"),
+);
+const HomePage = lazy(() => import("./pages/Home"));
+const AboutUs = lazy(() => import("./pages/aboutUs/AboutUs"));
+const ContactUs = lazy(() => import("./pages/contactUs/ContactUs"));
+const PrivacyPolicy = lazy(
+  () => import("./pages/privacy&policy/Privacy&Policy"),
+);
+const ProductPage = lazy(() => import("./pages/productPage/ProductPage"));
+const CheckoutPage = lazy(() => import("./pages/checkoutPage/CheckoutPage"));
+const RegisterAsAProfessional = lazy(
+  () => import("./pages/registerAsAProfessional/RegisterAsAProfessional"),
+);
+const TermsAndConditions = lazy(
+  () => import("./pages/termsAndConditions/TermsAndConditions"),
+);
 
 const HelpCenter = lazy(() => import("./pages/helpCenter/HelpCenter"));
 const MyBookings = lazy(() => import("./pages/myBookings/MyBookings"));
 const SuccessPage = lazy(() => import("./pages/successPage/SuccessPage"));
-const AntiDiscriminationPolicy = lazy(() => import("./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy"));
-const BookingDetails = lazy(() => import("./pages/bookingDetails/BookingDetails"));
+const AntiDiscriminationPolicy = lazy(
+  () => import("./pages/antiDiscriminationPolicy/AntiDiscriminationPolicy"),
+);
+const BookingDetails = lazy(
+  () => import("./pages/bookingDetails/BookingDetails"),
+);
 
 // Admin route imports
 const AdminLogin = lazy(() => import("./pages/AdminPanel/AdminLogin"));
-const AvailableCities = lazy(() => import("./pages/AdminPanel/availableCities/AvailableCities"));
-const CategoryServices = lazy(() => import("./pages/AdminPanel/CategoryServices/CategoryServices"));
-const AdminAboutUs = lazy(() => import('./pages/AdminPanel/cms/about-us/AboutUs'));
-const AdminContactUs = lazy(() => import('./pages/AdminPanel/cms/contact-us/ContactUs'));
-const AdminPrivacyPolicy = lazy(() => import('./pages/AdminPanel/cms/privacy-policy/PrivacyPolicy'));
+const AvailableCities = lazy(
+  () => import("./pages/AdminPanel/availableCities/AvailableCities"),
+);
+const CategoryServices = lazy(
+  () => import("./pages/AdminPanel/CategoryServices/CategoryServices"),
+);
+const AdminAboutUs = lazy(
+  () => import("./pages/AdminPanel/cms/about-us/AboutUs"),
+);
+const AdminContactUs = lazy(
+  () => import("./pages/AdminPanel/cms/contact-us/ContactUs"),
+);
+const AdminPrivacyPolicy = lazy(
+  () => import("./pages/AdminPanel/cms/privacy-policy/PrivacyPolicy"),
+);
 const Customers = lazy(() => import("./pages/AdminPanel/customer/Customers"));
-const CustomerDetails = lazy(() => import("./pages/AdminPanel/customer/CustomerDetails"));
+const CustomerDetails = lazy(
+  () => import("./pages/AdminPanel/customer/CustomerDetails"),
+);
 const Dashboard = lazy(() => import("./pages/AdminPanel/Dashboard"));
-const AdminHelpCenter = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenter"));
-const HelpCenterFaqs = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenterFaqs"));
-const HelpCenterTickets = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenterTickets"));
+const AdminHelpCenter = lazy(
+  () => import("./pages/AdminPanel/helpCenter/HelpCenter"),
+);
+const HelpCenterFaqs = lazy(
+  () => import("./pages/AdminPanel/helpCenter/HelpCenterFaqs"),
+);
+const HelpCenterTickets = lazy(
+  () => import("./pages/AdminPanel/helpCenter/HelpCenterTickets"),
+);
 const Enquiry = lazy(() => import("./pages/AdminPanel/Inquiry"));
 const Offers = lazy(() => import("./pages/AdminPanel/offers/Offers"));
 const Partners = lazy(() => import("./pages/AdminPanel/Partners"));
 const Payments = lazy(() => import("./pages/AdminPanel/Payments"));
-const ServiceInfoPage = lazy(() => import("./pages/AdminPanel/serviceInfoPage/ServiceInfoPage"));
+const ServiceInfoPage = lazy(
+  () => import("./pages/AdminPanel/serviceInfoPage/ServiceInfoPage"),
+);
 const Services = lazy(() => import("./pages/AdminPanel/Services"));
 
 const AppBanner = lazy(() => import("./pages/AdminPanel/Banners/AppBanner"));
 const Banner = lazy(() => import("./pages/AdminPanel/Banners/Banner"));
-const WebsiteBanner = lazy(() => import("./pages/AdminPanel/Banners/WebsiteBanner"));
+const WebsiteBanner = lazy(
+  () => import("./pages/AdminPanel/Banners/WebsiteBanner"),
+);
 
 const Category = lazy(() => import("./pages/AdminPanel/Banners/App/Category"));
 const Home = lazy(() => import("./pages/AdminPanel/Banners/App/Home"));
 const Product = lazy(() => import("./pages/AdminPanel/Banners/App/Product"));
 const Service = lazy(() => import("./pages/AdminPanel/Banners/App/Service"));
 
-const WebCategory = lazy(() => import("./pages/AdminPanel/Banners/Website/Category"));
+const WebCategory = lazy(
+  () => import("./pages/AdminPanel/Banners/Website/Category"),
+);
 const WebHome = lazy(() => import("./pages/AdminPanel/Banners/Website/Home"));
-const WebProduct = lazy(() => import("./pages/AdminPanel/Banners/Website/Product"));
-const WebService = lazy(() => import("./pages/AdminPanel/Banners/Website/Service"));
+const WebProduct = lazy(
+  () => import("./pages/AdminPanel/Banners/Website/Product"),
+);
+const WebService = lazy(
+  () => import("./pages/AdminPanel/Banners/Website/Service"),
+);
 
-const AdminBookings = lazy(() => import("./pages/AdminPanel/bookingDetails/BookingDetails"));
+const AdminBookings = lazy(
+  () => import("./pages/AdminPanel/bookingDetails/BookingDetails"),
+);
 const Bookings = lazy(() => import("./pages/AdminPanel/bookings/Bookings"));
-const SellerCashouts = lazy(() => import("./pages/AdminPanel/seller-cashouts/SellerCashouts"));
+const SellerCashouts = lazy(
+  () => import("./pages/AdminPanel/seller-cashouts/SellerCashouts"),
+);
 const Cms = lazy(() => import("./pages/AdminPanel/cms/Cms"));
-const AdminOrders = lazy(() => import("./pages/AdminPanel/orderDetails/OrderDetails"));
+const AdminOrders = lazy(
+  () => import("./pages/AdminPanel/orderDetails/OrderDetails"),
+);
 
 const Orders = lazy(() => import("./pages/AdminPanel/orders/Orders"));
-const SellerAssignedOrders = lazy(() => import("./pages/AdminPanel/seller-assigned-orders/SellerAssignedOrders"));
+const SellerAssignedOrders = lazy(
+  () =>
+    import("./pages/AdminPanel/seller-assigned-orders/SellerAssignedOrders"),
+);
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
-const ProductInfo = lazy(() => import("./components/product-info-modal/ProductInfo"));
-const UnautorizedModal = lazy(() => import("./components/unautorized-modal/UnautorizedModal"));
-const HelpCenterTicketDetails = lazy(() => import("./pages/AdminPanel/helpCenter/HelpCenterTicketDetails"));
+const ProductInfo = lazy(
+  () => import("./components/product-info-modal/ProductInfo"),
+);
+const UnautorizedModal = lazy(
+  () => import("./components/unautorized-modal/UnautorizedModal"),
+);
+const HelpCenterTicketDetails = lazy(
+  () => import("./pages/AdminPanel/helpCenter/HelpCenterTicketDetails"),
+);
 const Reviews = lazy(() => import("./pages/AdminPanel/reviews/Reviews"));
-const SendNotifications = lazy(() => import("./pages/AdminPanel/SendNotifications"));
-const MangageComision = lazy(() => import("./pages/AdminPanel/settings/MangageComision"));
+const SendNotifications = lazy(
+  () => import("./pages/AdminPanel/SendNotifications"),
+);
+const MangageComision = lazy(
+  () => import("./pages/AdminPanel/settings/MangageComision"),
+);
 const Settings = lazy(() => import("./pages/AdminPanel/settings/Settings"));
 const Blog = lazy(() => import("./pages/blog/Blog"));
 const BlogsCategory = lazy(() => import("./pages/blog/BlogsCategory"));
 const SingleBlog = lazy(() => import("./pages/blog/each-blogs"));
-const DeleteAccount = lazy(() => import("./pages/delete-account/DeleteAccount"));
+const DeleteAccount = lazy(
+  () => import("./pages/delete-account/DeleteAccount"),
+);
 const MyProfile = lazy(() => import("./pages/my-profile/MyProfile"));
 const WhyUs = lazy(() => import("./pages/whyus/WhyUs"));
 
@@ -88,13 +151,12 @@ function App() {
   const { isOpen } = useSelector((state) => state.auth);
   console.log("env var ==>", import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY);
 
-
   return (
     <>
       {isOpen && <UnautorizedModal />}
 
       <Router>
-        <Suspense fallback={<div className='fallback'>Loading...</div>}>
+        <Suspense fallback={<div className="fallback">Loading...</div>}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/aboutUs" element={<AboutUs />} />
@@ -105,7 +167,10 @@ function App() {
             <Route path="/single-blog/:id" element={<SingleBlog />} />
             <Route path="/blog-category/:id" element={<BlogsCategory />} />
 
-            <Route path="/termsAndConditions" element={<TermsAndConditions />} />
+            <Route
+              path="/termsAndConditions"
+              element={<TermsAndConditions />}
+            />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route
               path="/antiDiscriminationPolicy"
@@ -159,7 +224,11 @@ function App() {
                 exact
                 element={<WebsiteBanner />}
               />
-              <Route path="/admin/banners/web/home" exact element={<WebHome />} />
+              <Route
+                path="/admin/banners/web/home"
+                exact
+                element={<WebHome />}
+              />
               <Route
                 path="/admin/banners/web/category"
                 exact
@@ -212,11 +281,17 @@ function App() {
               />
 
               <Route path="/admin/customers" element={<Customers />} />
-              <Route path="/admin/customers/:customerId" element={<CustomerDetails />} />
+              <Route
+                path="/admin/customers/:customerId"
+                element={<CustomerDetails />}
+              />
               <Route path="/admin/services" element={<Services />} />
               <Route path="/admin/payments" element={<Payments />} />
               <Route path="/admin/settings" element={<Settings />} />
-              <Route path="/admin/settings/manage-comision" element={<MangageComision />} />
+              <Route
+                path="/admin/settings/manage-comision"
+                element={<MangageComision />}
+              />
               <Route path="/admin/reviews" element={<Reviews />} />
 
               <Route
@@ -238,6 +313,7 @@ function App() {
                 path="/admin/available-cities"
                 element={<AvailableCities />}
               />
+              <Route path="/admin/available-cities/add" element={<AddCity />} />
               <Route path="/admin/help-center" element={<AdminHelpCenter />} />
               <Route
                 path="/admin/help-center/faqs"
@@ -251,9 +327,18 @@ function App() {
                 path="/admin/help-center/tickets/:ticketId"
                 element={<HelpCenterTicketDetails />}
               />
-              <Route path="/admin/send-notifications" element={<SendNotifications />} />
-              <Route path="/admin/seller-cashouts" element={<SellerCashouts />} />
-              <Route path="/admin/seller-cashouts/:cashoutId" element={<SellerCashoutDetails />} />
+              <Route
+                path="/admin/send-notifications"
+                element={<SendNotifications />}
+              />
+              <Route
+                path="/admin/seller-cashouts"
+                element={<SellerCashouts />}
+              />
+              <Route
+                path="/admin/seller-cashouts/:cashoutId"
+                element={<SellerCashoutDetails />}
+              />
             </Route>
 
             <Route path="/*" element={<ErrorPage />} />
@@ -265,10 +350,8 @@ function App() {
   );
 }
 
-
 export default GoogleApiWrapper({
   apiKey: import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY,
 })(App);
 
 // export default App;
-

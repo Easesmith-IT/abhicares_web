@@ -19,6 +19,11 @@ import { useEffect, useState } from "react";
 import WebsiteWrapper from "./WebsiteWrapper.jsx";
 import HomeCare from "../components/home-care/HomeCare.jsx";
 import WhyUsComp from "./whyus/WhyUsComp.jsx";
+import CategoryCarousel from "../components/CategoryCarousel.jsx";
+import useGetApiReq from "../hooks/useGetApiReq.js";
+import useGeolocation from "../hooks/usegelocation.js";
+import LoadingSkeleton from "../components/loading-skeleton/LoadingSkeleton.jsx";
+import Skeleton from "react-loading-skeleton";
 
 export const Home = () => {
   const [category, setCategory] = useState("");
@@ -27,11 +32,37 @@ export const Home = () => {
     title: "",
     description: "",
   });
+  const [allCategories, setAllCategories] = useState([]);
 
+  const { res, fetchData, isLoading } = useGetApiReq();
+
+  const { location } = useGeolocation();
+
+  const getAllCategories = async (lat, lng) => {
+    fetchData("/categories/app/get-categories", {
+      params: {
+        latitude: lat,
+        longitude: lng,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (location?.geometry?.lat && location?.geometry?.lng) {
+      getAllCategories(location?.geometry?.lat, location?.geometry?.lng);
+    }
+  }, [location.geometry]);
+
+  useEffect(() => {
+    if (res?.status === 200 || res?.status === 201) {
+      setAllCategories(res?.data?.categories || []);
+      console.log("category res", res);
+    }
+  }, [res]);
   const getSeoForHomePage = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=home-page`
+        `${import.meta.env.VITE_APP_CMS_URL}/get-seo-by-page-user-side?page=home-page`,
       );
       const { seoTitle, seoDescription } = data?.seo;
       setSeoData({ title: seoTitle, description: seoDescription });
@@ -62,7 +93,11 @@ export const Home = () => {
         <div className={classes["wrapper"]}>
           <div className={classes["body-wrapper"]}>
             <div className={classes["body"]}>
-              <Services onClick={handleOpen} open={handleOpen} />
+              <Services
+                onClick={handleOpen}
+                open={handleOpen}
+                allCategories={allCategories}
+              />
               {open && (
                 <SubCatPopUp
                   category={category}
@@ -70,13 +105,34 @@ export const Home = () => {
                   onClose={handleClose}
                 />
               )}
+
               <BannerCard />
               {/* <MostBooked/> */}
-              <HomeCare />
+
+              {allCategories.length === 0 && !isLoading && <p>No categories found.</p>}
+              {isLoading &&
+                Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i}>
+                    <Skeleton
+                      style={{ marginBottom: "30px" }}
+                      height={30}
+                      width={400}
+                    />
+                    <LoadingSkeleton />
+                  </div>
+                ))}
+              {allCategories?.map((category) => (
+                <CategoryCarousel
+                  key={category?.id}
+                  categoryId={category?.id}
+                  categoryName={category?.name}
+                />
+              ))}
+              {/* <HomeCare /> */}
               {/* <SalonForWomen /> */}
-              <MakeupMehandi />
-              <MensSalonMassage />
-              <ApplianceRepair />
+              {/* <MakeupMehandi /> */}
+              {/* <MensSalonMassage /> */}
+              {/* <ApplianceRepair /> */}
             </div>
             <WhyUsComp />
           </div>
