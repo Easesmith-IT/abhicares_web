@@ -99,10 +99,10 @@ const CategoryCarousel = ({ categoryId, categoryName }) => {
               key={item._id}
               className={classes["card"]}
               onClick={() =>
-                navigate(`services/${item?.serviceId?._id}`, {
+                navigate(`services/${item?.service?._id}`, {
                   state: {
-                    name: item?.serviceId?.name,
-                    features: item?.serviceId?.features,
+                    name: item?.service?.name,
+                    features: item?.service?.features,
                   },
                 })
               }

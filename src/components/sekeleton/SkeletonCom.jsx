@@ -13,7 +13,7 @@ const SkeletonCom = ({ height, src, alt, className = "", fun = () => {} }) => {
     <>
       {isImgLoading && <Skeleton height={height} />}
       <img
-        style={{ display: !isImgLoading ? "block" : "none" }}
+        style={{ display: !isImgLoading ? "block" : "none",objectFit:"cover" }}
         onLoad={() => setIsImgLoading(false)}
         className={className}
         onClick={fun}

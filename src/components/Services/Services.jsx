@@ -15,6 +15,7 @@ import useGeolocation from "../../hooks/usegelocation";
 import useGetApiReq from "../../hooks/useGetApiReq";
 import Loader from "../loader/Loader";
 import SkeletonCom from "../sekeleton/SkeletonCom";
+import { previewImage } from "../../utils/previewImage";
 
 export const Services = ({ open,allCategories }) => {
   const [isShow, setIsShow] = useState(true);
@@ -252,7 +253,7 @@ export const Services = ({ open,allCategories }) => {
                     >
                       <div className={classes["cardMedia"]}>
                         <SkeletonCom
-                          src={category.image}
+                          src={previewImage(category.imageUrl)}
                           alt={"category"}
                           height={60}
                         />
