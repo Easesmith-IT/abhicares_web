@@ -12,6 +12,8 @@ const MyBookings = () => {
   const [allOrders, setAllOrders] = useState([]);
   const navigate = useNavigate();
   const token = readCookie("userInfo");
+  console.log("userInfo",token);
+  
   const userId = token?.id;
 
   const getAllOrders = async () => {
