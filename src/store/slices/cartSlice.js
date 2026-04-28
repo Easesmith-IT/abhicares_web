@@ -12,41 +12,52 @@ const initialState = {
   isLoading: true,
 };
 
-export const getCartDetails = createAsyncThunk("/cart/details", async () => {
-  const userInfo = readCookie("userInfo");
+export const getCartDetails = createAsyncThunk(
+  "/cart/details",
+  async (data) => {
+    const userInfo = readCookie("userInfo");
 
-  try {
-    const res = axios.get(`${import.meta.env.VITE_APP_API_URL}/cart-details?userId=${userInfo?.id}`, {
-      withCredentials: true,
-    });
+    console.log("getCartDetails data", data);
 
-    const response = await res;
-    return response.data;
-  } catch (error) {
-    if (error?.response?.data?.tokenExpired) {
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userPhone");
-      return;
+    try {
+      const res = axios.get(
+        `${import.meta.env.VITE_APP_API_URL}/cart-details?userId=${userInfo?.id}&latitude=${data.latitude}&longitude=${data.longitude}`,
+        {
+          withCredentials: true,
+        },
+      );
+
+      const response = await res;
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.tokenExpired) {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userPhone");
+        return;
+      }
+
+      toast.error(error?.response?.data?.message);
     }
-
-    toast.error(error?.response?.data?.message);
-  }
-});
+  },
+);
 
 export const addItemToCart = createAsyncThunk(
   "/cart/add-item",
   async (data) => {
-    console.log(data.id);
+    console.log("data", data);
+
     try {
       const res = axios.post(
         `${import.meta.env.VITE_APP_API_URL}/add-item-cart`,
         {
           itemId: data.id,
           type: data.type,
+          latitude: data.latitude,
+          longitude: data.longitude,
           // quantity: data.quantity,
           // userId:data.userId
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const response = await res;
@@ -57,7 +68,7 @@ export const addItemToCart = createAsyncThunk(
       console.log(error);
       toast.error(error?.response?.data?.message);
     }
-  }
+  },
 );
 
 export const updateQty = createAsyncThunk(
@@ -69,7 +80,7 @@ export const updateQty = createAsyncThunk(
         {
           quantity: data.quantity,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const response = await res;
@@ -79,7 +90,7 @@ export const updateQty = createAsyncThunk(
       console.log(error);
       toast.error(error?.response?.data?.message);
     }
-  }
+  },
 );
 
 export const deleteItemFromCart = createAsyncThunk(
@@ -89,7 +100,7 @@ export const deleteItemFromCart = createAsyncThunk(
       const res = axios.post(
         `${import.meta.env.VITE_APP_API_URL}/remove-cart-item/${data?.itemId}`,
         { type: data.type },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const response = await res;
@@ -100,7 +111,7 @@ export const deleteItemFromCart = createAsyncThunk(
       console.log(error);
       toast.error(error?.response?.data?.message);
     }
-  }
+  },
 );
 
 const cartSlice = createSlice({

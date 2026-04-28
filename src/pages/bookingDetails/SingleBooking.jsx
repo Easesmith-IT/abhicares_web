@@ -30,37 +30,41 @@ const SingleBooking = ({ item, booking }) => {
           <div>
             <p>
               <span>Delivery Date: </span>
-              {item?.bookingId?.bookingDate &&
-                format(new Date(item?.bookingId?.bookingDate), "dd-MM-yyyy")}
+              {item?.bookingId?.bookingDate
+                ? format(new Date(item?.bookingId?.bookingDate), "dd-MM-yyyy")
+                : format(new Date(item?.bookingDate), "dd-MM-yyyy")}
             </p>
             <p>
               <span>Delivery Time: </span>
-              {item?.bookingId?.bookingTime &&
-                format(new Date(item?.bookingId?.bookingTime), "hh:mm aa")}
+              {item?.bookingId?.bookingTime
+                ? format(new Date(item?.bookingId?.bookingTime), "hh:mm aa")
+                : format(new Date(item?.bookingTime), "hh:mm aa")}
             </p>
           </div>
           <p>Qty: {item?.quantity}</p>
           <p>
-            {item?.bookingId?.status && <span
-              className={`${sharedClasses["t-op-nextlvl"]} ${
-                sharedClasses.status
-              } ${
-                item?.bookingId?.status === "cancelled"
-                  ? sharedClasses.Cancelled
-                  : item?.bookingId?.status === "completed"
-                  ? sharedClasses.Completed
-                  : item?.bookingId?.status === "alloted"
-                  ? sharedClasses.alloted
-                  : sharedClasses.OutOfDelivery
-              }`}
-            >
-              {item?.bookingId?.status}
-            </span>}
+            {item?.bookingId?.status && (
+              <span
+                className={`${sharedClasses["t-op-nextlvl"]} ${
+                  sharedClasses.status
+                } ${
+                  item?.bookingId?.status === "cancelled"
+                    ? sharedClasses.Cancelled
+                    : item?.bookingId?.status === "completed"
+                      ? sharedClasses.Completed
+                      : item?.bookingId?.status === "alloted"
+                        ? sharedClasses.alloted
+                        : sharedClasses.OutOfDelivery
+                }`}
+              >
+                {item?.bookingId?.status}
+              </span>
+            )}
           </p>
           <p>
             ₹
             {Number(
-              item.package ? item.package.offerPrice : item.product.offerPrice
+              item.package ? item.package.offerPrice : item.product.offerPrice,
             ) * Number(item.quantity)}
           </p>
           {/* <div

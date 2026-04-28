@@ -14,16 +14,21 @@ import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../logoutModal/LogoutModal";
-import logo from "../../assets/White Logo V2-02.png"
+import logo from "../../assets/White Logo V2-02.png";
 import { changeUserStatus } from "../../store/slices/userSlice";
 import { getCartDetails } from "../../store/slices/cartSlice";
 import axios from "axios";
 import { FaCartShopping } from "react-icons/fa6";
 import { readCookie } from "../../utils/readCookie";
 import useGetApiReq from "../../hooks/useGetApiReq";
+import useGeolocation from "../../hooks/usegelocation";
 
 export const Header = () => {
-  const { res: logoutUserRes, fetchData: logoutUser, isLoading } = useGetApiReq();
+  const {
+    res: logoutUserRes,
+    fetchData: logoutUser,
+    isLoading,
+  } = useGetApiReq();
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [toggle, setToggle] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -35,14 +40,24 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useSelector((state) => state.user)
+  const { isAuthenticated } = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
+  const { location } = useGeolocation();
+  console.log("location",location);
+  
 
   useEffect(() => {
-    (async () => {
-      await dispatch(getCartDetails());
-    })()
-  }, []);
+    location?.geometry?.lng &&
+      location?.geometry?.lat &&
+      (async () => {
+        await dispatch(
+          getCartDetails({
+            longitude: location?.geometry?.lng,
+            latitude: location?.geometry?.lat,
+          }),
+        );
+      })();
+  }, [location?.geometry?.lng, location?.geometry?.lat]);
 
   const handleOnclick = () => {
     setIsOpen(!isOpen);
@@ -50,7 +65,7 @@ export const Header = () => {
 
   const handleLogout = async () => {
     logoutUser("/shopping/logout-user");
-  }
+  };
 
   useEffect(() => {
     if (logoutUserRes?.status === 200 || logoutUserRes?.status === 201) {
@@ -62,11 +77,16 @@ export const Header = () => {
       navigate("/");
       (async () => {
         await dispatch(changeUserStatus(null));
-        await dispatch(getCartDetails());
-      })()
+        await dispatch(
+          getCartDetails({
+            longitude: location?.geometry?.lng,
+            latitude: location?.geometry?.lat,
+          }),
+        );
+      })();
       setIsLogoutModalOpen(false);
     }
-  }, [logoutUserRes])
+  }, [logoutUserRes]);
 
   const handleLogoutModal = () => {
     setIsUserModalOpen(false);
@@ -129,7 +149,6 @@ export const Header = () => {
             </div>
           </div> */}
         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-
           <div style={{ position: "relative" }}>
             <FaCartShopping
               onClick={() => navigate("/checkout")}
@@ -137,33 +156,36 @@ export const Header = () => {
               color="white"
               cursor={"pointer"}
             />
-            {cart?.items.length > 0 && <div
-              style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                background: "red",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                top: "-10px",
-                right: "-10px",
-              }}
-            >{cart?.items.length}</div>}
+            {cart?.items.length > 0 && (
+              <div
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  background: "red",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-10px",
+                }}
+              >
+                {cart?.items.length}
+              </div>
+            )}
           </div>
 
           {!isAuthenticated && (
             <div className={classes["button-container"]}>
-
               <Button
                 onClick={handleOnclick}
                 style={{
                   backgroundColor: "transparent",
                   color: "white",
                   // fontSize:"1.1rem",
-                  padding: "0"
+                  padding: "0",
                 }}
                 variant="contained"
               >
@@ -211,12 +233,9 @@ export const Header = () => {
         )}
       </div>
 
-      {isOpen &&
-        <LoginSignupModal
-          isOpen={isOpen}
-          handleOnclick={handleOnclick}
-        />
-      }
+      {isOpen && (
+        <LoginSignupModal isOpen={isOpen} handleOnclick={handleOnclick} />
+      )}
       {isLogoutModalOpen && (
         <LogoutModal
           setIsLogoutModalOpen={setIsLogoutModalOpen}

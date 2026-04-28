@@ -217,7 +217,12 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);
       localStorage.setItem("userId", data?.user?._id);
-      await dispatch(getCartDetails());
+      await dispatch(
+        getCartDetails({
+          longitude: location?.geometry?.lng,
+          latitude: location?.geometry?.lat,
+        }),
+      );
       navigaye("/");
       // window.location.reload();
       handleOnClose();
@@ -265,7 +270,12 @@ const LoginSignupModal = ({ isOpen, handleOnclick }) => {
       );
       console.log("signup otp verification", data);
       dispatch(changeUserAuthStatus({ isAuthenticated: true }));
-      await dispatch(getCartDetails());
+      await dispatch(
+        getCartDetails({
+          longitude: location?.geometry?.lng,
+          latitude: location?.geometry?.lat,
+        }),
+      );
       localStorage.setItem("user-status", true);
       localStorage.setItem("userName", data.userName);
       localStorage.setItem("userPhone", data.userPhone);

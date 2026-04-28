@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import DateTimeModal from "../dateTimeModal/DateTimeModal";
 import toast from "react-hot-toast";
+import useGeolocation from "../../hooks/usegelocation";
 
 const CartItem = ({ item, bookingInfo, setBookingInfo, isButton, image = false }) => {
   const dispatch = useDispatch();
@@ -50,12 +51,17 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton, image = false }
   }, [bookingInfo])
 
 
-
+const { location } = useGeolocation();
   const handleOnPlusClick = async () => {
     await dispatch(
       addItemToCart({ id: item.type === "product" ? item.productId._id : item.packageId._id, type: item.type })
     );
-    await dispatch(getCartDetails());
+    await dispatch(
+      getCartDetails({
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
   };
 
   const handleOnMinusClick = async () => {
@@ -65,7 +71,12 @@ const CartItem = ({ item, bookingInfo, setBookingInfo, isButton, image = false }
         type: item.type
       })
     );
-    await dispatch(getCartDetails());
+    await dispatch(
+      getCartDetails({
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
   };
 
 

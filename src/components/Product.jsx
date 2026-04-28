@@ -16,12 +16,14 @@ import { BiMinus, BiPlus } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ReactStars from "react-stars";
+import useGeolocation from "../hooks/usegelocation";
 
 const Product = ({ product, setIsCartLoading, flag = true, features }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [productInCart, setProductInCart] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isImgLoading, setIsImgLoading] = useState(true);
+  const { location } = useGeolocation();
 
   const dispatch = useDispatch();
 
@@ -30,16 +32,23 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      await dispatch(getCartDetails());
-    })();
-  }, []);
+   location?.geometry?.lng &&
+     location?.geometry?.lat &&
+     (async () => {
+       await dispatch(
+         getCartDetails({
+           longitude: location?.geometry?.lng,
+           latitude: location?.geometry?.lat,
+         }),
+       );
+     })();
+  }, [location?.geometry?.lng, location?.geometry?.lat]);
 
   const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     const filtered = cart?.items?.find(
-      (item) => item?.productId?._id === product._id
+      (item) => item?.productId?._id === product._id,
     );
     setProductInCart(filtered);
   }, [getCartDetails, cart]);
@@ -51,8 +60,20 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
       setIsCartLoading(true);
     }
 
-    await dispatch(addItemToCart({ id: product._id, type: "product" }));
-    await dispatch(getCartDetails());
+    await dispatch(
+      addItemToCart({
+        id: product._id,
+        type: "product",
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
+    await dispatch(
+      getCartDetails({
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
     setIsLoading(false);
     if (flag) {
       setIsCartLoading(false);
@@ -63,9 +84,14 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
     e.stopPropagation();
     setIsLoading(true);
     await dispatch(
-      addItemToCart({ id: productInCart?.productId?._id, type: "product" })
+      addItemToCart({ id: productInCart?.productId?._id, type: "product" }),
     );
-    await dispatch(getCartDetails());
+    await dispatch(
+      getCartDetails({
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
     setIsLoading(false);
   };
 
@@ -76,9 +102,14 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
       deleteItemFromCart({
         itemId: productInCart.productId._id,
         type: "product",
-      })
+      }),
     );
-    await dispatch(getCartDetails());
+    await dispatch(
+      getCartDetails({
+        longitude: location?.geometry?.lng,
+        latitude: location?.geometry?.lat,
+      }),
+    );
     setIsLoading(false);
   };
 
@@ -101,12 +132,13 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
               size={30}
               count={5}
               value={product?.rating}
-              color2={'#FF8A00'}
+              color2={"#FF8A00"}
             />
-            <p>{product.rating}</p>
-            ({product?.totalReviews})
+            <p>{product.rating}</p>({product?.totalReviews})
           </div>
-          <div className={classes.description}>{parse(product.description)}</div>
+          <div className={classes.description}>
+            {parse(product.description)}
+          </div>
           <div className={classes.d_flex}>
             <div className={classes.price_cotainer}>
               <p className={classes.price}>₹{product.price}</p>
@@ -114,7 +146,7 @@ const Product = ({ product, setIsCartLoading, flag = true, features }) => {
             </div>
 
             {cart?.items?.find(
-              (item) => item?.productId?._id === product?._id
+              (item) => item?.productId?._id === product?._id,
             ) ? (
               <button className={classes.button}>
                 <BiMinus size={20} onClick={handleOnMinusClick} />

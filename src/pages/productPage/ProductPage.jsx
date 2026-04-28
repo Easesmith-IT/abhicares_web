@@ -32,7 +32,11 @@ const ProductPage = () => {
   const { state } = useLocation();
   const { location } = useGeolocation();
   const { res, fetchData, isLoading } = useGetApiReq();
-  const { res:packageRes, fetchData:fetchPackages, isLoading:isPackageLoading } = useGetApiReq();
+  const {
+    res: packageRes,
+    fetchData: fetchPackages,
+    isLoading: isPackageLoading,
+  } = useGetApiReq();
 
   const params = useParams();
 
@@ -70,7 +74,7 @@ const ProductPage = () => {
     }
   }, [res]);
 
-  const getAllPackages = async (lat,lng) => {
+  const getAllPackages = async (lat, lng) => {
     fetchPackages(`/packages/get-service-package/${params.serviceId}`, {
       params: {
         latitude: lat,
@@ -94,10 +98,17 @@ const ProductPage = () => {
 
   useEffect(() => {
     getSeoForProductPage();
-    (async () => {
-      await dispatch(getCartDetails());
-    })();
-  }, []);
+    location?.geometry?.lng &&
+      location?.geometry?.lat &&
+      (async () => {
+        await dispatch(
+          getCartDetails({
+            longitude: location?.geometry?.lng,
+            latitude: location?.geometry?.lat,
+          }),
+        );
+      })();
+  }, [location?.geometry?.lng, location?.geometry?.lat]);
 
   console.log("cart", cart);
 
