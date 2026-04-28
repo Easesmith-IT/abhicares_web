@@ -105,6 +105,8 @@ const CheckoutPage = () => {
   console.log("bookingInfo", bookingInfo);
 
   const token = readCookie("userInfo");
+  console.log("token-log", token);
+  
   const userId = token?.id;
   const userName = token?.name;
 
