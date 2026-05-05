@@ -38,57 +38,35 @@ const BookingDetails = () => {
     });
   };
 
-  const downloadInvoice = async () => {
-    try {
-      setIsLoading(true);
+ const downloadInvoice = async () => {
+   try {
+     setIsLoading(true);
 
-      const response = await axiosInstance.get(
-        `/invoice/download/${state._id}`,
-        {
-          responseType: "blob",
-        },
-      );
+     const response = await axiosInstance.get(`/invoice/download/${state._id}`);
 
-      console.log("response", response);
+     const pdfUrl = response?.data?.pdfUrl;
 
-      // Extract filename
-      let filename = "invoice.pdf";
-      const contentDisposition = response.headers["content-disposition"];
+     if (!pdfUrl) {
+       throw new Error("No PDF URL received");
+     }
 
-      if (contentDisposition) {
-        const match = contentDisposition.match(/filename="(.+)"/);
-        if (match?.[1]) {
-          filename = match[1];
-        }
-      }
+     // Option 1: Direct download
+     const link = document.createElement("a");
+     link.href = pdfUrl;
+     link.setAttribute("download", "invoice.pdf"); // optional
+     document.body.appendChild(link);
+     link.click();
+     link.remove();
 
-      // Create blob URL
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = window.URL.createObjectURL(blob);
-
-      // Create temporary anchor
-      const link = document.createElement("a");
-      link.href = fileURL;
-      link.setAttribute("download", filename);
-      document.body.appendChild(link);
-      link.click();
-
-      // Cleanup immediately
-      link.remove();
-      window.URL.revokeObjectURL(fileURL);
-    } catch (error) {
-      console.error("Invoice download failed:", error);
-
-      toast.error(error?.response?.data?.message || "Invoice download failed.");
-
-      if (error?.response?.status === 401) {
-        if (token?.role === "user") getStatus();
-        if (adminInfo?.role === "admin") getAdminStatus();
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+     // Option 2 (alternative): open in new tab
+     // window.open(pdfUrl, "_blank");
+   } catch (error) {
+     console.error("Invoice download failed:", error);
+     toast.error(error?.response?.data?.message || "Invoice download failed.");
+   } finally {
+     setIsLoading(false);
+   }
+ };
 
   useEffect(() => {
     if (

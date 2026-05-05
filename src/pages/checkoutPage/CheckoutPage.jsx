@@ -89,7 +89,7 @@ const CheckoutPage = () => {
   const [paymentType, setPaymentType] = useState("");
 
   console.log("address", address);
-  
+
   const cart = useSelector((state) => state.cart);
 
   const [info, setInfo] = useState({
@@ -110,7 +110,7 @@ const CheckoutPage = () => {
 
   const token = readCookie("userInfo");
   console.log("token-log", token);
-  
+
   const userId = token?.id;
   const userName = token?.name;
 
@@ -134,12 +134,12 @@ const CheckoutPage = () => {
             getUserAddressRes?.data.data[
               getUserAddressRes?.data.data.length - 1
             ];
-          }
-          setAddress(defaultAddress);
+        }
+        setAddress(defaultAddress);
       }
     }
   }, [getUserAddressRes]);
-  
+
   useEffect(() => {
     location?.geometry?.lng &&
       location?.geometry?.lat &&
@@ -151,13 +151,13 @@ const CheckoutPage = () => {
           }),
         );
       })();
-      setTotalTaxRs((cart.totalPrice * 18) / 100);
-    }, [location?.geometry?.lng, location?.geometry?.lat]);
-    
-    useEffect(() => {
+    setTotalTaxRs((cart.totalPrice * 18) / 100);
+  }, [location?.geometry?.lng, location?.geometry?.lat]);
+
+  useEffect(() => {
     token && getAllAddress();
   }, []);
-  
+
   console.log("cart", cart);
   let serviceCategoryType = [];
 
@@ -203,7 +203,10 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    location?.geometry?.lng && location?.geometry?.lat && caluclateCharge();
+    location?.geometry?.lng &&
+      location?.geometry?.lat &&
+      cart.items?.length > 0 &&
+      caluclateCharge();
   }, [cart, couponId]);
 
   useEffect(() => {
@@ -321,11 +324,25 @@ const CheckoutPage = () => {
     //   userId,
     // });
 
+    const items = calculateChargeRes?.data?.items;
+
     getCouponDetails("/offers/apply-offer", {
       code: offerCode,
       orderValue: total,
       cityName: address?.city,
-      items: address?.city,
+      items: cart?.items?.map((item) => ({
+        type: item.type,
+        itemId: item?.packageId ? item?.packageId?._id : item?.productId?._id,
+        serviceId: item?.packageId
+          ? item?.packageId?.serviceId
+          : item?.productId?.serviceId,
+        quantity: item?.quantity,
+        amount: items?.find((product) =>
+          product?.itemId === item?.packageId
+            ? item?.packageId?._id
+            : item?.productId?._id,
+        )?.charges?.totalForItem,
+      })),
     });
   };
 
@@ -361,7 +378,10 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (error) {
-      setMessage({ message:error?.response?.data?.message|| "Invalid offer", error: true });
+      setMessage({
+        message: error?.response?.data?.message || "Invalid offer",
+        error: true,
+      });
       const totalValue = total + Number(offerValue);
       setOfferValue(0);
       setTotal(totalValue);
@@ -433,7 +453,7 @@ const CheckoutPage = () => {
           console.log("tax", totalTaxRs);
           const { data } = createOnlineOrderRes || {};
           console.log("razor", data);
-          
+
           const options = {
             key: getApiKeyRes?.data?.apiKey,
             amount: `${data.razorpayOrder.amount}`,
@@ -444,7 +464,7 @@ const CheckoutPage = () => {
             order_id: data.razorpayOrder.id,
             handler: async function (response) {
               console.log("response-log", response);
-              
+
               paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
               paymentDetails.razorpay_order_id = response.razorpay_order_id;
               paymentDetails.razorpay_signature = response.razorpay_signature;

@@ -51,8 +51,11 @@ export const Services = ({ open,allCategories }) => {
     }
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/search-service?search=${value}`,
+        `${import.meta.env.VITE_APP_API_URL}/search-service?search=${value}&latitude=${location?.geometry?.lat}&longitude=${location?.geometry?.lng}`,
       );
+
+      console.log("search data", data);
+      
       if (data.data.length === 0) {
         setIsMessage(true);
       } else {
@@ -180,7 +183,7 @@ export const Services = ({ open,allCategories }) => {
             <SearchIcon style={{ margin: "0 10px" }} />
             <div>
               <input
-                onChange={debounce(handleOnChange, 1000)}
+                onChange={debounce(handleOnChange, 500)}
                 type="text"
                 placeholder="Search for"
                 name="search"
@@ -201,12 +204,12 @@ export const Services = ({ open,allCategories }) => {
               <div className={classes.search_result_box}>
                 {allServices?.map((service) => (
                   <>
-                    {isImgLoading2 && <Skeleton height={80} width={80} />}
                     <div
                       onClick={() => navigate(`/services/${service?._id}`)}
                       key={service._id}
                       className={classes.search_result_item}
-                    >
+                      >
+                      {isImgLoading2 && <Skeleton height={80} width={80} />}
                       {/* <SkeletonCom
                         src={`${import.meta.env.VITE_APP_IMAGE_URL}/${service.imageUrl}`}
                         alt={"service"}
