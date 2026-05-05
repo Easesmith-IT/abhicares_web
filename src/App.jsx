@@ -11,6 +11,8 @@ import { GoogleApiWrapper } from "google-maps-react";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import ProtectedRoute from "./components/private-route/ProtectedRoute";
 import AddCity from "./components/add-city-modal/AddCity";
+import AgreementPage from "./pages/agreement-page/AgreementPage";
+import PartnerTerms from "./pages/partner-terms/PartnerTerms";
 
 const SellerCashoutDetails = lazy(
   () => import("./pages/AdminPanel/seller-cashouts/SellerCashoutDetails"),
@@ -176,6 +178,9 @@ function App() {
               path="/antiDiscriminationPolicy"
               element={<AntiDiscriminationPolicy />}
             />
+
+            <Route path="/partner-agreement" element={<AgreementPage />} />
+            <Route path="/partner-terms" element={<PartnerTerms />} />
 
             <Route
               path="/registerAsProfessionals"

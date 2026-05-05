@@ -13,109 +13,184 @@ import { IoMdMail } from "react-icons/io";
 
 export const Footer = () => {
     return (
-        <div className={classes['wrapper']}>
-            <div className={classes['main']}>
-                <div className={classes['logo-container']} style={{ marginTop: '20px' }}>
-                    <img src={Logo} alt="logo" />
+      <div className={classes["wrapper"]}>
+        <div className={classes["main"]}>
+          <div
+            className={classes["logo-container"]}
+            style={{ marginTop: "20px" }}
+          >
+            <img src={Logo} alt="logo" />
+          </div>
+          <div className={classes["Footer"]}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
+                <div className={classes["sections"]}>
+                  <div className={classes["heading"]}>
+                    <Typography variant="h5">Company</Typography>
+                  </div>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/aboutUs">About Us</Link>
+                    </p>
+                  </div>
+
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/why-us">Why Us</Link>
+                    </p>
+                  </div>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/termsAndConditions">Terms and conditions</Link>
+                    </p>
+                  </div>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/privacy-policy">Privacy & Policy</Link>
+                    </p>
+                  </div>
+
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/antiDiscriminationPolicy">
+                        Anti-discrimination Policy
+                      </Link>
+                    </p>
+                  </div>
+
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/partner-agreement">Partner Agreement</Link>
+                    </p>
+                  </div>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/partner-terms">
+                        Partner Mobile App Terms & Conditions
+                      </Link>
+                    </p>
+                  </div>
                 </div>
-                <div className={classes['Footer']}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <div className={classes['sections']}>
-                                <div className={classes['heading']}><Typography variant='h5'>Company</Typography></div>
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/aboutUs">About Us</Link></p>
-                                </div>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
+                <div className={classes["sections"]}>
+                  <div className={classes["heading"]}>
+                    <Typography variant="h5">For Customers</Typography>
+                  </div>
 
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/why-us">Why Us</Link></p>
-                                </div>
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/termsAndConditions">Terms and conditions</Link></p>
-                                </div>
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/privacy-policy">Privacy & Policy</Link></p>
-                                </div>
-
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/antiDiscriminationPolicy">Anti-discrimination Policy</Link></p>
-                                </div>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <div className={classes['sections']}>
-                                <div className={classes['heading']}><Typography variant='h5'>For Customers</Typography></div>
-
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/contactUs">Contact Us</Link></p>
-                                </div>
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/blog">Blog</Link></p>
-                                </div>
-
-                            </div>
-                        </Grid>
-
-
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <div className={classes['sections']}>
-                                <div className={classes['heading']}><Typography variant='h5'>For Partners</Typography></div>
-
-                                <div className={classes['footer-content']}>
-                                    <p className={classes.p}><Link to="/registerAsProfessionals">Register as Professionals</Link></p>
-                                </div>
-
-                            </div>
-                        </Grid>
-
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <div className={classes['sections']}>
-                                <div className={classes['heading']}><Typography variant='h5'>Social Links</Typography></div>
-                                <div className={classes['social']}>
-                                    <div><a target='_blank' href="https://x.com/abhicares_com"><TwitterIcon /></a></div>
-                                    <div><a target='_blank' href="https://www.facebook.com/Abhicares"><FacebookIcon /></a></div>
-                                    <div><a target='_blank' href="https://www.instagram.com/abhicaresofficial"><InstagramIcon /></a></div>
-                                    <div><a target='_blank' href="http://Linkedin.com/company/abhicares-com"><LinkedInIcon /></a></div>
-                                </div>
-                                <div className={classes['download']}>
-                                    {/* <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></Link></div> */}
-                                    <div>
-                                        <a target='_blank' rel="noreferrer" href='https://play.google.com/store/apps/details?id=com.abhicares.abhicares_main&hl=en'>
-                                            <img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg" alt="" />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </Grid>
-                    </Grid>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/contactUs">Contact Us</Link>
+                    </p>
+                  </div>
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/blog">Blog</Link>
+                    </p>
+                  </div>
                 </div>
-                <div className={classes.help_wrapper}>
-                    <div className={classes.help}>Need Help?</div>
-                    <div className={classes.bg_white}>
-                        <a href="tel:+9090767601">
-                            <FaPhoneAlt />
-                            9090-7676-01
-                        </a>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3} lg={3}>
+                <div className={classes["sections"]}>
+                  <div className={classes["heading"]}>
+                    <Typography variant="h5">For Partners</Typography>
+                  </div>
+
+                  <div className={classes["footer-content"]}>
+                    <p className={classes.p}>
+                      <Link to="/registerAsProfessionals">
+                        Register as Professionals
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3} lg={3}>
+                <div className={classes["sections"]}>
+                  <div className={classes["heading"]}>
+                    <Typography variant="h5">Social Links</Typography>
+                  </div>
+                  <div className={classes["social"]}>
+                    <div>
+                      <a target="_blank" href="https://x.com/abhicares_com">
+                        <TwitterIcon />
+                      </a>
                     </div>
-                    <div className={classes.bg_white}>
-                        <a href="https://wa.me/919090767601?text=Hello%20there" target='_blank'>
-                            <FaWhatsapp size={22} />
-                            9090-7676-01
-                        </a>
+                    <div>
+                      <a
+                        target="_blank"
+                        href="https://www.facebook.com/Abhicares"
+                      >
+                        <FacebookIcon />
+                      </a>
                     </div>
-                    <div className={classes.bg_white}>
-                        <a href="mailto:info@abhicares.com">
-                            <IoMdMail size={22} />
-                            info@abhicares.com
-                        </a>
+                    <div>
+                      <a
+                        target="_blank"
+                        href="https://www.instagram.com/abhicaresofficial"
+                      >
+                        <InstagramIcon />
+                      </a>
                     </div>
+                    <div>
+                      <a
+                        target="_blank"
+                        href="http://Linkedin.com/company/abhicares-com"
+                      >
+                        <LinkedInIcon />
+                      </a>
+                    </div>
+                  </div>
+                  <div className={classes["download"]}>
+                    {/* <div><Link to="#"><img src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/supply/customer-app-supply/1648463870745-38fece.png" alt="image" /></Link></div> */}
+                    <div>
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://play.google.com/store/apps/details?id=com.abhicares.abhicares_main&hl=en"
+                      >
+                        <img
+                          src="https://res.cloudinary.com/urbanclap/image/upload/t_high_res_category/w_108,dpr_3,fl_progressive:steep,q_auto:low,f_auto,c_limit/images/growth/home-screen/1696419732772-28cd3d.jpeg"
+                          alt=""
+                        />
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div className={classes['sub-footer']}>
-                    <div>© Copyright 2023 AzadKart Pvt. Ltd. All rights reserved.</div>
-                </div>
+              </Grid>
+            </Grid>
+          </div>
+          <div className={classes.help_wrapper}>
+            <div className={classes.help}>Need Help?</div>
+            <div className={classes.bg_white}>
+              <a href="tel:+9090767601">
+                <FaPhoneAlt />
+                9090-7676-01
+              </a>
             </div>
+            <div className={classes.bg_white}>
+              <a
+                href="https://wa.me/919090767601?text=Hello%20there"
+                target="_blank"
+              >
+                <FaWhatsapp size={22} />
+                9090-7676-01
+              </a>
+            </div>
+            <div className={classes.bg_white}>
+              <a href="mailto:info@abhicares.com">
+                <IoMdMail size={22} />
+                info@abhicares.com
+              </a>
+            </div>
+          </div>
+          <div className={classes["sub-footer"]}>
+            <div>© Copyright 2023 AzadKart Pvt. Ltd. All rights reserved.</div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 export default Footer
