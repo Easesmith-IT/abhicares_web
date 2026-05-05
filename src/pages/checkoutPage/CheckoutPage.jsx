@@ -88,6 +88,10 @@ const CheckoutPage = () => {
   const [couponCode, setCouponCode] = useState("");
   const [paymentType, setPaymentType] = useState("");
 
+  console.log("address", address);
+  
+  const cart = useSelector((state) => state.cart);
+
   const [info, setInfo] = useState({
     productId: "",
     name: "",
@@ -130,12 +134,12 @@ const CheckoutPage = () => {
             getUserAddressRes?.data.data[
               getUserAddressRes?.data.data.length - 1
             ];
-        }
-        setAddress(defaultAddress);
+          }
+          setAddress(defaultAddress);
       }
     }
   }, [getUserAddressRes]);
-
+  
   useEffect(() => {
     location?.geometry?.lng &&
       location?.geometry?.lat &&
@@ -147,14 +151,13 @@ const CheckoutPage = () => {
           }),
         );
       })();
-    setTotalTaxRs((cart.totalPrice * 18) / 100);
-  }, [location?.geometry?.lng, location?.geometry?.lat]);
-
-  useEffect(() => {
+      setTotalTaxRs((cart.totalPrice * 18) / 100);
+    }, [location?.geometry?.lng, location?.geometry?.lat]);
+    
+    useEffect(() => {
     token && getAllAddress();
   }, []);
-
-  const cart = useSelector((state) => state.cart);
+  
   console.log("cart", cart);
   let serviceCategoryType = [];
 
@@ -321,6 +324,8 @@ const CheckoutPage = () => {
     getCouponDetails("/offers/apply-offer", {
       code: offerCode,
       orderValue: total,
+      cityName: address?.city,
+      items: address?.city,
     });
   };
 
@@ -428,7 +433,7 @@ const CheckoutPage = () => {
           console.log("tax", totalTaxRs);
           const { data } = createOnlineOrderRes || {};
           console.log("razor", data);
-
+          
           const options = {
             key: getApiKeyRes?.data?.apiKey,
             amount: `${data.razorpayOrder.amount}`,
@@ -438,6 +443,8 @@ const CheckoutPage = () => {
             image: logo,
             order_id: data.razorpayOrder.id,
             handler: async function (response) {
+              console.log("response-log", response);
+              
               paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
               paymentDetails.razorpay_order_id = response.razorpay_order_id;
               paymentDetails.razorpay_signature = response.razorpay_signature;
