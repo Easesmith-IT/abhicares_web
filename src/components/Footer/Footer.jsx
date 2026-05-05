@@ -60,13 +60,15 @@ export const Footer = () => {
 
                   <div className={classes["footer-content"]}>
                     <p className={classes.p}>
-                      <Link to="/partner-agreement">Partner Agreement</Link>
+                      <Link to="/service-partner-digital-consent-declaration">
+                        Service Partner Digital Consent & Declaration
+                      </Link>
                     </p>
                   </div>
                   <div className={classes["footer-content"]}>
                     <p className={classes.p}>
-                      <Link to="/partner-terms">
-                        Partner Mobile App Terms & Conditions
+                      <Link to="/partner-terms-and-conditions">
+                        Partner Mobile Application Terms & Conditions
                       </Link>
                     </p>
                   </div>

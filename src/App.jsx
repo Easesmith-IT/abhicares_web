@@ -179,8 +179,14 @@ function App() {
               element={<AntiDiscriminationPolicy />}
             />
 
-            <Route path="/partner-agreement" element={<AgreementPage />} />
-            <Route path="/partner-terms" element={<PartnerTerms />} />
+            <Route
+              path="/service-partner-digital-consent-declaration"
+              element={<AgreementPage />}
+            />
+            <Route
+              path="/partner-terms-and-conditions"
+              element={<PartnerTerms />}
+            />
 
             <Route
               path="/registerAsProfessionals"

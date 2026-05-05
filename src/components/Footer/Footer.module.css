@@ -64,6 +64,12 @@
 .p{
     margin-bottom: 5px;
     font-family: "Poppins", serif;
+    /* background: red; */
+}
+
+.p a:hover{
+    text-decoration: underline !important;
+    color: blue !important;
 }
 
 a{

@@ -16,7 +16,7 @@ const AgreementPage = () => {
           </p>
 
           <p className={styles.sectionHeading}>
-            🔹 IMPORTANT NOTICE (Before Acceptance)
+            IMPORTANT NOTICE (Before Acceptance)
           </p>
 
           <p className={styles.text}>By clicking “I Agree & Continue”, you:</p>
@@ -34,7 +34,7 @@ const AgreementPage = () => {
             </li>
           </ul>
 
-          <p className={styles.sectionHeading}>🧾 1. Parties</p>
+          <p className={styles.sectionHeading}> 1. Parties</p>
 
           <p className={styles.text}>This agreement is between:</p>
           <p className={styles.text}>AbhiCares (Azadkart Private Limited)</p>
@@ -51,13 +51,13 @@ const AgreementPage = () => {
             a. Clicking “I Agree” shall be considered as:
           </p>
 
-          <p className={styles.text}>👉 Your electronic signature</p>
-          <p className={styles.text}>👉 Full acceptance of all terms</p>
+          <p className={styles.text}>Your electronic signature</p>
+          <p className={styles.text}>Full acceptance of all terms</p>
 
           <p className={styles.subHeading}>b. This agreement is valid under:</p>
 
           <p className={styles.text}>
-            👉 Indian IT Act, 2000 (Electronic Records & Signatures)
+            Indian IT Act, 2000 (Electronic Records & Signatures)
           </p>
 
           <p className={styles.subHeading}>
@@ -65,7 +65,7 @@ const AgreementPage = () => {
             a physical contract
           </p>
 
-          <p className={styles.sectionHeading}>🧑‍🔧 3. Nature of Engagement</p>
+          <p className={styles.sectionHeading}>3. Nature of Engagement</p>
 
           <p className={styles.text}>
             a. You are an independent service partner, not an employee
@@ -77,7 +77,7 @@ const AgreementPage = () => {
             c. No employer-employee relationship exists
           </p>
 
-          <p className={styles.sectionHeading}>🛠️ 4. Service Commitment</p>
+          <p className={styles.sectionHeading}>4. Service Commitment</p>
 
           <p className={styles.text}>You agree to:</p>
 
@@ -89,7 +89,7 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.sectionHeading}>
-            💰 5. Payment Terms (Strict Enforcement Clause 🔥)
+            5. Payment Terms (Strict Enforcement Clause)
           </p>
 
           <p className={styles.text}>
@@ -99,7 +99,7 @@ const AgreementPage = () => {
             b. You cannot accept cash or direct payment
           </p>
 
-          <p className={styles.subHeading}>🚫 If violated:</p>
+          <p className={styles.subHeading}>If violated:</p>
 
           <ul>
             <li>Immediate account suspension</li>
@@ -108,7 +108,7 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.sectionHeading}>
-            🚫 6. No Direct Work / Anti-Leakage Clause (Very Important )
+            6. No Direct Work / Anti-Leakage Clause (Very Important )
           </p>
 
           <p className={styles.text}>You agree:</p>
@@ -119,7 +119,7 @@ const AgreementPage = () => {
             <li>Not to bypass the AbhiCares platform</li>
           </ul>
 
-          <p className={styles.subHeading}>👉 Violation may lead to:</p>
+          <p className={styles.subHeading}>Violation may lead to:</p>
 
           <ul>
             <li>Account termination</li>
@@ -127,9 +127,7 @@ const AgreementPage = () => {
             <li>Recovery of business loss</li>
           </ul>
 
-          <p className={styles.sectionHeading}>
-            🔐 7. Data Protection & Privacy
-          </p>
+          <p className={styles.sectionHeading}>7. Data Protection & Privacy</p>
 
           <p className={styles.text}>You must:</p>
 
@@ -139,10 +137,10 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.text}>
-            👉 Any misuse = legal liability + permanent ban
+            Any misuse = legal liability + permanent ban
           </p>
 
-          <p className={styles.sectionHeading}>🧠 8. Confidentiality</p>
+          <p className={styles.sectionHeading}>8. Confidentiality</p>
 
           <p className={styles.text}>You agree not to share:</p>
 
@@ -158,7 +156,7 @@ const AgreementPage = () => {
           </p>
 
           <p className={styles.sectionHeading}>
-            📸 9. Marketing & Branding Rights (Critical Clause 🔥)
+            9. Marketing & Branding Rights (Critical Clause )
           </p>
 
           <p className={styles.text}>
@@ -172,10 +170,10 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.text}>For:</p>
-          <p className={styles.text}>👉 Ads, Social Media, Website, Branding</p>
+          <p className={styles.text}> Ads, Social Media, Website, Branding</p>
 
-          <p className={styles.text}>✔ No payment required for this usage</p>
-          <p className={styles.text}>✔ Used only for business promotion</p>
+          <p className={styles.text}>No payment required for this usage</p>
+          <p className={styles.text}>Used only for business promotion</p>
 
           <p className={styles.sectionHeading}>10. Ratings & Work Allocation</p>
 
@@ -191,7 +189,7 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.sectionHeading}>
-            ⚖️ 11. Penalty & Enforcement Clause (Company Protection )
+            11. Penalty & Enforcement Clause (Company Protection )
           </p>
 
           <p className={styles.text}>AbhiCares may apply penalties for:</p>
@@ -204,7 +202,7 @@ const AgreementPage = () => {
             <li>Platform bypass</li>
           </ul>
 
-          <p className={styles.subHeading}>👉 Penalties may include:</p>
+          <p className={styles.subHeading}> Penalties may include:</p>
 
           <ul>
             <li>Monetary deduction</li>
@@ -212,7 +210,7 @@ const AgreementPage = () => {
             <li>Permanent termination</li>
           </ul>
 
-          <p className={styles.sectionHeading}>🚫 12. Termination Rights</p>
+          <p className={styles.sectionHeading}> 12. Termination Rights</p>
 
           <p className={styles.text}>
             AbhiCares can suspend/terminate your account:
@@ -223,7 +221,7 @@ const AgreementPage = () => {
             <li>For misconduct, fraud, or poor performance</li>
           </ul>
 
-          <p className={styles.sectionHeading}>⚠️ 13. Liability Clause</p>
+          <p className={styles.sectionHeading}> 13. Liability Clause</p>
 
           <p className={styles.text}>
             a. You are fully responsible for your actions
@@ -238,7 +236,7 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.sectionHeading}>
-            🔁 14. Non-Compete & Business Protection
+            14. Non-Compete & Business Protection
           </p>
 
           <p className={styles.text}>You agree:</p>
@@ -250,7 +248,7 @@ const AgreementPage = () => {
           </ul>
 
           <p className={styles.sectionHeading}>
-            📄 15. Document & Identity Verification
+            15. Document & Identity Verification
           </p>
 
           <p className={styles.text}>You agree to:</p>
@@ -262,9 +260,9 @@ const AgreementPage = () => {
 
           <p className={styles.text}>False information may lead to:</p>
 
-          <p className={styles.text}>👉 Immediate rejection or termination</p>
+          <p className={styles.text}> Immediate rejection or termination</p>
 
-          <p className={styles.sectionHeading}>🌧️ 16. Force Majeure</p>
+          <p className={styles.sectionHeading}> 16. Force Majeure</p>
 
           <p className={styles.text}>Services may be affected due to:</p>
 
@@ -274,7 +272,7 @@ const AgreementPage = () => {
             <li>Emergency situations</li>
           </ul>
 
-          <p className={styles.sectionHeading}>📜 17. Policy Acceptance</p>
+          <p className={styles.sectionHeading}> 17. Policy Acceptance</p>
 
           <p className={styles.text}>You agree to follow:</p>
 
@@ -284,14 +282,14 @@ const AgreementPage = () => {
             <li>Platform Rules</li>
           </ul>
 
-          <p className={styles.sectionHeading}>⚖️ 18. Legal Jurisdiction</p>
+          <p className={styles.sectionHeading}> 18. Legal Jurisdiction</p>
 
           <p className={styles.text}>All disputes will be handled in:</p>
 
-          <p className={styles.text}>👉 Darbhanga, Bihar</p>
+          <p className={styles.text}> Darbhanga, Bihar</p>
 
           <p className={styles.sectionHeading}>
-            🔥 19. Founder Mission Clause (Brand Identity)
+            19. Founder Mission Clause (Brand Identity)
           </p>
 
           <p className={styles.text}>
@@ -301,7 +299,7 @@ const AgreementPage = () => {
           </p>
 
           <p className={styles.sectionHeading}>
-            📲 20. Digital Consent Declaration
+            20. Digital Consent Declaration
           </p>
 
           <p className={styles.text}>Before proceeding, the app must show:</p>
@@ -311,27 +309,6 @@ const AgreementPage = () => {
             <li>☑ I agree to all terms and conditions</li>
             <li>☑ I understand violation may lead to termination</li>
             <li>☑ I allow AbhiCares to use my name/photo for marketing</li>
-          </ul>
-
-          <p className={styles.sectionHeading}>✅ FINAL BUTTON (UI)</p>
-
-          <p className={styles.text}>👉 [ I AGREE & CONTINUE ]</p>
-
-          <p className={styles.sectionHeading}>
-            App Implementation Tips (Founder Insight)
-          </p>
-
-          <p className={styles.text}>Your tech team should:</p>
-
-          <ul>
-            <li>🔹 Add:</li>
-            <li>· Timestamp of acceptance</li>
-            <li>· IP/device tracking</li>
-            <li>· Auto PDF generation of agreement</li>
-            <li>· OTP verification before final consent</li>
-            <li>🔹 Store:</li>
-            <li>· Partner consent log</li>
-            <li>· Version control of agreement</li>
           </ul>
         </div>
       </div>
